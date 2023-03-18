@@ -116,10 +116,10 @@ class _HomePageState extends State<HomePage> {
             floating: true,
             centerTitle: true,
             // collapsedHeight: 100,
-            expandedHeight: 160.0,
-            flexibleSpace: const FlexibleSpaceBar(
-              title: Text('SliverAppBar'),
-              background: FlutterLogo(),
+            expandedHeight: 180.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: const Text('SNIK'),
+              background: Image.asset('assets/logo/logo_snik.png'),
             ),
           ),
           //!: Border

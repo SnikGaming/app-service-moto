@@ -26,7 +26,7 @@ class SearchCustom extends SearchDelegate {
         onPressed: () {
           query = '';
         },
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
       ),
     ];
   }
@@ -37,7 +37,7 @@ class SearchCustom extends SearchDelegate {
       onPressed: () {
         close(context, null);
       },
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
     );
   }
 
@@ -72,7 +72,6 @@ class SearchCustom extends SearchDelegate {
       if (item.toLowerCase().contains(query.toLowerCase())) {
         mathQuery.add(item);
       }
-      print(mathQuery);
     }
     return ListView.builder(
       itemCount: mathQuery.length,

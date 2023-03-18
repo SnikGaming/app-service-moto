@@ -197,4 +197,16 @@ class _MyButtonState extends State<MyButton> {
   }
 }
 
-class MyColors {}
+class MyColors {
+  static const warning = Color(0xffFAAD14);
+
+  static const error = Color(0xffD92128);
+
+  static const success = Color(0xff18951E);
+    //!: Light Colors
+  static const lightBlue = Color(0xffE4EFFE);
+  static const lightYellow = Color(0xffFFFCF0);
+  static const lightRed = Color(0xffFDE9E9);
+  static const lightPurple = Color(0xffEBE1FA);
+  static const lightGreen = Color(0xffEDFAF3);
+}
