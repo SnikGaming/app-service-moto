@@ -38,6 +38,7 @@ class _FromLoginState extends State<FromLogin> {
   // ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Form(
         key: formkey,
         child: Column(
@@ -125,5 +126,27 @@ class _FromLoginState extends State<FromLogin> {
     if (formkey.currentState!.validate()) {
       Message.success(message: "Hello ${_email.text}", context: context);
     }
+
+    // showModalBottomSheet(
+    //   // isScrollControlled: true,
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return ClipRRect(
+    //         borderRadius: const BorderRadius.only(
+    //             topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+    //         child: Container(
+    //           constraints: BoxConstraints(minHeight: 200
+    //               // maxHeight: size.height * .66,
+    //               ),
+    //           child: ListView.builder(
+    //             itemCount: 100,
+    //             itemBuilder: (context, index) => ElevatedButton(
+    //               child: const Text('Close BottomSheet'),
+    //               onPressed: () => Navigator.pop(context),
+    //             ),
+    //           ),
+    //         ));
+    //   },
+    // );
   }
 }
