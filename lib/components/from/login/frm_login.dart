@@ -3,6 +3,7 @@ import 'package:app/components/textfield/login/text_field_password.dart';
 import 'package:app/constants/const_text.dart';
 import 'package:flutter/material.dart';
 
+import '../../../network/api/google/google.dart';
 import '../../button/button.dart';
 import '../../textfield/login/text_field_email.dart';
 
@@ -90,13 +91,16 @@ class _FromLoginState extends State<FromLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          AuthWithGoogle().googleSignInMethod(context),
                       icon: Image.asset('assets/icons/login/google.png')),
                   const SizedBox(
                     width: 20,
                   ),
                   IconButton(
                       onPressed: () {},
+                      // onPressed: () =>
+                      //     AuthWithGoogle.googleSignOutMethod(context),
                       icon: Image.asset('assets/icons/login/facebook.png')),
                 ],
               ),
