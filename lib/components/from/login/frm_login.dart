@@ -57,22 +57,6 @@ class _FromLoginState extends State<FromLogin> {
               controller: _password,
             ),
             //!: Checkbox
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: [
-            //     CheckBoxCustom(
-            //         value: _isChecked,
-            //         onChanged: (value) {
-            //           _isChecked = value!;
-            //           setState(() {});
-            //         }),
-            //     GradientText(
-            //       textLogin_remember,
-            //       style: buttonSmall_2,
-            //       colors: const [Color(0xff5DACFA), Color(0xff9A8DFC)],
-            //     ),
-            //   ],
-            // ),
             const SizedBox(
               height: 16,
             ),
