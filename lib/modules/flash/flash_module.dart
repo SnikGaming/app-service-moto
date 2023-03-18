@@ -1,4 +1,3 @@
-import 'package:app/modules/login/layouts/login_screen.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'layouts/flash_screen.dart';

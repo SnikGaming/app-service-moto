@@ -4,6 +4,8 @@ import 'package:app/components/test/item.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/colors.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -20,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SafeArea(
         child: Scaffold(
           bottomNavigationBar: FlashyTabBar(
+            backgroundColor: black,
             selectedIndex: _selectedIndex,
             showElevation: true,
             onItemSelected: (index) => setState(() {

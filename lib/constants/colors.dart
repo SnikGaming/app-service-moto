@@ -16,3 +16,5 @@ const transparent = Color.fromARGB(0, 255, 255, 255);
 const white1 = Color(0xffEEF1F9);
 
 const grey = Color(0xff8D95A9);
+
+const appbarColors = Colors.green;
