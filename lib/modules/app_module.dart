@@ -25,11 +25,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // title: 'My Smart App',
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         // brightness: Brightness.light,
 
-        primaryColor: Colors.lightBlue[800],
-        primarySwatch: Colors.blue,
+        // primaryColor: Colors.lightBlue[800],
+        // primarySwatch: Colors.blue,
         textTheme: const TextTheme(
           displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),

@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:app/components/button/mybutton.dart';
+import 'package:app/constants/colors.dart';
+import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +19,14 @@ class _HomePageState extends State<HomePage> {
   static int refreshNum = 10; // number that changes when refreshed
   Stream<int> counterStream =
       Stream<int>.periodic(const Duration(seconds: 3), (x) => refreshNum);
+  static final List<String> lstCategory = [];
+  static final List<String> lst = [
+    'http://hondahoangviet.com/wp-content/uploads/2019/02/%E1%BA%A2nh-s%E1%BA%A3n-ph%E1%BA%A9m-Injector-Cleaner.jpg',
+    'http://hondahoangviet.com/wp-content/uploads/2019/02/03_NuocLamMat_01-1.jpg',
+    'http://hondahoangviet.com/wp-content/uploads/2019/02/06_TamLocGio-1.jpg',
+    'http://hondahoangviet.com/wp-content/uploads/2019/02/04_BuGi_1180x300_acf_cropped.jpg',
+    'http://hondahoangviet.com/wp-content/uploads/2019/02/26_BoNhongXich-1.jpg'
+  ];
 
   static final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -25,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
   ];
 
-  final imageSliders = imgList
+  final imageSliders = lst
       .map((item) => Container(
             margin: const EdgeInsets.all(5.0),
             child: ClipRRect(
@@ -69,19 +81,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
+        backgroundColor: MyColors.lightGreen,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 176, 135, 236),
+                // borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
               ),
               child: Text('Drawer Header'),
             ),
             ListTile(
               title: const Text('Item 1'),
               onTap: () {
-                Navigator.pop(context);
+                // Navigator.pop(context);
+                Modular.to.pushNamed(Routes.login);
               },
             ),
             ListTile(
@@ -101,7 +116,8 @@ class _HomePageState extends State<HomePage> {
           //!: Appbar
           SliverAppBar(
             elevation: 0,
-            backgroundColor: Colors.purple,
+
+            backgroundColor: appbarColors,
             pinned: !false,
             actions: [
               IconButton(
@@ -125,7 +141,7 @@ class _HomePageState extends State<HomePage> {
           //!: Border
           SliverToBoxAdapter(
             child: Container(
-              color: Colors.purple,
+              color: appbarColors,
               // color: const Color(0xff00396B),
               height: 30,
               child: Column(
@@ -135,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                     height: 30,
                     decoration: const BoxDecoration(
                       // color: Colors.white,
-                      color: Color(0xff303030),
+                      color: black, //Color(0xff303030),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40),
@@ -149,11 +165,13 @@ class _HomePageState extends State<HomePage> {
           SliverToBoxAdapter(
             child: Container(
               height: 20,
+              color: black,
             ),
           ),
           //!: Slider
           SliverToBoxAdapter(
-            child: SizedBox(
+            child: Container(
+              color: black,
               height: 200,
               child: CarouselSlider(
                 options: CarouselOptions(
@@ -167,23 +185,32 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          //!: List
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              childCount: 100,
-              (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 160,
-                    alignment: Alignment.center,
-                    color: Colors.pink[100 * (index % 9)],
-                    child: Text('list item $index'),
-                  ),
-                );
-              },
+          SliverToBoxAdapter(
+            child: Container(
+              height: 60,
+              color: black,
             ),
           ),
+          //!: List
+          SliverPadding(
+            padding: EdgeInsets.all(15),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                childCount: 100,
+                (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 160,
+                      alignment: Alignment.center,
+                      color: Colors.pink[100 * (index % 9)],
+                      child: Text('list item $index'),
+                    ),
+                  );
+                },
+              ),
+            ),
+          )
         ],
       ),
     );

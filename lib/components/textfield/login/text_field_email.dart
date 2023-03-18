@@ -12,10 +12,12 @@ class TextFieldEmail extends StatefulWidget {
   final Widget? prefixIcon;
   final bool? isPrefix;
   final TextInputAction? textInputAction;
+  final FocusNode? focusNode;
   final String? text;
   const TextFieldEmail(
       {this.controller,
       this.textInputAction,
+      this.focusNode,
       this.text,
       this.isPrefix = false,
       this.prefixIcon,
@@ -57,6 +59,7 @@ class _TextFieldEmailState extends State<TextFieldEmail> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: widget.focusNode,
       style: const TextStyle(
           fontWeight: FontWeight.w400, fontSize: 16, letterSpacing: 1),
       validator: widget.validator ?? _checkEmail,
@@ -81,7 +84,7 @@ class _TextFieldEmailState extends State<TextFieldEmail> {
                 const Icon(Icons.email_outlined,
                     size: 20, color: Color(0xff3169B3)),
         suffixIcon: _suffixIcon(),
-        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        contentPadding: const EdgeInsets.fromLTRB(00.0, 00.0, 0.0, 0.0),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(6),
             borderSide: const BorderSide(color: Color(0xffC6CCD3), width: 1)),
