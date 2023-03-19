@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../models/categories/categories.dart';
 import '../../../../preferences/settings/setting_prefer.dart';
+import '../../../../preferences/user/user_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -281,13 +282,19 @@ class _HomePageState extends State<HomePage>
                                 child: Container(
                                   height: 40,
                                   decoration: BoxDecoration(
+                                      border: indexLstCategories !=
+                                              lstCategories[index]
+                                          ? Border.all(
+                                              width: 1,
+                                              color: isCheck ? black : red)
+                                          : null,
                                       borderRadius: BorderRadius.circular(30),
                                       color: indexLstCategories ==
                                               lstCategories[index]
-                                          ? Colors.red
-                                          : Colors.green),
+                                          ? Colors.green
+                                          : white),
                                   constraints:
-                                      const BoxConstraints(minWidth: 80),
+                                      const BoxConstraints(minWidth: 100),
                                   child: Center(
                                     child: Text(
                                       lstCategories[index].name,
@@ -295,7 +302,7 @@ class _HomePageState extends State<HomePage>
                                           color: indexLstCategories ==
                                                   lstCategories[index]
                                               ? white
-                                              : blue,
+                                              : black,
                                           fontSize: 14,
                                           fontWeight: indexLstCategories ==
                                                   lstCategories[index]
@@ -339,22 +346,29 @@ class _HomePageState extends State<HomePage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 50,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                                'assets/icons/user/user_profile.png'),
-                            fit: BoxFit.cover)),
+                    height: 80,
+                    width: 80,
+                    decoration: UserPrefer.getImageUser() != null
+                        ? BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(UserPrefer.getImageUser()),
+                                fit: BoxFit.cover))
+                        : const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/icons/user/user_profile.png'),
+                                fit: BoxFit.cover)),
                   ),
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
-                    'Trần Thới Long',
+                  Text(
+                    UserPrefer.getsetUserName() ?? 'Trần Thới Long',
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
+                        overflow: TextOverflow.ellipsis,
                         letterSpacing: 2),
                   ),
                 ],

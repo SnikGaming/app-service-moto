@@ -1,6 +1,7 @@
 import 'package:app/components/message/message.dart';
 import 'package:app/components/textfield/login/text_field_password.dart';
 import 'package:app/constants/const_text.dart';
+import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flutter/material.dart';
 
 import '../../../network/api/google/google.dart';
@@ -92,8 +93,14 @@ class _FromLoginState extends State<FromLogin> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                      onPressed: () =>
-                          AuthWithGoogle().googleSignInMethod(context),
+                      onPressed: () {
+                        AuthWithGoogle().googleSignInMethod(context);
+                        if (UserPrefer.getEmail() != null) {
+                          Message.success(
+                              message: "Hello ${UserPrefer.getEmail()}",
+                              context: context);
+                        }
+                      },
                       icon: Image.asset('assets/icons/login/google.png')),
                   const SizedBox(
                     width: 20,
@@ -115,7 +122,5 @@ class _FromLoginState extends State<FromLogin> {
     if (formkey.currentState!.validate()) {
       Message.success(message: "Hello ${_email.text}", context: context);
     }
-
-    
   }
 }

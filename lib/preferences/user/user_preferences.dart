@@ -5,9 +5,11 @@ class UserPrefer {
 
   static const _listEmail = "listEmail";
 
+  static const __imageUser = 'pic';
+
   static const _data = "token";
 
-  static const _setIdUser = "user_id";
+  static const _setUserName = "user_id";
   static SharedPreferences? preferences;
   static Future init() async =>
       preferences = await SharedPreferences.getInstance();
@@ -18,12 +20,19 @@ class UserPrefer {
   static getEmail() => preferences!.getString(_email);
   static Future removeEmail() async => await preferences!.remove(_email);
 
+  // //! Login user
+  static Future setImageUser({required String value}) async =>
+      await preferences!.setString(__imageUser, value);
+  static getImageUser() => preferences!.getString(__imageUser);
+  static Future removeImageUser() async =>
+      await preferences!.remove(__imageUser);
+
   //!: Get ID User
-  static Future setIdUser({required String value}) async =>
-      await preferences!.setString(_setIdUser, value);
-  static getsetIdUser() => preferences!.getString(_setIdUser);
-  static Future removesetIdUser() async =>
-      await preferences!.remove(_setIdUser);
+  static Future setUserName({required String value}) async =>
+      await preferences!.setString(_setUserName, value);
+  static getsetUserName() => preferences!.getString(_setUserName);
+  static Future removesetUserName() async =>
+      await preferences!.remove(_setUserName);
 
   //!:Get all Email
   static Future setAllEmail({required List<String> value}) async =>

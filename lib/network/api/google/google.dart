@@ -1,4 +1,5 @@
 import 'package:app/components/message/message.dart';
+import 'package:app/preferences/user/user_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,7 +12,6 @@ class AuthWithGoogle {
   static Future<void> googleSignOutMethod(BuildContext context) async {
     try {
       await googleSignIn.signOut();
-      
     } catch (e) {
       print("Error while signing out: $e");
     }
@@ -31,8 +31,9 @@ class AuthWithGoogle {
           accessToken: googleSignInAuthentication?.accessToken);
 
       // Thực hiện đăng nhập Firebase với credential
-      UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      UserCredential userCredential = await _auth
+          .signInWithCredential(credential)
+          .then((value) => _saveData(value, credential));
       // In ra các thông tin của user để kiểm tra
       print("User email: ${credential}");
       print("User email: ${userCredential.user!.email}");
@@ -48,5 +49,13 @@ class AuthWithGoogle {
       // Hiển thị một thông báo lỗi
       // Message.show(message: 'Sign in failed!', type: MessageType.error);
     }
+  }
+
+  _saveData(user, token) async {
+    await UserPrefer.setUserName(value: user.user!.displayName);
+    await UserPrefer.setEmail(value: user.user!.email);
+
+    await UserPrefer.setImageUser(value: user.user!.photoURL);
+    await UserPrefer.setToken(value: user.user!.photoURL);
   }
 }
