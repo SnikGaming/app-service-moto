@@ -14,6 +14,5 @@ Future<void> main(List<String> args) async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
 }

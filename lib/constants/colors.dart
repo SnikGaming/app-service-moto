@@ -18,3 +18,5 @@ const white1 = Color(0xffEEF1F9);
 const grey = Color(0xff8D95A9);
 
 const appbarColors = Colors.green;
+
+const bulePink = [Color(0xff3494E6), Color(0xffEC6EAD)];

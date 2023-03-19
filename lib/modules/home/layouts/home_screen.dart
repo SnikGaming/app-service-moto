@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: FocusScope.of(context).unfocus,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: black,
           bottomNavigationBar: FlashyTabBar(
             backgroundColor: black,
             selectedIndex: _selectedIndex,

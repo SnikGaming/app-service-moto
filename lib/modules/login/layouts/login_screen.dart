@@ -1,10 +1,6 @@
-import 'package:app/components/button/button.dart';
-import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/from/login/frm_login.dart';
 import 'package:app/constants/const_text.dart';
-import 'package:app/modules/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../components/style/text_style.dart';
