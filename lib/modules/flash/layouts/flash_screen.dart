@@ -44,19 +44,6 @@ class _FlashScreenState extends State<FlashScreen>
         }
       });
     });
-    // Khởi chạy 1 task async để theo dõi trạng thái kết nối
-
-    // final _internet = await checkInternetConnection();
-    // if (_internet) {
-    //   Message.success(message: "Welcome to app! 💕💕", context: context);
-    //   Future.delayed(Duration(seconds: 8))
-    //       .then((value) => {Modular.to.navigate(Routes.home)});
-    // } else {
-    //   Message.error(
-    //       message:
-    //           "Please check if your device is connected to the internet 🤷‍♂️🤷‍♂️",
-    //       context: context);
-    // }
   }
 
   @override
@@ -84,38 +71,44 @@ class _FlashScreenState extends State<FlashScreen>
             body: SizedBox(
               height: size.height,
               width: size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Stack(
                 children: [
-                  const Spacer(),
-                  Lottie.asset('assets/banners/7n69eEGbIn.json',
-                      controller: _controller, onLoaded: (onload) {
-                    _controller
-                      ..duration = onload.duration
-                      ..forward();
-                  }),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  SpinKitFadingCircle(
-                      itemBuilder: (BuildContext context, int index) {
-                    return DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: index.isEven ? Colors.red : Colors.green,
+                  Lottie.asset('assets/flashscreen/routine.json',
+                      repeat: false, height: size.height),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      Lottie.asset('assets/banners/7n69eEGbIn.json',
+                          controller: _controller, onLoaded: (onload) {
+                        _controller
+                          ..duration = onload.duration
+                          ..forward();
+                      }),
+                      const SizedBox(
+                        height: 16,
                       ),
-                    );
-                  }),
-                  const Spacer(),
-                  const Text(
-                    'By development',
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 2,
-                        fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 16,
+                      SpinKitFadingCircle(
+                          itemBuilder: (BuildContext context, int index) {
+                        return DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: index.isEven ? Colors.red : Colors.green,
+                          ),
+                        );
+                      }),
+                      const Spacer(),
+                      const Text(
+                        'By development',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 2,
+                            fontSize: 16),
+                      ),
+                      const SizedBox(
+                        height: 46,
+                      ),
+                    ],
                   ),
                 ],
               ),
