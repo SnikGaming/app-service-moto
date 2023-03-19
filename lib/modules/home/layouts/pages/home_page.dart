@@ -6,10 +6,12 @@ import 'package:app/constants/constants.dart';
 import 'package:app/constants/list_image_slider.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
+import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../models/categories/categories.dart';
+import '../../../../preferences/settings/setting_prefer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -144,16 +146,25 @@ class _HomePageState extends State<HomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    isCheck = SettingPrefer.getLightDark() ?? true;
+    print(isCheck);
+    print(SettingPrefer.getLightDark());
+
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     // _animationColor = Tween<Color>(begin: ).animate(_animationController);
   }
 
+  late bool isCheck;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SettingApp.dark_light ? white : black,
+      backgroundColor:
+          SettingPrefer.getLightDark() == null || SettingPrefer.getLightDark()
+              ? white
+              : black,
       drawer: _drawer(context),
       body: _customScrollview(context),
     );
@@ -204,9 +215,7 @@ class _HomePageState extends State<HomePage>
                   height: 30,
                   decoration: BoxDecoration(
                     // color: Colors.white,
-                    color: SettingApp.dark_light
-                        ? white
-                        : black, //Color(0xff303030),
+                    color: isCheck ? white : black, //Color(0xff303030),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40),
@@ -220,13 +229,19 @@ class _HomePageState extends State<HomePage>
         SliverToBoxAdapter(
           child: Container(
             height: 20,
-            color: SettingApp.dark_light ? white : black,
+            color: SettingPrefer.getLightDark() == null ||
+                    SettingPrefer.getLightDark()
+                ? white
+                : black,
           ),
         ),
         //!: Slider
         SliverToBoxAdapter(
           child: Container(
-            color: SettingApp.dark_light ? white : black,
+            color: SettingPrefer.getLightDark() == null ||
+                    SettingPrefer.getLightDark()
+                ? white
+                : black,
             height: 200,
             child: CarouselSlider(
               options: CarouselOptions(
@@ -247,7 +262,10 @@ class _HomePageState extends State<HomePage>
               scrollDirection: Axis.horizontal,
               child: Container(
                 height: 60,
-                color: SettingApp.dark_light ? white : black,
+                color: SettingPrefer.getLightDark() == null ||
+                        SettingPrefer.getLightDark()
+                    ? white
+                    : black,
                 child: Row(
                     children: List.generate(
                         lstCategories.length,
@@ -361,7 +379,7 @@ class _HomePageState extends State<HomePage>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: AnimatedToggleSwitch<bool>.dual(
-              current: SettingApp.dark_light,
+              current: SettingPrefer.getLightDark() ?? true,
               first: false,
               second: true,
               dif: 50.0,
@@ -377,7 +395,11 @@ class _HomePageState extends State<HomePage>
                 ),
               ],
               onChanged: (b) {
-                setState(() => SettingApp.dark_light = b);
+                SettingPrefer.setLightDark(value: b);
+
+                setState(() {
+                  isCheck = b;
+                });
                 // return Future.delayed(Duration(seconds: 2));
               },
               colorBuilder: (b) => b ? Colors.red : Colors.green,

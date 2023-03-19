@@ -170,11 +170,16 @@ class _LoginScreenState extends State<LoginScreen>
                                                 height: 10,
                                               ),
                                               ElevatedButton(
-                                                child: const Text(
-                                                    'Close BottomSheet'),
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                              ),
+                                                  child: const Text('SEND'),
+                                                  onPressed: () {
+                                                    Future.delayed(Duration(
+                                                            seconds: 3))
+                                                        .then((value) => {
+                                                              Navigator.pop(
+                                                                  context),
+                                                            });
+                                                    // Navigator.pop(context);
+                                                  }),
                                             ],
                                           ),
                                         ),
