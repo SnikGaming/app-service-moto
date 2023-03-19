@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/constants/colors.dart';

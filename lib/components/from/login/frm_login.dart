@@ -50,7 +50,7 @@ class _FromLoginState extends State<FromLogin> {
               isSuffIcon: true,
             ),
             const SizedBox(
-              height: 16,
+              height: 10,
             ),
             //!: Password
             TextFieldPassword(
@@ -58,7 +58,7 @@ class _FromLoginState extends State<FromLogin> {
             ),
             //!: Checkbox
             const SizedBox(
-              height: 16,
+              height: 10,
             ),
             //!: Button
             Container(
@@ -80,11 +80,13 @@ class _FromLoginState extends State<FromLogin> {
                 )),
               ),
             ),
+
             const SizedBox(
-              height: 30,
+              height: 16,
             ),
+
             SizedBox(
-              height: 60,
+              height: 58,
               // color: Colors.red,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -114,26 +116,6 @@ class _FromLoginState extends State<FromLogin> {
       Message.success(message: "Hello ${_email.text}", context: context);
     }
 
-    // showModalBottomSheet(
-    //   // isScrollControlled: true,
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     return ClipRRect(
-    //         borderRadius: const BorderRadius.only(
-    //             topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-    //         child: Container(
-    //           constraints: BoxConstraints(minHeight: 200
-    //               // maxHeight: size.height * .66,
-    //               ),
-    //           child: ListView.builder(
-    //             itemCount: 100,
-    //             itemBuilder: (context, index) => ElevatedButton(
-    //               child: const Text('Close BottomSheet'),
-    //               onPressed: () => Navigator.pop(context),
-    //             ),
-    //           ),
-    //         ));
-    //   },
-    // );
+    
   }
 }

@@ -11,13 +11,7 @@ class AuthWithGoogle {
   static Future<void> googleSignOutMethod(BuildContext context) async {
     try {
       await googleSignIn.signOut();
-      // Xóa dữ liệu user đã lưu (nếu có)
-      // UserSimplePreferences.removeUserId();
-      // UserSimplePreferences.removeAll();
-
-      // Lấy lại dữ liệu và đưa về màn hình chào mừng
-      // profileData.getAllData();
-      // Navigator.pushNamedAndRemoveUntil(context, "welcome", (Route<dynamic> route) => false);
+      
     } catch (e) {
       print("Error while signing out: $e");
     }
