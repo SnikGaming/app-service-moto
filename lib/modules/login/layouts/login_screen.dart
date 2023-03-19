@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen>
                           const SizedBox(
                             height: 10,
                           ),
+
                           isRegister ? const FromLogin() : const FrmRegister(),
                         ],
                       ),

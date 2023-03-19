@@ -1,6 +1,8 @@
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/colors.dart';
+import 'package:app/constants/constants.dart';
 import 'package:app/constants/list_image_slider.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
@@ -151,7 +153,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: black,
+      backgroundColor: SettingApp.dark_light ? white : black,
       drawer: _drawer(context),
       body: _customScrollview(context),
     );
@@ -200,9 +202,11 @@ class _HomePageState extends State<HomePage>
               children: <Widget>[
                 Container(
                   height: 30,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     // color: Colors.white,
-                    color: black, //Color(0xff303030),
+                    color: SettingApp.dark_light
+                        ? white
+                        : black, //Color(0xff303030),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40),
@@ -216,13 +220,13 @@ class _HomePageState extends State<HomePage>
         SliverToBoxAdapter(
           child: Container(
             height: 20,
-            color: black,
+            color: SettingApp.dark_light ? white : black,
           ),
         ),
         //!: Slider
         SliverToBoxAdapter(
           child: Container(
-            color: black,
+            color: SettingApp.dark_light ? white : black,
             height: 200,
             child: CarouselSlider(
               options: CarouselOptions(
@@ -243,7 +247,7 @@ class _HomePageState extends State<HomePage>
               scrollDirection: Axis.horizontal,
               child: Container(
                 height: 60,
-                color: black,
+                color: SettingApp.dark_light ? white : black,
                 child: Row(
                     children: List.generate(
                         lstCategories.length,
@@ -350,6 +354,40 @@ class _HomePageState extends State<HomePage>
             onTap: () {
               Navigator.pop(context);
             },
+          ),
+          SizedBox(
+            height: 340,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: AnimatedToggleSwitch<bool>.dual(
+              current: SettingApp.dark_light,
+              first: false,
+              second: true,
+              dif: 50.0,
+              borderColor: Colors.transparent,
+              borderWidth: 5.0,
+              height: 55,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: Offset(0, 1.5),
+                ),
+              ],
+              onChanged: (b) {
+                setState(() => SettingApp.dark_light = b);
+                // return Future.delayed(Duration(seconds: 2));
+              },
+              colorBuilder: (b) => b ? Colors.red : Colors.green,
+              iconBuilder: (value) => value
+                  ? Icon(Icons.coronavirus_rounded)
+                  : Icon(Icons.tag_faces_rounded),
+              textBuilder: (value) => value
+                  ? Center(child: Text('Oh no...'))
+                  : Center(child: Text('Nice :)')),
+            ),
           ),
         ],
       ),
