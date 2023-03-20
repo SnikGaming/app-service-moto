@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPrefer {
+  // ignore: constant_identifier_names
   static const _light_dark = "setting";
 
   static SharedPreferences? preferences;

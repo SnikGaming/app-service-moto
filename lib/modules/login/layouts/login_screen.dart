@@ -2,8 +2,11 @@ import 'package:app/components/from/login/frm_login.dart';
 import 'package:app/components/from/register/frm_register.dart';
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:app/constants/const_text.dart';
+import 'package:app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:otp_text_field/otp_field.dart';
+import '../../../components/from/otp/frm_otp.dart';
 import '../../../components/message/message.dart';
 import '../../../components/style/text_style.dart';
 import '../../../constants/colors.dart';
@@ -17,7 +20,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+  final OtpFieldController _otp = OtpFieldController();
   bool isRegister = true;
+  bool isSendEmailSuccess = false;
   late AnimationController _animation;
 
   @override
@@ -143,11 +148,16 @@ class _LoginScreenState extends State<LoginScreen>
                                               const SizedBox(
                                                 height: 30,
                                               ),
-                                              const Text(
+                                              Text(
                                                 'FORGOT PASSWORD',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18),
+                                                style: SettingApp
+                                                    .fontSignNegative
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w800),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
                                               ),
                                               SizedBox(
                                                 width: size.width,
@@ -170,16 +180,9 @@ class _LoginScreenState extends State<LoginScreen>
                                                 height: 10,
                                               ),
                                               ElevatedButton(
-                                                  child: const Text('SEND'),
-                                                  onPressed: () {
-                                                    Future.delayed(Duration(
-                                                            seconds: 3))
-                                                        .then((value) => {
-                                                              Navigator.pop(
-                                                                  context),
-                                                            });
-                                                    // Navigator.pop(context);
-                                                  }),
+                                                  onPressed:
+                                                      _sendEmailForgotPassword,
+                                                  child: const Text('SEND')),
                                             ],
                                           ),
                                         ),
@@ -228,5 +231,10 @@ class _LoginScreenState extends State<LoginScreen>
         ),
       ),
     );
+  }
+
+  _sendEmailForgotPassword() {
+    Navigator.pop(context);
+    displayTextInputDialog(context, _otp);
   }
 }

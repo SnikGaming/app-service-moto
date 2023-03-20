@@ -1,10 +1,10 @@
-import 'package:app/preferences/settings/setting_prefer.dart';
+import 'package:app/constants/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../preferences/settings/setting_prefer.dart';
-
 class SettingApp {
-   static bool? dark_light;
-  
-  // static final fontApp =GoogleFonts.Sono();
+  // ignore: non_constant_identifier_names
+  static bool? dark_light;
+
+  static final fontSignNegative =
+      GoogleFonts.signikaNegative().copyWith(fontSize: 16, color: black);
 }

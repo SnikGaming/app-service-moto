@@ -2,7 +2,6 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/colors.dart';
-import 'package:app/constants/constants.dart';
 import 'package:app/constants/list_image_slider.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
@@ -11,7 +10,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../models/categories/categories.dart';
-import '../../../../preferences/settings/setting_prefer.dart';
 import '../../../../preferences/user/user_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +19,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+// ignore: non_constant_identifier_names
 Rectangulo(index, _, color) {
   return GestureDetector(
     onTap: () {
@@ -33,8 +32,8 @@ Rectangulo(index, _, color) {
         width: 200,
         // ignore: prefer_const_literals_to_create_immutables
         decoration: BoxDecoration(
-            boxShadow: [
-              const BoxShadow(
+            boxShadow: const [
+              BoxShadow(
                   color: Colors.grey, offset: Offset(3, 6), blurRadius: 10)
             ],
             color: Colors.green.withAlpha(100),
@@ -55,12 +54,12 @@ Rectangulo(index, _, color) {
                         fit: BoxFit.cover)),
               ),
             ),
-            Positioned(
+            const Positioned(
                 bottom: 25,
                 left: 10,
-                child: Container(
+                child: SizedBox(
                   width: 140,
-                  child: const Text(
+                  child: Text(
                     'Bộ ốc đĩa Salaya inox 8ly cho Exciter 150 (5con)',
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -93,7 +92,6 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
-  late Animation<Color> _animationColor;
   static final lstCategories = Categories.lst;
   var indexLstCategories = lstCategories[0];
   var indexData = 0;
@@ -148,8 +146,8 @@ class _HomePageState extends State<HomePage>
     // TODO: implement initState
     super.initState();
     isCheck = SettingPrefer.getLightDark() ?? true;
-    print(isCheck);
-    print(SettingPrefer.getLightDark());
+    // print(isCheck);
+    // print(SettingPrefer.getLightDark());
 
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
@@ -217,7 +215,7 @@ class _HomePageState extends State<HomePage>
                   decoration: BoxDecoration(
                     // color: Colors.white,
                     color: isCheck ? white : black, //Color(0xff303030),
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40),
                     ),
@@ -365,7 +363,7 @@ class _HomePageState extends State<HomePage>
                   ),
                   Text(
                     UserPrefer.getsetUserName() ?? 'Trần Thới Long',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         overflow: TextOverflow.ellipsis,
@@ -387,7 +385,7 @@ class _HomePageState extends State<HomePage>
               Navigator.pop(context);
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 340,
           ),
           Padding(
@@ -418,11 +416,11 @@ class _HomePageState extends State<HomePage>
               },
               colorBuilder: (b) => b ? Colors.red : Colors.green,
               iconBuilder: (value) => value
-                  ? Icon(Icons.coronavirus_rounded)
-                  : Icon(Icons.tag_faces_rounded),
+                  ? const Icon(Icons.coronavirus_rounded)
+                  : const Icon(Icons.tag_faces_rounded),
               textBuilder: (value) => value
-                  ? Center(child: Text('Oh no...'))
-                  : Center(child: Text('Nice :)')),
+                  ? const Center(child: Text('Oh no...'))
+                  : const Center(child: Text('Nice :)')),
             ),
           ),
         ],

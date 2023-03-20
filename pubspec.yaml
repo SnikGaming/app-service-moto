@@ -54,6 +54,8 @@ dependencies:
   animated_toggle_switch: ^0.6.2
   google_fonts: ^4.0.3
   shared_preferences: ^2.0.18
+  otp_text_field: ^1.1.3
+  timer_count_down: ^2.2.2
   # flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:
@@ -89,6 +91,9 @@ flutter:
     - assets/login/
     - assets/flashscreen/
     - assets/fonts/Sono/
+    - assets/fonts/time/
+    - assets/fonts/Sono/static/Sono/
+
 
 
 
@@ -108,6 +113,22 @@ flutter:
     - family: sono
       fonts:
         - asset: assets/fonts/Sono/Sono-VariableFont_MONO,wght.ttf
+        - asset: assets/fonts/Sono/static/Sono/Sono-Bold.ttf
+        - asset: assets/fonts/Sono/static/Sono/Sono-ExtraBold.ttf
+        - asset: assets/fonts/Sono/static/Sono/Sono-ExtraLight.ttf
+        - asset: assets/fonts/Sono/static/Sono/Sono-Light.ttf
+        - asset: assets/fonts/Sono/static/Sono/Sono-Medium.ttf
+        - asset: assets/fonts/Sono/static/Sono/Sono-Regular.ttf
+        - asset: assets/fonts/Sono/static/Sono/Sono-SemiBold.ttf
+       
+
+
+
+    - family: time
+      fonts:
+        - asset: assets/fonts/time/E1234-p7pER.ttf
+        - asset: assets/fonts/time/E1234Italic-DO3md.ttf
+
         # - asset: fonts/Schyler-Italic.ttf
         #   style: italic
   #   - family: Trajan Pro
