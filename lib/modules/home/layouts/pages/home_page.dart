@@ -9,7 +9,9 @@ import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../../components/functions/logout.dart';
 import '../../../../models/categories/categories.dart';
+import '../../../../network/api/google/google.dart';
 import '../../../../preferences/user/user_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -44,7 +46,7 @@ Rectangulo(index, _, color) {
               top: 10,
               left: 10,
               child: Container(
-                height: 100,
+                height: 120,
                 width: 140,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -91,7 +93,6 @@ Rectangulo(index, _, color) {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late Animation<double> _animation;
   static final lstCategories = Categories.lst;
   var indexLstCategories = lstCategories[0];
   var indexData = 0;
@@ -137,12 +138,14 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     _animationController.dispose();
+    // ignore: todo
     // TODO: implement dispose
     super.dispose();
   }
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     isCheck = SettingPrefer.getLightDark() ?? true;
@@ -151,7 +154,6 @@ class _HomePageState extends State<HomePage>
 
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
-    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     // _animationColor = Tween<Color>(begin: ).animate(_animationController);
   }
 
@@ -373,12 +375,23 @@ class _HomePageState extends State<HomePage>
               ),
             ),
           ),
-          ListTile(
-            title: const Text('Login'),
-            onTap: () {
-              Modular.to.pushNamed(Routes.login);
-            },
-          ),
+          UserPrefer.getToken() == null
+              ? ListTile(
+                  title: const Text('Login'),
+                  onTap: () {
+                    Modular.to.pushNamed(Routes.login);
+                  },
+                )
+              : ListTile(
+                  title: const Text('Logout'),
+                  onTap: () {
+                    AuthWithGoogle.googleSignOutMethod(context)
+                        .then((value) => Modular.to.navigate(Routes.home));
+                    LogoutApp.Logout();
+                    Future.delayed(const Duration(seconds: 1))
+                        .then((value) => {setState(() {})});
+                  },
+                ),
           ListTile(
             title: const Text('Item 2'),
             onTap: () {

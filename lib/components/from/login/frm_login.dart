@@ -1,11 +1,14 @@
 import 'package:app/components/message/message.dart';
 import 'package:app/components/textfield/login/text_field_password.dart';
 import 'package:app/constants/const_text.dart';
+import 'package:app/modules/app_constants.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../network/api/google/google.dart';
 import '../../button/button.dart';
+import '../../functions/logout.dart';
 import '../../textfield/login/text_field_email.dart';
 
 class FromLogin extends StatefulWidget {
@@ -94,7 +97,12 @@ class _FromLoginState extends State<FromLogin> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        AuthWithGoogle().googleSignInMethod(context);
+                        AuthWithGoogle()
+                            .googleSignInMethod(context)
+                            .then((value) {
+                          Modular.to.navigate(Routes.home);
+                          setState(() {});
+                        });
                         if (UserPrefer.getEmail() != null) {
                           Message.success(
                               message: "Hello ${UserPrefer.getEmail()}",
@@ -106,9 +114,14 @@ class _FromLoginState extends State<FromLogin> {
                     width: 20,
                   ),
                   IconButton(
-                      onPressed: () {},
-                      // onPressed: () =>
-                      //     AuthWithGoogle.googleSignOutMethod(context),
+                      // onPressed: () {},
+                      onPressed: () {
+                        AuthWithGoogle.googleSignOutMethod(context)
+                            .then((value) => Modular.to.navigate(Routes.home));
+                        setState(() {
+                          LogoutApp.Logout();
+                        });
+                      },
                       icon: Image.asset('assets/icons/login/facebook.png')),
                 ],
               ),
@@ -121,6 +134,7 @@ class _FromLoginState extends State<FromLogin> {
     if (true) Message.error(message: "Login faild", context: context);
     if (formkey.currentState!.validate()) {
       Message.success(message: "Hello ${_email.text}", context: context);
+      Modular.to.navigate(Routes.home);
     }
   }
 }

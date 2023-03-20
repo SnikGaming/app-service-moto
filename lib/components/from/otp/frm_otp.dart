@@ -1,3 +1,4 @@
+import 'package:app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -17,7 +18,7 @@ Future<void> displayTextInputDialog(BuildContext context, otp) async {
                 onPressed: () {
                   controller_.restart();
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.refresh,
                   color: Colors.green,
                 ),
@@ -26,14 +27,16 @@ Future<void> displayTextInputDialog(BuildContext context, otp) async {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.close,
                   color: Colors.red,
                 ),
               )
             ],
-            title: const Text('Please input OTP code'),
-            content: Container(
+            title: Text('Please input OTP code',
+                style: SettingApp.fontSignNegative
+                    .copyWith(fontSize: 18, letterSpacing: 1.2)),
+            content: SizedBox(
               height: 100,
               child: Column(
                 children: [
@@ -55,8 +58,8 @@ Future<void> displayTextInputDialog(BuildContext context, otp) async {
                       otp.clear();
                     },
                   ),
-                  SizedBox(
-                    height: 10,
+                  const SizedBox(
+                    height: 16,
                   ),
                   countdown(context, controller_),
                 ],

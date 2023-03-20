@@ -3,8 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserPrefer {
   static const _email = "username";
 
-  static const _listEmail = "listEmail";
-
   static const __imageUser = 'pic';
 
   static const _data = "token";
@@ -27,19 +25,12 @@ class UserPrefer {
   static Future removeImageUser() async =>
       await preferences!.remove(__imageUser);
 
-  //!: Get ID User
+  //!: Get Username
   static Future setUserName({required String value}) async =>
       await preferences!.setString(_setUserName, value);
   static getsetUserName() => preferences!.getString(_setUserName);
   static Future removesetUserName() async =>
       await preferences!.remove(_setUserName);
-
-  //!:Get all Email
-  static Future setAllEmail({required List<String> value}) async =>
-      await preferences!.setStringList(_listEmail, value);
-  static getsetAllEmail() => preferences!.getStringList(_listEmail);
-  static Future removesetAllEmail() async =>
-      await preferences!.remove(_listEmail);
 
   //!:
   static Future setToken({required String value}) async =>

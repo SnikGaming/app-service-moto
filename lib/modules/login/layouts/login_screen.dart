@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                         fontWeight:
                                                             FontWeight.w800),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               SizedBox(
