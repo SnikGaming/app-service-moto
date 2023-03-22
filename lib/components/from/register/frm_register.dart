@@ -1,8 +1,9 @@
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:flutter/material.dart';
 
+import '../../../network/api/user/user_api.dart';
 import '../../button/button.dart';
-import '../../message/message.dart';
+
 import '../../textfield/login/text_field_password.dart';
 
 class FrmRegister extends StatefulWidget {
@@ -49,7 +50,7 @@ class _FrmRegisterState extends State<FrmRegister> {
                   color: Colors.black, offset: Offset(3, 5), blurRadius: 12)
             ]),
             child: ButtonCustom(
-              ontap: _btnLogin,
+              ontap: _butRegister,
               width: 160,
               height: 40,
               child: const Center(
@@ -67,10 +68,14 @@ class _FrmRegisterState extends State<FrmRegister> {
     );
   }
 
-  _btnLogin() {
-    if (true) Message.error(message: "Login faild", context: context);
+  _butRegister() async {
+    // if (true) Message.error(message: "Login faild", context: context);
     if (formkey.currentState!.validate()) {
-      Message.success(message: "Hello ${_email.text}", context: context);
+      final value = UserAPI.register(
+          email: _email.text,
+          password: _password.text,
+          repassword: _repassword.text,
+          context: context);
     }
   }
 }

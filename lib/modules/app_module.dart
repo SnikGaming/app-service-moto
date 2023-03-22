@@ -24,6 +24,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      //    localizationsDelegates: [
+      //   // ... app-specific localization delegate[s] here
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      //   DefaultCupertinoLocalizations.delegate,
+      // ],
+      supportedLocales: const [
+        Locale('en', 'US'), // English
+        Locale('de', 'DE'), // German
+        // ... other locales the app supports
+      ],
       debugShowCheckedModeBanner: false,
       // title: 'My Smart App',
       theme: ThemeData(

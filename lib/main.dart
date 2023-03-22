@@ -2,10 +2,12 @@ import 'package:app/modules/app_module.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:device_preview/device_preview.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +20,9 @@ Future<void> main(List<String> args) async {
   ]);
   await SettingPrefer.init();
   await UserPrefer.init();
-  
-  runApp(ModularApp(module: AppModule(), child: const MyApp()));
+
+  runApp(DevicePreview(
+      enabled: kIsWeb,
+      builder: ((context) =>
+          ModularApp(module: AppModule(), child: const MyApp()))));
 }

@@ -8,21 +8,22 @@ import '../../countdown/count_down.dart';
 
 Future<void> displayTextInputDialog(BuildContext context, otp) async {
   final controller_ = CountdownController(autoStart: true);
+
   return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
         return AlertDialog(
             actions: [
-              IconButton(
-                onPressed: () {
-                  controller_.restart();
-                },
-                icon: const Icon(
-                  Icons.refresh,
-                  color: Colors.green,
-                ),
-              ),
+              // IconButton(
+              //   onPressed: () {
+              //     controller_.restart();
+              //   },
+              //   icon: const Icon(
+              //     Icons.refresh,
+              //     color: Colors.green,
+              //   ),
+              // ),
               IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -53,7 +54,6 @@ Future<void> displayTextInputDialog(BuildContext context, otp) async {
                       print("Changed: $pin");
                     },
                     onCompleted: (pin) {
-                      print("Completed: $pin");
                       Navigator.pop(context);
                       otp.clear();
                     },

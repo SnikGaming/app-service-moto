@@ -1,5 +1,8 @@
 import 'package:app/modules/home/layouts/pages/home_page.dart';
+import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
+
+import '../../modules/home/layouts/pages/test.dart';
 
 // ignore: must_be_immutable
 class ItemTest extends StatefulWidget {
@@ -27,12 +30,8 @@ class _ItemTestState extends State<ItemTest> {
 // ignore: non_constant_identifier_names
 List<Widget> TestScreen = [
   const HomePage(),
-  ItemTest(
-    color: Colors.green,
-  ),
-  ItemTest(
-    color: Colors.blue,
-  ),
+  const ServicesPage(),
+  const CupertinoCalendar(),
   ItemTest(
     color: Colors.red,
   ),

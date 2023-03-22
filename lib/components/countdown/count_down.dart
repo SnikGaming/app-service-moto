@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
-
 countdown(context, contdown) {
   return Countdown(
     controller: contdown,
-    seconds: 60,
+    seconds: 180,
     build: (_, double time) {
       String value = settime(time);
       return Text(
