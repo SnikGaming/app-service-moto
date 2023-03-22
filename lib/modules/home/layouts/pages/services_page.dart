@@ -1,11 +1,9 @@
-import 'dart:async';
+import 'dart:math';
 
 import 'package:app/constants/constants.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:app/preferences/user/user_preferences.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../../constants/colors.dart';
 
@@ -19,9 +17,6 @@ class ServicesPage extends StatefulWidget {
 class _ServicesPageState extends State<ServicesPage> {
   List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-
-
-  final _offsetToArmed = 220.0;
 
   @override
   Widget build(BuildContext context) {
@@ -100,50 +95,38 @@ class _ServicesPageState extends State<ServicesPage> {
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40)),
                 child: Container(
-                  height: size.height - size.height * .23,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                    color: SettingPrefer.getLightDark() == null ||
-                            SettingPrefer.getLightDark()
-                        ? white
-                        : black,
-                  ),
-                  child: CustomRefreshIndicator(
-                      offsetToArmed: _offsetToArmed,
-                      onRefresh: () => Future.delayed(const Duration(seconds: 3)),
-                      // ignore: sort_child_properties_last
-                      child: ListView.builder(
-                          itemCount: 20,
-                          itemBuilder: (_, index) => Padding(
-                                padding: const EdgeInsets.all(8.0),
+                    height: size.height - size.height * .23,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      color: SettingPrefer.getLightDark() == null ||
+                              SettingPrefer.getLightDark()
+                          ? white
+                          : black,
+                    ),
+                    child: ListView.builder(
+                        itemBuilder: (_, i) => Padding(
+                              padding: EdgeInsets.only(
+                                  top: i == 0 ? 40 : 20, left: 20, right: 20),
+                              child: GestureDetector(
+                                onTap: () => _addService(i),
                                 child: Container(
-                                  height: 30,
-                                  color: Colors.red,
-                                ),
-                              )),
-                      builder: ((context, child, controller) => AnimatedBuilder(
-                          animation: controller,
-                          builder: (_, index) => ListView.builder(
-                              itemCount: 20,
-                              itemBuilder: (_, index) => Stack(
-                                    children: [
-                                      SizedBox(
-                                        width: 100,
-                                        height: 220 * controller.value,
-                                        child: Lottie.network(
-                                            'https://assets3.lottiefiles.com/packages/lf20_usmfx6bp.json',
-                                            fit: BoxFit.cover),
-                                      ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.all(8.0),
-                                      //   child: Container(
-                                      //     height: 30,
-                                      //     color: Colors.red,
-                                      //   ),
-                                      // ),
+                                  height: 150,
+                                  width: size.width,
+                                  decoration: BoxDecoration(
+                                    // ignore: prefer_const_literals_to_create_immutables
+                                    boxShadow: [
+                                      const BoxShadow(
+                                          color: Colors.grey,
+                                          offset: Offset(3, 3),
+                                          blurRadius: 10)
                                     ],
-                                  ))))),
-                ),
+                                    color: lsColor[
+                                        Random().nextInt(lsColor.length)],
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ),
+                            ))),
               ),
             )
           ],
@@ -151,4 +134,29 @@ class _ServicesPageState extends State<ServicesPage> {
       ),
     );
   }
+
+  _addService(data) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (BuildContext context,
+              StateSetter setState /*You can rename this!*/) {
+            return Container(
+              height: 400,
+            );
+          });
+        });
+  }
 }
+
+List<Color> lsColor = [
+  Colors.green.shade300,
+  Colors.yellow.shade300,
+  Colors.blue.shade300,
+  Colors.pink.shade300,
+  const Color.fromARGB(166, 98, 235, 240),
+  Colors.purple.shade300,
+  Colors.blueAccent,
+  const Color.fromARGB(195, 129, 33, 218),
+  const Color.fromARGB(186, 240, 174, 98),
+];
