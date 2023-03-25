@@ -17,7 +17,6 @@ class ServicesPage extends StatefulWidget {
 class _ServicesPageState extends State<ServicesPage> {
   List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -39,8 +38,9 @@ class _ServicesPageState extends State<ServicesPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, left: 20),
                     child: Container(
-                      height: 60,
-                      width: 60,
+                      // margin: EdgeInsets.all(8),
+                      height: 49,
+                      width: 49,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: UserPrefer.getToken() == null
@@ -108,6 +108,7 @@ class _ServicesPageState extends State<ServicesPage> {
                               padding: EdgeInsets.only(
                                   top: i == 0 ? 40 : 20, left: 20, right: 20),
                               child: GestureDetector(
+                
                                 onTap: () => _addService(i),
                                 child: Container(
                                   height: 150,
@@ -117,7 +118,11 @@ class _ServicesPageState extends State<ServicesPage> {
                                     boxShadow: [
                                       const BoxShadow(
                                           color: Colors.grey,
-                                          offset: Offset(3, 3),
+                                          offset: Offset(4, 4),
+                                          blurRadius: 10),
+                                      const BoxShadow(
+                                          color: Colors.grey,
+                                          offset: Offset(4, 4),
                                           blurRadius: 10)
                                     ],
                                     color: lsColor[

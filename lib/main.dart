@@ -2,7 +2,7 @@ import 'package:app/modules/app_module.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -20,9 +20,9 @@ Future<void> main(List<String> args) async {
   ]);
   await SettingPrefer.init();
   await UserPrefer.init();
-
-  runApp(DevicePreview(
-      enabled: kIsWeb,
-      builder: ((context) =>
-          ModularApp(module: AppModule(), child: const MyApp()))));
+  runApp(ModularApp(module: AppModule(), child: const MyApp()));
+  // runApp(DevicePreview(
+  //     // enabled: kIsWeb,
+  //     builder: ((context) =>
+  //         ModularApp(module: AppModule(), child: const MyApp()))));
 }
