@@ -1,9 +1,11 @@
+import 'dart:math';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/constants/list_image_slider.dart';
 import 'package:app/modules/app_constants.dart';
+import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -172,11 +174,6 @@ class _HomePageState extends State<HomePage>
   }
 
   CustomScrollView _customScrollview(BuildContext context) {
-    List<Widget> items =
-        List.generate(200, (index) => Rectangulo(index, context, Colors.red));
-    List<Widget> items1 =
-        List.generate(200, (index) => Rectangulo(index, context, Colors.blue));
-    var data = [items, items1];
     return CustomScrollView(
       slivers: [
         //!: Appbar
@@ -319,11 +316,29 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         //!: List
-
-        SliverGrid.extent(
-          maxCrossAxisExtent: 300,
-          children: data[indexData],
-        ),
+        SliverGrid.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                mainAxisExtent: 300,
+                crossAxisCount: 2),
+            itemBuilder: (_, i) => Padding(
+                  padding: EdgeInsets.only(
+                      left: i % 2 == 0 ? 10 : 0, right: i % 2 != 0 ? 10 : 0),
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: lsColor[Random().nextInt(lsColor.length)],
+                        borderRadius: BorderRadius.circular(20),
+                        // ignore: prefer_const_literals_to_create_immutables
+                        boxShadow: [
+                          const BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(6, 6),
+                              blurRadius: 10)
+                        ]),
+                  ),
+                ))
       ],
     );
   }

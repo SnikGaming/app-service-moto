@@ -108,7 +108,6 @@ class _ServicesPageState extends State<ServicesPage> {
                               padding: EdgeInsets.only(
                                   top: i == 0 ? 40 : 20, left: 20, right: 20),
                               child: GestureDetector(
-                
                                 onTap: () => _addService(i),
                                 child: Container(
                                   height: 150,

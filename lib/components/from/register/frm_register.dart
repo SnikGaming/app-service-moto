@@ -1,9 +1,7 @@
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:flutter/material.dart';
-
 import '../../../network/api/user/user_api.dart';
 import '../../button/button.dart';
-
 import '../../textfield/login/text_field_password.dart';
 
 class FrmRegister extends StatefulWidget {
