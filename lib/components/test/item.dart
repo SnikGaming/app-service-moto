@@ -1,4 +1,5 @@
 import 'package:app/modules/home/layouts/pages/home_page.dart';
+import 'package:app/modules/home/layouts/pages/profie_page.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
 
@@ -32,9 +33,7 @@ List<Widget> TestScreen = [
   const HomePage(),
   const ServicesPage(),
   const CupertinoCalendar(),
-  ItemTest(
-    color: Colors.red,
-  ),
+  ProFilePage(),
   ItemTest(
     color: Colors.white,
   ),

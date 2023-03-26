@@ -29,7 +29,7 @@ class _ServicesPageState extends State<ServicesPage> {
             Container(
               height: size.height,
               width: size.width,
-              color: Colors.green,
+              color: appbarColors,
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,12 +155,12 @@ class _ServicesPageState extends State<ServicesPage> {
 
 List<Color> lsColor = [
   Colors.green.shade300,
-  Colors.yellow.shade300,
+  // Colors.yellow.shade300,
   Colors.blue.shade300,
   Colors.pink.shade300,
   const Color.fromARGB(166, 98, 235, 240),
   Colors.purple.shade300,
   Colors.blueAccent,
   const Color.fromARGB(195, 129, 33, 218),
-  const Color.fromARGB(186, 240, 174, 98),
+  // const Color.fromARGB(186, 240, 174, 98),
 ];

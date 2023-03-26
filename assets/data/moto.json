@@ -1,0 +1,304 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "product_name": "Bình xăng",
+      "price": 50000,
+      "description": "Bình xăng dùng cho các loại xe chạy xăng."
+    },
+    {
+      "id": 2,
+      "product_name": "Bình nhớt",
+      "price": 30000,
+      "description": "Bình nhớt dùng cho các loại xe máy thường xuyên được sử dụng."
+    },
+    {
+      "id": 3,
+      "product_name": "Má phanh",
+      "price": 150000,
+      "description": "Má phanh dùng cho xe máy hoặc xe đạp."
+    },
+    {
+      "id": 4,
+      "product_name": "Dây curoa",
+      "price": 80000,
+      "description": "Dây curoa dùng cho các loại xe máy chạy êm."
+    },
+    {
+      "id": 5,
+      "product_name": "Bugi xe",
+      "price": 60000,
+      "description": "Bugi xe dùng cho các loại xe máy."
+    },
+    {
+      "id": 6,
+      "product_name": "Lốp xe",
+      "price": 400000,
+      "description": "Lốp dùng cho các loại xe máy."
+    },
+    {
+      "id": 7,
+      "product_name": "Chắn bùn",
+      "price": 50000,
+      "description": "Chắn bùn dùng cho các loại xe máy."
+    },
+    {
+      "id": 8,
+      "product_name": "Đèn xe",
+      "price": 120000,
+      "description": "Đèn xe dùng cho các loại xe máy."
+    },
+    {
+      "id": 9,
+      "product_name": "Bộ chia nhớt",
+      "price": 120000,
+      "description": "Bộ chia nhớt dùng cho các loại xe máy."
+    },
+    {
+      "id": 10,
+      "product_name": "Bộ chế hòa khí",
+      "price": 150000,
+      "description": "Bộ chế hòa khí dùng cho các loại xe máy."
+    },
+    {
+      "id": 11,
+      "product_name": "Bơm xăng điện tử",
+      "price": 200000,
+      "description": "Bơm xăng điện tử dùng cho các loại xe máy."
+    },
+    {
+      "id": 12,
+      "product_name": "Kính chiếu hậu",
+      "price": 50000,
+      "description": "Kính chiếu hậu dùng cho các loại xe máy."
+    },
+    {
+      "id": 13,
+      "product_name": "Bộ truyền động",
+      "price": 100000,
+      "description": "Bộ truyền động dùng cho các loại xe máy."
+    },
+    {
+      "id": 14,
+      "product_name": "Cable tay ga",
+      "price": 50000,
+      "description": "Cable tay ga dùng cho các loại xe máy."
+    },
+    {
+      "id": 15,
+      "product_name": "Cốt tay phanh",
+      "price": 60000,
+      "description": "Cốt tay phanh dùng cho các loại xe máy."
+    },
+    {
+      "id": 16,
+      "product_name": "Bạc đạn",
+      "price": 20000,
+      "description": "Bạc đạn dùng cho các loại xe của Nhật."
+    },
+    {
+      "id": 17,
+      "product_name": "Bộ báo xăng",
+      "price": 50000,
+      "description": "Bộ báo xăng dùng cho các loại xe máy."
+    },
+    {
+      "id": 18,
+      "product_name": "Má xịt rửa xe",
+      "price": 70000,
+      "description": "Má xịt rửa xe dùng để rửa xe trong nhà."
+    },
+    {
+      "id": 19,
+      "product_name": "Bugi leo NGK",
+      "price": 80000,
+      "description": "Bugi leo NGK dùng cho các loại xe máy."
+    },
+    {
+      "id": 20,
+      "product_name": "Bình ắc quy",
+      "price": 500000,
+      "description": "Bình ắc quy dùng cho các loại xe máy."
+    },
+    {
+      "id": 21,
+      "product_name": "Gương chiếu hậu",
+      "price": 40000,
+      "description": "Gương chiếu hậu dùng cho các loại xe máy."
+    },
+    {
+      "id": 22,
+      "product_name": "Bộ cảm biến xăng",
+      "price": 30000,
+      "description": "Bộ cảm biến xăng dùng để đo lượng xăng trong bình xăng."
+    },
+    {
+      "id": 23,
+      "product_name": "Dầu làm mát",
+      "price": 20000,
+      "description": "Dầu làm mát dùng cho các loại xe máy."
+    },
+    {
+      "id": 24,
+      "product_name": "Bugi Denso",
+      "price": 70000,
+      "description": "Bugi Denso dùng cho các loại xe máy."
+    },
+    {
+      "id": 25,
+      "product_name": "Nồi phù hợp",
+      "price": 120000,
+      "description": "Nồi phù hợp dùng cho các loại xe máy."
+    },
+    {
+      "id": 26,
+      "product_name": "Côn tay",
+      "price": 80000,
+      "description": "Côn tay dùng cho các loại xe máy."
+    },
+    {
+      "id": 27,
+      "product_name": "Bộ bao tay xe",
+      "price": 60000,
+      "description": "Bộ bao tay xe dùng để bảo vệ tay khi lái xe."
+    },
+    {
+      "id": 28,
+      "product_name": "Cảm biến áp suất lốp",
+      "price": 50000,
+      "description": "Cảm biến áp suất lốp dùng để đo áp suất của lốp xe."
+    },
+    {
+      "id": 29,
+      "product_name": "Ốp tay lái",
+      "price": 30000,
+      "description": "Ốp tay lái dùng để bảo vệ tay khi lái xe."
+    },
+    {
+      "id": 30,
+      "product_name": "Kính chắn gió",
+      "price": 80000,
+      "description": "Kính chắn gió dùng cho các loại xe máy."
+    },
+    {
+      "id": 31,
+      "product_name": "Bộ dây chuyền xe",
+      "price": 100000,
+      "description": "Bộ dây chuyền xe dùng cho các loại xe máy."
+    },
+    {
+      "id": 32,
+      "product_name": "Đèn trước",
+      "price": 50000,
+      "description": "Đèn trước dùng cho các loại xe máy."
+    },
+    {
+      "id": 33,
+      "product_name": "Đèn sau",
+      "price": 50000,
+      "description": "Đèn sau dùng cho các loại xe máy."
+    },
+    {
+      "id": 34,
+      "product_name": "Thảm chân xe máy",
+      "price": 30000,
+      "description": "Thảm chân xe máy dùng để giữ sạch chân khi lái xe."
+    },
+    {
+      "id": 35,
+      "product_name": "Bộ ngăn động cơ",
+      "price": 150000,
+      "description": "Bộ ngăn động cơ dùng để bảo vệ động cơ khỏi các tác động bên ngoài."
+    },
+    {
+      "id": 36,
+      "product_name": "Bộ chống trộm xe",
+      "price": 500000,
+      "description": "Bộ chống trộm xe dùng để bảo vệ xe khỏi bị đánh cắp."
+    },
+    {
+      "id": 37,
+      "product_name": "Dây dè xe",
+      "price": 60000,
+      "description": "Dây dè xe dùng để cố định các chi tiết của xe máy."
+    },
+    {
+      "id": 38,
+      "product_name": "Mô-tơ xe",
+      "price": 500000,
+      "description": "Mô-tơ xe dùng để cung cấp sức mạnh cho xe máy."
+    },
+    {
+      "id": 39,
+      "product_name": "Giảm sóc trước",
+      "price": 200000,
+      "description": "Giảm sóc trước dùng để giảm sức động cho xe máy."
+    },
+    {
+      "id": 40,
+      "product_name": "Giảm sóc sau",
+      "price": 200000,
+      "description": "Giảm sóc sau dùng để giảm sức động cho xe máy."
+    },
+    {
+      "id": 41,
+      "product_name": "Tay đề",
+      "price": 100000,
+      "description": "Tay đề dùng để điều khiển hệ thống phanh và ga trên xe máy."
+    },
+    {
+      "id": 42,
+      "product_name": "Thắng đĩa",
+      "price": 300000,
+      "description": "Thắng đĩa dùng để tăng khả năng phanh của xe máy."
+    },
+    {
+      "id": 43,
+      "product_name": "Hộp số",
+      "price": 200000,
+      "description": "Hộp số dùng để điều chỉnh tốc độ của xe máy."
+    },
+    {
+      "id": 44,
+      "product_name": "Van điều chỉnh xăng",
+      "price": 50000,
+      "description": "Van điều chỉnh xăng dùng để điều chỉnh lượng xăng vào động cơ."
+    },
+    {
+      "id": 45,
+      "product_name": "Hộp đen xe máy",
+      "price": 200000,
+      "description": "Hộp đen xe máy dùng để lưu trữ thông tin về tình trạng của xe máy."
+    },
+    {
+      "id": 46,
+      "product_name": "Bạc đạn trục sau",
+      "price": 30000,
+      "description": "Bạc đạn trục sau dùng để tăng khả năng vận hành của xe máy."
+    },
+    {
+      "id": 47,
+      "product_name": "Lọc gió xe",
+      "price": 30000,
+      "description": "Lọc gió xe dùng để lọc bụi trong không khí trước khi vào động cơ."
+    },
+    {
+      "id": 48,
+      "product_name": "Nước làm mát động cơ",
+      "price": 50000,
+      "description": "Nước làm mát động cơ dùng để giải nhiệt cho động cơ của xe máy."
+    },
+    {
+      "id": 49,
+      "product_name": "Côn ga",
+      "price": 50000,
+      "description": "Côn ga dùng để điều khiển hệ thống ga trên xe máy."
+    },
+    {
+      "id": 50,
+      "product_name": "Công tắc đèn xe",
+      "price": 20000,
+      "description": "Công tắc đèn xe dùng để điều khiển hệ thống đèn trên xe máy."
+    }
+  ]
+}
