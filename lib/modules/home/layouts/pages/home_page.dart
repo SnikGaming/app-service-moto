@@ -493,7 +493,10 @@ class _HomePageState extends State<HomePage>
               // borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
             ),
             child: GestureDetector(
-              onTap: () => setState(() {}),
+              onTap: () {
+                setState(() {});
+                Modular.to.pushNamed(Routes.profile);
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

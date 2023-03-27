@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:app/components/style/textstyle.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/models/services/service_model.dart';
-import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
-
 import '../../../components/raiting/raiting.dart';
 import '../../../components/slider/slider.dart';
 import '../../../preferences/settings/setting_prefer.dart';
