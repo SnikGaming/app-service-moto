@@ -15,60 +15,67 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  Future<Null> refreshData() async {
+    await Future.delayed(Duration(seconds: 3));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: FocusScope.of(context).unfocus,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: black,
-          bottomNavigationBar: FlashyTabBar(
+    return RefreshIndicator(
+      onRefresh: refreshData,
+      child: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: SafeArea(
+          child: Scaffold(
             backgroundColor: black,
-            selectedIndex: _selectedIndex,
-            showElevation: true,
-            onItemSelected: (index) => setState(() {
-              _selectedIndex = index;
-            }),
-            items: [
-              FlashyTabBarItem(
-                inactiveColor: Colors.white,
-                activeColor: Colors.green,
-                icon: const Icon(Icons.home),
-                title: const Text(
-                  'HOME',
-                  style: TextStyle(color: Colors.white),
+            bottomNavigationBar: FlashyTabBar(
+              backgroundColor: black,
+              selectedIndex: _selectedIndex,
+              showElevation: true,
+              onItemSelected: (index) => setState(() {
+                _selectedIndex = index;
+              }),
+              items: [
+                FlashyTabBarItem(
+                  inactiveColor: Colors.white,
+                  activeColor: Colors.green,
+                  icon: const Icon(Icons.home),
+                  title: const Text(
+                    'HOME',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              FlashyTabBarItem(
-                inactiveColor: Colors.white,
-                activeColor: Colors.green,
-                icon: const Icon(Icons.supervised_user_circle),
-                title: const Text(
-                  'Services',
-                  style: TextStyle(color: Colors.white),
+                FlashyTabBarItem(
+                  inactiveColor: Colors.white,
+                  activeColor: Colors.green,
+                  icon: const Icon(Icons.supervised_user_circle),
+                  title: const Text(
+                    'Services',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              FlashyTabBarItem(
-                inactiveColor: Colors.white,
-                activeColor: Colors.green,
-                icon: const Icon(Icons.settings),
-                title: const Text(
-                  'Settings',
-                  style: TextStyle(color: Colors.white),
+                FlashyTabBarItem(
+                  inactiveColor: Colors.white,
+                  activeColor: Colors.green,
+                  icon: const Icon(Icons.settings),
+                  title: const Text(
+                    'Settings',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              FlashyTabBarItem(
-                inactiveColor: Colors.white,
-                activeColor: Colors.green,
-                icon: const Icon(Icons.settings),
-                title: const Text(
-                  '한국어',
-                  style: TextStyle(color: Colors.white),
+                FlashyTabBarItem(
+                  inactiveColor: Colors.white,
+                  activeColor: Colors.green,
+                  icon: const Icon(Icons.settings),
+                  title: const Text(
+                    '한국어',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            body: TestScreen[_selectedIndex],
           ),
-          body: TestScreen[_selectedIndex],
         ),
       ),
     );

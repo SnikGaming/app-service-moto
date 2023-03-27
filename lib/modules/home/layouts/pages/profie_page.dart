@@ -53,7 +53,7 @@ class _ProFilePageState extends State<ProFilePage> {
                 child: ListView(
                   children: [
                     ClipRRect(
-                      child: Container(
+                      child: SizedBox(
                         width: size.width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

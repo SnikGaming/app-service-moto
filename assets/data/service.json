@@ -1,0 +1,140 @@
+{
+    "services": [
+        {
+            "id": 1,
+            "name": "Thay nhớt máy",
+            "short_description": "Thay nhớt nguyên bộ cho động cơ",
+            "detail_description": "Thay nhớt định kỳ giúp bảo vệ và kéo dài tuổi thọ cho động cơ, giảm ma sát, tăng cường hiệu suất, nâng cao tuổi thọ bộ lọc nhớt, giảm khả năng bị bốc hơi và oxy hóa.",
+            "benefit": "Bảo vệ và kéo dài tuổi thọ cho động cơ",
+            "price": "100,000 VND"
+        },
+        {
+            "id": 2,
+            "name": "Thay bugi",
+            "short_description": "Thay bộ bugi xoay chìa",
+            "detail_description": "Bugi là thiết bị truyền tải điện từ ắc quy sang đầu đốt động cơ để phát lửa nổ đốt nhiên liệu. Thay bugi định kỳ sẽ giúp tăng cường hiệu suất hoạt động động cơ, giảm lượng khí thải độc hại và tiết kiệm nhiên liệu.",
+            "benefit": "Tăng cường hiệu suất hoạt động động cơ",
+            "price": "80,000 VND"
+        },
+        {
+            "id": 3,
+            "name": "Vệ sinh bình xăng",
+            "short_description": "Vệ sinh bình xăng, làm sạch van ga, van phun xăng",
+            "detail_description": "Bình xăng chứa nhiên liệu để động cơ hoạt động. Khi bình xăng bị bẩn hoặc tắc, việc luồng nhiên liệu không đảm bảo sẽ khiến động cơ hoạt động không ổn định và trong một số trường hợp là không khởi động được. Vệ sinh bình xăng giúp cho nhiên liệu được cung cấp đều và ổn định hơn.",
+            "benefit": "Bảo đảm luồng nhiên liệu ổn định",
+            "price": "50,000 VND"
+        },
+        {
+            "id": 4,
+            "name": "Vệ sinh và thay hộp lọc gió",
+            "short_description": "Vệ sinh và thay hộp lọc gió",
+            "detail_description": "Hộp lọc gió có chức năng lọc bụi và cát trước khi nó đi vào động cơ. Nếu hộp lọc gió bị tắc, bụi và cát sẽ đi vào động cơ, làm hỏng các bộ phận máy. Vệ sinh và thay hộp lọc gió định kỳ sẽ giúp tăng tuổi thọ của động cơ, giảm lượng gas thải và tiết kiệm nhiên liệu.",
+            "benefit": "Tăng tuổi thọ của động cơ, giảm lượng gas thải và tiết kiệm nhiên liệu",
+            "price": "120,000 VND"
+        },
+        {
+            "id": 5,
+            "name": "Thay và vệ sinh bộ lọc nhớt",
+            "short_description": "Thay và vệ sinh bộ lọc nhớt",
+            "detail_description": "Bộ lọc nhớt giữ chặt các hạt bụi làm lơ lửng trong nhớt và nước, kích thước của các hạt bụi vi mịn. Thay và vệ sinh bộ lọc nhớt giúp giảm khả năng bị bốc hơi và oxy hóa nhớt, giúp cho động cơ hoạt động mượt mà hơn, tiết kiệm nhiên liệu và kéo dài tuổi thọ của động cơ.",
+            "benefit": "Động cơ hoạt động mượt mà hơn, tiết kiệm nhiên liệu và kéo dài tuổi thọ của động cơ",
+            "price": "150,000 VND"
+        },
+        {
+            "id": 6,
+            "name": "Vệ sinh buồng đốt",
+            "short_description": "Vệ sinh buồng đốt",
+            "detail_description": "Buồng đốt là chỗ để chứa nhiên liệu và khí oxy để phát lửa và đốt cháy. Khi buồng đốt bị bẩn, bụi, dầu mỡ và các chất hóa học, nó sẽ ngăn cản cung cấp hiệu quả nhiên liệu và khí oxy, dẫn đến việc giảm hiệu suất và tiêu hao nhiên liệu. Vệ sinh buồng đốt định kỳ giúp tăng cường hiệu suất hoạt động của động cơ và tiết kiệm nhiên liệu.",
+            "benefit": "Tăng cường hiệu suất hoạt động động cơ và tiết kiệm nhiên liệu",
+            "price": "100,000 VND"
+        },
+        {
+            "id": 7,
+            "name": "Vệ sinh và cân mức dầu phanh",
+            "short_description": "Vệ sinh hệ thống phanh và cân mức dầu phanh",
+            "detail_description": "Hệ thống phanh giúp bạn dừng xe một cách an toàn. Khi dầu phanh yếu hoặc có bẩn, hệ thống phanh không hoạt động hiệu quả. Vệ sinh và cân mức dầu phanh giúp bảo đảm an toàn cho người lái.",
+            "benefit": "Bảo đảm an toàn cho người lái",
+            "price": "80,000 VND"
+        },
+        {
+            "id": 8,
+            "name": "Vệ sinh và bảo trì hệ thống điện",
+            "short_description": "Vệ sinh và bảo trì hệ thống điện",
+            "detail_description": "Hệ thống điện cung cấp năng lượng cho các bộ phận khác của xe. Nếu không được bảo trì định kỳ, hệ thống điện khó khăn trong việc cung cấp năng lượng, giảm cường độ ánh sáng. Vệ sinh và bảo trì hệ thống điện định kỳ giúp giữ cho tụ điện hoạt động hiệu quả và độ sáng của đèn xe được đảm bảo.",
+            "benefit": "Độ sáng của đèn xe được đảm bảo",
+            "price": "150,000 VND"
+        },
+        {
+            "id": 9,
+            "name": "Tẩy carbon bánh xe",
+            "short_description": "Tẩy carbon và vệ sinh bánh xe",
+            "detail_description": "Carbon xây vào trong lỗ ốc và các bộ phận khác của bánh xe, khiến cho chúng không hoạt động hiệu quả, gây ra đốt lốp hoặc rò nước. Trong quá trình vệ sinh bánh xe, kiểm tra áp lực lốp và làm sạch lốp bằng cách rửa sạch bề mặt, tẩy carbon bánh xe có thể giúp ngăn ngừa tai nạn giao thông.",
+            "benefit": "Ngăn ngừa tai nạn giao thông",
+            "price": "50,000 VND"
+        },
+        {
+            "id": 10,
+            "name": "Thay và bảo dưỡng bộ lá phanh",
+            "short_description": "Thay và bảo dưỡng bộ lá phanh",
+            "detail_description": "Bộ lá phanh gắn trên bánh xe giúp dừng xe với cường độ phanh ổn định. Khi bộ phanh bị hỏng, xe không thể dừng lại an toàn và điều khiển xe sẽ khó khăn hơn. Thay và bảo dưỡng bộ lá phanh giúp bảo đảm an toàn khi lá phanh hoạt động trơn tru.",
+            "benefit": "Đảm bảo an toàn khi lá phanh hoạt động trơn tru",
+            "price": "200,000 VND"
+        },
+        {
+            "id": 11,
+            "name": "Thay và bảo dưỡng dây curoa",
+            "short_description": "Thay và bảo dưỡng dây curoa",
+            "detail_description": "Dây curoa giữ cho động cơ và bánh xe hoạt động ổn định, nếu bị mòn có thể gây ra hư hỏng các bộ phận trong hệ thống truyền động xe. Thay và bảo dưỡng dây curoa giúp tăng tuổi thọ của dây curoa, giảm tiêu hao nhiên liệu, tăng hiệu suất hoạt động của động cơ.",
+            "benefit": "Tăng tuổi thọ của dây curoa, giảm tiêu hao nhiên liệu, tăng hiệu suất hoạt động của động cơ",
+            "price": "250,000 VND"
+        },
+        {
+            "id": 12,
+            "name": "Thay và bảo dưỡng xi-lanh",
+            "short_description": "Thay và bảo dưỡng xi-lanh động cơ",
+            "detail_description": "Xi-lanh là một phần quan trọng của động cơ, giúp nén hỗn hợp khí và nhiên liệu trước chúng được đốt cháy để đưa ra công suất làm việc. Thay và bảo dưỡng xi-lanh giúp tăng hiệu suất của động cơ, tiết kiệm nhiên liệu và kéo dài tuổi thọ của động cơ.",
+            "benefit": "Tăng hiệu suất của động cơ, tiết kiệm nhiên liệu và kéo dài tuổi thọ của động cơ",
+            "price": "300,000 VND"
+        },
+        {
+            "id": 13,
+            "name": "Bảo dưỡng và thay dầu bảo vệ động cơ",
+            "short_description": "Bảo dưỡng và thay dầu bảo vệ động cơ",
+            "detail_description": "Dầu bảo vệ động cơ giúp cho các bộ phận chuyển động của động cơ không bị ma sát và va chạm với nhau. Thay dầu bảo vệ động cơ định kỳ giúp giảm khả năng bị bốc hơi và oxy hóa, kéo dài tuổi thọ của động cơ.",
+            "benefit": "Kéo dài tuổi thọ của động cơ",
+            "price": "200,000 VND"
+        },
+        {
+            "id": 14,
+            "name": "Thay và bảo dưỡng hệ thống truyền động",
+            "short_description": "Thay và bảo dưỡng hệ thống truyền động",
+            "detail_description": "Hệ thống truyền động giúp xe di chuyển bằng cách truyền động từ động cơ tới bánh xe. Thay và bảo dưỡng hệ thống truyền động giúp giảm tiêu hao nhiên liệu, tăng hiệu suất hoạt động của động cơ.",
+            "benefit": "Giảm tiêu hao nhiên liệu, tăng hiệu suất hoạt động của động cơ",
+            "price": "450,000 VND"
+        },
+        {
+            "id": 15,
+            "name": "Thay và bảo dưỡng hệ thống treo",
+            "short_description": "Thay và bảo dưỡng hệ thống treo",
+            "detail_description": "Hệ thống treo giúp thực hiện chức năng khử rung và hấp thụ lực va đập, giúp xe di chuyển một cách ổn định và an toàn. Thay và bảo dưỡng hệ thống treo giúp bảo đảm an toàn khi xe di chuyển và tăng tuổi thọ của phuộc xe.",
+            "benefit": "Bảo đảm an toàn khi xe di chuyển và tăng tuổi thọ của phuộc xe",
+            "price": "550,000 VND"
+        },
+        {
+            "id": 16,
+            "name": "Vệ sinh và thay bộ lọc không khí",
+            "short_description": "Vệ sinh và thay bộ lọc không khí",
+            "detail_description": "Bộ lọc không khí giúp loại bỏ hạt bụi, phấn hoa và côn trùng vào bên trong động cơ. Vệ sinh và thay bộ lọc không khí định kỳ giúp tăng tuổi thọ của động cơ, giảm khả năng bị bốc hơi và oxy hóa, tiết kiệm nhiên liệu và giảm lượng khí thải độc hại.",
+            "benefit": "Tăng tuổi thọ của động cơ, giảm khả năng bị bốc hơi và oxy hóa, tiết kiệm nhiên liệu và giảm lượng khí thải độc hại",
+            "price": "100,000 VND"
+        },
+        {
+            "id": 17,
+            "name": "Thay và bảo dưỡng bộ truyền động động cơ",
+            "short_description": "Thay và bảo dưỡng bộ truyền động động cơ",
+            "detail_description": "Bộ truyền động động cơ giúp truyền dẫn lực đến bánh xe khi điều khiển xe, khi bộ phận bị chết đến, xe không thể di chuyển được. Thay và bảo dưỡng bộ truyền động động cơ giúp tăng tuổi thọ của bộ phận và động cơ, giảm tiêu hao nhiên liệu và tăng hiệu suất của động cơ.",
+            "benefit": "Tăng tuổi thọ của bộ phận và động cơ, giảm tiêu hao nhiên liệu và tăng hiệu suất của động cơ",
+            "price": "700,000 VND"
+        }
+    ]
+}

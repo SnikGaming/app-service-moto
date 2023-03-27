@@ -1,15 +1,15 @@
 import 'dart:math';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
 import 'package:app/components/button/mybutton.dart';
-import 'package:app/components/message/message.dart';
 import 'package:app/constants/colors.dart';
+import 'package:app/models/services/service_model.dart';
 import 'package:app/modules/app_constants.dart';
+import 'package:app/modules/details/routes/details_routes.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../components/functions/logout.dart';
@@ -18,8 +18,10 @@ import '../../../../components/style/textstyle.dart';
 import '../../../../models/categories/categories.dart';
 import '../../../../models/products/products_model.dart';
 import '../../../../models/products/provider_products.dart';
+import '../../../../models/services/provider_service.dart';
 import '../../../../network/api/google/google.dart';
 import '../../../../preferences/user/user_preferences.dart';
+import '../../../TermsOfService/content.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,7 +35,7 @@ class _HomePageState extends State<HomePage>
   late AnimationController _animationController;
 
   static final lstCategories = Categories.lst;
-  var indexLstCategories = lstCategories[0];
+
   var indexData = 0;
 
   @override
@@ -45,10 +47,13 @@ class _HomePageState extends State<HomePage>
   }
 
   List<ProductModel> lstProducts = [];
+  List<ServiceModel> lsService = [];
   getProducts() async {
     final data = await ProductService.getAllProduct();
+    final dataService = await ProviderService.getAllService();
     setState(() {});
     lstProducts = data;
+    lsService = dataService;
     // print(lstProducts[0].productName.toString() + '-----------');
   }
 
@@ -176,7 +181,8 @@ class _HomePageState extends State<HomePage>
                         (index) => GestureDetector(
                               onTap: () {
                                 indexData = index;
-                                indexLstCategories = lstCategories[index];
+                                indexData = index;
+                                // indexLstCategories = lstCategories[index];
                                 setState(() {});
                               },
                               child: Padding(
@@ -185,15 +191,13 @@ class _HomePageState extends State<HomePage>
                                 child: Container(
                                   height: 40,
                                   decoration: BoxDecoration(
-                                      border: indexLstCategories !=
-                                              lstCategories[index]
+                                      border: indexData != index
                                           ? Border.all(
                                               width: 1,
                                               color: isCheck ? black : red)
                                           : null,
                                       borderRadius: BorderRadius.circular(30),
-                                      color: indexLstCategories ==
-                                              lstCategories[index]
+                                      color: indexData == index
                                           ? Colors.green
                                           : white),
                                   constraints:
@@ -202,13 +206,11 @@ class _HomePageState extends State<HomePage>
                                     child: Text(
                                       lstCategories[index].name,
                                       style: TextStyle(
-                                          color: indexLstCategories ==
-                                                  lstCategories[index]
+                                          color: indexData == index
                                               ? white
                                               : black,
                                           fontSize: 14,
-                                          fontWeight: indexLstCategories ==
-                                                  lstCategories[index]
+                                          fontWeight: indexData == index
                                               ? FontWeight.w400
                                               : FontWeight.w600,
                                           letterSpacing: 1),
@@ -222,97 +224,187 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         //!: List Content
-        SliverGrid.builder(
-            itemCount: lstProducts.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              mainAxisExtent: 340,
-              // childAspectRatio: 2,
-              crossAxisCount: 2,
-            ),
-            itemBuilder: (_, i) => Padding(
-                  padding: EdgeInsets.only(
-                      left: i % 2 == 0 ? 16 : 0, right: i % 2 != 0 ? 16 : 0),
-                  child: Container(
-                    height: 100,
-                    decoration: BoxDecoration(
-                      // color: lsColor[Random().nextInt(lsColor.length)],
-                      color: SettingPrefer.getLightDark() == null ||
-                              SettingPrefer.getLightDark()
-                          ? white
-                          : black,
-                      borderRadius: BorderRadius.circular(20),
-                      // ignore: prefer_const_literals_to_create_immutables
-                      boxShadow: [
-                        const BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(6, 6),
-                            blurRadius: 16)
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: Column(
-                        // fit: StackFit.passthrough,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 10),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              height: 150,
-                              width: 160,
-                              color: lsColor[Random().nextInt(lsColor.length)],
-                            ),
-                          ),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: SizedBox(
-                                width: 160,
-                                child: Text(
-                                  '${lstProducts[i].productName}',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: MyTextStyle.title.copyWith(
-                                      color: SettingPrefer.getLightDark() ==
-                                                  null ||
-                                              SettingPrefer.getLightDark()
-                                          ? black
-                                          : white),
-                                )),
-                          ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                              width: 160,
-                              child: Text(
-                                '${lstProducts[i].price}',
-                                style: MyTextStyle.title
-                                    .copyWith(color: Colors.red),
+        indexData == 0
+            ? SliverList(
+                delegate: SliverChildBuilderDelegate(
+                childCount: lsService.length,
+                (context, index) => GestureDetector(
+                  onTap: () {
+                    // Modular.to.pushNamed(Routes.details,
+                    //     arguments: [lsService[index]]);
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.75,
+                        );
+                      },
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: index == 0 ? 0 : 16, left: 16, right: 16),
+                    child: Container(
+                      decoration: const BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(3, 3),
+                          blurRadius: 16,
+                        )
+                      ]),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          color: lsColor[Random().nextInt(lsColor.length)],
+                          height: 200,
+                          width: size.width,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    color: Colors.red,
+                                  ),
+                                ),
                               )),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                              height: 100,
-                              width: 160,
-                              // color: Colors.white,
-                              child: Text(
-                                '${lstProducts[i].description}',
-                                // softWrap: true,
-                                overflow: TextOverflow.clip,
-                                style: MyTextStyle.normal.copyWith(
-                                    color:
-                                        SettingPrefer.getLightDark() == null ||
-                                                SettingPrefer.getLightDark()
-                                            ? black
-                                            : white),
-                              )),
-                          const SizedBox(height: 8),
-                        ],
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        textAlign: TextAlign.center,
+                                        lsService[index].name,
+                                        style: MyTextStyle.title
+                                            .copyWith(fontSize: 18),
+                                      ),
+                                      Text(lsService[index].price,
+                                          style: MyTextStyle.normal.copyWith(
+                                              color: Colors.red, fontSize: 18)),
+                                      Text(
+                                        lsService[index].shortDescription,
+                                        style: MyTextStyle.normal
+                                            .copyWith(fontSize: 14),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        lsService[index].benefit,
+                                        style: MyTextStyle.normal
+                                            .copyWith(fontSize: 14),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                )),
+                ),
+              ))
+            : SliverGrid.builder(
+                itemCount: lstProducts.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  mainAxisExtent: 340,
+                  // childAspectRatio: 2,
+                  crossAxisCount: 2,
+                ),
+                itemBuilder: (_, i) => Padding(
+                      padding: EdgeInsets.only(
+                          left: i % 2 == 0 ? 16 : 0,
+                          right: i % 2 != 0 ? 16 : 0),
+                      child: Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                          // color: lsColor[Random().nextInt(lsColor.length)],
+                          color: SettingPrefer.getLightDark() == null ||
+                                  SettingPrefer.getLightDark()
+                              ? white
+                              : black,
+                          borderRadius: BorderRadius.circular(20),
+                          // ignore: prefer_const_literals_to_create_immutables
+                          boxShadow: [
+                            const BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(6, 6),
+                                blurRadius: 16)
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Column(
+                            // fit: StackFit.passthrough,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 10),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  height: 150,
+                                  width: 160,
+                                  color:
+                                      lsColor[Random().nextInt(lsColor.length)],
+                                ),
+                              ),
+                              const Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: SizedBox(
+                                    width: 160,
+                                    child: Text(
+                                      '${lstProducts[i].productName}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: MyTextStyle.title.copyWith(
+                                          color: SettingPrefer.getLightDark() ==
+                                                      null ||
+                                                  SettingPrefer.getLightDark()
+                                              ? black
+                                              : white),
+                                    )),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                  width: 160,
+                                  child: Text(
+                                    '${lstProducts[i].price}',
+                                    style: MyTextStyle.title
+                                        .copyWith(color: Colors.red),
+                                  )),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                  height: 100,
+                                  width: 160,
+                                  // color: Colors.white,
+                                  child: Text(
+                                    '${lstProducts[i].description}',
+                                    // softWrap: true,
+                                    overflow: TextOverflow.clip,
+                                    style: MyTextStyle.normal.copyWith(
+                                        color: SettingPrefer.getLightDark() ==
+                                                    null ||
+                                                SettingPrefer.getLightDark()
+                                            ? black
+                                            : white),
+                                  )),
+                              const SizedBox(height: 8),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
         _footer(size)
       ],
     );
@@ -418,9 +510,26 @@ class _HomePageState extends State<HomePage>
                   },
                 ),
           ListTile(
-            title: const Text('Item 2'),
+            title: const Text('Terms of service'),
             onTap: () {
-              Navigator.pop(context);
+              // Navigator.pop(context);
+
+              showDialog(
+                // barrierColor: Colors.red,
+                context: context,
+                builder: (context) => FluidDialog(
+                  defaultDecoration: BoxDecoration(
+                    color: SettingPrefer.getLightDark() == null ||
+                            SettingPrefer.getLightDark()
+                        ? white
+                        : black,
+                  ),
+                  rootPage: FluidDialogPage(
+                    alignment: Alignment.bottomLeft,
+                    builder: (context) => const TestDialog(),
+                  ),
+                ),
+              );
             },
           ),
           const SizedBox(

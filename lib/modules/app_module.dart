@@ -1,3 +1,4 @@
+import 'package:app/modules/details/details_module.dart';
 import 'package:app/modules/flash/flash_module.dart';
 import 'package:app/modules/home/home_module.dart';
 import 'package:app/modules/register/register_module.dart';
@@ -15,6 +16,7 @@ class AppModule extends Module {
         ModuleRoute(Routes.home, module: HomeModule()),
         ModuleRoute(Routes.login, module: LoginModule()),
         ModuleRoute(Routes.register, module: RegisterModule()),
+        ModuleRoute(Routes.details, module: DetailsModule())
       ];
 }
 

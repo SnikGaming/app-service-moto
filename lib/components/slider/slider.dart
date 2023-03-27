@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../../models/slider/slider_model.dart';
 import 'item.dart';
 
+// ignore: non_constant_identifier_names
 MySlider() => CarouselSlider(
     options: CarouselOptions(
       aspectRatio: 2.0,

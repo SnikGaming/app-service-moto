@@ -24,19 +24,19 @@ class MyTextAnimated {
     );
   }
 
+  // ignore: non_constant_identifier_names
   static Widget Colorize({required List<AnimatedText> animatedTexts}) {
     return SizedBox(
       // width: 250.0,
       child: AnimatedTextKit(
         animatedTexts: animatedTexts,
         isRepeatingAnimation: true,
-        onTap: () {
-          print("Tap Event");
-        },
+        onTap: () {},
       ),
     );
   }
 
+  // ignore: non_constant_identifier_names
   static Widget Wavy() => DefaultTextStyle(
         style: TextStyle(
           fontSize: 20.0,
@@ -53,9 +53,7 @@ class MyTextAnimated {
                 speed: const Duration(milliseconds: 100)),
           ],
           isRepeatingAnimation: true,
-          onTap: () {
-            print("Tap Event");
-          },
+          onTap: () {},
         ),
       );
 }

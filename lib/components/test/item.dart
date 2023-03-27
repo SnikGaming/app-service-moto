@@ -33,7 +33,7 @@ List<Widget> TestScreen = [
   const HomePage(),
   const ServicesPage(),
   const CupertinoCalendar(),
-  ProFilePage(),
+  const ProFilePage(),
   ItemTest(
     color: Colors.white,
   ),

@@ -1,6 +1,5 @@
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:flutter/material.dart';
-import '../../../network/api/user/user_api.dart';
 import '../../button/button.dart';
 import '../../textfield/login/text_field_password.dart';
 
@@ -68,12 +67,6 @@ class _FrmRegisterState extends State<FrmRegister> {
 
   _butRegister() async {
     // if (true) Message.error(message: "Login faild", context: context);
-    if (formkey.currentState!.validate()) {
-      final value = UserAPI.register(
-          email: _email.text,
-          password: _password.text,
-          repassword: _repassword.text,
-          context: context);
-    }
+    if (formkey.currentState!.validate()) {}
   }
 }

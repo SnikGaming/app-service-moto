@@ -62,6 +62,7 @@ dependencies:
   http: ^0.13.5
   device_preview: ^1.1.0
   animated_text_kit: ^4.2.2
+  fluid_dialog: ^1.1.0
   # flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:
@@ -101,6 +102,7 @@ flutter:
     - assets/fonts/Sono/static/Sono/
     - assets/data/
     - assets/data/moto.json
+    - assets/data/service.json
 
 
 
