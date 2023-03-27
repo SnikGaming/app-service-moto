@@ -48,73 +48,69 @@ class _ProFilePageState extends State<ProFilePage> {
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
-                // color: Colors.red,
-                child: ListView(
-                  children: [
-                    ClipRRect(
-                      child: SizedBox(
-                        width: size.width,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Total spending 2023',
-                                style: MyTextStyle.normal),
-                            Row(
-                              children: [
-                                Text(
-                                  '0đ',
-                                  style:
-                                      MyTextStyle.normal.copyWith(fontSize: 30),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Image.asset(
-                                  'assets/icons/user/money.png',
-                                  height: 40,
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    const Divider(
-                      thickness: 1,
-                      color: Colors.white,
-                    ),
-                    ClipRRect(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: ListView(
+                children: [
+                  ClipRRect(
+                    child: SizedBox(
+                      width: size.width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _itemButton(
-                              image: 'assets/icons/user/booking.png',
-                              text: 'BOOKING'),
-                          _itemButton(
-                              image: 'assets/icons/user/bill.png',
-                              text: 'BILLS'),
-                          _itemButton(
-                              image: 'assets/icons/user/information.png',
-                              text: 'INFORMATION'),
+                          const Text('Total spending 2023',
+                              style: MyTextStyle.normal),
+                          Row(
+                            children: [
+                              Text(
+                                '0đ',
+                                style:
+                                    MyTextStyle.normal.copyWith(fontSize: 30),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Image.asset(
+                                'assets/icons/user/money.png',
+                                height: 40,
+                              )
+                            ],
+                          )
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  ),
+                  ClipRRect(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _itemButton(
+                            image: 'assets/icons/user/booking.png',
+                            text: 'BOOKING'),
+                        _itemButton(
+                            image: 'assets/icons/user/bill.png', text: 'BILLS'),
+                        _itemButton(
+                            image: 'assets/icons/user/information.png',
+                            text: 'INFORMATION'),
+                      ],
                     ),
-                    ClipRRect(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _itemButton(
-                              image: 'assets/icons/user/gift.png',
-                              text: 'NEW &\nOFFERS'),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ClipRRect(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _itemButton(
+                            image: 'assets/icons/user/gift.png',
+                            text: 'NEW &\nOFFERS'),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ))
           ],

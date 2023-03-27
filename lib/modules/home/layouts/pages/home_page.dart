@@ -5,7 +5,6 @@ import 'package:app/components/button/mybutton.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/models/services/service_model.dart';
 import 'package:app/modules/app_constants.dart';
-import 'package:app/modules/details/routes/details_routes.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
@@ -13,6 +12,7 @@ import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../components/functions/logout.dart';
+import '../../../../components/raiting/raiting.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../models/categories/categories.dart';
@@ -232,15 +232,7 @@ class _HomePageState extends State<HomePage>
                   onTap: () {
                     // Modular.to.pushNamed(Routes.details,
                     //     arguments: [lsService[index]]);
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Container(
-                          height: MediaQuery.of(context).size.height * 0.75,
-                        );
-                      },
-                    );
+                    serviceDetail(context, size);
                   },
                   child: Padding(
                     padding: EdgeInsets.only(
@@ -407,6 +399,45 @@ class _HomePageState extends State<HomePage>
                     )),
         _footer(size)
       ],
+    );
+  }
+
+  Future<dynamic> serviceDetail(BuildContext context, Size size) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(26),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.75,
+            width: size.width,
+            child: ListView(
+              children: [
+                MySlider(),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.75 -
+                      size.height * .3,
+                  color: Colors.amber,
+                  child: Column(
+                    children: [],
+                  ),
+                ),
+                SizedBox(
+                  width: size.width,
+                  // color: lsColor[Random().nextInt(lsColor.length)],
+                  child: RatingWidget(
+                    rating: 3,
+                    size: size.height * .3,
+                    count: 5,
+                    reviews: const ['abc', 'abc', 'abc', 'cde', 'efg'],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

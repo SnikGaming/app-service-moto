@@ -117,7 +117,7 @@ class TestDialog extends StatelessWidget {
                               ? black
                               : white,
                         )),
-                    TextSpan(
+                    const TextSpan(
                         text:
                             'Cảm ơn quý khách hàng đã tin tưởng sử dụng dịch vụ của Cửa Hàng Snik!')
                   ])),
@@ -149,7 +149,7 @@ class SecondDialogPage extends StatelessWidget {
             'And a bigger dialog',
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          Text(placeholder),
+          const Text(placeholder),
           TextButton(
             onPressed: () => DialogNavigator.of(context).pop(),
             child: const Text('Go back'),
@@ -164,4 +164,4 @@ class SecondDialogPage extends StatelessWidget {
   }
 }
 
-final placeholder = 'dasdsadasd';
+const placeholder = 'dasdsadasd';

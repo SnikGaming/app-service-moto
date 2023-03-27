@@ -15,8 +15,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  Future<Null> refreshData() async {
-    await Future.delayed(Duration(seconds: 3));
+  Future<void> refreshData() async {
+    await Future.delayed(const Duration(seconds: 3));
   }
 
   @override
