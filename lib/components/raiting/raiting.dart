@@ -5,11 +5,9 @@ class RatingWidget extends StatefulWidget {
   final double rating;
   final int count;
   final List<String> reviews;
-  final double size;
 
   const RatingWidget({
     Key? key,
-    required this.size,
     required this.rating,
     required this.count,
     required this.reviews,
@@ -71,8 +69,7 @@ class _RatingWidgetState extends State<RatingWidget> {
                       .copyWith(color: Colors.grey, fontSize: 20)),
             ],
           ),
-          Container(
-            height: widget.size,
+          SizedBox(
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: widget.reviews.length,

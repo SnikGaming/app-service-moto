@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'app_constants.dart';
 import 'login/login_module.dart';
+import 'notifile/notifica_module.dart';
 
 class AppModule extends Module {
   @override
@@ -16,7 +17,8 @@ class AppModule extends Module {
         ModuleRoute(Routes.home, module: HomeModule()),
         ModuleRoute(Routes.login, module: LoginModule()),
         ModuleRoute(Routes.register, module: RegisterModule()),
-        ModuleRoute(Routes.details, module: DetailsModule())
+        ModuleRoute(Routes.details, module: DetailsModule()),
+        ModuleRoute(Routes.notifications, module: NotificationModule()),
       ];
 }
 

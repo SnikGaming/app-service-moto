@@ -1,24 +1,21 @@
-import 'dart:math';
-
-import 'package:app/components/style/textstyle.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/models/services/service_model.dart';
-import 'package:app/modules/home/layouts/pages/services_page.dart';
+import 'package:app/models/products/products_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/raiting/raiting.dart';
 import '../../../components/slider/slider.dart';
+import '../../../components/style/textstyle.dart';
+import '../../../constants/colors.dart';
 import '../../../preferences/settings/setting_prefer.dart';
 
-class DetailsServiceScreen extends StatefulWidget {
-  final ServiceModel data;
-  const DetailsServiceScreen({super.key, required this.data});
+class DetailProductScreen extends StatefulWidget {
+  final ProductModel data;
+  const DetailProductScreen({required this.data, super.key});
 
   @override
-  State<DetailsServiceScreen> createState() => _DetailsServiceScreenState();
+  State<DetailProductScreen> createState() => _DetailProductScreenState();
 }
 
-class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
+class _DetailProductScreenState extends State<DetailProductScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -35,14 +32,17 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
         child: ListView(
           children: [
             MySlider(),
-            Expanded(
+            SizedBox(
+              height:
+                  MediaQuery.of(context).size.height * 0.75 - size.height * .3,
+              // color: Colors.amber,
               child: Column(
                 children: [
                   Container(
                     alignment: Alignment.center,
                     width: size.width,
                     child: Text(
-                      widget.data.name,
+                      '${widget.data.productName}',
                       style: MyTextStyle.title.copyWith(
                           color: SettingPrefer.getLightDark() == null ||
                                   SettingPrefer.getLightDark()
@@ -57,14 +57,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                         style: MyTextStyle.title
                             .copyWith(color: Colors.red, fontSize: 20)),
                   ),
-                  Text(widget.data.detailDescription,
-                      style: MyTextStyle.title.copyWith(
-                          color: SettingPrefer.getLightDark() == null ||
-                                  SettingPrefer.getLightDark()
-                              ? black
-                              : white,
-                          fontSize: 16)),
-                  Text(widget.data.benefit,
+                  Text('${widget.data.description}',
                       style: MyTextStyle.title.copyWith(
                           color: SettingPrefer.getLightDark() == null ||
                                   SettingPrefer.getLightDark()
@@ -74,17 +67,14 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
             SizedBox(
               width: size.width,
               height: size.height,
               // color: lsColor[Random().nextInt(lsColor.length)],
-              child: const RatingWidget(
+              child: RatingWidget(
                 rating: 3,
                 count: 5,
-                reviews: ['abc', 'abc', 'abc', 'cde', 'efg'],
+                reviews: const ['abc', 'abc', 'abc', 'cde', 'efg'],
               ),
             ),
           ],

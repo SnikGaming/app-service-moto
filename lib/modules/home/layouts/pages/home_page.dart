@@ -5,6 +5,7 @@ import 'package:app/components/button/mybutton.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/models/services/service_model.dart';
 import 'package:app/modules/app_constants.dart';
+import 'package:app/modules/details/routes/details_routes.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
@@ -12,7 +13,6 @@ import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../components/functions/logout.dart';
-import '../../../../components/raiting/raiting.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../models/categories/categories.dart';
@@ -22,6 +22,8 @@ import '../../../../models/services/provider_service.dart';
 import '../../../../network/api/google/google.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
+import '../../../details/layouts/detail_service.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -101,6 +103,15 @@ class _HomePageState extends State<HomePage>
           backgroundColor: appbarColors,
           pinned: false,
           actions: [
+            IconButton(
+              onPressed: () {
+                Modular.to.pushNamed(Routes.notifications);
+              },
+              icon: const badges.Badge(
+                badgeContent: Text('3'),
+                child: Icon(Icons.notifications),
+              ),
+            ),
             IconButton(
                 onPressed: () {
                   showSearch(context: context, delegate: SearchCustom());
@@ -230,9 +241,9 @@ class _HomePageState extends State<HomePage>
                 childCount: lsService.length,
                 (context, index) => GestureDetector(
                   onTap: () {
-                    // Modular.to.pushNamed(Routes.details,
-                    //     arguments: [lsService[index]]);
-                    serviceDetail(context, size);
+                    Modular.to
+                        .pushNamed(Routes.details, arguments: lsService[index]);
+                    // serviceDetail(context, size, lsService[index]);
                   },
                   child: Padding(
                     padding: EdgeInsets.only(
@@ -248,7 +259,11 @@ class _HomePageState extends State<HomePage>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
-                          color: lsColor[Random().nextInt(lsColor.length)],
+                          color: SettingPrefer.getLightDark() == null ||
+                                  SettingPrefer.getLightDark()
+                              ? white
+                              : black,
+                          // color: lsColor[Random().nextInt(lsColor.length)],
                           height: 200,
                           width: size.width,
                           child: Row(
@@ -274,22 +289,42 @@ class _HomePageState extends State<HomePage>
                                       Text(
                                         textAlign: TextAlign.center,
                                         lsService[index].name,
-                                        style: MyTextStyle.title
-                                            .copyWith(fontSize: 18),
+                                        style: MyTextStyle.title.copyWith(
+                                          fontSize: 18,
+                                          color: SettingPrefer.getLightDark() ==
+                                                      null ||
+                                                  SettingPrefer.getLightDark()
+                                              ? black
+                                              : white,
+                                        ),
                                       ),
                                       Text(lsService[index].price,
                                           style: MyTextStyle.normal.copyWith(
-                                              color: Colors.red, fontSize: 18)),
+                                            color: Colors.red,
+                                            fontSize: 18,
+                                          )),
                                       Text(
                                         lsService[index].shortDescription,
-                                        style: MyTextStyle.normal
-                                            .copyWith(fontSize: 14),
+                                        style: MyTextStyle.normal.copyWith(
+                                          fontSize: 14,
+                                          color: SettingPrefer.getLightDark() ==
+                                                      null ||
+                                                  SettingPrefer.getLightDark()
+                                              ? black
+                                              : white,
+                                        ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Text(
                                         lsService[index].benefit,
-                                        style: MyTextStyle.normal
-                                            .copyWith(fontSize: 14),
+                                        style: MyTextStyle.normal.copyWith(
+                                          fontSize: 14,
+                                          color: SettingPrefer.getLightDark() ==
+                                                      null ||
+                                                  SettingPrefer.getLightDark()
+                                              ? black
+                                              : white,
+                                        ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
@@ -313,131 +348,100 @@ class _HomePageState extends State<HomePage>
                   // childAspectRatio: 2,
                   crossAxisCount: 2,
                 ),
-                itemBuilder: (_, i) => Padding(
-                      padding: EdgeInsets.only(
-                          left: i % 2 == 0 ? 16 : 0,
-                          right: i % 2 != 0 ? 16 : 0),
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          // color: lsColor[Random().nextInt(lsColor.length)],
-                          color: SettingPrefer.getLightDark() == null ||
-                                  SettingPrefer.getLightDark()
-                              ? white
-                              : black,
-                          borderRadius: BorderRadius.circular(20),
-                          // ignore: prefer_const_literals_to_create_immutables
-                          boxShadow: [
-                            const BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(6, 6),
-                                blurRadius: 16)
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: Column(
-                            // fit: StackFit.passthrough,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(height: 10),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  height: 150,
-                                  width: 160,
-                                  color:
-                                      lsColor[Random().nextInt(lsColor.length)],
+                itemBuilder: (_, i) => GestureDetector(
+                      onTap: () {
+                        Modular.to.pushNamed(
+                            Routes.details + DetailsRoute.product,
+                            arguments: lstProducts[i]);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: i % 2 == 0 ? 16 : 0,
+                            right: i % 2 != 0 ? 16 : 0),
+                        child: Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            // color: lsColor[Random().nextInt(lsColor.length)],
+                            color: SettingPrefer.getLightDark() == null ||
+                                    SettingPrefer.getLightDark()
+                                ? white
+                                : black,
+                            borderRadius: BorderRadius.circular(20),
+                            // ignore: prefer_const_literals_to_create_immutables
+                            boxShadow: [
+                              const BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(6, 6),
+                                  blurRadius: 16)
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: Column(
+                              // fit: StackFit.passthrough,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 10),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    height: 150,
+                                    width: 160,
+                                    color: lsColor[
+                                        Random().nextInt(lsColor.length)],
+                                  ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: SizedBox(
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: SizedBox(
+                                      width: 160,
+                                      child: Text(
+                                        '${lstProducts[i].productName}',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: MyTextStyle.title.copyWith(
+                                            color: SettingPrefer
+                                                            .getLightDark() ==
+                                                        null ||
+                                                    SettingPrefer.getLightDark()
+                                                ? black
+                                                : white),
+                                      )),
+                                ),
+                                const SizedBox(height: 10),
+                                SizedBox(
                                     width: 160,
                                     child: Text(
-                                      '${lstProducts[i].productName}',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: MyTextStyle.title.copyWith(
+                                      '${lstProducts[i].price}',
+                                      style: MyTextStyle.title
+                                          .copyWith(color: Colors.red),
+                                    )),
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                    height: 100,
+                                    width: 160,
+                                    // color: Colors.white,
+                                    child: Text(
+                                      '${lstProducts[i].description}',
+                                      // softWrap: true,
+                                      overflow: TextOverflow.clip,
+                                      style: MyTextStyle.normal.copyWith(
                                           color: SettingPrefer.getLightDark() ==
                                                       null ||
                                                   SettingPrefer.getLightDark()
                                               ? black
                                               : white),
                                     )),
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                  width: 160,
-                                  child: Text(
-                                    '${lstProducts[i].price}',
-                                    style: MyTextStyle.title
-                                        .copyWith(color: Colors.red),
-                                  )),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                  height: 100,
-                                  width: 160,
-                                  // color: Colors.white,
-                                  child: Text(
-                                    '${lstProducts[i].description}',
-                                    // softWrap: true,
-                                    overflow: TextOverflow.clip,
-                                    style: MyTextStyle.normal.copyWith(
-                                        color: SettingPrefer.getLightDark() ==
-                                                    null ||
-                                                SettingPrefer.getLightDark()
-                                            ? black
-                                            : white),
-                                  )),
-                              const SizedBox(height: 8),
-                            ],
+                                const SizedBox(height: 8),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     )),
         _footer(size)
       ],
-    );
-  }
-
-  Future<dynamic> serviceDetail(BuildContext context, Size size) {
-    return showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(26),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.75,
-            width: size.width,
-            child: ListView(
-              children: [
-                MySlider(),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.75 -
-                      size.height * .3,
-                  color: Colors.amber,
-                  child: Column(
-                    children: [],
-                  ),
-                ),
-                SizedBox(
-                  width: size.width,
-                  // color: lsColor[Random().nextInt(lsColor.length)],
-                  child: RatingWidget(
-                    rating: 3,
-                    size: size.height * .3,
-                    count: 5,
-                    reviews: const ['abc', 'abc', 'abc', 'cde', 'efg'],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -512,7 +516,7 @@ class _HomePageState extends State<HomePage>
                     height: 16,
                   ),
                   Text(
-                    UserPrefer.getsetUserName() ?? 'Trần Thới Long',
+                    UserPrefer.getsetUserName() ?? 'GUEST',
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -523,14 +527,27 @@ class _HomePageState extends State<HomePage>
               ),
             ),
           ),
+          ListTile(
+            leading: Image.asset('assets/icons/user/bill.png', height: 45),
+            title: const Text('Bill history'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Image.asset('assets/icons/user/booking.png', height: 45),
+            title: const Text('Booking history'),
+            onTap: () {},
+          ),
+
           UserPrefer.getToken() == null
               ? ListTile(
+                  leading: Image.asset('assets/appbar/login.png', height: 45),
                   title: const Text('Login'),
                   onTap: () {
                     Modular.to.pushNamed(Routes.login);
                   },
                 )
               : ListTile(
+                  leading: Image.asset('assets/appbar/logout.png', height: 45),
                   title: const Text('Logout'),
                   onTap: () {
                     AuthWithGoogle.googleSignOutMethod(context)
@@ -540,13 +557,13 @@ class _HomePageState extends State<HomePage>
                         .then((value) => {setState(() {})});
                   },
                 ),
+
           ListTile(
             title: const Text('Terms of service'),
+            leading:
+                Image.asset('assets/icons/user/information.png', height: 45),
             onTap: () {
-              // Navigator.pop(context);
-
               showDialog(
-                // barrierColor: Colors.red,
                 context: context,
                 builder: (context) => FluidDialog(
                   defaultDecoration: BoxDecoration(
@@ -564,7 +581,7 @@ class _HomePageState extends State<HomePage>
             },
           ),
           const SizedBox(
-            height: 340,
+            height: 210,
           ),
           _darkLight(),
         ],

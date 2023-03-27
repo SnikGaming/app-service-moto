@@ -10,19 +10,20 @@ import 'package:http/http.dart' as http;
 import '../../../preferences/user/user_preferences.dart';
 
 class UserAPI extends ConnectDb {
+  // ignore: non_constant_identifier_names
   static Login({
     required String username,
     required String password,
   }) async {
-    var _connect = ConnectDb.ip + "users/login";
-    Map<String, String> _data = {"username": username, "password": password};
+    var connect = "${ConnectDb.ip}users/login";
+    Map<String, String> data = {"username": username, "password": password};
 
-    final _response = await http.post(
-      Uri.parse(_connect),
-      body: _data,
+    final response = await http.post(
+      Uri.parse(connect),
+      body: data,
     );
-    if (_response.statusCode == 200 || _response.statusCode == 201) {
-      final parsed = json.decode(_response.body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final parsed = json.decode(response.body);
       UserPrefer.setToken(value: parsed['data']['access_token']);
       await UserPrefer.setEmail(value: username);
       Modular.to.navigate(Routes.home);
@@ -37,25 +38,27 @@ class UserAPI extends ConnectDb {
       required password,
       required repassword,
       required BuildContext context}) async {
-    var _connect = ConnectDb.ip + "users/register";
-    Map<String, String> _data = {
+    var connect = "${ConnectDb.ip}users/register";
+    Map<String, String> data = {
       // "username": username,
       "email": email,
       "password": password,
       "confirmpassword": repassword, 'status': '0'
     };
-    final _response = await http.post(
-      Uri.parse(_connect),
-      body: _data,
+    final response = await http.post(
+      Uri.parse(connect),
+      body: data,
     );
 
-    final parsed = json.decode(_response.body);
+    final parsed = json.decode(response.body);
     // print(parsed);
     if (parsed == false) {
+      // ignore: use_build_context_synchronously
       Message.error(message: 'Khong thanh cong', context: context);
       return 404;
     } else {
       UserPrefer.setEmail(value: email);
+      // ignore: use_build_context_synchronously
       Message.success(message: "Hello $email", context: context);
       return 200;
     }
