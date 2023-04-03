@@ -1,17 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String _name = 'Nguyễn Văn A';
-  String _phoneNumber = '0123456789';
-  String _email = 'nguyenvana@gmail.com';
-  String _profileImage =
-      'https://scontent.fsgn5-12.fna.fbcdn.net/v/t39.30808-1/332374699_1217447262204058_297060313736937850_n.jpg?stp=dst-jpg_s200x200&_nc_cat=103&ccb=1-7&_nc_sid=7206a8&_nc_ohc=qQkorii9GgsAX-keDmL&_nc_ht=scontent.fsgn5-12.fna&oh=00_AfAhJpijsM-9T7yTSqLjvAD9ebW5fsWqsry0_o17gL4OZg&oe=6426AFC6';
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+
+  String _avatarUrl = '';
 
   @override
   Widget build(BuildContext context) {
@@ -19,92 +23,72 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                // TODO: Show image picker dialog
-              },
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(_profileImage),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Tên',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: _name,
-              onChanged: (value) {
-                setState(() {
-                  _name = value;
-                });
-              },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Nhập tên của bạn',
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Số điện thoại',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: _phoneNumber,
-              onChanged: (value) {
-                setState(() {
-                  _phoneNumber = value;
-                });
-              },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Nhập số điện thoại của bạn',
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Email',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              initialValue: _email,
-              onChanged: (value) {
-                setState(() {
-                  _email = value;
-                });
-              },
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Nhập email của bạn',
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // TODO: Save changes
-                  },
-                  child: const Text('Lưu'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  final pickedFile =
+                      await ImagePicker().getImage(source: ImageSource.gallery);
+                  setState(() {
+                    _avatarUrl = pickedFile!.path;
+                  });
+                },
+                child: CircleAvatar(
+                  backgroundImage: _avatarUrl.isNotEmpty
+                      ? FileImage(File(_avatarUrl))
+                      : null,
+                  child: _avatarUrl.isEmpty ? const Icon(Icons.person) : null,
+                  radius: 60.0,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // TODO: Discard changes
-                  },
-                  child: const Text('Hủy bỏ'),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _fullNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Full Name',
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(
+                  labelText: 'Phone',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _addressController,
+                decoration: const InputDecoration(
+                  labelText: 'Address',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                controller: _genderController,
+                decoration: const InputDecoration(
+                  labelText: 'Gender',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  // TODO: Save changes to user profile
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );

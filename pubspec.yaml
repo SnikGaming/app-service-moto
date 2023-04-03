@@ -65,6 +65,10 @@ dependencies:
   fluid_dialog: ^1.1.0
   badges: ^3.0.3
   flutter_slidable: ^2.0.0
+  image_picker: ^0.8.7+1
+  searchbar_animation: ^0.0.4
+  cr_calendar: ^1.0.0+1
+  flutter_rating_stars: ^1.0.3+4
   # flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:

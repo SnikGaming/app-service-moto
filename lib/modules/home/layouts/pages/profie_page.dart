@@ -1,5 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:app/components/style/textstyle.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
@@ -9,6 +13,15 @@ class ProFilePage extends StatefulWidget {
 }
 
 class _ProFilePageState extends State<ProFilePage> {
+  File? _imageFile;
+  void _openGallery() async {
+    final pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      _imageFile = File(pickedFile!.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -26,12 +39,23 @@ class _ProFilePageState extends State<ProFilePage> {
             const SizedBox(
               height: 20,
             ),
-            Container(
-              height: 170,
-              width: 170,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.purple,
+            GestureDetector(
+              onTap: () {
+                _openGallery();
+              },
+              child: Container(
+                height: 170,
+                width: 170,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.purple,
+                  image: _imageFile == null
+                      ? null
+                      : DecorationImage(
+                          image: FileImage(_imageFile!),
+                          fit: BoxFit.cover,
+                        ),
+                ),
               ),
             ),
             const SizedBox(

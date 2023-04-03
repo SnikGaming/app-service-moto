@@ -2,14 +2,12 @@ import 'package:app/modules/home/layouts/pages/home_page.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
-
-import '../../modules/home/layouts/pages/test.dart';
+import '../calendar/pages/calendar_page.dart';
 
 // ignore: must_be_immutable
 class ItemTest extends StatefulWidget {
   Color? color;
   ItemTest({super.key, this.color});
-
   @override
   State<ItemTest> createState() => _ItemTestState();
 }
@@ -31,8 +29,10 @@ class _ItemTestState extends State<ItemTest> {
 // ignore: non_constant_identifier_names
 List<Widget> TestScreen = [
   const HomePage(),
+
   const ServicesPage(),
-  const CupertinoCalendar(),
+  const CalendarPage(),
+  // const CupertinoCalendar(),
   const ProFilePage(),
   ItemTest(
     color: Colors.white,

@@ -1,65 +1,45 @@
 import 'package:flutter/material.dart';
 
-class SearchCustom extends SearchDelegate {
-  List<String> allData = [
-    "Doreamon",
-    "Nobita",
-    "Chai en",
-    "Xeko",
-    "Doreame",
-    "Xuka",
-  ];
+class MySearchDelegate extends SearchDelegate {
+  final List<String> items;
 
-  List<String> mathQuery = [];
-
-  // @override
-  // void set query(String value) {
-  //   super.query = value;
-  //   mathQuery = allData.where((item) => item.toLowerCase().contains(value.toLowerCase())).toList();
-  //   // update the mathQuery list whenever the user types something in the search field
-  // }
+  MySearchDelegate({required this.items});
 
   @override
-  List<Widget>? buildActions(BuildContext context) {
+  List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        onPressed: () {
-          query = '';
-        },
         icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+        },
       ),
     ];
   }
 
   @override
-  Widget? buildLeading(BuildContext context) {
+  Widget buildLeading(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        close(context, null);
-      },
       icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, "");
+      },
     );
   }
 
   @override
-  Widget buildSuggestions(BuildContext context) {
-    for (var item in allData) {
-      if (item.toLowerCase().contains(query.toLowerCase())) {
-        mathQuery.add(item);
-      }
-    }
+  Widget buildResults(BuildContext context) {
+    List<String> result = items
+        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+        .toList();
 
     return ListView.builder(
-      itemCount: mathQuery.length,
-      itemBuilder: (context, index) {
-        var result = mathQuery[index];
-
+      itemCount: result.length,
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text(result),
+          title: Text(result[index]),
           onTap: () {
-            query =
-                result; // update the search field with the selected suggestion
-            showResults(context);
+            close(context, result[index]);
           },
         );
       },
@@ -67,19 +47,22 @@ class SearchCustom extends SearchDelegate {
   }
 
   @override
-  Widget buildResults(BuildContext context) {
-    for (var item in allData) {
-      if (item.toLowerCase().contains(query.toLowerCase())) {
-        mathQuery.add(item);
-      }
-    }
-    return ListView.builder(
-      itemCount: mathQuery.length,
-      itemBuilder: (context, index) {
-        var result = mathQuery[index];
+  Widget buildSuggestions(BuildContext context) {
+    List<String> suggestionList = query.isEmpty
+        ? []
+        : items
+            .where((item) => item.toLowerCase().startsWith(query.toLowerCase()))
+            .toList();
 
+    return ListView.builder(
+      itemCount: suggestionList.length,
+      itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text(result),
+          title: Text(suggestionList[index]),
+          onTap: () {
+            query = suggestionList[index];
+            showResults(context);
+          },
         );
       },
     );

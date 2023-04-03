@@ -12,17 +12,19 @@ import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../models/categories/categories.dart';
+import '../../../../models/data/model_data.dart';
+import '../../../../models/data/provider.dart';
 import '../../../../models/products/products_model.dart';
 import '../../../../models/products/provider_products.dart';
 import '../../../../models/services/provider_service.dart';
 import '../../../../network/api/google/google.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
-import '../../../details/layouts/detail_service.dart';
 import 'package:badges/badges.dart' as badges;
 
 class HomePage extends StatefulWidget {
@@ -48,12 +50,45 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  List<String> items = [
+    "Apple",
+    "Banana",
+    "Cherry",
+    "Durian",
+    "Eggfruit",
+    "Fig",
+    "Grapes",
+    "Honeydew",
+    "Jackfruit",
+    "Kiwi",
+    "Lemon",
+    "Mango",
+    "Nectarine",
+    "Orange",
+    "Pineapple",
+    "Quince",
+    "Raspberry",
+    "Strawberry",
+    "Tangerine",
+    "Ugli fruit",
+    "Vanilla bean",
+    "Watermelon",
+    "Xigua",
+    "Yellow watermelon",
+    "Zucchini",
+  ];
+  double value = 3.5;
+  List<ProductData> lsDataTest = [];
+
   List<ProductModel> lstProducts = [];
   List<ServiceModel> lsService = [];
   getProducts() async {
     final data = await ProductService.getAllProduct();
     final dataService = await ProviderService.getAllService();
+
+    final dataTest = await ProviderServices.getAllProduct();
     setState(() {});
+    lsDataTest = dataTest;
     lstProducts = data;
     lsService = dataService;
     // print(lstProducts[0].productName.toString() + '-----------');
@@ -90,6 +125,240 @@ class _HomePageState extends State<HomePage>
   }
 
   CustomScrollView _customScrollview(BuildContext context, size) {
+    var sliverGrid = SliverGrid.builder(
+        itemCount: lsDataTest.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          mainAxisExtent: 450,
+          // childAspectRatio: 2,
+          crossAxisCount: 2,
+        ),
+        itemBuilder: (_, i) => GestureDetector(
+              onTap: () {
+                Modular.to.pushNamed(Routes.details + DetailsRoute.product,
+                    arguments: lsDataTest[i]);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: i % 2 == 0 ? 16 : 0, right: i % 2 != 0 ? 16 : 0),
+                child: Container(
+                  height: 100,
+                  decoration: BoxDecoration(
+                    // color: lsColor[Random().nextInt(lsColor.length)],
+                    color: SettingPrefer.getLightDark() == null ||
+                            SettingPrefer.getLightDark()
+                        ? white
+                        : black,
+                    borderRadius: BorderRadius.circular(20),
+                    // ignore: prefer_const_literals_to_create_immutables
+                    boxShadow: [
+                      const BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(6, 6),
+                          blurRadius: 16)
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: Column(
+                      // fit: StackFit.passthrough,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 10),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            height: 220,
+                            width: 160,
+                            decoration: BoxDecoration(
+                              color: lsColor[Random().nextInt(lsColor.length)],
+                              image: DecorationImage(
+                                image: NetworkImage('${lsDataTest[i].src}'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20, left: 10),
+                          child: SizedBox(
+                            width: 160,
+                            child: Text(
+                              '${lsDataTest[i].title}',
+                              style: h1.copyWith(
+                                  color: SettingPrefer.getLightDark() == null ||
+                                          SettingPrefer.getLightDark()
+                                      ? black
+                                      : white),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                            width: 160,
+                            child: Text(
+                              '${lsDataTest[i].price}',
+                              overflow: TextOverflow.visible,
+                              style: subTitle.copyWith(
+                                  fontSize: 16, color: Colors.red),
+                            )),
+                        //!: Rating
+                        // Container(
+                        //     child: RatingStars(
+                        //   value: value,
+                        //   onValueChanged: (v) {
+                        //     //
+                        //     setState(() {
+                        //       value = v;
+                        //     });
+                        //   },
+                        //   starBuilder: (index, color) => Icon(
+                        //     Icons.ac_unit_outlined,
+                        //     color: color,
+                        //   ),
+                        //   starCount: 5,
+                        //   starSize: 20,
+                        //   valueLabelColor: const Color(0xff9b9b9b),
+                        //   valueLabelTextStyle: const TextStyle(
+                        //       color: Colors.white,
+                        //       fontWeight: FontWeight.w400,
+                        //       fontStyle: FontStyle.normal,
+                        //       fontSize: 12.0),
+                        //   valueLabelRadius: 10,
+                        //   maxValue: 5,
+                        //   starSpacing: 2,
+                        //   maxValueVisibility: true,
+                        //   valueLabelVisibility: true,
+                        //   animationDuration:
+                        //       Duration(milliseconds: 1000),
+                        //   valueLabelPadding: const EdgeInsets.symmetric(
+                        //       vertical: 1, horizontal: 8),
+                        //   valueLabelMargin:
+                        //       const EdgeInsets.only(right: 8),
+                        //   starOffColor: const Color(0xffe7e8ea),
+                        //   starColor: Colors.yellow,
+                        // )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: 160,
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: List.generate(
+                              5,
+                              (i) => Icon(Icons.star),
+                            ),
+                          ),
+                        ),
+                        const Spacer()
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ));
+    var sliverList = SliverList(
+        delegate: SliverChildBuilderDelegate(
+      childCount: lsService.length,
+      (context, index) => GestureDetector(
+        onTap: () {
+          Modular.to.pushNamed(Routes.details, arguments: lsService[index]);
+          // serviceDetail(context, size, lsService[index]);
+        },
+        child: Padding(
+          padding:
+              EdgeInsets.only(top: index == 0 ? 0 : 16, left: 16, right: 16),
+          child: Container(
+            decoration: const BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                offset: Offset(3, 3),
+                blurRadius: 16,
+              )
+            ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                color: SettingPrefer.getLightDark() == null ||
+                        SettingPrefer.getLightDark()
+                    ? white
+                    : black,
+                // color: lsColor[Random().nextInt(lsColor.length)],
+                height: 200,
+                width: size.width,
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          color: Colors.red,
+                        ),
+                      ),
+                    )),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              textAlign: TextAlign.center,
+                              lsService[index].name,
+                              style: MyTextStyle.title.copyWith(
+                                fontSize: 18,
+                                color: SettingPrefer.getLightDark() == null ||
+                                        SettingPrefer.getLightDark()
+                                    ? black
+                                    : white,
+                              ),
+                            ),
+                            Text(lsService[index].price,
+                                style: MyTextStyle.normal.copyWith(
+                                  color: Colors.red,
+                                  fontSize: 18,
+                                )),
+                            Text(
+                              lsService[index].shortDescription,
+                              style: MyTextStyle.normal.copyWith(
+                                fontSize: 14,
+                                color: SettingPrefer.getLightDark() == null ||
+                                        SettingPrefer.getLightDark()
+                                    ? black
+                                    : white,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              lsService[index].benefit,
+                              style: MyTextStyle.normal.copyWith(
+                                fontSize: 14,
+                                color: SettingPrefer.getLightDark() == null ||
+                                        SettingPrefer.getLightDark()
+                                    ? black
+                                    : white,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ));
     return CustomScrollView(
       slivers: [
         //!: Appbar
@@ -114,7 +383,10 @@ class _HomePageState extends State<HomePage>
             ),
             IconButton(
                 onPressed: () {
-                  showSearch(context: context, delegate: SearchCustom());
+                  showSearch(
+                    context: context,
+                    delegate: MySearchDelegate(items: items),
+                  );
                 },
                 icon: const Icon(Icons.search))
           ],
@@ -235,211 +507,7 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         //!: List Content
-        indexData == 0
-            ? SliverList(
-                delegate: SliverChildBuilderDelegate(
-                childCount: lsService.length,
-                (context, index) => GestureDetector(
-                  onTap: () {
-                    Modular.to
-                        .pushNamed(Routes.details, arguments: lsService[index]);
-                    // serviceDetail(context, size, lsService[index]);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: index == 0 ? 0 : 16, left: 16, right: 16),
-                    child: Container(
-                      decoration: const BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(3, 3),
-                          blurRadius: 16,
-                        )
-                      ]),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          color: SettingPrefer.getLightDark() == null ||
-                                  SettingPrefer.getLightDark()
-                              ? white
-                              : black,
-                          // color: lsColor[Random().nextInt(lsColor.length)],
-                          height: 200,
-                          width: size.width,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              )),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 16),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        lsService[index].name,
-                                        style: MyTextStyle.title.copyWith(
-                                          fontSize: 18,
-                                          color: SettingPrefer.getLightDark() ==
-                                                      null ||
-                                                  SettingPrefer.getLightDark()
-                                              ? black
-                                              : white,
-                                        ),
-                                      ),
-                                      Text(lsService[index].price,
-                                          style: MyTextStyle.normal.copyWith(
-                                            color: Colors.red,
-                                            fontSize: 18,
-                                          )),
-                                      Text(
-                                        lsService[index].shortDescription,
-                                        style: MyTextStyle.normal.copyWith(
-                                          fontSize: 14,
-                                          color: SettingPrefer.getLightDark() ==
-                                                      null ||
-                                                  SettingPrefer.getLightDark()
-                                              ? black
-                                              : white,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text(
-                                        lsService[index].benefit,
-                                        style: MyTextStyle.normal.copyWith(
-                                          fontSize: 14,
-                                          color: SettingPrefer.getLightDark() ==
-                                                      null ||
-                                                  SettingPrefer.getLightDark()
-                                              ? black
-                                              : white,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ))
-            : SliverGrid.builder(
-                itemCount: lstProducts.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  mainAxisExtent: 340,
-                  // childAspectRatio: 2,
-                  crossAxisCount: 2,
-                ),
-                itemBuilder: (_, i) => GestureDetector(
-                      onTap: () {
-                        Modular.to.pushNamed(
-                            Routes.details + DetailsRoute.product,
-                            arguments: lstProducts[i]);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: i % 2 == 0 ? 16 : 0,
-                            right: i % 2 != 0 ? 16 : 0),
-                        child: Container(
-                          height: 100,
-                          decoration: BoxDecoration(
-                            // color: lsColor[Random().nextInt(lsColor.length)],
-                            color: SettingPrefer.getLightDark() == null ||
-                                    SettingPrefer.getLightDark()
-                                ? white
-                                : black,
-                            borderRadius: BorderRadius.circular(20),
-                            // ignore: prefer_const_literals_to_create_immutables
-                            boxShadow: [
-                              const BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(6, 6),
-                                  blurRadius: 16)
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: Column(
-                              // fit: StackFit.passthrough,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const SizedBox(height: 10),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                    height: 150,
-                                    width: 160,
-                                    color: lsColor[
-                                        Random().nextInt(lsColor.length)],
-                                  ),
-                                ),
-                                const Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: SizedBox(
-                                      width: 160,
-                                      child: Text(
-                                        '${lstProducts[i].productName}',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: MyTextStyle.title.copyWith(
-                                            color: SettingPrefer
-                                                            .getLightDark() ==
-                                                        null ||
-                                                    SettingPrefer.getLightDark()
-                                                ? black
-                                                : white),
-                                      )),
-                                ),
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                    width: 160,
-                                    child: Text(
-                                      '${lstProducts[i].price}',
-                                      style: MyTextStyle.title
-                                          .copyWith(color: Colors.red),
-                                    )),
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                    height: 100,
-                                    width: 160,
-                                    // color: Colors.white,
-                                    child: Text(
-                                      '${lstProducts[i].description}',
-                                      // softWrap: true,
-                                      overflow: TextOverflow.clip,
-                                      style: MyTextStyle.normal.copyWith(
-                                          color: SettingPrefer.getLightDark() ==
-                                                      null ||
-                                                  SettingPrefer.getLightDark()
-                                              ? black
-                                              : white),
-                                    )),
-                                const SizedBox(height: 8),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    )),
+        indexData == 0 ? sliverList : sliverGrid,
         _footer(size)
       ],
     );
@@ -531,26 +599,41 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           ListTile(
-            leading: Image.asset('assets/icons/user/bill.png', height: 45),
+            leading: const Icon(
+              Icons.attach_money,
+              color: Colors.green,
+            ), //Image.asset('assets/icons/user/bill.png', height: 45),
             title: const Text('Bill history'),
             onTap: () {},
           ),
           ListTile(
-            leading: Image.asset('assets/icons/user/booking.png', height: 45),
+            leading: const Icon(
+              Icons.calendar_month_outlined,
+              color: Colors.blue,
+            ),
+            //leading: Image.asset('assets/icons/user/booking.png', height: 45),
             title: const Text('Booking history'),
             onTap: () {},
           ),
 
           UserPrefer.getToken() == null
               ? ListTile(
-                  leading: Image.asset('assets/appbar/login.png', height: 45),
+                  leading: const Icon(
+                    Icons.login,
+                    color: Colors.purple,
+                  ),
+                  // leading: Image.asset('assets/appbar/login.png', height: 45),
                   title: const Text('Login'),
                   onTap: () {
                     Modular.to.pushNamed(Routes.login);
                   },
                 )
               : ListTile(
-                  leading: Image.asset('assets/appbar/logout.png', height: 45),
+                  leading: const Icon(
+                    Icons.logout_outlined,
+                    color: Colors.red,
+                  ),
+                  // leading: Image.asset('assets/appbar/logout.png', height: 45),
                   title: const Text('Logout'),
                   onTap: () {
                     AuthWithGoogle.googleSignOutMethod(context)
@@ -563,8 +646,12 @@ class _HomePageState extends State<HomePage>
 
           ListTile(
             title: const Text('Terms of service'),
-            leading:
-                Image.asset('assets/icons/user/information.png', height: 45),
+            leading: const Icon(
+              Icons.info_outline_rounded,
+              color: Colors.blue,
+            ),
+            // leading:
+            //     Image.asset('assets/icons/user/information.png', height: 45),
             onTap: () {
               showDialog(
                 context: context,

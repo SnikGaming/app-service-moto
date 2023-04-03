@@ -71,10 +71,10 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
               width: size.width,
               height: size.height,
               // color: lsColor[Random().nextInt(lsColor.length)],
-              child: RatingWidget(
+              child: const RatingWidget(
                 rating: 3,
                 count: 5,
-                reviews: const ['abc', 'abc', 'abc', 'cde', 'efg'],
+                reviews: ['abc', 'abc', 'abc', 'cde', 'efg'],
               ),
             ),
           ],

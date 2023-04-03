@@ -57,9 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 FlashyTabBarItem(
                   inactiveColor: Colors.white,
                   activeColor: Colors.green,
-                  icon: const Icon(Icons.settings),
+                  icon: const Icon(Icons.calendar_month_sharp),
                   title: const Text(
-                    'Settings',
+                    'Booking',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   activeColor: Colors.green,
                   icon: const Icon(Icons.settings),
                   title: const Text(
-                    '한국어',
+                    'Profile',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

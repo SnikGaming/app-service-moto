@@ -5,6 +5,7 @@ import 'package:app/modules/profile/profile_module.dart';
 import 'package:app/modules/register/register_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../components/calendar/res/colors.dart';
 import 'app_constants.dart';
 import 'login/login_module.dart';
 import 'notifile/notifica_module.dart';
@@ -43,16 +44,52 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       // title: 'My Smart App',
+      // theme: ThemeData(
+      //   brightness: Brightness.light,
+      //   // brightness: Brightness.light,
+      //   useMaterial3: true,
+      //   // primaryColor: Colors.lightBlue[800],
+      //   // primarySwatch: Colors.blue,
+      //   textTheme: const TextTheme(
+      //     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      //     titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      //     bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Sono'),
+      //   ),
+      // ),
       theme: ThemeData(
-        brightness: Brightness.light,
-        // brightness: Brightness.light,
-        useMaterial3: true,
-        // primaryColor: Colors.lightBlue[800],
-        // primarySwatch: Colors.blue,
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Sono'),
+        floatingActionButtonTheme:
+            const FloatingActionButtonThemeData(backgroundColor: violet),
+        primaryColor: violet,
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: violet),
+        iconTheme: const IconThemeData(color: violet),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            textStyle: const TextStyle(
+              color: violet,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+            foregroundColor: violet,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8))),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            textStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+            shadowColor: Colors.transparent,
+            elevation: 0,
+            foregroundColor: violet,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8))),
+          ),
+        ),
+        dialogTheme: const DialogTheme(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12))),
         ),
       ),
 

@@ -1,11 +1,8 @@
 import 'dart:math';
 
-import 'package:app/constants/constants.dart';
-import 'package:app/preferences/settings/setting_prefer.dart';
-import 'package:app/preferences/user/user_preferences.dart';
+import 'package:app/components/message/message.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../constants/colors.dart';
+import 'package:searchbar_animation/searchbar_animation.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
@@ -21,119 +18,176 @@ class _ServicesPageState extends State<ServicesPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SizedBox(
-        height: size.height,
-        width: size.width,
-        child: Stack(
-          children: [
-            Container(
-              height: size.height,
-              width: size.width,
-              color: appbarColors,
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('BOOKING'),
+      ),
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: SizedBox(
+          height: size.height,
+          width: size.width,
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Container(
+                  height: size.height,
+                  width: size.width,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/bgbooking.png'),
+                        fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+              Column(
                 children: [
-                  //!: Image User
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 20),
-                    child: Container(
-                      // margin: EdgeInsets.all(8),
-                      height: 49,
-                      width: 49,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: UserPrefer.getToken() == null
-                            ? const DecorationImage(
-                                image: AssetImage(
-                                    'assets/icons/user/user_profile.png'),
-                                fit: BoxFit.cover)
-                            : DecorationImage(
-                                image: NetworkImage(
-                                  UserPrefer.getImageUser(),
-                                ),
-                              ),
-                      ),
+                  SearchBarAnimation(
+                    textEditingController: TextEditingController(),
+                    isOriginalAnimation: true,
+                    enableKeyboardFocus: true,
+                    onExpansionComplete: () {
+                      Message.success(
+                          context: context, message: 'on onExpansionComplete');
+
+                      debugPrint(
+                          'do something just after searchbox is opened.');
+                    },
+                    onCollapseComplete: () {
+                      Message.success(context: context, message: 'on collapse');
+                      debugPrint(
+                          'do something just after searchbox is closed.');
+                    },
+                    onPressButton: (isSearchBarOpens) {
+                      print(isSearchBarOpens);
+                      Message.success(
+                          context: context, message: 'on isSearchBarOpens');
+
+                      // debugPrint(
+                      //     'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
+                    },
+                    trailingWidget: const Icon(
+                      Icons.search,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                    secondaryButtonWidget: const Icon(
+                      Icons.close,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                    buttonWidget: const Icon(
+                      Icons.search,
+                      size: 20,
+                      color: Colors.black,
                     ),
                   ),
-                  //!: NameUser
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 10),
-                    child: Container(
-                        height: 60,
-                        width: 170,
-                        alignment: Alignment.centerLeft,
-                        child: Text('No Name',
-                            // softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            style: SettingApp.fontSignNegative.copyWith(
-                                fontSize: 18, fontWeight: FontWeight.w600))),
+                  Container(
+                    height: 100,
+                    color: Colors.red,
                   ),
-                  const Spacer(),
-
-                  //!: Contact
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 10),
-                    child: Container(
-                        height: 60,
-                        width: 60,
-                        alignment: Alignment.center,
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.phone_android_outlined,
-                              color: Colors.yellow,
-                            ))),
+                  Expanded(
+                    // height: size.height - 330,
+                    child: ListView.builder(
+                      itemBuilder: (context, i) => Padding(
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: i == 0 ? 0 : 20),
+                        child: Container(
+                          height: 230,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.5),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 16),
+                            child: Column(
+                              children: [
+                                //!: Order Today
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Order #$i',
+                                      style: title,
+                                    ),
+                                    Row(
+                                      // ignore: prefer_const_literals_to_create_immutables
+                                      children: [
+                                        const Text(
+                                          'Today',
+                                          style: subTitle,
+                                        ),
+                                        const Icon(
+                                          Icons.today,
+                                          color: Colors.blue,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                //!:
+                                //!: content
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: SizedBox(
+                                        width: size.width,
+                                        child: Icon(
+                                          Icons.diamond,
+                                          color: lsColor[
+                                              Random().nextInt(lsColor.length)],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 8,
+                                      child: SizedBox(
+                                        width: size.width,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Customer info',
+                                              style: h1.copyWith(
+                                                color: Colors.blue,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40)),
-                child: Container(
-                    height: size.height - size.height * .23,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      color: SettingPrefer.getLightDark() == null ||
-                              SettingPrefer.getLightDark()
-                          ? white
-                          : black,
-                    ),
-                    child: ListView.builder(
-                        itemBuilder: (_, i) => Padding(
-                              padding: EdgeInsets.only(
-                                  top: i == 0 ? 40 : 20, left: 20, right: 20),
-                              child: GestureDetector(
-                                onTap: () => _addService(i),
-                                child: Container(
-                                  height: 150,
-                                  width: size.width,
-                                  decoration: BoxDecoration(
-                                    // ignore: prefer_const_literals_to_create_immutables
-                                    boxShadow: [
-                                      const BoxShadow(
-                                          color: Colors.grey,
-                                          offset: Offset(4, 4),
-                                          blurRadius: 10),
-                                      const BoxShadow(
-                                          color: Colors.grey,
-                                          offset: Offset(4, 4),
-                                          blurRadius: 10)
-                                    ],
-                                    color: lsColor[
-                                        Random().nextInt(lsColor.length)],
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                              ),
-                            ))),
-              ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -164,3 +218,20 @@ List<Color> lsColor = [
   const Color.fromARGB(195, 129, 33, 218),
   // const Color.fromARGB(186, 240, 174, 98),
 ];
+
+const title = TextStyle(
+  fontWeight: FontWeight.w700,
+  fontSize: 20,
+  letterSpacing: 1,
+);
+
+const subTitle = TextStyle(
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+  letterSpacing: 1,
+);
+const h1 = TextStyle(
+  fontWeight: FontWeight.w700,
+  fontSize: 18,
+  letterSpacing: 1,
+);
