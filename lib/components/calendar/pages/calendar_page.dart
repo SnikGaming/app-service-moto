@@ -173,7 +173,6 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   void _createExampleEvents() {
-    final now = _currentDate;
     _calendarController = CrCalendarController(
       onSwipe: _onCalendarPageChanged,
       events: [

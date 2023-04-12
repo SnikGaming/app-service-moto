@@ -5,6 +5,7 @@ class ButtonCustom extends StatefulWidget {
   final double? width;
   final Gradient? gradient;
   final Widget? child;
+  final Color? color;
   final void Function()? ontap;
   const ButtonCustom(
       {this.ontap,
@@ -12,6 +13,7 @@ class ButtonCustom extends StatefulWidget {
       this.gradient,
       this.height = 48,
       this.width = 1000,
+      this.color,
       super.key});
 
   @override
@@ -27,10 +29,14 @@ class _ButtonCustomState extends State<ButtonCustom> {
         height: widget.height,
         width: widget.width,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            gradient: widget.gradient ??
-                const LinearGradient(
-                    colors: [Color(0xff5DACFA), Color(0xff9A8DFC)])),
+          borderRadius: BorderRadius.circular(8),
+          gradient: widget.color == null
+              ? widget.gradient ??
+                  const LinearGradient(
+                      colors: [Color(0xff5DACFA), Color(0xff9A8DFC)])
+              : null,
+          color: widget.color,
+        ),
         child: widget.child,
       ),
     );
