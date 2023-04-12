@@ -141,6 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ButtonCustom(
+                              ontap: () => Navigator.pop(context),
                               color: Colors.red,
                               width: size.width * .3,
                               child: const Center(
