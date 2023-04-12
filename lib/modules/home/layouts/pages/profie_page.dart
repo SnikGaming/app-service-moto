@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:ui';
+
 import 'package:app/components/style/textstyle.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -34,8 +36,32 @@ class _ProFilePageState extends State<ProFilePage> {
               image: AssetImage('assets/images/background_image.png'),
               fit: BoxFit.cover),
         ),
-        child: Column(
-          children: [],
+        child: SingleChildScrollView(
+          child: Column(
+            children: List.generate(
+                10,
+                (index) => Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Container(
+                        width: size.width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: BackdropFilter(
+                          // blendMode :BlendMode.lighten ,
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(.2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )),
+          ),
         ),
       ),
     );
