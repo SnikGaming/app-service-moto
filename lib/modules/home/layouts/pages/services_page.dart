@@ -86,6 +86,12 @@ class _ServicesPageState extends State<ServicesPage> {
                   Container(
                     height: 100,
                     color: Colors.red,
+                    child: ListView.builder(
+                        itemBuilder: (context, i) => Container(
+                              height: 55,
+                              width: 80,
+                              color: Colors.yellow,
+                            )),
                   ),
                   Expanded(
                     // height: size.height - 330,
