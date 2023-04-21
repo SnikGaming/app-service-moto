@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage>
                           child: Row(
                             children: List.generate(
                               5,
-                              (i) => Icon(Icons.star),
+                              (i) => const Icon(Icons.star),
                             ),
                           ),
                         ),
