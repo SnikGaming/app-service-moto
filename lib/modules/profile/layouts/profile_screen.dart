@@ -14,6 +14,8 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
+enum Gender { male, female, other }
+
 class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -25,8 +27,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     'Male',
     'Female',
   ];
-  String _avatarUrl = '';
 
+  String _avatarUrl = '';
+  Gender _gender = Gender.male;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -47,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.only(
                 top: 120, left: 20, right: 20, bottom: 10),
             child: Container(
-              height: size.height * .75,
+              height: size.height * .9,
               width: size.width,
               decoration: BoxDecoration(
                 boxShadow: [
@@ -70,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SingleChildScrollView(
-                  // physics: const NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   child: Column(
                     children: [
                       const SizedBox(
@@ -116,26 +119,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         labelText: 'Address',
                       ),
                       const SizedBox(height: 16.0),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: 'Gender',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                      // DropdownButtonFormField<String>(
+                      //   decoration: InputDecoration(
+                      //     labelText: 'Gender',
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //   ),
+                      //   value: _selectedGender,
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       _selectedGender = value;
+                      //     });
+                      //   },
+                      //   items: _genderList.map((gender) {
+                      //     return DropdownMenuItem<String>(
+                      //       value: gender,
+                      //       child: Text(gender),
+                      //     );
+                      //   }).toList(),
+                      // ),
+                      Column(
+                        children: [
+                          RadioListTile<Gender>(
+                            title: const Text('Male'),
+                            value: Gender.male,
+                            groupValue: _gender,
+                            onChanged: (value) {
+                              setState(() {
+                                _gender = value!;
+                              });
+                            },
                           ),
-                        ),
-                        value: _selectedGender,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedGender = value;
-                          });
-                        },
-                        items: _genderList.map((gender) {
-                          return DropdownMenuItem<String>(
-                            value: gender,
-                            child: Text(gender),
-                          );
-                        }).toList(),
+                          RadioListTile<Gender>(
+                            title: const Text('Female'),
+                            value: Gender.female,
+                            groupValue: _gender,
+                            onChanged: (value) {
+                              setState(() {
+                                _gender = value!;
+                              });
+                            },
+                          ),
+                          RadioListTile<Gender>(
+                            title: const Text('Other'),
+                            value: Gender.other,
+                            groupValue: _gender,
+                            onChanged: (value) {
+                              setState(() {
+                                _gender = value!;
+                              });
+                            },
+                          ),
+                        ],
                       ),
+
                       const SizedBox(height: 20.0),
                       SizedBox(
                         width: size.width,

@@ -4,6 +4,8 @@ import 'package:app/components/message/message.dart';
 import 'package:flutter/material.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
+import '../../../../functions/random_color.dart';
+
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
 
@@ -83,15 +85,27 @@ class _ServicesPageState extends State<ServicesPage> {
                       color: Colors.black,
                     ),
                   ),
-                  Container(
-                    height: 100,
-                    color: Colors.red,
-                    child: ListView.builder(
-                        itemBuilder: (context, i) => Container(
-                              height: 55,
-                              width: 80,
-                              color: Colors.yellow,
-                            )),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 20, left: 20, bottom: 30, top: 20),
+                    child: Container(
+                      height: 55,
+                      width: size.width,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, i) => Padding(
+                                padding: EdgeInsets.only(
+                                    left: i == 0 ? 0 : 10, right: 10),
+                                child: Container(
+                                  height: 45,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                    color: randomColor(),
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                ),
+                              )),
+                    ),
                   ),
                   Expanded(
                     // height: size.height - 330,
