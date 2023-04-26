@@ -8,6 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
+import 'modules/home/api/category/api_category.dart';
+import 'modules/home/api/products/api_product.dart';
+
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -19,6 +22,8 @@ Future<void> main(List<String> args) async {
   ]);
   await SettingPrefer.init();
   await UserPrefer.init();
+  await APIProduct.getData();
+  await APICategory.getData();
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
   // runApp(DevicePreview(
   //     // enabled: kIsWeb,

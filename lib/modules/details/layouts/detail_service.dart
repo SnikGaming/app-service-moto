@@ -8,10 +8,11 @@ import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import '../../../constants/style.dart';
 import '../../../functions/random_color.dart';
 import '../../../preferences/settings/setting_prefer.dart';
+import '../../home/api/products/models/products.dart' as products;
 import '../../home/layouts/pages/services_page.dart';
 
 class DetailsServiceScreen extends StatefulWidget {
-  final ServiceModel data;
+  final products.Data data;
   const DetailsServiceScreen({super.key, required this.data});
 
   @override
@@ -97,8 +98,8 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                               Positioned(
                                 bottom: 0,
                                 child: Container(
-                                  height: size.height * .18,
-                                  width: size.width,
+                                  height: size.height * .21,
+                                  width: size.width * .7,
                                   decoration: const BoxDecoration(
                                       // color: Colors.blue,
                                       borderRadius: BorderRadius.only(
@@ -114,7 +115,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                         Container(
                                           width: size.width,
                                           child: Text(
-                                            '${widget.data.name}',
+                                            '${widget.data.ten}',
                                             style: styleH2,
                                             softWrap: true,
                                           ),
@@ -167,7 +168,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                                 BorderRadius.circular(18),
                                           ),
                                           child: Text(
-                                            '${widget.data.price}',
+                                            '${widget.data.gia}',
                                             style: styleH3.copyWith(
                                                 color: Colors.red),
                                           ),
@@ -182,7 +183,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                         ),
                       ),
                       Positioned(
-                        top: 80,
+                        top: 70,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(18),
                           child: Container(
@@ -192,79 +193,93 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                               color: const Color.fromARGB(255, 128, 47, 235)
                                   .withOpacity(0.5),
                             ),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                              child: Container(
-                                decoration: const BoxDecoration(
+                            child: Container(
+                              decoration: BoxDecoration(
                                   color: Colors.transparent,
-                                ),
-                                child: Expanded(
-                                  child: Container(
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Positioned(
-                                          right: 10,
-                                          top: 10,
-                                          child: IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                Icons.favorite,
-                                                color: Colors.red,
-                                              )),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          '${widget.data.hinhAnh}'),
+                                      fit: BoxFit.cover)),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Positioned(
+                                    right: 10,
+                                    top: 10,
+                                    child: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                        )),
+                                  )
+                                ],
                               ),
                             ),
+
+                            //  child: BackdropFilter(
+                            //       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            //       child: Container(
+                            //         decoration: const BoxDecoration(
+                            //           color: Colors.transparent,
+                            //         ),
+                            //         child: Flexible(
+                            //           flex: 1,
+                            //           child: Stack(
+                            //             alignment: Alignment.center,
+                            //             children: [
+                            //               Positioned(
+                            //                 right: 10,
+                            //                 top: 10,
+                            //                 child: IconButton(
+                            //                     onPressed: () {},
+                            //                     icon: const Icon(
+                            //                       Icons.favorite,
+                            //                       color: Colors.red,
+                            //                     )),
+                            //               )
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
                           ),
                         ),
                       )
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    constraints:
-                        BoxConstraints(minHeight: 100, minWidth: size.width),
-                    decoration: BoxDecoration(
-                        // color: Colors.grey, //randomColor(),
-                        borderRadius: BorderRadius.circular(30)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Desciption',
-                          style: styleH1,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Text(
-                          '${widget.data.shortDescription}',
-                          style: styleTitle,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          '${widget.data.detailDescription}',
-                          style: styleTitle,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          '${widget.data.benefit}',
-                          style: styleTitle,
-                        ),
-                      ],
-                    ),
+                Container(
+                  constraints:
+                      BoxConstraints(minHeight: 100, minWidth: size.width),
+                  decoration: BoxDecoration(
+                      // color: Colors.grey, //randomColor(),
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Thông tin sản phẩm',
+                        style: styleH1,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Text(
+                        'Chưa có dữ liệu',
+                        style: styleTitle,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      // Container(
+                      //   height: 129,
+                      //   color: Colors.red,
+                      // ),
+                    ],
                   ),
                 ),
               ],

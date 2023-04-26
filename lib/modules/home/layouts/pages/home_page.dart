@@ -6,13 +6,13 @@ import 'package:app/constants/colors.dart';
 import 'package:app/models/services/service_model.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/details/routes/details_routes.dart';
+import 'package:app/modules/home/api/category/api_category.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
@@ -26,6 +26,9 @@ import '../../../../network/api/google/google.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
 import 'package:badges/badges.dart' as badges;
+import '../../api/category/models/category.dart' as categories;
+import '../../api/products/api_product.dart';
+import '../../api/products/models/products.dart' as products;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,6 +44,16 @@ class _HomePageState extends State<HomePage>
   static final lstCategories = Categories.lst;
 
   var indexData = 0;
+  int page = 1;
+  List<products.Data> productData = [];
+  List<categories.Data> categoryData = [];
+
+  loadData() async {
+    productData = await APIProduct.getData(page: page);
+    categoryData = await APICategory.getData();
+    setState(() {});
+    print('Data screen ${productData[0].hinhAnh}');
+  }
 
   @override
   void dispose() {
@@ -101,6 +114,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
     getProducts();
     isCheck = SettingPrefer.getLightDark() ?? true;
+    loadData();
     // print(isCheck);
     // print(SettingPrefer.getLightDark());
 
@@ -113,6 +127,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    // Future.delayed(Duration(seconds: 8)).then((value) => loadData());
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor:
@@ -224,13 +239,14 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
             ));
+    //?: Data products
     var sliverList = SliverList(
         delegate: SliverChildBuilderDelegate(
-      childCount: lsService.length,
+      childCount: productData.length,
       (context, index) => GestureDetector(
         onTap: () {
-          Modular.to.pushNamed(Routes.details, arguments: lsService[index]);
-          // serviceDetail(context, size, lsService[index]);
+          Modular.to.pushNamed(Routes.details, arguments: productData[index]);
+          // serviceDetail(context, size, productData[index]);
         },
         child: Padding(
           padding:
@@ -261,7 +277,12 @@ class _HomePageState extends State<HomePage>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
-                          color: Colors.red,
+                          decoration: BoxDecoration(
+                              // color: Colors.red,
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      '${productData[index].hinhAnh}'),
+                                  fit: BoxFit.cover)),
                         ),
                       ),
                     )),
@@ -274,8 +295,8 @@ class _HomePageState extends State<HomePage>
                               height: 20,
                             ),
                             Text(
-                              textAlign: TextAlign.center,
-                              lsService[index].name,
+                              textAlign: TextAlign.left,
+                              productData[index].ten!,
                               style: MyTextStyle.title.copyWith(
                                 fontSize: 18,
                                 color: SettingPrefer.getLightDark() == null ||
@@ -284,33 +305,30 @@ class _HomePageState extends State<HomePage>
                                     : white,
                               ),
                             ),
-                            Text(lsService[index].price,
-                                style: MyTextStyle.normal.copyWith(
+                            const SizedBox(height: 8),
+                            Container(
+                              width: size.width,
+                              child: Text('${productData[index].gia}',
+                                  style: MyTextStyle.normal.copyWith(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  )),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Text('Yêu thích '),
+                                Text(
+                                  '${productData[index].yeuThich}',
+                                  style: MyTextStyle.normal
+                                      .copyWith(color: Colors.red),
+                                ),
+                                const Icon(
+                                  Icons.favorite,
                                   color: Colors.red,
-                                  fontSize: 18,
-                                )),
-                            Text(
-                              lsService[index].shortDescription,
-                              style: MyTextStyle.normal.copyWith(
-                                fontSize: 14,
-                                color: SettingPrefer.getLightDark() == null ||
-                                        SettingPrefer.getLightDark()
-                                    ? black
-                                    : white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              lsService[index].benefit,
-                              style: MyTextStyle.normal.copyWith(
-                                fontSize: 14,
-                                color: SettingPrefer.getLightDark() == null ||
-                                        SettingPrefer.getLightDark()
-                                    ? black
-                                    : white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -414,6 +432,7 @@ class _HomePageState extends State<HomePage>
             child: MySlider(),
           ),
         ),
+        //? Category
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -424,12 +443,12 @@ class _HomePageState extends State<HomePage>
                 color: const Color.fromARGB(0, 255, 255, 255),
                 child: Row(
                     children: List.generate(
-                        lstCategories.length,
+                        categoryData.length,
                         (index) => GestureDetector(
                               onTap: () {
                                 indexData = index;
                                 indexData = index;
-                                // indexLstCategories = lstCategories[index];
+                                // indexLstCategories = categoryData[index];
                                 setState(() {});
                               },
                               child: Padding(
@@ -451,7 +470,7 @@ class _HomePageState extends State<HomePage>
                                       const BoxConstraints(minWidth: 100),
                                   child: Center(
                                     child: Text(
-                                      lstCategories[index].name,
+                                      categoryData[index].ten!,
                                       style: TextStyle(
                                           color: indexData == index
                                               ? white
@@ -470,8 +489,91 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ),
+        // SliverGrid.builder(
+        //     itemCount: 10,
+        //     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        //       maxCrossAxisExtent: 3,
+        //       mainAxisExtent: 200,
+        //     ),
+        //     itemBuilder: (context, i) => Container(
+        //           height: 120,
+        //           width: 40,
+        //           color: Colors.red,
+        //         )),
         //!: List Content
         indexData == 0 ? sliverList : sliverGrid,
+        const SliverToBoxAdapter(
+          child: SizedBox(
+            height: 40,
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.arrow_back_ios_new_rounded),
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  height: 45,
+                  width: 220,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 12,
+                      itemBuilder: (context, i) => GestureDetector(
+                            onTap: () {
+                              page = i + 1;
+                              loadData();
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 44,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: page == i + 1
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                      color: page == i + 1
+                                          ? Colors.purple
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                        30,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${i + 1}',
+                                        style: TextStyle(
+                                          color: page == i + 1
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                const RotatedBox(
+                    quarterTurns: 90,
+                    child: Icon(Icons.arrow_back_ios_new_rounded)),
+              ],
+            ),
+          ),
+        ),
         _footer(size)
       ],
     );
