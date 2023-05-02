@@ -11,14 +11,17 @@ class APICategory {
 
   static Future<List<Data>> getData() async {
     print('data ');
+    print('data loai ok');
 
     try {
       final response = await http.get(
-        Uri.parse("http://${ConnectDb.ip}:3000/loai-san-pham/"),
+        // Uri.parse("http://${ConnectDb.ip}:8000/api/categories/"),
+        Uri.parse("http://192.168.1.8:8000/api/categories/"),
+
         // headers: {'Authorization': 'Bearer $token'}
       );
       final jsonData = json.decode(response.body);
-      print('data ');
+      print('data loai try catch');
 
       final List<dynamic> projectListJson = jsonData['data'];
       print('data loai $projectListJson');

@@ -1,89 +1,69 @@
-class products {
-  int? status;
-  String? message;
+class Product {
   List<Data>? data;
+  int? totalPages;
+  int? currentPage;
 
-  products({this.status, this.message, this.data});
+  Product({this.data, this.totalPages, this.currentPage});
 
-  products.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
+  Product.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
         data!.add(new Data.fromJson(v));
       });
     }
+    totalPages = json['total_pages'];
+    currentPage = json['current_page'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
+    data['total_pages'] = this.totalPages;
+    data['current_page'] = this.currentPage;
     return data;
   }
 }
 
 class Data {
-  String? uid;
-  String? loaiSanPhamId;
-  String? ten;
-  String? hinhAnh;
-  String? moTa;
-  int? gia;
-  int? soLuong;
-  String? trangThai;
-  String? ngayTao;
-  String? ngaySua;
-  int? yeuThich;
-  String? tenLoaiSanPham;
+  String? name;
+  String? image;
+  String? description;
+  int? number;
+  int? price;
+  int? like;
+  int? status;
 
   Data(
-      {this.uid,
-      this.loaiSanPhamId,
-      this.ten,
-      this.hinhAnh,
-      this.moTa,
-      this.gia,
-      this.soLuong,
-      this.trangThai,
-      this.ngayTao,
-      this.ngaySua,
-      this.yeuThich,
-      this.tenLoaiSanPham});
+      {this.name,
+      this.image,
+      this.description,
+      this.number,
+      this.price,
+      this.like,
+      this.status});
 
   Data.fromJson(Map<String, dynamic> json) {
-    uid = json['uid'];
-    loaiSanPhamId = json['loai_san_pham_id'];
-    ten = json['ten'];
-    hinhAnh = json['hinh_anh'];
-    moTa = json['mo_ta'];
-    gia = json['gia'];
-    soLuong = json['so_luong'];
-    trangThai = json['trang_thai'];
-    ngayTao = json['ngay_tao'];
-    ngaySua = json['ngay_sua'];
-    yeuThich = json['yeu_thich'];
-    tenLoaiSanPham = json['ten_loai_san_pham'];
+    name = json['name'];
+    image = json['image'];
+    description = json['description'];
+    number = json['number'];
+    price = json['price'];
+    like = json['like'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uid'] = this.uid;
-    data['loai_san_pham_id'] = this.loaiSanPhamId;
-    data['ten'] = this.ten;
-    data['hinh_anh'] = this.hinhAnh;
-    data['mo_ta'] = this.moTa;
-    data['gia'] = this.gia;
-    data['so_luong'] = this.soLuong;
-    data['trang_thai'] = this.trangThai;
-    data['ngay_tao'] = this.ngayTao;
-    data['ngay_sua'] = this.ngaySua;
-    data['yeu_thich'] = this.yeuThich;
-    data['ten_loai_san_pham'] = this.tenLoaiSanPham;
+    data['name'] = this.name;
+    data['image'] = this.image;
+    data['description'] = this.description;
+    data['number'] = this.number;
+    data['price'] = this.price;
+    data['like'] = this.like;
+    data['status'] = this.status;
     return data;
   }
 }

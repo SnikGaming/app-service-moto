@@ -23,6 +23,7 @@ import '../../../../models/products/products_model.dart';
 import '../../../../models/products/provider_products.dart';
 import '../../../../models/services/provider_service.dart';
 import '../../../../network/api/google/google.dart';
+import '../../../../preferences/product/product.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
 import 'package:badges/badges.dart' as badges;
@@ -49,10 +50,10 @@ class _HomePageState extends State<HomePage>
   List<categories.Data> categoryData = [];
 
   loadData() async {
-    productData = await APIProduct.getData(page: page);
+    productData =
+        await APIProduct.getData(category_id: indexData + 1, page: page);
     categoryData = await APICategory.getData();
     setState(() {});
-    print('Data screen ${productData[0].hinhAnh}');
   }
 
   @override
@@ -140,105 +141,6 @@ class _HomePageState extends State<HomePage>
   }
 
   CustomScrollView _customScrollview(BuildContext context, size) {
-    var sliverGrid = SliverGrid.builder(
-        itemCount: lsDataTest.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          mainAxisExtent: 450,
-          // childAspectRatio: 2,
-          crossAxisCount: 2,
-        ),
-        itemBuilder: (_, i) => GestureDetector(
-              onTap: () {
-                Modular.to.pushNamed(Routes.details + DetailsRoute.product,
-                    arguments: lstProducts[i]);
-              },
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: i % 2 == 0 ? 16 : 0, right: i % 2 != 0 ? 16 : 0),
-                child: Container(
-                  height: 100,
-                  decoration: BoxDecoration(
-                    // color: lsColor[Random().nextInt(lsColor.length)],
-                    color: SettingPrefer.getLightDark() == null ||
-                            SettingPrefer.getLightDark()
-                        ? white
-                        : black,
-                    borderRadius: BorderRadius.circular(20),
-                    // ignore: prefer_const_literals_to_create_immutables
-                    boxShadow: [
-                      const BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(6, 6),
-                          blurRadius: 16)
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6),
-                    child: Column(
-                      // fit: StackFit.passthrough,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 10),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            height: 220,
-                            width: 160,
-                            decoration: BoxDecoration(
-                              color: lsColor[Random().nextInt(lsColor.length)],
-                              image: DecorationImage(
-                                image: NetworkImage('${lsDataTest[i].src}'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20, left: 10),
-                          child: SizedBox(
-                            width: 160,
-                            child: Text(
-                              '${lsDataTest[i].title}',
-                              style: h1.copyWith(
-                                  color: SettingPrefer.getLightDark() == null ||
-                                          SettingPrefer.getLightDark()
-                                      ? black
-                                      : white),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                            width: 160,
-                            child: Text(
-                              '${lsDataTest[i].price}',
-                              overflow: TextOverflow.visible,
-                              style: subTitle.copyWith(
-                                  fontSize: 16, color: Colors.red),
-                            )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: 160,
-                          alignment: Alignment.center,
-                          child: Row(
-                            children: List.generate(
-                              5,
-                              (i) => const Icon(Icons.star),
-                            ),
-                          ),
-                        ),
-                        const Spacer()
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ));
     //?: Data products
     var sliverList = SliverList(
         delegate: SliverChildBuilderDelegate(
@@ -277,11 +179,11 @@ class _HomePageState extends State<HomePage>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               // color: Colors.red,
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      '${productData[index].hinhAnh}'),
+                                      'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
                                   fit: BoxFit.cover)),
                         ),
                       ),
@@ -296,7 +198,7 @@ class _HomePageState extends State<HomePage>
                             ),
                             Text(
                               textAlign: TextAlign.left,
-                              productData[index].ten!,
+                              productData[index].name!,
                               style: MyTextStyle.title.copyWith(
                                 fontSize: 18,
                                 color: SettingPrefer.getLightDark() == null ||
@@ -308,7 +210,7 @@ class _HomePageState extends State<HomePage>
                             const SizedBox(height: 8),
                             Container(
                               width: size.width,
-                              child: Text('${productData[index].gia}',
+                              child: Text('${productData[index].price}',
                                   style: MyTextStyle.normal.copyWith(
                                     color: Colors.red,
                                     fontSize: 18,
@@ -319,7 +221,7 @@ class _HomePageState extends State<HomePage>
                               children: [
                                 const Text('Yêu thích '),
                                 Text(
-                                  '${productData[index].yeuThich}',
+                                  '${productData[index].like}',
                                   style: MyTextStyle.normal
                                       .copyWith(color: Colors.red),
                                 ),
@@ -346,8 +248,6 @@ class _HomePageState extends State<HomePage>
         //!: Appbar
         SliverAppBar(
           elevation: 0,
-          // automaticallyImplyLeading: true,
-          // excludeHeaderSemantics: true,
           forceElevated: true,
           floating: true,
           foregroundColor: white,
@@ -387,39 +287,6 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ),
-        //!: Border
-        // SliverToBoxAdapter(
-        //   child: Container(
-        //     color: appbarColors,
-        //     // color: const Color(0xff00396B),
-        //     height: 30,
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.end,
-        //       children: <Widget>[
-        //         Container(
-        //           height: 30,
-        //           decoration: BoxDecoration(
-        //             // color: Colors.white,
-        //             color: isCheck ? white : black, //Color(0xff303030),
-        //             borderRadius: const BorderRadius.only(
-        //               topLeft: Radius.circular(40),
-        //               topRight: Radius.circular(40),
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        // SliverToBoxAdapter(
-        //   child: Container(
-        //     height: 20,
-        //     color: SettingPrefer.getLightDark() == null ||
-        //             SettingPrefer.getLightDark()
-        //         ? white
-        //         : black,
-        //   ),
-        // ),
 
         //!: Slider
         SliverToBoxAdapter(
@@ -433,80 +300,75 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         //? Category
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          sliver: SliverGrid.builder(
+            itemCount: categoryData.length,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 90,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1.0,
+            ),
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () async {
+                indexData = index;
+                indexData = index;
+                productData = await APIProduct.getData(
+                    category_id: indexData + 1, page: page);
+                setState(() {});
+              },
               child: Container(
-                height: 60,
-                color: const Color.fromARGB(0, 255, 255, 255),
-                child: Row(
-                    children: List.generate(
-                        categoryData.length,
-                        (index) => GestureDetector(
-                              onTap: () {
-                                indexData = index;
-                                indexData = index;
-                                // indexLstCategories = categoryData[index];
-                                setState(() {});
-                              },
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      border: indexData != index
-                                          ? Border.all(
-                                              width: 1,
-                                              color: isCheck ? black : red)
-                                          : null,
-                                      borderRadius: BorderRadius.circular(30),
-                                      color: indexData == index
-                                          ? Colors.green
-                                          : white),
-                                  constraints:
-                                      const BoxConstraints(minWidth: 100),
-                                  child: Center(
-                                    child: Text(
-                                      categoryData[index].ten!,
-                                      style: TextStyle(
-                                          color: indexData == index
-                                              ? white
-                                              : black,
-                                          fontSize: 14,
-                                          fontWeight: indexData == index
-                                              ? FontWeight.w400
-                                              : FontWeight.w600,
-                                          letterSpacing: 1),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ))),
+                decoration: BoxDecoration(
+                  color: indexData == index
+                      ? Color.fromARGB(255, 85, 34, 225)
+                      : Color.fromARGB(255, 148, 142, 142),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: indexData == index
+                          ? Color.fromARGB(255, 143, 90, 240)
+                          : Colors.grey,
+                      spreadRadius: 4,
+                      blurRadius: 7,
+                      offset: Offset(1, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.network(
+                      'http://192.168.1.8:8000${categoryData[index].image}',
+                      color: indexData == index ? white : black,
+                      height: 45,
+                    ),
+                    Text(
+                      '${categoryData[index].name}',
+                      style: TextStyle(
+                          color: indexData == index ? white : black,
+                          fontSize: 14,
+                          fontWeight: indexData == index
+                              ? FontWeight.w400
+                              : FontWeight.w600,
+                          letterSpacing: 1),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
         ),
-        // SliverGrid.builder(
-        //     itemCount: 10,
-        //     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        //       maxCrossAxisExtent: 3,
-        //       mainAxisExtent: 200,
-        //     ),
-        //     itemBuilder: (context, i) => Container(
-        //           height: 120,
-        //           width: 40,
-        //           color: Colors.red,
-        //         )),
+
         //!: List Content
-        indexData == 0 ? sliverList : sliverGrid,
+        sliverList,
         const SliverToBoxAdapter(
           child: SizedBox(
             height: 40,
           ),
         ),
+
+        //?: page
         SliverToBoxAdapter(
           child: Center(
             child: Row(
@@ -521,7 +383,7 @@ class _HomePageState extends State<HomePage>
                   width: 220,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 12,
+                      itemCount: ProductPrefer.getTotal()!,
                       itemBuilder: (context, i) => GestureDetector(
                             onTap: () {
                               page = i + 1;
@@ -574,6 +436,7 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ),
+        //?:footer
         _footer(size)
       ],
     );

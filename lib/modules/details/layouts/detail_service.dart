@@ -115,7 +115,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                         Container(
                                           width: size.width,
                                           child: Text(
-                                            '${widget.data.ten}',
+                                            '${widget.data.name}',
                                             style: styleH2,
                                             softWrap: true,
                                           ),
@@ -168,7 +168,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                                 BorderRadius.circular(18),
                                           ),
                                           child: Text(
-                                            '${widget.data.gia}',
+                                            '${widget.data.price}',
                                             style: styleH3.copyWith(
                                                 color: Colors.red),
                                           ),
@@ -198,7 +198,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                   color: Colors.transparent,
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          '${widget.data.hinhAnh}'),
+                                          'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
                                       fit: BoxFit.cover)),
                               child: Stack(
                                 alignment: Alignment.center,
