@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataPrefer {
-  static final _listProduct = 'listProduct';
+  static const _listProduct = 'listProduct';
 
   static SharedPreferences? preferences;
   static Future init() async =>

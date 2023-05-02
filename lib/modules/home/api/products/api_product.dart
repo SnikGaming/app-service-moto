@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../../../../network/connect.dart';
 import '../../../../preferences/product/product.dart';
 import 'models/products.dart';
 

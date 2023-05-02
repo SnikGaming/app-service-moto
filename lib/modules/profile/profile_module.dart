@@ -9,6 +9,6 @@ class ProfileModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute(ProfileRoute.index, child: (_, args) => ProfileScreen()),
+        ChildRoute(ProfileRoute.index, child: (_, args) => const ProfileScreen()),
       ];
 }

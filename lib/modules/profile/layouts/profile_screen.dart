@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, must_be_immutable
+// ignore_for_file: deprecated_member_use, must_be_immutable, library_private_types_in_public_api
 
 import 'dart:io';
 
@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _addressController = TextEditingController();
   String? _selectedGender;
 
-  List<String> _genderList = [
+  final List<String> _genderList = [
     'Male',
     'Female',
   ];

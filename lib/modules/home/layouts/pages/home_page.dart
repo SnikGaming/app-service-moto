@@ -1,13 +1,9 @@
-import 'dart:math';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/constants/colors.dart';
-import 'package:app/models/services/service_model.dart';
 import 'package:app/modules/app_constants.dart';
-import 'package:app/modules/details/routes/details_routes.dart';
 import 'package:app/modules/home/api/category/api_category.dart';
-import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:fluid_dialog/fluid_dialog.dart';
@@ -16,12 +12,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
-import '../../../../models/categories/categories.dart';
-import '../../../../models/data/model_data.dart';
-import '../../../../models/data/provider.dart';
-import '../../../../models/products/products_model.dart';
-import '../../../../models/products/provider_products.dart';
-import '../../../../models/services/provider_service.dart';
 import '../../../../network/api/google/google.dart';
 import '../../../../preferences/product/product.dart';
 import '../../../../preferences/user/user_preferences.dart';
@@ -41,9 +31,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-
-  static final lstCategories = Categories.lst;
-
   var indexData = 0;
   int page = 1;
   List<products.Data> productData = [];
@@ -92,28 +79,12 @@ class _HomePageState extends State<HomePage>
     "Zucchini",
   ];
   double value = 3.5;
-  List<ProductData> lsDataTest = [];
-
-  List<ProductModel> lstProducts = [];
-  List<ServiceModel> lsService = [];
-  getProducts() async {
-    final data = await ProductService.getAllProduct();
-    final dataService = await ProviderService.getAllService();
-
-    final dataTest = await ProviderServices.getAllProduct();
-    setState(() {});
-    lsDataTest = dataTest;
-    lstProducts = data;
-    lsService = dataService;
-    // print(lstProducts[0].productName.toString() + '-----------');
-  }
 
   @override
   void initState() {
     // ignore: todo
     // TODO: implement initState
     super.initState();
-    getProducts();
     isCheck = SettingPrefer.getLightDark() ?? true;
     loadData();
     // print(isCheck);
@@ -208,7 +179,7 @@ class _HomePageState extends State<HomePage>
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Container(
+                            SizedBox(
                               width: size.width,
                               child: Text('${productData[index].price}',
                                   style: MyTextStyle.normal.copyWith(
@@ -321,17 +292,17 @@ class _HomePageState extends State<HomePage>
               child: Container(
                 decoration: BoxDecoration(
                   color: indexData == index
-                      ? Color.fromARGB(255, 85, 34, 225)
-                      : Color.fromARGB(255, 148, 142, 142),
+                      ? const Color.fromARGB(255, 85, 34, 225)
+                      : const Color.fromARGB(255, 148, 142, 142),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
                       color: indexData == index
-                          ? Color.fromARGB(255, 143, 90, 240)
+                          ? const Color.fromARGB(255, 143, 90, 240)
                           : Colors.grey,
                       spreadRadius: 4,
                       blurRadius: 7,
-                      offset: Offset(1, 3), // changes position of shadow
+                      offset: const Offset(1, 3), // changes position of shadow
                     ),
                   ],
                 ),
@@ -378,7 +349,7 @@ class _HomePageState extends State<HomePage>
                 const SizedBox(
                   width: 10,
                 ),
-                Container(
+                SizedBox(
                   height: 45,
                   width: 220,
                   child: ListView.builder(

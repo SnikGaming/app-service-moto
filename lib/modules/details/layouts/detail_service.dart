@@ -1,16 +1,7 @@
-import 'dart:ui';
 
-import 'package:app/components/style/textstyle.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/models/services/service_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import '../../../constants/style.dart';
-import '../../../functions/random_color.dart';
-import '../../../preferences/settings/setting_prefer.dart';
 import '../../home/api/products/models/products.dart' as products;
-import '../../home/layouts/pages/services_page.dart';
-
 class DetailsServiceScreen extends StatefulWidget {
   final products.Data data;
   const DetailsServiceScreen({super.key, required this.data});
@@ -20,14 +11,13 @@ class DetailsServiceScreen extends StatefulWidget {
 }
 
 class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
-  static var value = 5.0;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
-          child: Icon(Icons.calendar_month_outlined),
+          child: const Icon(Icons.calendar_month_outlined),
         ),
         body: Container(
           color: const Color(0xffF0F0F0),
@@ -46,7 +36,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                     children: [
                       Positioned(
                           top: 0,
-                          child: Container(
+                          child: SizedBox(
                             height: 60,
                             // color: Color.fromARGB(188, 120, 54, 244),
                             width: size.width,
@@ -112,7 +102,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           width: size.width,
                                           child: Text(
                                             '${widget.data.name}',
@@ -136,27 +126,26 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                         const SizedBox(
                                           height: 10,
                                         ),
-                                        Container(
-                                            child: Row(
+                                        Row(
                                           children: [
-                                            Text('50 Comments',
-                                                style: styleNormal.copyWith(
-                                                  color: Colors.grey,
-                                                  fontStyle: FontStyle.italic,
-                                                )),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Text(' (Click here)',
-                                                  style: styleNormal.copyWith(
-                                                      color: Colors.blue,
-                                                      fontSize: 18,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
+                                        Text('50 Comments',
+                                            style: styleNormal.copyWith(
+                                              color: Colors.grey,
+                                              fontStyle: FontStyle.italic,
+                                            )),
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: Text(' (Click here)',
+                                              style: styleNormal.copyWith(
+                                                  color: Colors.blue,
+                                                  fontSize: 18,
+                                                  fontStyle:
+                                                      FontStyle.italic,
+                                                  fontWeight:
+                                                      FontWeight.bold)),
+                                        ),
                                           ],
-                                        )),
+                                        ),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -194,7 +183,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                   .withOpacity(0.5),
                             ),
                             child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                   color: Colors.transparent,
                                   image: DecorationImage(
                                       image: NetworkImage(
@@ -257,22 +246,22 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                       borderRadius: BorderRadius.circular(30)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
+                    children: const [
+                      SizedBox(
                         height: 20,
                       ),
-                      const Text(
+                      Text(
                         'Thông tin sản phẩm',
                         style: styleH1,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 16,
                       ),
                       Text(
                         'Chưa có dữ liệu',
                         style: styleTitle,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 8,
                       ),
                       // Container(
