@@ -13,6 +13,7 @@ import '../../../../components/functions/logout.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../network/api/google/google.dart';
+import '../../../../network/connect.dart';
 import '../../../../preferences/product/product.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
@@ -310,7 +311,7 @@ class _HomePageState extends State<HomePage>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.network(
-                      'http://192.168.1.8:8000${categoryData[index].image}',
+                      'http://${ConnectDb.ip}${categoryData[index].image}',
                       color: indexData == index ? white : black,
                       height: 45,
                     ),
@@ -332,7 +333,13 @@ class _HomePageState extends State<HomePage>
         ),
 
         //!: Data product
-        productData.isEmpty ? SliverToBoxAdapter() : sliverList,
+        productData.isEmpty
+            ? const SliverToBoxAdapter(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : sliverList,
         const SliverToBoxAdapter(
           child: SizedBox(
             height: 40,
@@ -361,6 +368,14 @@ class _HomePageState extends State<HomePage>
                                   onTap: () {
                                     page = i + 1;
                                     loadData();
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => const Center(
+                                            child:
+                                                CircularProgressIndicator()));
+                                    Future.delayed(const Duration(seconds: 2))
+                                        .then((value) =>
+                                            {Navigator.pop(context)});
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(

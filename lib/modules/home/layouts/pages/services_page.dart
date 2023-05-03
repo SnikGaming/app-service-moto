@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:app/components/message/message.dart';
+import 'package:app/modules/home/api/booking/model.dart' as Booking;
 import 'package:flutter/material.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 import '../../../../functions/random_color.dart';
+import '../../api/booking/api_booking.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
@@ -15,6 +17,19 @@ class ServicesPage extends StatefulWidget {
 
 class _ServicesPageState extends State<ServicesPage> {
   List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  List<Booking.Data> lsBooking = [];
+  loadData() async {
+    await APIBooking.fetchBookings();
+    lsBooking = APIBooking.lsData;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +103,7 @@ class _ServicesPageState extends State<ServicesPage> {
                   Padding(
                     padding: const EdgeInsets.only(
                         right: 20, left: 20, bottom: 30, top: 20),
-                    child: Container(
+                    child: SizedBox(
                       height: 55,
                       width: size.width,
                       child: ListView.builder(
@@ -109,18 +124,28 @@ class _ServicesPageState extends State<ServicesPage> {
                   ),
                   Expanded(
                     // height: size.height - 330,
+                    //?: Loading data
                     child: ListView.builder(
+                      itemCount: lsBooking.length,
                       itemBuilder: (context, i) => Padding(
                         padding: EdgeInsets.only(
-                            left: 20, right: 20, top: i == 0 ? 0 : 20),
+                            left: 20,
+                            right: 20,
+                            top: i == 0 ? 0 : 20,
+                            bottom: i == lsBooking.length - 1 ? 200 : 0),
                         child: Container(
-                          height: 230,
+                          constraints: const BoxConstraints(
+                            minHeight: 80,
+                          ),
+                          width: size.width,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(30),
                             border: Border.all(
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
+                                width: 1,
+                                color: const Color.fromARGB(255, 149, 101, 211)
+                                // color: Colors.grey.withOpacity(0.5),
+                                ),
+                            borderRadius: BorderRadius.circular(30),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.5),
@@ -132,71 +157,72 @@ class _ServicesPageState extends State<ServicesPage> {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 16),
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               children: [
-                                //!: Order Today
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Order #$i',
+                                      "Booking ${i + 1}",
                                       style: title,
                                     ),
                                     Row(
-                                      // ignore: prefer_const_literals_to_create_immutables
                                       children: [
-                                        const Text(
-                                          'Today',
+                                        Text(
+                                          "${lsBooking[i].bookingTime}",
                                           style: subTitle,
                                         ),
-                                        const Icon(
-                                          Icons.today,
-                                          color: Colors.blue,
-                                        )
+                                        const Icon(Icons.calendar_today),
                                       ],
                                     )
                                   ],
                                 ),
-                                //!:
-                                //!: content
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 Row(
                                   children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: SizedBox(
-                                        width: size.width,
-                                        child: Icon(
-                                          Icons.diamond,
-                                          color: lsColor[
-                                              Random().nextInt(lsColor.length)],
-                                        ),
-                                      ),
+                                    const Icon(Icons.location_on),
+                                    Text(
+                                      "${lsBooking[i].service}",
+                                      style: subTitle,
                                     ),
-                                    Expanded(
-                                      flex: 8,
-                                      child: SizedBox(
-                                        width: size.width,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Customer info',
-                                              style: h1.copyWith(
-                                                color: Colors.blue,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
                                   ],
-                                )
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'BOOKING',
+                                  style: title.copyWith(
+                                    color: randomColor(),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Flexible(
+                                        flex: 1,
+                                        child: Icon(
+                                          Icons.note,
+                                          color: Colors.orange,
+                                        )),
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                        flex: 9,
+                                        child: Text(
+                                          "${lsBooking[i].note}",
+                                          style: subTitle,
+                                        )),
+                                  ],
+                                ),
                               ],
                             ),
                           ),

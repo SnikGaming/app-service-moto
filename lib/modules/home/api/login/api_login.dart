@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
 
 String? extractToken(String bearerToken) {
@@ -13,7 +14,7 @@ Future login(
     {String email = "long@gmail.com", String password = "12345678"}) async {
   try {
     final response = await http.post(
-      Uri.parse("http://192.168.1.8:8000/api/login"),
+      Uri.parse("http://${ConnectDb.ip}/api/login"),
       body: {
         "email": email,
         "password": password,

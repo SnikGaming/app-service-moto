@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../../../../network/connect.dart';
 import '../../../../preferences/product/product.dart';
 import 'models/products.dart';
 
@@ -20,7 +21,7 @@ class APIProduct {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://192.168.1.8:8000/api/products?category_id=$category_id&page=$page&search=$search&min_price=$min_price&max_price=$max_price"),
+            "http://${ConnectDb.ip}/api/products?category_id=$category_id&page=$page&search=$search&min_price=$min_price&max_price=$max_price"),
         // headers: {'Authorization': 'Bearer $token'}
       );
       final jsonData = json.decode(response.body);
@@ -35,8 +36,6 @@ class APIProduct {
       apiProducts = projectList;
       return projectList;
     } catch (e) {
-      print('data $e');
-
       return [];
     }
   }

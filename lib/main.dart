@@ -26,8 +26,9 @@ Future<void> main(List<String> args) async {
   await ProductPrefer.init();
   await UserPrefer.init();
   await APIProduct.getData();
-  await APIBooking.fetchBookings();
   await APICategory.getData();
+  await APIBooking.fetchBookings();
+
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
   // runApp(DevicePreview(
   //     // enabled: kIsWeb,
