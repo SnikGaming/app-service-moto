@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import '../../../constants/style.dart';
 import '../../home/api/products/models/products.dart' as products;
+
 class DetailsServiceScreen extends StatefulWidget {
   final products.Data data;
   const DetailsServiceScreen({super.key, required this.data});
@@ -128,22 +128,22 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                         ),
                                         Row(
                                           children: [
-                                        Text('50 Comments',
-                                            style: styleNormal.copyWith(
-                                              color: Colors.grey,
-                                              fontStyle: FontStyle.italic,
-                                            )),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Text(' (Click here)',
-                                              style: styleNormal.copyWith(
-                                                  color: Colors.blue,
-                                                  fontSize: 18,
-                                                  fontStyle:
-                                                      FontStyle.italic,
-                                                  fontWeight:
-                                                      FontWeight.bold)),
-                                        ),
+                                            Text('50 Comments',
+                                                style: styleNormal.copyWith(
+                                                  color: Colors.grey,
+                                                  fontStyle: FontStyle.italic,
+                                                )),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Text(' (Click here)',
+                                                  style: styleNormal.copyWith(
+                                                      color: Colors.blue,
+                                                      fontSize: 18,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(
@@ -205,33 +205,6 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                 ],
                               ),
                             ),
-
-                            //  child: BackdropFilter(
-                            //       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                            //       child: Container(
-                            //         decoration: const BoxDecoration(
-                            //           color: Colors.transparent,
-                            //         ),
-                            //         child: Flexible(
-                            //           flex: 1,
-                            //           child: Stack(
-                            //             alignment: Alignment.center,
-                            //             children: [
-                            //               Positioned(
-                            //                 right: 10,
-                            //                 top: 10,
-                            //                 child: IconButton(
-                            //                     onPressed: () {},
-                            //                     icon: const Icon(
-                            //                       Icons.favorite,
-                            //                       color: Colors.red,
-                            //                     )),
-                            //               )
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ),
                           ),
                         ),
                       )

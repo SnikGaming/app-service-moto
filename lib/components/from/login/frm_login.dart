@@ -5,16 +5,14 @@ import 'package:app/modules/app_constants.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
+import '../../../modules/home/api/login/api_login.dart';
 import '../../../network/api/google/google.dart';
-import '../../../network/api/user/user_api.dart';
 import '../../button/button.dart';
 import '../../functions/logout.dart';
 import '../../textfield/login/text_field_email.dart';
 
 class FromLogin extends StatefulWidget {
   const FromLogin({super.key});
-
   @override
   State<FromLogin> createState() => _FromLoginState();
 }
@@ -132,13 +130,15 @@ class _FromLoginState extends State<FromLogin> {
   }
 
   _btnLogin() async {
-    if (true) Message.error(message: "Login faild", context: context);
     if (formkey.currentState!.validate()) {
-      await UserAPI.Login(username: _email.text, password: _password.text);
+      var status = await login(email: _email.text, password: _password.text);
+      if (status == 200) {
+        Message.success(message: "Xin chào ${_email.text}", context: context);
+        Modular.to.navigate(Routes.home);
+      } else {
+        Message.error(message: "Đăng nhập thất bại", context: context);
+      }
       // ignore: use_build_context_synchronously
-      Message.success(message: "Hello ${_email.text}", context: context);
-
-      // Modular.to.navigate(Routes.home);
     }
   }
 }

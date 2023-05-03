@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'modules/home/api/booking/api_booking.dart';
 import 'modules/home/api/category/api_category.dart';
+import 'modules/home/api/login/api_login.dart';
 import 'modules/home/api/products/api_product.dart';
 
 Future<void> main(List<String> args) async {
@@ -24,6 +26,7 @@ Future<void> main(List<String> args) async {
   await ProductPrefer.init();
   await UserPrefer.init();
   await APIProduct.getData();
+  await APIBooking.fetchBookings();
   await APICategory.getData();
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
   // runApp(DevicePreview(
