@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
 import 'modules/home/api/category/api_category.dart';
 import 'modules/home/api/login/api_login.dart';
@@ -28,7 +29,8 @@ Future<void> main(List<String> args) async {
   await APIProduct.getData();
   await APICategory.getData();
   await APIBooking.fetchBookings();
-
+  await APIBanner.getData();
+  // if (UserPrefer.getToken() != null) {}
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
   // runApp(DevicePreview(
   //     // enabled: kIsWeb,

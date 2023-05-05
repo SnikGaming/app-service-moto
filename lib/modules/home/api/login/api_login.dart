@@ -14,7 +14,7 @@ Future login(
     {String email = "long@gmail.com", String password = "12345678"}) async {
   try {
     final response = await http.post(
-      Uri.parse("http://${ConnectDb.ip}/api/login"),
+      Uri.parse("${ConnectDb.url}/api/login"),
       body: {
         "email": email,
         "password": password,

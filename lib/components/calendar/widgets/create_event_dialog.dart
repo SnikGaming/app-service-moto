@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
 
+import 'package:app/modules/home/api/booking/api_booking.dart';
 import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:app/components/calendar/utills/extensions.dart';
 import 'package:app/components/calendar/widgets/picker_day_item_widget.dart';
 import 'package:app/components/calendar/widgets/week_days_widget.dart';
 
+import '../../convert/str_and_datetime.dart';
 import '../res/colors.dart';
 import '../utills/constants.dart';
 import 'date_picker_title_widget.dart';
@@ -213,12 +215,22 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   }
 
   /// Close dialog and pass [CalendarEventModel] as arguments.
-  void _onEventCreation() {
+  void _onEventCreation() async {
     final beginDate = _beginDate;
     final endDate = _endDate;
+
     if (beginDate == null || endDate == null) {
       return;
     }
+    String date = dateTimeToString(beginDate!);
+    Map<String, String> data = {
+      "note": '${_eventNameController.text}',
+      "booking_time": date,
+      "address": "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM",
+      "service": "abc",
+      "mechanic_id": '3'
+    };
+    await APIBooking.createBooking(data: data);
     Navigator.of(context).pop(
       CalendarEventModel(
         name: _eventNameController.text,

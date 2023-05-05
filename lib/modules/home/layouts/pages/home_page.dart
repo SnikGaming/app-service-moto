@@ -114,107 +114,29 @@ class _HomePageState extends State<HomePage>
 
   CustomScrollView _customScrollview(BuildContext context, size) {
     //?: Data products
-    var sliverList = SliverList(
-        delegate: SliverChildBuilderDelegate(
-      childCount: productData.length,
-      (context, index) => GestureDetector(
-        onTap: () {
-          Modular.to.pushNamed(Routes.details, arguments: productData[index]);
-          // serviceDetail(context, size, productData[index]);
-        },
-        child: Padding(
-          padding:
-              EdgeInsets.only(top: index == 0 ? 0 : 16, left: 16, right: 16),
-          child: Container(
-            decoration: const BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: Offset(3, 3),
-                blurRadius: 16,
-              )
-            ]),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                color: SettingPrefer.getLightDark() == null ||
-                        SettingPrefer.getLightDark()
-                    ? white
-                    : black,
-                // color: lsColor[Random().nextInt(lsColor.length)],
-                height: 200,
-                width: size.width,
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              // color: Colors.red,
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
-                                  fit: BoxFit.cover)),
-                        ),
-                      ),
-                    )),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              textAlign: TextAlign.left,
-                              productData[index].name!,
-                              style: MyTextStyle.title.copyWith(
-                                fontSize: 18,
-                                color: SettingPrefer.getLightDark() == null ||
-                                        SettingPrefer.getLightDark()
-                                    ? black
-                                    : white,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            SizedBox(
-                              width: size.width,
-                              child: Text('${productData[index].price}',
-                                  style: MyTextStyle.normal.copyWith(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  )),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Text('Yêu thích '),
-                                Text(
-                                  '${productData[index].like}',
-                                  style: MyTextStyle.normal
-                                      .copyWith(color: Colors.red),
-                                ),
-                                const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+    // var sliverList = SliverList(
+    //     delegate: SliverChildBuilderDelegate(
+    //   childCount: productData.length,
+    //   (context, index) => ItemProduct(productData: productData),
+    // ));
+    var sliverList = SliverGrid.builder(
+      itemCount: productData.length,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 250,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        childAspectRatio: .5,
+      ),
+      itemBuilder: (context, index) => Padding(
+        padding: EdgeInsets.only(
+            left: index % 2 == 0 ? 16 : 0, right: index % 2 == 0 ? 0 : 16),
+        child: ItemProduct(
+          productData: productData,
+          index: index,
         ),
       ),
-    ));
+    );
+
     return CustomScrollView(
       slivers: [
         //!: Appbar
@@ -268,12 +190,15 @@ class _HomePageState extends State<HomePage>
                 ? white
                 : black,
             height: 200,
-            child: MySlider(),
+            child: const Padding(
+              padding: const EdgeInsets.all(10),
+              child: MySlider(),
+            ),
           ),
         ),
         //? Category
         SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           sliver: SliverGrid.builder(
             itemCount: categoryData.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -311,7 +236,7 @@ class _HomePageState extends State<HomePage>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.network(
-                      'http://${ConnectDb.ip}${categoryData[index].image}',
+                      '${ConnectDb.url}${categoryData[index].image}',
                       color: indexData == index ? white : black,
                       height: 45,
                     ),
@@ -630,6 +555,131 @@ class _HomePageState extends State<HomePage>
         textBuilder: (value) => value
             ? const Center(child: Text('Oh no...'))
             : const Center(child: Text('Nice :)')),
+      ),
+    );
+  }
+}
+
+class ItemProduct extends StatelessWidget {
+  const ItemProduct({
+    super.key,
+    required this.productData,
+    required this.index,
+  });
+  final int index;
+  final List<products.Data> productData;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Modular.to.pushNamed(Routes.details, arguments: productData[index]);
+        // serviceDetail(context, size, productData[index]);
+      },
+      child: Container(
+        decoration: const BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            offset: Offset(3, 3),
+            blurRadius: 16,
+          )
+        ]),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+              color: SettingPrefer.getLightDark() == null ||
+                      SettingPrefer.getLightDark()
+                  ? white
+                  : black,
+              // color: lsColor[Random().nextInt(lsColor.length)],
+              height: 300,
+              width: 250,
+              child: Container(
+                child: Column(
+                  children: [
+                    Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  // color: Colors.red,
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
+                                      fit: BoxFit.cover)),
+                            ),
+                          ),
+                        )),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Text(
+                                productData[index].name!.length > 45
+                                    ? '${productData[index].name!.substring(0, 45)}...'
+                                    : productData[index].name!,
+                                textAlign: TextAlign.left, // căn lề trái
+                                style: MyTextStyle.title.copyWith(
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: SettingPrefer.getLightDark() == null ||
+                                          SettingPrefer.getLightDark()
+                                      ? black
+                                      : white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                  size: 14,
+                                ),
+                                Text(
+                                  '${productData[index].like}',
+                                  style: MyTextStyle.normal
+                                      .copyWith(fontSize: 12)
+                                      .copyWith(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            Row(
+                              children: [
+                                Text('Giá : ',
+                                    style: MyTextStyle.normal.copyWith(
+                                      color: Colors.red,
+                                      fontSize: 18,
+                                    )),
+                                Container(
+                                  padding: const EdgeInsetsDirectional.all(3),
+                                  color: Colors.black,
+                                  child: Text('${productData[index].price}',
+                                      style: MyTextStyle.normal.copyWith(
+                                        color: Colors.yellow,
+                                        fontSize: 18,
+                                      )),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+        ),
       ),
     );
   }

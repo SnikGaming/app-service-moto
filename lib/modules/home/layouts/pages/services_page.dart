@@ -127,103 +127,110 @@ class _ServicesPageState extends State<ServicesPage> {
                     //?: Loading data
                     child: ListView.builder(
                       itemCount: lsBooking.length,
-                      itemBuilder: (context, i) => Padding(
-                        padding: EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                            top: i == 0 ? 0 : 20,
-                            bottom: i == lsBooking.length - 1 ? 200 : 0),
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minHeight: 80,
-                          ),
-                          width: size.width,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                width: 1,
-                                color: const Color.fromARGB(255, 149, 101, 211)
-                                // color: Colors.grey.withOpacity(0.5),
-                                ),
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Booking ${i + 1}",
-                                      style: title,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "${lsBooking[i].bookingTime}",
-                                          style: subTitle,
-                                        ),
-                                        const Icon(Icons.calendar_today),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    const Icon(Icons.location_on),
-                                    Text(
-                                      "${lsBooking[i].service}",
-                                      style: subTitle,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'BOOKING',
-                                  style: title.copyWith(
-                                    color: randomColor(),
-                                    fontSize: 16,
+                      itemBuilder: (context, i) => GestureDetector(
+                        onTap: () async {
+                          print('data ____');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 20,
+                              right: 20,
+                              top: i == 0 ? 0 : 20,
+                              bottom: i == lsBooking.length - 1 ? 200 : 0),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                              minHeight: 80,
+                            ),
+                            width: size.width,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                  width: 1,
+                                  color:
+                                      const Color.fromARGB(255, 149, 101, 211)
+                                  // color: Colors.grey.withOpacity(0.5),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    const Flexible(
-                                        flex: 1,
-                                        child: Icon(
-                                          Icons.note,
-                                          color: Colors.orange,
-                                        )),
-                                    const SizedBox(width: 10),
-                                    Flexible(
-                                        flex: 9,
-                                        child: Text(
-                                          "${lsBooking[i].note}",
-                                          style: subTitle,
-                                        )),
-                                  ],
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
                                 ),
                               ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Booking ${i + 1}",
+                                        style: title,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "${lsBooking[i].bookingTime}",
+                                            style: subTitle,
+                                          ),
+                                          const Icon(Icons.calendar_today),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.location_on),
+                                      Text(
+                                        "${lsBooking[i].service}",
+                                        style: subTitle,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'BOOKING',
+                                    style: title.copyWith(
+                                      color: randomColor(),
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Flexible(
+                                          flex: 1,
+                                          child: Icon(
+                                            Icons.note,
+                                            color: Colors.orange,
+                                          )),
+                                      const SizedBox(width: 10),
+                                      Flexible(
+                                          flex: 9,
+                                          child: Text(
+                                            "${lsBooking[i].note}",
+                                            style: subTitle,
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

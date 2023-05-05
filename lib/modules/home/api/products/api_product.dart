@@ -21,7 +21,7 @@ class APIProduct {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://${ConnectDb.ip}/api/products?category_id=$category_id&page=$page&search=$search&min_price=$min_price&max_price=$max_price"),
+            "${ConnectDb.url}/api/products?category_id=$category_id&page=$page&search=$search&min_price=$min_price&max_price=$max_price"),
         // headers: {'Authorization': 'Bearer $token'}
       );
       final jsonData = json.decode(response.body);

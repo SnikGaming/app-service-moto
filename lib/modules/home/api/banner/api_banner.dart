@@ -1,18 +1,17 @@
-//172.19.176.1:3000/san-pham/search?page=3
 import 'dart:convert';
 
+import 'package:app/modules/home/api/banner/model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../network/connect.dart';
-import 'models/category.dart';
 
-class APICategory {
+class APIBanner {
   static List<Data> apiCategory = [];
 
   static Future<List<Data>> getData() async {
     try {
       final response = await http.get(
-        Uri.parse("${ConnectDb.url}/api/categories/"),
+        Uri.parse("${ConnectDb.url}/api/banners/"),
 
         // headers: {'Authorization': 'Bearer $token'}
       );
@@ -20,7 +19,7 @@ class APICategory {
       // print('data loai try catch');
 
       final List<dynamic> projectListJson = jsonData['data'];
-      // print('data loai $projectListJson');
+      print('data banner $projectListJson');
 
       final List<Data> data = projectListJson
           .map((projectJson) => Data.fromJson(projectJson))
