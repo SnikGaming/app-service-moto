@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, use_build_context_synchronously
 
 import 'package:app/modules/home/api/booking/api_booking.dart';
 import 'package:cr_calendar/cr_calendar.dart';
@@ -222,9 +222,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     if (beginDate == null || endDate == null) {
       return;
     }
-    String date = dateTimeToString(beginDate!);
+    String date = dateTimeToString(beginDate);
     Map<String, String> data = {
-      "note": '${_eventNameController.text}',
+      "note": _eventNameController.text,
       "booking_time": date,
       "address": "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM",
       "service": "abc",

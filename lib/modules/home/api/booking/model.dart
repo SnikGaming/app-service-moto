@@ -19,7 +19,7 @@ class Booking {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     currentPage = json['current_page'];
@@ -29,15 +29,15 @@ class Booking {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['current_page'] = this.currentPage;
-    data['last_page'] = this.lastPage;
-    data['per_page'] = this.perPage;
-    data['total_items'] = this.totalItems;
+    data['current_page'] = currentPage;
+    data['last_page'] = lastPage;
+    data['per_page'] = perPage;
+    data['total_items'] = totalItems;
     return data;
   }
 }
@@ -80,17 +80,17 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['customer_id'] = this.customerId;
-    data['mechanic_id'] = this.mechanicId;
-    data['color'] = this.color;
-    data['service'] = this.service;
-    data['note'] = this.note;
-    data['booking_time'] = this.bookingTime;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['customer_id'] = customerId;
+    data['mechanic_id'] = mechanicId;
+    data['color'] = color;
+    data['service'] = service;
+    data['note'] = note;
+    data['booking_time'] = bookingTime;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

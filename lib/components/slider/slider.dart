@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../models/slider/slider_model.dart';
 import '../../network/connect.dart';
-import 'item.dart';
 
 class MySlider extends StatefulWidget {
   const MySlider({super.key});

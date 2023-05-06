@@ -21,12 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  String? _selectedGender;
-
-  final List<String> _genderList = [
-    'Male',
-    'Female',
-  ];
 
   String _avatarUrl = '';
   Gender _gender = Gender.male;

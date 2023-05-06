@@ -1,9 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 class ImageZoom extends StatefulWidget {
   final String imageUrl;
 
-  ImageZoom({required this.imageUrl});
+  const ImageZoom({super.key, required this.imageUrl});
 
   @override
   _ImageZoomState createState() => _ImageZoomState();

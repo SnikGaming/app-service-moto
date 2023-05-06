@@ -23,9 +23,7 @@ Future login(
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final String tempToken = responseData['token'];
-      print('token $tempToken');
       final token = extractToken(tempToken);
-      print('token $token');
       UserPrefer.setToken(value: token!);
       return 200;
     } else {

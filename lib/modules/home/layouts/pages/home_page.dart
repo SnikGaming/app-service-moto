@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage>
                 : black,
             height: 200,
             child: const Padding(
-              padding: const EdgeInsets.only(top: 26, left: 10, right: 10),
+              padding: EdgeInsets.only(top: 26, left: 10, right: 10),
               child: MySlider(),
             ),
           ),
@@ -266,8 +266,8 @@ class _HomePageState extends State<HomePage>
                       color: indexData == index ? white : black,
                       height: 45,
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
                     Text(
                       '${categoryData[index].name}',
@@ -649,90 +649,88 @@ class ItemProduct extends StatelessWidget {
               // color: lsColor[Random().nextInt(lsColor.length)],
               height: 300,
               width: 250,
-              child: Container(
-                child: Column(
-                  children: [
-                    Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  // color: Colors.red,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
-                                      fit: BoxFit.cover)),
-                            ),
-                          ),
-                        )),
-                    Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                      flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Text(
-                                productData[index].name!.length > 45
-                                    ? '${productData[index].name!.substring(0, 45)}...'
-                                    : productData[index].name!,
-                                textAlign: TextAlign.left, // căn lề trái
-                                style: MyTextStyle.title.copyWith(
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                  color: SettingPrefer.getLightDark() == null ||
-                                          SettingPrefer.getLightDark()
-                                      ? black
-                                      : white,
-                                ),
+                        padding: const EdgeInsets.all(10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                // color: Colors.red,
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
+                                    fit: BoxFit.cover)),
+                          ),
+                        ),
+                      )),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Text(
+                              productData[index].name!.length > 45
+                                  ? '${productData[index].name!.substring(0, 45)}...'
+                                  : productData[index].name!,
+                              textAlign: TextAlign.left, // căn lề trái
+                              style: MyTextStyle.title.copyWith(
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                                color: SettingPrefer.getLightDark() == null ||
+                                        SettingPrefer.getLightDark()
+                                    ? black
+                                    : white,
                               ),
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                  size: 14,
-                                ),
-                                Text(
-                                  '${productData[index].like}',
-                                  style: MyTextStyle.normal
-                                      .copyWith(fontSize: 12)
-                                      .copyWith(color: Colors.red),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            Row(
-                              children: [
-                                Text('Giá : ',
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 14,
+                              ),
+                              Text(
+                                '${productData[index].like}',
+                                style: MyTextStyle.normal
+                                    .copyWith(fontSize: 12)
+                                    .copyWith(color: Colors.red),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Row(
+                            children: [
+                              Text('Giá : ',
+                                  style: MyTextStyle.normal.copyWith(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  )),
+                              Container(
+                                padding: const EdgeInsetsDirectional.all(3),
+                                color: Colors.black,
+                                child: Text('${productData[index].price}',
                                     style: MyTextStyle.normal.copyWith(
-                                      color: Colors.red,
+                                      color: Colors.yellow,
                                       fontSize: 18,
                                     )),
-                                Container(
-                                  padding: const EdgeInsetsDirectional.all(3),
-                                  color: Colors.black,
-                                  child: Text('${productData[index].price}',
-                                      style: MyTextStyle.normal.copyWith(
-                                        color: Colors.yellow,
-                                        fontSize: 18,
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )),
         ),
       ),

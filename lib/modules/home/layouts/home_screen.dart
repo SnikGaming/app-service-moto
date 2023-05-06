@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, non_constant_identifier_names
 import 'package:app/modules/home/layouts/pages/home_page.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 import '../../../components/calendar/pages/calendar_page.dart';
 import '../../../constants/colors.dart';
-import '../../../preferences/user/user_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

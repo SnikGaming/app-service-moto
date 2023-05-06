@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:app/components/message/message.dart';
 import 'package:app/modules/home/api/booking/model.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +19,6 @@ class APIBooking {
 
       final List<dynamic> bookingListJson = jsonData['data'];
       toTal = jsonData['last_page'];
-      print('data ____ Booking data: $bookingListJson');
       // print('Booking data: ${APIBooking.toTal}');
 
       final List<Data> bookings = bookingListJson

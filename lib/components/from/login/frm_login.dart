@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore
+
 import 'package:app/components/message/message.dart';
 import 'package:app/components/textfield/login/text_field_password.dart';
 import 'package:app/constants/const_text.dart';
