@@ -9,6 +9,8 @@ class LogoutApp {
     await UserPrefer.removeImageUser();
     await UserPrefer.removesetUserName();
     await UserPrefer.removesetToken();
+    await UserPrefer.removeId();
+    await UserPrefer.removeGioiTinh();
 
     //!: Setting
 

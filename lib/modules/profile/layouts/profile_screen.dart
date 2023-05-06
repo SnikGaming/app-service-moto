@@ -2,30 +2,51 @@
 
 import 'dart:io';
 
+import 'package:app/modules/home/api/login/model.dart' as value;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../components/button/button.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  var data = [];
+  ProfileScreen({super.key, required this.data});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState(data: data);
 }
 
 enum Gender { male, female, other }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  var data = [];
+
+  _ProfileScreenState({required this.data});
+
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-
   String _avatarUrl = '';
   Gender _gender = Gender.male;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  loadData() {
+    _fullNameController.text = data[0].name;
+    _emailController.text = data[0].email;
+
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print('this is data ${data[0].id}');
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -147,7 +168,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 20.0),
                       SizedBox(
                         width: size.width,

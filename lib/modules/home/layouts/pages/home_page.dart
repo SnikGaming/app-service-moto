@@ -1,6 +1,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
 import 'package:app/components/button/mybutton.dart';
+import 'package:app/components/message/message.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/modules/app_constants.dart';
@@ -23,8 +24,10 @@ import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
 import 'package:badges/badges.dart' as badges;
 import '../../api/category/models/category.dart' as categories;
+import '../../api/login/api_login.dart';
 import '../../api/products/api_product.dart';
 import '../../api/products/models/products.dart' as products;
+import '../../api/login/model.dart' as users;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,11 +40,14 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   final _scrollController = ScrollController();
+  bool isProfile = false;
   var indexData = 0;
   var totalPage = 0;
+  String username = UserPrefer.getsetUserName() ?? 'GUEST';
   int page = 1;
   List<products.Data> productData = [];
   List<categories.Data> categoryData = [];
+  users.Data user = users.Data();
   scrollData() {
     _scrollController.animateTo(
       0,
@@ -51,9 +57,13 @@ class _HomePageState extends State<HomePage>
   }
 
   loadData() async {
-    productData =
-        await APIProduct.getData(category_id: indexData + 1, page: page);
-    categoryData = await APICategory.getData();
+    final productDataFuture =
+        APIProduct.getData(category_id: indexData + 1, page: page);
+    final categoryDataFuture = APICategory.getData();
+    List<dynamic> results =
+        await Future.wait([productDataFuture, categoryDataFuture]);
+    productData = results[0];
+    categoryData = results[1];
     totalPage = ProductPrefer.getTotal()!;
     setState(() {});
   }
@@ -123,6 +133,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    username = UserPrefer.getsetUserName() ?? 'GUEST';
     // Future.delayed(Duration(seconds: 8)).then((value) => loadData());
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -233,13 +244,11 @@ class _HomePageState extends State<HomePage>
             ),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () async {
-                indexData = index;
-                page = 1;
-
-                productData = await APIProduct.getData(
-                    category_id: indexData + 1, page: page);
-                totalPage = ProductPrefer.getTotal()!;
-                setState(() {});
+                setState(() {
+                  indexData = index;
+                  page = 1;
+                  loadData();
+                });
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -267,7 +276,8 @@ class _HomePageState extends State<HomePage>
                       height: 45,
                       placeholder: (context, url) =>
                           const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                     Text(
                       '${categoryData[index].name}',
@@ -458,9 +468,20 @@ class _HomePageState extends State<HomePage>
               // borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
             ),
             child: GestureDetector(
-              onTap: () {
-                setState(() {});
-                Modular.to.pushNamed(Routes.profile);
+              onTap: () async {
+                if (!isProfile) {
+                  isProfile = true;
+                  try {
+                    user = (await APIAuth.getUser())!;
+                    Modular.to.pushNamed(Routes.profile,
+                        arguments: [user]).then((value) => isProfile = false);
+                  } catch (e) {
+                    Message.warning(
+                        message: 'Bạn chưa đăng nhập', context: context);
+                  }
+                  Future.delayed(const Duration(seconds: 5))
+                      .then((value) => isProfile = false);
+                }
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -484,7 +505,7 @@ class _HomePageState extends State<HomePage>
                     height: 16,
                   ),
                   Text(
-                    UserPrefer.getsetUserName() ?? 'GUEST',
+                    username,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -499,7 +520,7 @@ class _HomePageState extends State<HomePage>
             leading: const Icon(
               Icons.attach_money,
               color: Colors.green,
-            ), 
+            ),
             title: const Text('Bill history'),
             onTap: () {},
           ),
@@ -520,7 +541,11 @@ class _HomePageState extends State<HomePage>
                   ),
                   title: const Text('Login'),
                   onTap: () {
-                    Modular.to.pushNamed(Routes.login);
+                    Modular.to.pushNamed(Routes.login).then((value) {
+                      Navigator.pop(context);
+
+                      setState(() {});
+                    });
                   },
                 )
               : ListTile(
@@ -533,8 +558,8 @@ class _HomePageState extends State<HomePage>
                     AuthWithGoogle.googleSignOutMethod(context)
                         .then((value) => Modular.to.navigate(Routes.home));
                     LogoutApp.Logout();
-                    Future.delayed(const Duration(seconds: 1))
-                        .then((value) => {setState(() {})});
+
+                    setState(() {});
                   },
                 ),
 

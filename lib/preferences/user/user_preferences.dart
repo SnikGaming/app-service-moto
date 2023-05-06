@@ -4,6 +4,9 @@ class UserPrefer {
   static const _email = "username";
 
   static const __imageUser = 'pic';
+  static const __id = 'id';
+
+  static const __gioitinh = 'gioitinh';
 
   static const _data = "token";
 
@@ -37,4 +40,15 @@ class UserPrefer {
       await preferences!.setString(_data, value);
   static getToken() => preferences!.getString(_data);
   static Future removesetToken() async => await preferences!.remove(_data);
+//!: id
+  static Future setId({required int value}) async =>
+      await preferences!.setInt(__id, value);
+  static getId() => preferences!.getInt(__id);
+  static Future removeId() async => await preferences!.remove(__id);
+
+  //!: gioi tinh
+  static Future setGioiTinh({required String value}) async =>
+      await preferences!.setString(__gioitinh, value);
+  static getGioiTinh() => preferences!.getString(__gioitinh);
+  static Future removeGioiTinh() async => await preferences!.remove(__gioitinh);
 }

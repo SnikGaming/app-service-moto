@@ -1,4 +1,5 @@
 import 'package:app/modules/app_module.dart';
+import 'package:app/modules/home/api/login/api_login.dart';
 import 'package:app/preferences/product/product.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:app/preferences/user/user_preferences.dart';
@@ -30,7 +31,9 @@ Future<void> main(List<String> args) async {
 
   if (UserPrefer.getToken() != null) {
     await APIBooking.fetchBookings();
+    await APIAuth.getUser();
   }
+
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
   // runApp(DevicePreview(
   //     // enabled: kIsWeb,

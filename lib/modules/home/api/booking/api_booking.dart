@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:app/components/message/message.dart';
 import 'package:app/modules/home/api/booking/model.dart';
 import 'package:app/network/connect.dart';
 import 'package:app/preferences/user/user_preferences.dart';
