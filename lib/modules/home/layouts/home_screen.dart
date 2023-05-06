@@ -1,10 +1,13 @@
 // ignore_for_file: unused_element
-
-import 'package:app/components/test/item.dart';
+import 'package:app/modules/home/layouts/pages/home_page.dart';
+import 'package:app/modules/home/layouts/pages/profie_page.dart';
+import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 
+import '../../../components/calendar/pages/calendar_page.dart';
 import '../../../constants/colors.dart';
+import '../../../preferences/user/user_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,8 +18,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  List<Widget> TestScreen = [
+    const HomePage(),
+    const ServicesPage(),
+    const CalendarPage(),
+    const ProFilePage(),
+  ];
+
   Future<void> refreshData() async {
     await Future.delayed(const Duration(seconds: 3));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override

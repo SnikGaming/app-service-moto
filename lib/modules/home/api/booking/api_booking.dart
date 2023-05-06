@@ -20,7 +20,7 @@ class APIBooking {
 
       final List<dynamic> bookingListJson = jsonData['data'];
       toTal = jsonData['last_page'];
-      // print('Booking data: $bookingListJson');
+      print('data ____ Booking data: $bookingListJson');
       // print('Booking data: ${APIBooking.toTal}');
 
       final List<Data> bookings = bookingListJson

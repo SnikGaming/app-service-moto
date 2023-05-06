@@ -2,13 +2,17 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/constants/colors.dart';
+import 'package:app/functions/random_color.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/api/category/api_category.dart';
+import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pagination_flutter/pagination.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
@@ -32,15 +36,25 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  final _scrollController = ScrollController();
   var indexData = 0;
+  var totalPage = 0;
   int page = 1;
   List<products.Data> productData = [];
   List<categories.Data> categoryData = [];
+  scrollData() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   loadData() async {
     productData =
         await APIProduct.getData(category_id: indexData + 1, page: page);
     categoryData = await APICategory.getData();
+    totalPage = ProductPrefer.getTotal()!;
     setState(() {});
   }
 
@@ -48,6 +62,7 @@ class _HomePageState extends State<HomePage>
   void dispose() {
     _animationController.dispose();
     // ignore: todo
+    _scrollController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -88,9 +103,17 @@ class _HomePageState extends State<HomePage>
     super.initState();
     isCheck = SettingPrefer.getLightDark() ?? true;
     loadData();
-    // print(isCheck);
-    // print(SettingPrefer.getLightDark());
-
+    _scrollController.addListener(() {
+      // if (_scrollController.offset > 0) {
+      //   setState(() {
+      //     print('data ____ ${_scrollController.offset}');
+      //   });
+      // } else {
+      //   setState(() {
+      //     print('data ____ ${_scrollController.offset}');
+      //   });
+      // }
+    });
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
     // _animationColor = Tween<Color>(begin: ).animate(_animationController);
@@ -138,6 +161,7 @@ class _HomePageState extends State<HomePage>
     );
 
     return CustomScrollView(
+      controller: _scrollController,
       slivers: [
         //!: Appbar
         SliverAppBar(
@@ -210,9 +234,11 @@ class _HomePageState extends State<HomePage>
             itemBuilder: (context, index) => GestureDetector(
               onTap: () async {
                 indexData = index;
-                indexData = index;
+                page = 1;
+
                 productData = await APIProduct.getData(
                     category_id: indexData + 1, page: page);
+                totalPage = ProductPrefer.getTotal()!;
                 setState(() {});
               },
               child: Container(
@@ -235,10 +261,17 @@ class _HomePageState extends State<HomePage>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.network(
-                      '${ConnectDb.url}${categoryData[index].image}',
-                      color: indexData == index ? white : black,
+                    // Image.network(
+                    //   '${ConnectDb.url}${categoryData[index].image}',
+                    //   color: indexData == index ? white : black,
+                    //   height: 45,
+                    // ),
+                    CachedNetworkImage(
+                      imageUrl: '${ConnectDb.url}${categoryData[index].image}',
                       height: 45,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                     Text(
                       '${categoryData[index].name}',
@@ -275,80 +308,106 @@ class _HomePageState extends State<HomePage>
         SliverToBoxAdapter(
           child: productData.isEmpty
               ? Container()
-              : Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.arrow_back_ios_new_rounded),
-                      const SizedBox(
-                        width: 10,
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Pagination(
+                      numOfPages: ProductPrefer.getTotal()!,
+                      selectedPage: page,
+                      pagesVisible: 3,
+                      spacing: 10,
+                      onPageChanged: (value) {
+                        scrollData();
+                        setState(() {
+                          page = value;
+                          loadData();
+                        });
+                      },
+                      nextIcon: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 14,
                       ),
-                      SizedBox(
-                        height: 45,
-                        width: 220,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: ProductPrefer.getTotal()!,
-                            itemBuilder: (context, i) => GestureDetector(
-                                  onTap: () {
-                                    page = i + 1;
-                                    loadData();
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => const Center(
-                                            child:
-                                                CircularProgressIndicator()));
-                                    Future.delayed(const Duration(seconds: 2))
-                                        .then((value) =>
-                                            {Navigator.pop(context)});
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: 44,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: page == i + 1
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            ),
-                                            color: page == i + 1
-                                                ? Colors.purple
-                                                : Colors.white,
-                                            borderRadius: BorderRadius.circular(
-                                              30,
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              '${i + 1}',
-                                              style: TextStyle(
-                                                color: page == i + 1
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )),
+                      previousIcon: const Icon(
+                        Icons.arrow_back_ios,
+                        size: 14,
                       ),
-                      const SizedBox(
-                        width: 10,
+                      activeTextStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
                       ),
-                      const RotatedBox(
-                          quarterTurns: 90,
-                          child: Icon(Icons.arrow_back_ios_new_rounded)),
-                    ],
-                  ),
+                      activeBtnStyle: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(38),
+                          ),
+                        ),
+                      ),
+                      inactiveBtnStyle: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        )),
+                      ),
+                      inactiveTextStyle: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () => setState(() {
+                            scrollData();
+                            page = 1;
+                            loadData();
+                          }),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: randomColor(),
+                            ),
+                            height: 30,
+                            width: 100,
+                            child: const Center(
+                                child: Text(
+                              'Đầu trang',
+                              style: h1,
+                            )),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              scrollData();
+                              page = totalPage;
+                              loadData();
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: randomColor(),
+                            ),
+                            height: 30,
+                            width: 100,
+                            child: const Center(
+                                child: Text(
+                              'Cuối trang',
+                              style: h1,
+                            )),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
         ),
+
         //?:footer
         _footer(size)
       ],

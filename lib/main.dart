@@ -3,7 +3,6 @@ import 'package:app/preferences/product/product.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
 import 'modules/home/api/category/api_category.dart';
-import 'modules/home/api/login/api_login.dart';
 import 'modules/home/api/products/api_product.dart';
 
 Future<void> main(List<String> args) async {
@@ -26,11 +24,16 @@ Future<void> main(List<String> args) async {
   await SettingPrefer.init();
   await ProductPrefer.init();
   await UserPrefer.init();
-  await APIProduct.getData();
-  await APICategory.getData();
-  await APIBooking.fetchBookings();
   await APIBanner.getData();
-  // if (UserPrefer.getToken() != null) {}
+  Future.delayed(const Duration(seconds: 3)).then((value) async {
+    await APICategory.getData();
+  });
+  Future.delayed(const Duration(seconds: 7)).then((value) async {
+    await APIProduct.getData();
+  });
+  if (UserPrefer.getToken() != null) {
+    await APIBooking.fetchBookings();
+  }
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
   // runApp(DevicePreview(
   //     // enabled: kIsWeb,

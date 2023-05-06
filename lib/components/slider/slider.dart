@@ -1,4 +1,6 @@
+import 'package:app/functions/random_color.dart';
 import 'package:app/modules/home/api/banner/api_banner.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -25,45 +27,32 @@ class _MySliderState extends State<MySlider> {
         enlargeFactor: 0.4,
       ),
       items: List.generate(
-          APIBanner.apiCategory.length,
+          APIBanner.apiBanner.length,
           (index) => Container(
                 height: 250,
                 width: 330,
-                decoration: BoxDecoration(
-                  // color: Colors.red,
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          '${ConnectDb.url}${APIBanner.apiCategory[index].image}'),
-                      fit: BoxFit.cover),
+                decoration: const BoxDecoration(
+                  //           color: randomColor(),
+                  //         )))
+                  color: Colors.red,
+                  // image: DecorationImage(
+                  //     image: NetworkImage(
+                  //         '${ConnectDb.url}${APIBanner.apiBanner[index].image}'),
+                  //     fit: BoxFit.cover),
+                ),
+                child: Expanded(
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        '${ConnectDb.url}${APIBanner.apiBanner[index].image}',
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ),
               )),
     );
   }
 }
-// ignore: non_constant_identifier_names
-// MySlider() => CarouselSlider(
-//       options: CarouselOptions(
-//         aspectRatio: 2.0,
-//         autoPlay: true,
-//         enlargeCenterPage: true,
-//         enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-//         enlargeFactor: 0.4,
-//       ),
-//       items: List.generate(
-//           APIBanner.apiCategory.length,
-//           (index) => Container(
-//                 height: 250,
-//                 width: 330,
-//                 color: Colors.red,
-//                 decoration: BoxDecoration(
-//                     image: DecorationImage(
-//                         image: NetworkImage(
-//                             'http://${ConnectDb.ip}${APIBanner.apiCategory[index].image}'))),
-//               )),
-//     );
-// items: List.generate(lsSliver.length,
-//     (index) => iteamSlider(data: lsSliver[index])) //imageSliders,
-// );
 
 List<SliderModel> lsSliver = [
   SliderModel(id: '1', name: 'Khuyến mãi 10%'),
