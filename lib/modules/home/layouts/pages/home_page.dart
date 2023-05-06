@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage>
                 : black,
             height: 200,
             child: const Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(top: 26, left: 10, right: 10),
               child: MySlider(),
             ),
           ),
@@ -261,13 +261,9 @@ class _HomePageState extends State<HomePage>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Image.network(
-                    //   '${ConnectDb.url}${categoryData[index].image}',
-                    //   color: indexData == index ? white : black,
-                    //   height: 45,
-                    // ),
                     CachedNetworkImage(
                       imageUrl: '${ConnectDb.url}${categoryData[index].image}',
+                      color: indexData == index ? white : black,
                       height: 45,
                       placeholder: (context, url) =>
                           CircularProgressIndicator(),

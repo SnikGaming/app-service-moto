@@ -28,25 +28,24 @@ class _MySliderState extends State<MySlider> {
       ),
       items: List.generate(
           APIBanner.apiBanner.length,
-          (index) => Container(
-                height: 250,
-                width: 330,
-                decoration: const BoxDecoration(
-                  //           color: randomColor(),
-                  //         )))
-                  color: Colors.red,
-                  // image: DecorationImage(
-                  //     image: NetworkImage(
-                  //         '${ConnectDb.url}${APIBanner.apiBanner[index].image}'),
-                  //     fit: BoxFit.cover),
-                ),
-                child: Expanded(
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        '${ConnectDb.url}${APIBanner.apiBanner[index].image}',
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+          (index) => ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: Container(
+                  height: 250,
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: randomColor(),
+                  ),
+                  child: Expanded(
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          '${ConnectDb.url}${APIBanner.apiBanner[index].image}',
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                   ),
                 ),
               )),
