@@ -499,7 +499,7 @@ class _HomePageState extends State<HomePage>
             leading: const Icon(
               Icons.attach_money,
               color: Colors.green,
-            ), //Image.asset('assets/icons/user/bill.png', height: 45),
+            ), 
             title: const Text('Bill history'),
             onTap: () {},
           ),
@@ -508,7 +508,6 @@ class _HomePageState extends State<HomePage>
               Icons.calendar_month_outlined,
               color: Colors.blue,
             ),
-            //leading: Image.asset('assets/icons/user/booking.png', height: 45),
             title: const Text('Booking history'),
             onTap: () {},
           ),
@@ -519,7 +518,6 @@ class _HomePageState extends State<HomePage>
                     Icons.login,
                     color: Colors.purple,
                   ),
-                  // leading: Image.asset('assets/appbar/login.png', height: 45),
                   title: const Text('Login'),
                   onTap: () {
                     Modular.to.pushNamed(Routes.login);
@@ -530,7 +528,6 @@ class _HomePageState extends State<HomePage>
                     Icons.logout_outlined,
                     color: Colors.red,
                   ),
-                  // leading: Image.asset('assets/appbar/logout.png', height: 45),
                   title: const Text('Logout'),
                   onTap: () {
                     AuthWithGoogle.googleSignOutMethod(context)

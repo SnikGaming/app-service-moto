@@ -1,4 +1,3 @@
-
 import 'package:app/components/message/message.dart';
 import 'package:app/modules/home/api/booking/model.dart' as Booking;
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ class ServicesPage extends StatefulWidget {
 }
 
 class _ServicesPageState extends State<ServicesPage> {
-  List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
   @override
   void initState() {
     // TODO: implement initState

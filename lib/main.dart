@@ -24,13 +24,10 @@ Future<void> main(List<String> args) async {
   await SettingPrefer.init();
   await ProductPrefer.init();
   await UserPrefer.init();
+  await APICategory.getData();
   await APIBanner.getData();
-  Future.delayed(const Duration(seconds: 3)).then((value) async {
-    await APICategory.getData();
-  });
-  Future.delayed(const Duration(seconds: 7)).then((value) async {
-    await APIProduct.getData();
-  });
+  await APIProduct.getData();
+
   if (UserPrefer.getToken() != null) {
     await APIBooking.fetchBookings();
   }

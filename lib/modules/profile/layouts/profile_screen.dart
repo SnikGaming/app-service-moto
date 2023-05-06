@@ -113,26 +113,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         labelText: 'Address',
                       ),
                       const SizedBox(height: 16.0),
-                      // DropdownButtonFormField<String>(
-                      //   decoration: InputDecoration(
-                      //     labelText: 'Gender',
-                      //     border: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //   ),
-                      //   value: _selectedGender,
-                      //   onChanged: (value) {
-                      //     setState(() {
-                      //       _selectedGender = value;
-                      //     });
-                      //   },
-                      //   items: _genderList.map((gender) {
-                      //     return DropdownMenuItem<String>(
-                      //       value: gender,
-                      //       child: Text(gender),
-                      //     );
-                      //   }).toList(),
-                      // ),
                       Column(
                         children: [
                           RadioListTile<Gender>(

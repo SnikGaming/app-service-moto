@@ -133,7 +133,8 @@ class _FromLoginState extends State<FromLogin> {
 
   _btnLogin() async {
     if (formkey.currentState!.validate()) {
-      var status = await login(email: _email.text, password: _password.text);
+      var status =
+          await APIAuth.login(email: _email.text, password: _password.text);
       if (status == 200) {
         Message.success(message: "Xin chào ${_email.text}", context: context);
         Modular.to.navigate(Routes.home);
