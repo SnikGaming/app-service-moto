@@ -28,6 +28,7 @@ import '../../api/login/api_login.dart';
 import '../../api/products/api_product.dart';
 import '../../api/products/models/products.dart' as products;
 import '../../api/login/model.dart' as users;
+import '../common/skeleton_home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -148,11 +149,7 @@ class _HomePageState extends State<HomePage>
 
   CustomScrollView _customScrollview(BuildContext context, size) {
     //?: Data products
-    // var sliverList = SliverList(
-    //     delegate: SliverChildBuilderDelegate(
-    //   childCount: productData.length,
-    //   (context, index) => ItemProduct(productData: productData),
-    // ));
+
     var sliverList = SliverGrid.builder(
       itemCount: productData.length,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -296,13 +293,12 @@ class _HomePageState extends State<HomePage>
           ),
         ),
 
+        // SliverToBoxAdapter(
+        //   child: SkelatonHome(),
+        // ),
         //!: Data product
         productData.isEmpty
-            ? const SliverToBoxAdapter(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
+            ? const SliverToBoxAdapter(child: SkelatonHome())
             : sliverList,
         const SliverToBoxAdapter(
           child: SizedBox(
@@ -680,12 +676,16 @@ class ItemProduct extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Container(
-                            decoration: const BoxDecoration(
-                                // color: Colors.red,
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
-                                    fit: BoxFit.cover)),
+                            decoration: const BoxDecoration(),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  '${ConnectDb.url}${productData[index].image}',
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
                           ),
                         ),
                       )),

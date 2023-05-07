@@ -15,7 +15,8 @@ class APIProduct {
     int max_price = 999999999,
   }) async {
     try {
-      final dio = Dio();
+      var dio = Dio();
+      dio.options.connectTimeout = const Duration(seconds: 10);
       final response = await dio.get(
         "${ConnectDb.url}/api/products",
         queryParameters: {

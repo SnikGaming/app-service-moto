@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/style.dart';
+import '../../../network/connect.dart';
 import '../../home/api/products/models/products.dart' as products;
 
 class DetailsServiceScreen extends StatefulWidget {
@@ -34,9 +36,10 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
+                      //!: APP BAR
                       Positioned(
                           top: 0,
-                          child: SizedBox(
+                          child: Container(
                             height: 60,
                             // color: Color.fromARGB(188, 120, 54, 244),
                             width: size.width,
@@ -97,11 +100,15 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                           bottomRight: Radius.circular(18))),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                      horizontal: 16,
+                                    ),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        const SizedBox(
+                                          height: 14,
+                                        ),
                                         SizedBox(
                                           width: size.width,
                                           child: Text(
@@ -126,29 +133,29 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                         const SizedBox(
                                           height: 10,
                                         ),
-                                        Row(
-                                          children: [
-                                            Text('50 Comments',
-                                                style: styleNormal.copyWith(
-                                                  color: Colors.grey,
-                                                  fontStyle: FontStyle.italic,
-                                                )),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Text(' (Click here)',
-                                                  style: styleNormal.copyWith(
-                                                      color: Colors.blue,
-                                                      fontSize: 18,
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
+                                        // Row(
+                                        //   children: [
+                                        //     Text('50 Comments',
+                                        //         style: styleNormal.copyWith(
+                                        //           color: Colors.grey,
+                                        //           fontStyle: FontStyle.italic,
+                                        //         )),
+                                        //     GestureDetector(
+                                        //       onTap: () {},
+                                        //       child: Text(' (Click here)',
+                                        //           style: styleNormal.copyWith(
+                                        //               color: Colors.blue,
+                                        //               fontSize: 18,
+                                        //               fontStyle:
+                                        //                   FontStyle.italic,
+                                        //               fontWeight:
+                                        //                   FontWeight.bold)),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        // const SizedBox(
+                                        //   height: 10,
+                                        // ),
                                         Container(
                                           padding: const EdgeInsets.all(12),
                                           decoration: BoxDecoration(
@@ -179,31 +186,37 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                             height: size.height * .27,
                             width: size.width * .6,
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 128, 47, 235)
-                                  .withOpacity(0.5),
-                            ),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.transparent,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://shop2banh.vn/images/thumbs/2020/05/bao-tay-ariete-chinh-hang-25ssf-products-1076.jpg'),
-                                      fit: BoxFit.cover)),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Positioned(
-                                    right: 10,
-                                    top: 10,
-                                    child: IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        )),
-                                  )
-                                ],
-                              ),
+                                // color: const Color.fromARGB(255, 128, 47, 235)
+                                //     .withOpacity(0.5),
+                                ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Expanded(
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        '${ConnectDb.url}${widget.data.image}',
+                                    fit: BoxFit.cover,
+                                    // color: indexData == index ? white : black,
+                                    // height: 45,
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 10,
+                                  top: 10,
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

@@ -21,6 +21,12 @@ class _ServicesPageState extends State<ServicesPage> {
     loadData();
   }
 
+  void setStateIfMounted(VoidCallback fn) {
+    if (mounted) {
+      setState(fn);
+    }
+  }
+
   List<Booking.Data> lsBooking = [];
   // loadData() async {
   //   await APIBooking.fetchBookings();
