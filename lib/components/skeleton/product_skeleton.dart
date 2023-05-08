@@ -2,7 +2,6 @@
 import 'package:app/components/skeleton/skeleton.dart';
 import 'package:flutter/material.dart';
 
-import '../style/textstyle.dart';
 
 class ItemSkeleton extends StatelessWidget {
   const ItemSkeleton({

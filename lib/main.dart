@@ -10,8 +10,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
-import 'modules/home/api/category/api_category.dart';
-import 'modules/home/api/products/api_product.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();

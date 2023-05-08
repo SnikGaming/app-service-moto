@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('this is data ${data[0].id}');
+    // print('this is data ${data[0].id}');
 
     final size = MediaQuery.of(context).size;
     return Scaffold(

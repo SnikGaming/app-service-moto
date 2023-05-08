@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, library_private_types_in_public_api
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -62,7 +64,7 @@ class _SkeletonState extends State<Skeleton>
             Colors.black.withOpacity(Random().nextDouble() * 0.7 + 0.2),
             Colors.grey[100]!,
           ],
-          stops: [0.0, 0.5, 1.0],
+          stops: const [0.0, 0.5, 1.0],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           tileMode: TileMode.repeated,

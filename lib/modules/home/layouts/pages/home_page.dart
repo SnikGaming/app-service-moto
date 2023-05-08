@@ -14,6 +14,7 @@ import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pagination_flutter/pagination.dart';
+import '../../../../components/convert/format_money.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
@@ -232,7 +233,7 @@ class _HomePageState extends State<HomePage>
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           sliver: SliverGrid.builder(
-            itemCount: categoryData.length,
+            itemCount: APICategory.apiCategory.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 90,
               mainAxisSpacing: 10,
@@ -242,6 +243,7 @@ class _HomePageState extends State<HomePage>
             itemBuilder: (context, index) => GestureDetector(
               onTap: () async {
                 setState(() {
+                  productData = [];
                   indexData = index;
                   page = 1;
                   loadData();
@@ -268,7 +270,8 @@ class _HomePageState extends State<HomePage>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CachedNetworkImage(
-                      imageUrl: '${ConnectDb.url}${categoryData[index].image}',
+                      imageUrl:
+                          '${ConnectDb.url}${APICategory.apiCategory[index].image}',
                       color: indexData == index ? white : black,
                       height: 45,
                       placeholder: (context, url) =>
@@ -277,7 +280,7 @@ class _HomePageState extends State<HomePage>
                           const Icon(Icons.error),
                     ),
                     Text(
-                      '${categoryData[index].name}',
+                      '${APICategory.apiCategory[index].name}',
                       style: TextStyle(
                           color: indexData == index ? white : black,
                           fontSize: 14,
@@ -358,6 +361,7 @@ class _HomePageState extends State<HomePage>
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -370,13 +374,14 @@ class _HomePageState extends State<HomePage>
                           child: Container(
                             decoration: BoxDecoration(
                               color: randomColor(),
+                              borderRadius: BorderRadius.circular(16),
                             ),
                             height: 30,
                             width: 100,
-                            child: const Center(
+                            child: Center(
                                 child: Text(
                               'Đầu trang',
-                              style: h1,
+                              style: h1.copyWith(color: Colors.white),
                             )),
                           ),
                         ),
@@ -394,13 +399,14 @@ class _HomePageState extends State<HomePage>
                           child: Container(
                             decoration: BoxDecoration(
                               color: randomColor(),
+                              borderRadius: BorderRadius.circular(16),
                             ),
                             height: 30,
                             width: 100,
-                            child: const Center(
+                            child: Center(
                                 child: Text(
                               'Cuối trang',
-                              style: h1,
+                              style: h1.copyWith(color: Colors.white),
                             )),
                           ),
                         ),
@@ -729,23 +735,26 @@ class ItemProduct extends StatelessWidget {
                             ],
                           ),
                           const Spacer(),
-                          Row(
-                            children: [
-                              Text('Giá : ',
-                                  style: MyTextStyle.normal.copyWith(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  )),
-                              Container(
-                                padding: const EdgeInsetsDirectional.all(3),
-                                color: Colors.black,
-                                child: Text('${productData[index].price}',
-                                    style: MyTextStyle.normal.copyWith(
-                                      color: Colors.yellow,
-                                      fontSize: 18,
-                                    )),
-                              ),
-                            ],
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Giá : ',
+                                textAlign: TextAlign.left,
+                                style: MyTextStyle.normal.copyWith(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                )),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsetsDirectional.all(3),
+                            color: Colors.black,
+                            child: Text(
+                                formatCurrency(
+                                    amount: '${productData[index].price}'),
+                                style: MyTextStyle.normal.copyWith(
+                                  color: Colors.yellow,
+                                  fontSize: 16,
+                                )),
                           ),
                           const SizedBox(height: 10),
                         ],
