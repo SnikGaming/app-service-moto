@@ -24,16 +24,25 @@ class User {
 
 class Data {
   int? id;
+  String? address;
   String? name;
   String? email;
-  Null? phone;
+  String? phone;
   String? image;
   int? gender;
 
-  Data({this.id, this.name, this.email, this.phone, this.image, this.gender});
+  Data(
+      {this.id,
+      this.address,
+      this.name,
+      this.email,
+      this.phone,
+      this.image,
+      this.gender});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    address = json['address'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
@@ -44,6 +53,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['address'] = this.address;
     data['name'] = this.name;
     data['email'] = this.email;
     data['phone'] = this.phone;

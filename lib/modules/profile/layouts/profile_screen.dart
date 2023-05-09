@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _fullNameController.text = data[0].name;
     _emailController.text = data[0].email;
     _phoneController.text = data[0].phone ?? '';
-    _addressController.text = data[0].phone ?? '';
+    _addressController.text = data[0].address ?? '';
 
     _gender = data[0].gender == 1
         ? Gender.male
