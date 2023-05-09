@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 import '../../../components/convert/format_money.dart';
 import '../../../constants/style.dart';
 import '../../../network/connect.dart';
 import '../../home/api/products/models/products.dart' as products;
+import 'package:in_app_review/in_app_review.dart';
 
 class DetailsServiceScreen extends StatefulWidget {
   final products.Data data;
@@ -14,6 +16,68 @@ class DetailsServiceScreen extends StatefulWidget {
 }
 
 class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
+  void _showRatingDialog() {
+    // actual store listing review & rating
+    void _rateAndReviewApp() async {
+      // refer to: https://pub.dev/packages/in_app_review
+      final _inAppReview = InAppReview.instance;
+
+      if (await _inAppReview.isAvailable()) {
+        print('request actual review from store');
+        _inAppReview.requestReview();
+      } else {
+        print('open actual store listing');
+        // TODO: use your own store ids
+        _inAppReview.openStoreListing(
+          appStoreId: '<your app store id>',
+          microsoftStoreId: '<your microsoft store id>',
+        );
+      }
+    }
+
+    final _dialog = RatingDialog(
+      initialRating: 1.0,
+      // your app's name?
+      title: Text(
+        'Rating Dialog',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      // encourage your user to leave a high rating?
+      message: Text(
+        'Tap a star to set your rating. Add more description here if you want.',
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 15),
+      ),
+      // your app's logo?
+      image: const FlutterLogo(size: 100),
+      submitButtonText: 'Submit',
+      commentHint: 'Set your custom comment hint',
+      onCancelled: () => print('cancelled'),
+      onSubmitted: (response) {
+        print('rating: ${response.rating}, comment: ${response.comment}');
+
+        // TODO: add your own logic
+        if (response.rating < 3.0) {
+          // send their comments to your email or anywhere you wish
+          // ask the user to contact you instead of leaving a bad review
+        } else {
+          _rateAndReviewApp();
+        }
+      },
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: true, // set to false if you want to force a rating
+      builder: (context) => _dialog,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -142,7 +206,8 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                                 BorderRadius.circular(18),
                                           ),
                                           child: Text(
-                                            '${formatCurrency(amount: '${widget.data.price}')}',
+                                            formatCurrency(
+                                                amount: '${widget.data.price}'),
                                             style: styleH3.copyWith(
                                                 color: Colors.red),
                                           ),
@@ -172,18 +237,16 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(16),
-                                  child: Expanded(
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          '${ConnectDb.url}${widget.data.image}',
-                                      fit: BoxFit.cover,
-                                      // color: indexData == index ? white : black,
-                                      // height: 45,
-                                      placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                    ),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        '${ConnectDb.url}${widget.data.image}',
+                                    fit: BoxFit.cover,
+                                    // color: indexData == index ? white : black,
+                                    // height: 45,
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ),
                                 Positioned(
@@ -232,7 +295,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                 fontStyle: FontStyle.italic,
                               )),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: _showRatingDialog,
                             child: Text(' (Click here)',
                                 style: styleNormal.copyWith(
                                     color: Colors.blue,

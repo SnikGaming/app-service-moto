@@ -99,7 +99,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           final pickedFile = await ImagePicker()
                               .getImage(source: ImageSource.gallery);
                           setState(() {
-                            _avatarUrl = pickedFile!.path;
+                            try {
+                              _avatarUrl = pickedFile!.path;
+                            } catch (e) {
+                              print(e);
+                            }
                           });
                         },
                         child: CircleAvatar(

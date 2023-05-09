@@ -1,8 +1,8 @@
-// ignore_for_file: deprecated_member_use
+import 'dart:io';
 
-import 'package:filter_list/filter_list.dart';
 import 'package:flutter/material.dart';
-import '../../../../components/item/itemData.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
 
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
@@ -12,150 +12,62 @@ class ProFilePage extends StatefulWidget {
 }
 
 class _ProFilePageState extends State<ProFilePage> {
-  List<User>? selectedUserList = [];
-
-  Future<void> openFilterDelegate() async {
-    await FilterListDelegate.show<User>(
-      context: context,
-      list: userList,
-      selectedListData: selectedUserList,
-      theme: FilterListDelegateThemeData(
-        listTileTheme: ListTileThemeData(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          tileColor: Colors.white,
-          selectedColor: Colors.red,
-          selectedTileColor: const Color(0xFF649BEC).withOpacity(.5),
-          textColor: Colors.blue,
-        ),
-      ),
-      // enableOnlySingleSelection: true,
-      onItemSearch: (user, query) {
-        return user.name!.toLowerCase().contains(query.toLowerCase());
-      },
-      tileLabel: (user) => user!.name,
-      emptySearchChild: const Center(child: Text('No user found')),
-      // enableOnlySingleSelection: true,
-      searchFieldHint: 'Search Here..',
-      /*suggestionBuilder: (context, user, isSelected) {
-        return ListTile(
-          title: Text(user.name!),
-          leading: const CircleAvatar(
-            backgroundColor: Colors.blue,
-          ),
-          selected: isSelected,
-        );
-      },*/
-      onApplyButtonClick: (list) {
-        setState(() {
-          selectedUserList = list;
-        });
-      },
-    );
+  File? _image;
+  void _handleImagePick() async {
+    final pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      try {
+        _image = File(pickedFile!.path);
+      } catch (e) {
+        print(e);
+      }
+    });
   }
 
-  Future<void> _openFilterDialog() async {
-    await FilterListDialog.display<User>(
-      context,
-      hideSelectedTextCount: true,
-      themeData: FilterListThemeData(context),
-      headlineText: 'Select Users',
-      height: 500,
-      listData: userList,
-      selectedListData: selectedUserList,
-      choiceChipLabel: (item) => item!.name,
-      validateSelectedItem: (list, val) => list!.contains(val),
-      controlButtons: [ControlButtonType.All, ControlButtonType.Reset],
-      onItemSearch: (user, query) {
-        return user.name!.toLowerCase().contains(query.toLowerCase());
-      },
-      onApplyButtonClick: (list) {
-        setState(() {
-          selectedUserList = List.from(list!);
-        });
-        Navigator.pop(context);
-      },
-    );
+  void _handleSubmit() async {
+    try {
+      await register("abc", "0907486653", "betrang@gmail.com", '12345678',
+          '12345678', _image!);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Registration successful.'),
+        backgroundColor: Colors.green,
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Registration failed: $e'),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            TextButton(
-              onPressed: () async {
-                final list = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FilterPage(
-                      allTextList: userList,
-                      selectedUserList: selectedUserList,
-                    ),
-                  ),
-                );
-                if (list != null) {
-                  setState(() {
-                    selectedUserList = List.from(list);
-                  });
-                }
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
-              ),
-              child: const Text(
-                "Filter Page",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            TextButton(
-              onPressed: _openFilterDialog,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
-              ),
-              child: const Text(
-                "Filter Dialog",
-                style: TextStyle(color: Colors.white),
-              ),
-              // color: Colors.blue,
-            ),
-            TextButton(
-              onPressed: openFilterDelegate,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
-              ),
-              child: const Text(
-                "Filter Delegate",
-                style: TextStyle(color: Colors.white),
-              ),
-              // color: Colors.blue,
-            ),
-          ],
-        ),
-      ),
-      body: Container(
+      body: SizedBox(
         width: size.width,
         height: size.height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/background_image.png'),
-              fit: BoxFit.cover),
-        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Flexible(child: Container()),
-            Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(20, (index) => const itemData()),
-                ),
+            GestureDetector(
+              onTap: _handleImagePick,
+              child: CircleAvatar(
+                radius: 60,
+                backgroundColor: Colors.grey,
+                backgroundImage: _image != null ? FileImage(_image!) : null,
+                child: _image == null
+                    ? const Icon(
+                        Icons.camera_alt,
+                        size: 50,
+                        color: Colors.white,
+                      )
+                    : null,
               ),
             ),
+            TextButton(onPressed: _handleSubmit, child: const Text('Save'))
           ],
         ),
       ),
@@ -163,59 +75,40 @@ class _ProFilePageState extends State<ProFilePage> {
   }
 }
 
-class User {
-  final String? name;
-  final String? avatar;
-  User({this.name, this.avatar});
-}
+Future<void> register(String name, String phone, String email, String password,
+    String c_password, File imageFile) async {
+  // Tạo đối tượng Dio
+  Dio dio = Dio();
 
-List<User> userList = [
-  User(name: "Jon", avatar: ""),
-  User(name: "Lindsey ", avatar: ""),
-  User(name: "Valarie ", avatar: ""),
-  User(name: "Elyse ", avatar: ""),
-  User(name: "Ethel ", avatar: ""),
-  User(name: "Emelyan ", avatar: ""),
-  User(name: "Catherine ", avatar: ""),
-  User(name: "Stepanida  ", avatar: ""),
-  User(name: "Carolina ", avatar: ""),
-  User(name: "Nail  ", avatar: ""),
-  User(name: "Kamil ", avatar: ""),
-  User(name: "Mariana ", avatar: ""),
-  User(name: "Katerina ", avatar: ""),
-];
+  // Tạo đối tượng FormData
+  FormData formData = FormData();
 
-class FilterPage extends StatelessWidget {
-  const FilterPage({Key? key, this.allTextList, this.selectedUserList})
-      : super(key: key);
-  final List<User>? allTextList;
-  final List<User>? selectedUserList;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Filter list Page"),
-      ),
-      body: SafeArea(
-        child: FilterListWidget<User>(
-          themeData: FilterListThemeData(context),
-          hideSelectedTextCount: true,
-          listData: userList,
-          selectedListData: selectedUserList,
-          onApplyButtonClick: (list) {
-            Navigator.pop(context, list);
-          },
-          choiceChipLabel: (item) {
-            return item!.name;
-          },
-          validateSelectedItem: (list, val) {
-            return list!.contains(val);
-          },
-          onItemSearch: (user, query) {
-            return user.name!.toLowerCase().contains(query.toLowerCase());
-          },
-        ),
-      ),
-    );
+  // Thêm ảnh vào FormData
+  formData.files
+      .add(MapEntry("image", await MultipartFile.fromFile(imageFile.path)));
+
+  // Thêm thông tin khác vào FormData
+  formData.fields.add(MapEntry("name", name));
+  // formData.fields.add(MapEntry("phone", phone));
+  formData.fields.add(MapEntry("password", password));
+  formData.fields.add(MapEntry("c_password", c_password));
+
+  formData.fields.add(MapEntry("email", email));
+
+  // Gửi FormData lên server
+  try {
+    Response response =
+        await dio.post("http://192.168.1.14:8000/api/dangky", data: formData);
+    // Xử lý kết quả trả về từ server
+    if (response.statusCode == 200) {
+      // Đăng ký thành công
+      print('Đăng ký thành công!');
+    } else {
+      // Đăng ký không thành công
+      print('Đăng ký không thành công!');
+    }
+  } catch (e) {
+    // Xử lý lỗi khi gửi request
+    print('Đăng ký thất bại: $e');
   }
 }

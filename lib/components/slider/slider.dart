@@ -27,39 +27,22 @@ class _MySliderState extends State<MySlider> {
       ),
       items: List.generate(
           APIBanner.apiBanner.length,
-          (index) => Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: Container(
-                    height: 250,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: randomColor(),
-                    ),
-                    child: Expanded(
-                      child: CachedNetworkImage(
-                        imageUrl:
-                            '${ConnectDb.url}${APIBanner.apiBanner[index].image}',
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                    ),
+          (index) => ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: Container(
+                  height: 200,
+                  width: 300,
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        '${ConnectDb.url}${APIBanner.apiBanner[index].image}',
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
               )),
     );
   }
 }
-
-List<SliderModel> lsSliver = [
-  SliderModel(id: '1', name: 'Khuyến mãi 10%'),
-  SliderModel(id: '2', name: 'Khuyến mãi 20%'),
-  SliderModel(id: '3', name: 'Khuyến mãi 30%'),
-  SliderModel(id: '4', name: 'Khuyến mãi 40%'),
-  SliderModel(id: '5', name: 'Khuyến mãi 50%'),
-  SliderModel(id: '6', name: 'Khuyến mãi 60%'),
-];

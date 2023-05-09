@@ -30,6 +30,7 @@ import '../../api/products/api_product.dart';
 import '../../api/products/models/products.dart' as products;
 import '../../api/login/model.dart' as users;
 import '../common/skeleton_home.dart';
+import 'package:ionicons/ionicons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -175,11 +176,9 @@ class _HomePageState extends State<HomePage>
         //!: Appbar
         SliverAppBar(
           elevation: 0,
-          forceElevated: true,
           floating: true,
-          foregroundColor: white,
+          foregroundColor: Colors.white,
           backgroundColor: appbarColors,
-          pinned: false,
           actions: [
             IconButton(
               onPressed: () {
@@ -191,28 +190,23 @@ class _HomePageState extends State<HomePage>
               ),
             ),
             IconButton(
-                onPressed: () {
-                  showSearch(
-                    context: context,
-                    delegate: MySearchDelegate(items: items),
-                  );
-                },
-                icon: const Icon(Icons.search))
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: MySearchDelegate(items: items),
+                );
+              },
+              icon: const Icon(Icons.search),
+            )
           ],
-          // leading: Icon(Icons.search),
-          // forceElevated: false,
-          snap: true,
-
-          centerTitle: true,
-          // collapsedHeight: 100,
           expandedHeight: 180.0,
           flexibleSpace: FlexibleSpaceBar(
-            // title: const Text('SNIK'),
             background: Image.asset(
               'assets/logo/SNIK.png',
               fit: BoxFit.cover,
             ),
           ),
+          title: const Text('SNIK'),
         ),
 
         //!: Slider
@@ -222,11 +216,9 @@ class _HomePageState extends State<HomePage>
                     SettingPrefer.getLightDark()
                 ? white
                 : black,
-            height: 200,
-            child: const Padding(
-              padding: EdgeInsets.only(top: 26, left: 10, right: 10),
-              child: MySlider(),
-            ),
+            height: 250,
+            width: 300,
+            child: const MySlider(),
           ),
         ),
         //? Category
@@ -457,17 +449,15 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Drawer _drawer(BuildContext context) {
+  Widget _drawer(BuildContext context) {
     return Drawer(
       backgroundColor: MyColors.lightGreen,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          //!: DrawerHeader
           DrawerHeader(
             decoration: const BoxDecoration(
               color: Color.fromARGB(255, 176, 135, 236),
-              // borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
             ),
             child: GestureDetector(
               onTap: () async {
@@ -488,20 +478,25 @@ class _HomePageState extends State<HomePage>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 80,
                     width: 80,
-                    decoration: UserPrefer.getImageUser() != null
-                        ? BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: NetworkImage(UserPrefer.getImageUser()),
-                                fit: BoxFit.cover))
-                        : const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/icons/user/user_profile.png'),
-                                fit: BoxFit.cover)),
+                    child: UserPrefer.getImageUser() != null
+                        ? CachedNetworkImage(
+                            imageBuilder: (context, imageProvider) => CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}')),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                            imageUrl:
+                                'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}',
+                          )
+                        : const CircleAvatar(
+                            child: Icon(Ionicons.person),
+                          ),
                   ),
                   const SizedBox(
                     height: 16,
@@ -534,7 +529,6 @@ class _HomePageState extends State<HomePage>
             title: const Text('Booking history'),
             onTap: () {},
           ),
-
           UserPrefer.getToken() == null
               ? ListTile(
                   leading: const Icon(
@@ -545,7 +539,6 @@ class _HomePageState extends State<HomePage>
                   onTap: () {
                     Modular.to.pushNamed(Routes.login).then((value) {
                       Navigator.pop(context);
-
                       setState(() {});
                     });
                   },
@@ -556,23 +549,19 @@ class _HomePageState extends State<HomePage>
                     color: Colors.red,
                   ),
                   title: const Text('Logout'),
-                  onTap: () {
-                    AuthWithGoogle.googleSignOutMethod(context)
-                        .then((value) => Modular.to.navigate(Routes.home));
+                  onTap: () async {
+                    await AuthWithGoogle.googleSignOutMethod(context);
+                    Modular.to.navigate(Routes.home);
                     LogoutApp.Logout();
-
                     setState(() {});
                   },
                 ),
-
           ListTile(
             title: const Text('Terms of service'),
             leading: const Icon(
               Icons.info_outline_rounded,
               color: Colors.blue,
             ),
-            // leading:
-            //     Image.asset('assets/icons/user/information.png', height: 45),
             onTap: () {
               showDialog(
                 context: context,
