@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:app/modules/home/api/login/model.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
 
@@ -37,7 +34,7 @@ class APIAuth {
     Response response;
     try {
       response = await Dio().get(
-        "${ConnectDb.url}/api/user/",
+        "${ConnectDb.url}/api/dangky/",
         options: Options(
           headers: {'Authorization': 'Bearer ${UserPrefer.getToken()}'},
         ),

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../../../components/zoom/image.dart';
+import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
 
 class ProFilePage extends StatefulWidget {
@@ -72,14 +73,13 @@ class _ProFilePageState extends State<ProFilePage> {
                       width: 200,
                       imageBuilder: (context, imageProvider) => CircleAvatar(
                           backgroundImage: NetworkImage(
-                              'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}')),
+                              '${ConnectDb.url}${UserPrefer.getImageUser()}')),
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
                           const Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
-                      imageUrl:
-                          'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}',
+                      imageUrl: '${ConnectDb.url}${UserPrefer.getImageUser()}',
                     )
                   : CircleAvatar(
                       radius: 60,

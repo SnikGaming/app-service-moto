@@ -120,7 +120,7 @@ class _FromLoginState extends State<FromLogin> {
                         AuthWithGoogle.googleSignOutMethod(context)
                             .then((value) => Modular.to.navigate(Routes.home));
                         setState(() {
-                          LogoutApp.Logout();
+                          LogoutApp.logout();
                         });
                       },
                       icon: Image.asset('assets/icons/login/facebook.png')),

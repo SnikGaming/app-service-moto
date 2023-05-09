@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:app/modules/home/api/booking/model.dart';
-import 'package:app/network/connect.dart';
-import 'package:app/preferences/user/user_preferences.dart';
-import 'package:dio/dio.dart';
+
+import '../APIBASE.dart';
 
 class APIBooking {
   static int toTal = 0;
@@ -10,9 +9,7 @@ class APIBooking {
 
   static Future<List<Data>> fetchBookings() async {
     try {
-      final response = await Dio().get("${ConnectDb.url}/api/bookings/",
-          options: Options(
-              headers: {'Authorization': 'Bearer ${UserPrefer.getToken()}'}));
+      final response = await ApiBase.get('/api/bookings/');
       final jsonData = json.decode(response.toString());
       final List<dynamic> bookingListJson = jsonData['data'];
       toTal = jsonData['last_page'];
@@ -28,15 +25,7 @@ class APIBooking {
 
   static createBooking({required Map<String, String> data}) async {
     try {
-      final response = await Dio().post(
-        "${ConnectDb.url}/api/bookings/",
-        data: data,
-        options: Options(headers: {
-          'Content-type': 'application/json',
-          'Authorization': 'Bearer ${UserPrefer.getToken()}'
-        }),
-      );
-
+      final response = await ApiBase.post('/api/bookings/', data);
       if (response.statusCode == 200) {
         return 200;
       }

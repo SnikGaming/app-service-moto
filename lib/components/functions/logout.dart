@@ -3,17 +3,15 @@ import 'package:app/preferences/settings/setting_prefer.dart';
 import '../../preferences/user/user_preferences.dart';
 
 class LogoutApp {
-  // ignore: non_constant_identifier_names
-  static void Logout() async {
-    await UserPrefer.removeEmail();
-    await UserPrefer.removeImageUser();
-    await UserPrefer.removesetUserName();
-    await UserPrefer.removesetToken();
-    await UserPrefer.removeId();
-    await UserPrefer.removeGioiTinh();
-
-    //!: Setting
-
-    await SettingPrefer.removeLightDark();
+  static Future<void> logout() async {
+    await Future.wait([
+      UserPrefer.removeEmail(),
+      UserPrefer.removeImageUser(),
+      UserPrefer.removesetUserName(),
+      UserPrefer.removesetToken(),
+      UserPrefer.removeId(),
+      UserPrefer.removeGioiTinh(),
+      SettingPrefer.removeLightDark(),
+    ]);
   }
 }

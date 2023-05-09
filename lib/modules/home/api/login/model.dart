@@ -1,17 +1,20 @@
 class User {
   String? message;
+  int? status;
   Data? data;
 
-  User({this.message, this.data});
+  User({this.message, this.status, this.data});
 
   User.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    status = json['status'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['message'] = message;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['message'] = this.message;
+    data['status'] = this.status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -20,15 +23,17 @@ class User {
 }
 
 class Data {
+  int? id;
   String? name;
   String? email;
-  String? phone;
+  Null? phone;
   String? image;
   int? gender;
 
-  Data({this.name, this.email, this.phone, this.image, this.gender});
+  Data({this.id, this.name, this.email, this.phone, this.image, this.gender});
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
@@ -37,12 +42,13 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['image'] = image;
-    data['gender'] = gender;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['image'] = this.image;
+    data['gender'] = this.gender;
     return data;
   }
 }

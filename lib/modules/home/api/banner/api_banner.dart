@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:app/modules/home/api/banner/model.dart';
 import 'package:dio/dio.dart';
 import '../../../../network/connect.dart';

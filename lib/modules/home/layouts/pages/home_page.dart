@@ -43,7 +43,9 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   final _scrollController = ScrollController();
-  bool isProfile = false;
+  bool isLogin = false;
+  bool isProfileOpen = false;
+
   var indexData = 0;
   var totalPage = 0;
   String username = UserPrefer.getsetUserName() ?? 'GUEST';
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage>
   List<products.Data> productData = [];
   List<categories.Data> categoryData = [];
   users.Data user = users.Data();
-  scrollData() {
+  void scrollData() {
     _scrollController.animateTo(
       0,
       duration: const Duration(milliseconds: 500),
@@ -59,7 +61,45 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  loadData() async {
+  void _logout() {
+    setState(() {
+      LogoutApp.logout();
+      AuthWithGoogle.googleSignOutMethod(context);
+      isLogin = false;
+      Modular.to.navigate(Routes.home);
+    });
+  }
+
+  void _login() {
+    Modular.to.pushNamed(Routes.login).then((value) => setState(() {
+          isLogin = true;
+          Navigator.pop(context);
+        }));
+  }
+
+  void _opentProfile() async {
+    // setState(() {});
+
+    if (!isProfileOpen) {
+      isProfileOpen = true;
+
+      try {
+        user = (await APIAuth.getUser())!;
+        print('ada ${UserPrefer.getImageUser()}');
+        Modular.to.pushNamed(Routes.profile, arguments: [user]);
+      } catch (e) {
+        Message.warning(
+          message: 'Bạn chưa đăng nhập',
+          context: context,
+        );
+      }
+
+      await Future.delayed(const Duration(seconds: 5));
+      isProfileOpen = false;
+    }
+  }
+
+  void loadData() async {
     final productDataFuture =
         APIProduct.getData(category_id: indexData + 1, page: page);
     final categoryDataFuture = APICategory.getData();
@@ -129,7 +169,6 @@ class _HomePageState extends State<HomePage>
     });
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
-    // _animationColor = Tween<Color>(begin: ).animate(_animationController);
   }
 
   late bool isCheck;
@@ -137,7 +176,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     username = UserPrefer.getsetUserName() ?? 'GUEST';
-    // Future.delayed(Duration(seconds: 8)).then((value) => loadData());
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor:
@@ -460,39 +498,25 @@ class _HomePageState extends State<HomePage>
               color: Color.fromARGB(255, 176, 135, 236),
             ),
             child: GestureDetector(
-              onTap: () async {
-                if (!isProfile) {
-                  isProfile = true;
-                  try {
-                    user = (await APIAuth.getUser())!;
-                    Modular.to.pushNamed(Routes.profile,
-                        arguments: [user]).then((value) => isProfile = false);
-                  } catch (e) {
-                    Message.warning(
-                        message: 'Bạn chưa đăng nhập', context: context);
-                  }
-                  Future.delayed(const Duration(seconds: 5))
-                      .then((value) => isProfile = false);
-                }
-              },
+              onTap: _opentProfile,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: UserPrefer.getImageUser() != null
+                    height: 90,
+                    width: 90,
+                    child: UserPrefer.getImageUser() != null && isLogin
                         ? CachedNetworkImage(
                             imageBuilder: (context, imageProvider) => CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                    'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}')),
+                                    '${ConnectDb.url}${UserPrefer.getImageUser()}')),
                             fit: BoxFit.cover,
                             placeholder: (context, url) => const Center(
                                 child: CircularProgressIndicator()),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                             imageUrl:
-                                'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}',
+                                '${ConnectDb.url}${UserPrefer.getImageUser()}',
                           )
                         : const CircleAvatar(
                             child: Icon(Ionicons.person),
@@ -536,12 +560,7 @@ class _HomePageState extends State<HomePage>
                     color: Colors.purple,
                   ),
                   title: const Text('Login'),
-                  onTap: () {
-                    Modular.to.pushNamed(Routes.login).then((value) {
-                      Navigator.pop(context);
-                      setState(() {});
-                    });
-                  },
+                  onTap: _login,
                 )
               : ListTile(
                   leading: const Icon(
@@ -549,12 +568,7 @@ class _HomePageState extends State<HomePage>
                     color: Colors.red,
                   ),
                   title: const Text('Logout'),
-                  onTap: () async {
-                    await AuthWithGoogle.googleSignOutMethod(context);
-                    Modular.to.navigate(Routes.home);
-                    LogoutApp.Logout();
-                    setState(() {});
-                  },
+                  onTap: _logout,
                 ),
           ListTile(
             title: const Text('Terms of service'),
@@ -725,17 +739,7 @@ class ItemProduct extends StatelessWidget {
                           ),
                           const Spacer(),
                           Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Giá : ',
-                                textAlign: TextAlign.left,
-                                style: MyTextStyle.normal.copyWith(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                )),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsetsDirectional.all(3),
+                            padding: const EdgeInsetsDirectional.all(8),
                             color: Colors.black,
                             child: Text(
                                 formatCurrency(

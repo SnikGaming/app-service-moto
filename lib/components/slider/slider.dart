@@ -1,10 +1,8 @@
-import 'package:app/functions/random_color.dart';
 import 'package:app/modules/home/api/banner/api_banner.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/slider/slider_model.dart';
 import '../../network/connect.dart';
 
 class MySlider extends StatefulWidget {
@@ -29,9 +27,9 @@ class _MySliderState extends State<MySlider> {
           APIBanner.apiBanner.length,
           (index) => ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Container(
+                child: SizedBox(
                   height: 200,
-                  width: 300,
+                  width: 270,
                   child: CachedNetworkImage(
                     imageUrl:
                         '${ConnectDb.url}${APIBanner.apiBanner[index].image}',

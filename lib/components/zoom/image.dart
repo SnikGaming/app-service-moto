@@ -1,6 +1,9 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
+// ignore: must_be_immutable
 class zoomImage extends StatelessWidget {
   ImageProvider<Object>? imageProvider;
   Widget? child;

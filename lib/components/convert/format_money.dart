@@ -1,7 +1,9 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:intl/intl.dart';
 
 String formatCurrency({required String amount}) {
-  if (amount == null || amount.isEmpty) return "";
+  if (amount.isEmpty) return "";
 
   int? value = int.tryParse(amount);
   if (value == null) return "";

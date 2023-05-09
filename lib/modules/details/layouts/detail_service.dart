@@ -1,5 +1,6 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:app/components/zoom/image.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import '../../../components/convert/format_money.dart';
@@ -21,22 +22,22 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
     // actual store listing review & rating
     void _rateAndReviewApp() async {
       // refer to: https://pub.dev/packages/in_app_review
-      final _inAppReview = InAppReview.instance;
+      final inAppReview = InAppReview.instance;
 
-      if (await _inAppReview.isAvailable()) {
+      if (await inAppReview.isAvailable()) {
         print('request actual review from store');
-        _inAppReview.requestReview();
+        inAppReview.requestReview();
       } else {
         print('open actual store listing');
         // TODO: use your own store ids
-        _inAppReview.openStoreListing(
+        inAppReview.openStoreListing(
           appStoreId: '<your app store id>',
           microsoftStoreId: '<your microsoft store id>',
         );
       }
     }
 
-    final _dialog = RatingDialog(
+    final dialog = RatingDialog(
       initialRating: 1.0,
       // your app's name?
       title: Text(
@@ -75,7 +76,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
     showDialog(
       context: context,
       barrierDismissible: true, // set to false if you want to force a rating
-      builder: (context) => _dialog,
+      builder: (context) => dialog,
     );
   }
 
@@ -229,10 +230,6 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                           child: Container(
                             height: size.height * .27,
                             width: size.width * .6,
-                            decoration: const BoxDecoration(
-                                // color: const Color.fromARGB(255, 128, 47, 235)
-                                //     .withOpacity(0.5),
-                                ),
                             child: Stack(
                               alignment: Alignment.center,
                               children: [

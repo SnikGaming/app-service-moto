@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../components/button/button.dart';
+import '../../../network/connect.dart';
 import '../../../preferences/user/user_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   String _avatarUrl = '';
-  Gender _gender = Gender.male;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -67,10 +68,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     loadData();
   }
 
+  Gender? _gender;
   loadData() {
     _fullNameController.text = data[0].name;
     _emailController.text = data[0].email;
+    _phoneController.text = data[0].phone ?? '';
+    _addressController.text = data[0].phone ?? '';
 
+    _gender = data[0].gender == 1
+        ? Gender.male
+        : data[0].gender == 0
+            ? Gender.female
+            : Gender.other;
     setState(() {});
   }
 
@@ -152,19 +161,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: _handleImagePick,
                         child: UserPrefer.getImageUser() != null
                             ? CachedNetworkImage(
-                                height: 160,
-                                width: 160,
+                                height: 110,
+                                width: 110,
                                 imageBuilder: (context, imageProvider) =>
                                     CircleAvatar(
                                         backgroundImage: NetworkImage(
-                                            'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}')),
+                                            '${ConnectDb.url}${UserPrefer.getImageUser()}')),
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const Center(
                                     child: CircularProgressIndicator()),
                                 errorWidget: (context, url, error) =>
                                     const Icon(Icons.error),
                                 imageUrl:
-                                    'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}',
+                                    '${ConnectDb.url}${UserPrefer.getImageUser()}',
                               )
                             : CircleAvatar(
                                 radius: 60,
