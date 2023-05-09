@@ -1,8 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:photo_view/photo_view.dart';
+import '../../../../components/zoom/image.dart';
+import '../../../../preferences/user/user_preferences.dart';
 
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
@@ -52,20 +58,42 @@ class _ProFilePageState extends State<ProFilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            zoomImage(
+              imageProvider: NetworkImage(
+                  'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}'),
+              child: Image.network(
+                  'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}'),
+            ),
             GestureDetector(
               onTap: _handleImagePick,
-              child: CircleAvatar(
-                radius: 60,
-                backgroundColor: Colors.grey,
-                backgroundImage: _image != null ? FileImage(_image!) : null,
-                child: _image == null
-                    ? const Icon(
-                        Icons.camera_alt,
-                        size: 50,
-                        color: Colors.white,
-                      )
-                    : null,
-              ),
+              child: UserPrefer.getImageUser() != null
+                  ? CachedNetworkImage(
+                      height: 200,
+                      width: 200,
+                      imageBuilder: (context, imageProvider) => CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}')),
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                      imageUrl:
+                          'http://192.168.1.14:8000/storage/user/${UserPrefer.getImageUser()}',
+                    )
+                  : CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.grey,
+                      backgroundImage:
+                          _image != null ? FileImage(_image!) : null,
+                      child: _image == null
+                          ? const Icon(
+                              Icons.camera_alt,
+                              size: 50,
+                              color: Colors.white,
+                            )
+                          : null,
+                    ),
             ),
             TextButton(onPressed: _handleSubmit, child: const Text('Save'))
           ],

@@ -1,3 +1,4 @@
+import 'package:app/components/zoom/image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
@@ -236,19 +237,13 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                               alignment: Alignment.center,
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        '${ConnectDb.url}${widget.data.image}',
-                                    fit: BoxFit.cover,
-                                    // color: indexData == index ? white : black,
-                                    // height: 45,
-                                    placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  ),
-                                ),
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: zoomImage(
+                                      imageProvider: NetworkImage(
+                                          '${ConnectDb.url}${widget.data.image}'),
+                                      child: Image.network(
+                                          '${ConnectDb.url}${widget.data.image}'),
+                                    )),
                                 Positioned(
                                   right: 10,
                                   top: 10,
