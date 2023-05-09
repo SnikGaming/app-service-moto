@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, must_be_immutable, library_private_types_in_public_api
+// ignore_for_file: deprecated_member_use, must_be_immutable, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../components/button/button.dart';
 import '../../../network/connect.dart';
 import '../../../preferences/user/user_preferences.dart';
+import '../../home/api/user/register.dart';
 
 class ProfileScreen extends StatefulWidget {
   var data = [];
@@ -40,16 +41,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _handleSubmit() async {
-    try {
-      await register("abc", "0907486653", "betrang@gmail.com", '12345678',
-          '12345678', _image!);
+    var value = _gender == Gender.male
+        ? '1'
+        : _gender == Gender.female
+            ? '0'
+            : '-1';
+    var response = await APIAuthUser.update(
+        name: _fullNameController.text,
+        address: _addressController.text,
+        phone: _phoneController.text,
+        gender: value,
+        imageFile: _image);
+    if (response == 200) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Registration successful.'),
+        content: Text('Update successful.💕'),
         backgroundColor: Colors.green,
       ));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Registration failed: $e'),
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Update failed.💕'),
         backgroundColor: Colors.red,
       ));
     }
@@ -59,8 +70,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  String _avatarUrl = '';
-
   @override
   void initState() {
     // TODO: implement initState
@@ -74,7 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _emailController.text = data[0].email;
     _phoneController.text = data[0].phone ?? '';
     _addressController.text = data[0].address ?? '';
-
     _gender = data[0].gender == 1
         ? Gender.male
         : data[0].gender == 0
@@ -85,8 +93,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print('this is data ${data[0].id}');
-
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -134,32 +140,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                         height: 50,
                       ),
-                      // GestureDetector(
-                      //   onTap: () async {
-                      //     final pickedFile = await ImagePicker()
-                      //         .getImage(source: ImageSource.gallery);
-                      //     setState(() {
-                      //       try {
-                      //         _avatarUrl = pickedFile!.path;
-                      //       } catch (e) {
-                      //         print(e);
-                      //       }
-                      //     });
-                      //   },
-                      //   child: CircleAvatar(
-                      //     backgroundImage: _avatarUrl.isNotEmpty
-                      //         ? FileImage(File(_avatarUrl))
-                      //         : null,
-                      //     radius: 60.0,
-                      //     child: _avatarUrl.isEmpty
-                      //         ? const Icon(Icons.person)
-                      //         : null,
-                      //   ),
-                      // ),
-
                       GestureDetector(
                         onTap: _handleImagePick,
-                        child: UserPrefer.getImageUser() != null
+                        child: UserPrefer.getImageUser() != null &&
+                                _image == null
                             ? CachedNetworkImage(
                                 height: 110,
                                 width: 110,
@@ -189,7 +173,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     : null,
                               ),
                       ),
-
                       const SizedBox(height: 16.0),
                       textFieldInput(
                         controller: _fullNameController,
@@ -268,6 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             ButtonCustom(
+                              ontap: _handleSubmit,
                               color: Colors.green,
                               width: size.width * .3,
                               child: const Center(
@@ -335,43 +319,5 @@ class textFieldInput extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-Future<void> register(String name, String phone, String email, String password,
-    String c_password, File imageFile) async {
-  // Tạo đối tượng Dio
-  Dio dio = Dio();
-
-  // Tạo đối tượng FormData
-  FormData formData = FormData();
-
-  // Thêm ảnh vào FormData
-  formData.files
-      .add(MapEntry("image", await MultipartFile.fromFile(imageFile.path)));
-
-  // Thêm thông tin khác vào FormData
-  formData.fields.add(MapEntry("name", name));
-  // formData.fields.add(MapEntry("phone", phone));
-  formData.fields.add(MapEntry("password", password));
-  formData.fields.add(MapEntry("c_password", c_password));
-
-  formData.fields.add(MapEntry("email", email));
-
-  // Gửi FormData lên server
-  try {
-    Response response =
-        await dio.post("http://192.168.1.14:8000/api/dangky", data: formData);
-    // Xử lý kết quả trả về từ server
-    if (response.statusCode == 200) {
-      // Đăng ký thành công
-      print('Đăng ký thành công!');
-    } else {
-      // Đăng ký không thành công
-      print('Đăng ký không thành công!');
-    }
-  } catch (e) {
-    // Xử lý lỗi khi gửi request
-    print('Đăng ký thất bại: $e');
   }
 }

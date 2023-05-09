@@ -50,7 +50,9 @@ class APIAuth {
 
   static void saveUserData(Map<String, dynamic> jsonData) {
     UserPrefer.setEmail(value: jsonData['email']);
-    UserPrefer.setImageUser(value: jsonData['image']);
+    if (jsonData['image'] != null && jsonData['image'] != 'Null') {
+      UserPrefer.setImageUser(value: jsonData['image']);
+    }
     UserPrefer.setUserName(value: jsonData['name']);
     UserPrefer.setId(value: jsonData['id']);
   }

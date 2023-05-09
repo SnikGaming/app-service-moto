@@ -1,4 +1,5 @@
-import 'dart:convert';
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:dio/dio.dart';
 
 import 'package:app/preferences/product/product.dart';

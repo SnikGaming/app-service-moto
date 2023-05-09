@@ -1,5 +1,7 @@
 import 'package:app/components/textfield/login/text_field_email.dart';
+import 'package:app/constants/const_text.dart';
 import 'package:flutter/material.dart';
+import '../../../modules/home/api/user/register.dart';
 import '../../button/button.dart';
 import '../../textfield/login/text_field_password.dart';
 
@@ -67,6 +69,23 @@ class _FrmRegisterState extends State<FrmRegister> {
 
   _butRegister() async {
     // if (true) Message.error(message: "Login faild", context: context);
-    if (formkey.currentState!.validate()) {}
+    if (formkey.currentState!.validate()) {
+      var response = await APIAuthUser.register(
+          email: _email.text,
+          password: _password.text,
+          c_password: _repassword.text);
+      if (response == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Update successful.💕'),
+          backgroundColor: Colors.green,
+        ));
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Update failed.💕'),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }
   }
 }
