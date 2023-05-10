@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/calendar/pages/calendar_page.dart';
 import '../../../constants/colors.dart';
+import '../../../functions/onWillPop.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,60 +37,67 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: refreshData,
-      child: GestureDetector(
-        onTap: FocusScope.of(context).unfocus,
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: black,
-            bottomNavigationBar: FlashyTabBar(
+    return WillPopScope(
+      onWillPop: () => onWillPop(context, _selectedIndex, (newIndex) {
+        setState(() {
+          _selectedIndex = newIndex;
+        });
+      }),
+      child: RefreshIndicator(
+        onRefresh: refreshData,
+        child: GestureDetector(
+          onTap: FocusScope.of(context).unfocus,
+          child: SafeArea(
+            child: Scaffold(
               backgroundColor: black,
-              selectedIndex: _selectedIndex,
-              showElevation: true,
-              onItemSelected: (index) => setState(() {
-                _selectedIndex = index;
-              }),
-              items: [
-                FlashyTabBarItem(
-                  inactiveColor: Colors.white,
-                  activeColor: Colors.green,
-                  icon: const Icon(Icons.home),
-                  title: const Text(
-                    'HOME',
-                    style: TextStyle(color: Colors.white),
+              bottomNavigationBar: FlashyTabBar(
+                backgroundColor: black,
+                selectedIndex: _selectedIndex,
+                showElevation: true,
+                onItemSelected: (index) => setState(() {
+                  _selectedIndex = index;
+                }),
+                items: [
+                  FlashyTabBarItem(
+                    inactiveColor: Colors.white,
+                    activeColor: Colors.green,
+                    icon: const Icon(Icons.home),
+                    title: const Text(
+                      'HOME',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-                FlashyTabBarItem(
-                  inactiveColor: Colors.white,
-                  activeColor: Colors.green,
-                  icon: const Icon(Icons.supervised_user_circle),
-                  title: const Text(
-                    'Services',
-                    style: TextStyle(color: Colors.white),
+                  FlashyTabBarItem(
+                    inactiveColor: Colors.white,
+                    activeColor: Colors.green,
+                    icon: const Icon(Icons.supervised_user_circle),
+                    title: const Text(
+                      'Services',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-                FlashyTabBarItem(
-                  inactiveColor: Colors.white,
-                  activeColor: Colors.green,
-                  icon: const Icon(Icons.calendar_month_sharp),
-                  title: const Text(
-                    'Booking',
-                    style: TextStyle(color: Colors.white),
+                  FlashyTabBarItem(
+                    inactiveColor: Colors.white,
+                    activeColor: Colors.green,
+                    icon: const Icon(Icons.calendar_month_sharp),
+                    title: const Text(
+                      'Booking',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-                FlashyTabBarItem(
-                  inactiveColor: Colors.white,
-                  activeColor: Colors.green,
-                  icon: const Icon(Icons.settings),
-                  title: const Text(
-                    'Profile',
-                    style: TextStyle(color: Colors.white),
+                  FlashyTabBarItem(
+                    inactiveColor: Colors.white,
+                    activeColor: Colors.green,
+                    icon: const Icon(Icons.settings),
+                    title: const Text(
+                      'Profile',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              body: TestScreen[_selectedIndex],
             ),
-            body: TestScreen[_selectedIndex],
           ),
         ),
       ),
