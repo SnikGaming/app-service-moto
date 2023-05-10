@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 
 import '../../../../components/convert/rd_name.dart';
 import '../APIBASE.dart';
-import 'common.dart';
 
 class APIAuthUser {
   static register({
@@ -24,7 +23,7 @@ class APIAuthUser {
       return 401;
     }
     try {
-      final response = await ApiBase.post('/api/register/', data);
+      final response = await ApiBase.post( path: '/api/register/',data: data);
       if (response.statusCode == 200) {
         return 200;
       }
@@ -60,7 +59,8 @@ class APIAuthUser {
       formData.fields.add(MapEntry("address", address));
     }
     try {
-      final response = await ApiBase.post('/api/dangky-up/', formData);
+      final response =
+          await ApiBase.post(path: '/api/dangky-up/', data: formData);
       if (response.statusCode == 200) {
         return 200;
       }

@@ -1,5 +1,4 @@
-import 'package:dio/dio.dart';
-import '../../../../network/connect.dart';
+import 'package:app/modules/home/api/APIBASE.dart';
 import 'models/category.dart';
 
 class APICategory {
@@ -7,21 +6,16 @@ class APICategory {
 
   static Future<List<Data>> getData() async {
     try {
-      final dio = Dio();
-      final response = await dio.get(
-        "${ConnectDb.url}/api/categories/",
-        // options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
+      final response = await ApiBase.get(path: '/api/categories/');
       final jsonData = response.data;
       final List<dynamic> projectListJson = jsonData['data'];
       final List<Data> data = projectListJson
           .map((projectJson) => Data.fromJson(projectJson))
           .toList();
       apiCategory = data;
-     
+
       return data;
     } catch (e) {
-    
       apiCategory = [];
       return [];
     }

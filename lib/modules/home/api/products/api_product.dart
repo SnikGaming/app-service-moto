@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:app/modules/home/api/APIBASE.dart';
 import 'package:dio/dio.dart';
 
 import 'package:app/preferences/product/product.dart';
@@ -16,19 +17,14 @@ class APIProduct {
     int max_price = 999999999,
   }) async {
     try {
-      var dio = Dio();
-      dio.options.connectTimeout = const Duration(seconds: 10);
-      final response = await dio.get(
-        "${ConnectDb.url}/api/products",
-        queryParameters: {
-          "category_id": category_id,
-          "page": page,
-          "search": search,
-          "min_price": min_price,
-          "max_price": max_price,
-        },
-        options: Options(),
-      );
+      final response =
+          await ApiBase.get(path: '/api/products/', queryParameters: {
+        "category_id": category_id,
+        "page": page,
+        "search": search,
+        "min_price": min_price,
+        "max_price": max_price,
+      });
       final jsonData = response.data;
       final List<dynamic> projectListJson = jsonData['data'];
       final total = jsonData['total_pages'];

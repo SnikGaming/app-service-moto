@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:app/constants/const_text.dart';
 import 'package:flutter/material.dart';
@@ -76,13 +78,13 @@ class _FrmRegisterState extends State<FrmRegister> {
           c_password: _repassword.text);
       if (response == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Update successful.💕'),
+          content: Text('Register successful.💕'),
           backgroundColor: Colors.green,
         ));
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Update failed.💕'),
+          content: Text('Register failed.💕'),
           backgroundColor: Colors.red,
         ));
       }

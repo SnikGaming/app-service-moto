@@ -1,7 +1,7 @@
 import 'package:app/modules/home/api/login/model.dart';
 import 'package:dio/dio.dart';
-import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
+import '../APIBASE.dart';
 
 class APIAuth {
   static Data userLogin = Data();
@@ -9,10 +9,8 @@ class APIAuth {
   static Future<int> login(
       {String email = "long@gmail.com", String password = "12345678"}) async {
     try {
-      final response = await Dio().post(
-        "${ConnectDb.url}/api/login",
-        data: {"email": email, "password": password},
-      );
+      final response = await ApiBase.post(
+          path: '/api/login', data: {"email": email, "password": password});
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = response.data;
         final String tempToken = responseData['token'];
@@ -24,7 +22,6 @@ class APIAuth {
         throw Exception("Failed to login");
       }
     } catch (e) {
-      // throw Exception(e.toString());
       return 400;
     }
   }
@@ -33,25 +30,21 @@ class APIAuth {
     // print('this is user ');
     Response response;
     try {
-      response = await Dio().get(
-        "${ConnectDb.url}/api/dangky/",
-        options: Options(
-          headers: {'Authorization': 'Bearer ${UserPrefer.getToken()}'},
-        ),
-      );
+      response = await ApiBase.get(path: '/api/dangky/');
     } catch (e) {
       return null;
     }
     final jsonData = response.data['data'];
-    print('this is user ${Data.fromJson(jsonData).email}');
     saveUserData(jsonData);
     return Data.fromJson(jsonData);
   }
 
   static void saveUserData(Map<String, dynamic> jsonData) {
     UserPrefer.setEmail(value: jsonData['email']);
-    if (jsonData['image'] != null && jsonData['image'] != 'Null') {
+    if (jsonData['image'] != '/storage/user/Null') {
       UserPrefer.setImageUser(value: jsonData['image']);
+    } else {
+      UserPrefer.removeImageUser();
     }
     UserPrefer.setUserName(value: jsonData['name']);
     UserPrefer.setId(value: jsonData['id']);
