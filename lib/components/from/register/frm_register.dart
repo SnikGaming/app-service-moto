@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/components/textfield/login/text_field_email.dart';
-import 'package:app/constants/const_text.dart';
 import 'package:flutter/material.dart';
 import '../../../modules/home/api/user/register.dart';
 import '../../button/button.dart';

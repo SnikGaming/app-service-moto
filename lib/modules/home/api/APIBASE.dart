@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 class ApiBase {
   static final dio = Dio(
     BaseOptions(
-      connectTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 20),
     ),
   );
   static Future<Response> get(
