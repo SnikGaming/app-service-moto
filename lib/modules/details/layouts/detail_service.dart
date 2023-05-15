@@ -9,6 +9,8 @@ import '../../../network/connect.dart';
 import '../../home/api/products/models/products.dart' as products;
 import 'package:in_app_review/in_app_review.dart';
 
+import '../module/cart.dart';
+
 class DetailsServiceScreen extends StatefulWidget {
   final products.Data data;
   const DetailsServiceScreen({super.key, required this.data});
@@ -40,19 +42,19 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
     final dialog = RatingDialog(
       initialRating: 1.0,
       // your app's name?
-      title: Text(
+      title: const Text(
         'Rating Dialog',
         textAlign: TextAlign.center,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 25,
           fontWeight: FontWeight.bold,
         ),
       ),
       // encourage your user to leave a high rating?
-      message: Text(
+      message: const Text(
         'Tap a star to set your rating. Add more description here if you want.',
         textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 15),
+        style: TextStyle(fontSize: 15),
       ),
       // your app's logo?
       image: const FlutterLogo(size: 100),
@@ -80,14 +82,16 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
     );
   }
 
+  int i = 0;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(Icons.calendar_month_outlined),
+        appBar: AppBar(
+          title: Text('Purchase ${widget.data.name}'),
         ),
+        floatingActionButton: Cart(widget: widget, size: size),
         body: Container(
           color: const Color(0xffF0F0F0),
           height: MediaQuery.of(context).size.height,
@@ -103,43 +107,10 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      //!: APP BAR
                       Positioned(
-                          top: 0,
-                          child: SizedBox(
-                            height: 60,
-                            // color: Color.fromARGB(188, 120, 54, 244),
-                            width: size.width,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: const Icon(
-                                            Icons.arrow_back_ios_outlined)),
-                                    const Text(
-                                      'Thông tin sản phẩm',
-                                      style: styleH1,
-                                    )
-                                  ],
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.shopping_bag_outlined,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )),
-                      Positioned(
-                        top: 170,
+                        top: 150,
                         child: Container(
-                          height: size.height * .37,
+                          height: size.height * .4,
                           width: size.width * .7,
                           decoration: BoxDecoration(
                             color: const Color(0xffFFFFFF),
@@ -155,10 +126,11 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                           ),
                           child: Stack(
                             children: [
+                              //!: Content
                               Positioned(
                                 bottom: 0,
                                 child: Container(
-                                  height: size.height * .21,
+                                  height: size.height * .26,
                                   width: size.width * .7,
                                   decoration: const BoxDecoration(
                                       // color: Colors.blue,
@@ -173,14 +145,25 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const SizedBox(
-                                          height: 14,
-                                        ),
+                                        // const SizedBox(
+                                        //   height: 14,
+                                        // ),
                                         SizedBox(
                                           width: size.width,
                                           child: Text(
                                             '${widget.data.name}',
                                             style: styleH2,
+                                            softWrap: true,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        SizedBox(
+                                          width: size.width,
+                                          child: Text(
+                                            'Số lượng ${widget.data.number}',
+                                            style: styleH3,
                                             softWrap: true,
                                           ),
                                         ),
@@ -223,11 +206,12 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                           ),
                         ),
                       ),
+                      //!: Image
                       Positioned(
-                        top: 70,
+                        top: 30,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(18),
-                          child: Container(
+                          child: SizedBox(
                             height: size.height * .27,
                             width: size.width * .6,
                             child: Stack(
@@ -330,7 +314,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                       ),
 
                       const SizedBox(
-                        height: 8,
+                        height: 100,
                       ),
 
                       // Container(

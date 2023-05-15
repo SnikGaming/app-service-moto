@@ -10,7 +10,7 @@ import 'models/products.dart';
 class APIProduct {
   static List<Data> apiProducts = [];
   static Future<List<Data>> getData({
-    int category_id = 1,
+    int? category_id,
     int page = 1,
     String search = '',
     int min_price = 0,

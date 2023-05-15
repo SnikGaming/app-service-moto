@@ -28,22 +28,24 @@ class _FlashScreenState extends State<FlashScreen>
   }
 
   _checkInternet() async {
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      setState(() {
-        _isConnected = (result != ConnectivityResult.none);
+    Future.delayed(const Duration(seconds: 6))
+        .then((value) => {Modular.to.navigate(Routes.home)});
+    // Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    //   setState(() {
+    //     _isConnected = (result != ConnectivityResult.none);
 
-        if (_isConnected) {
-          Message.success(message: "Welcome to app! 💕💕", context: context);
-          Future.delayed(const Duration(seconds: 6))
-              .then((value) => {Modular.to.navigate(Routes.home)});
-        } else {
-          Message.error(
-              message:
-                  "Please check if your device is connected to the internet 🤷‍♂️🤷‍♂️",
-              context: context);
-        }
-      });
-    });
+    //     if (_isConnected) {
+    //       Message.success(message: "Welcome to app! 💕💕", context: context);
+    //       Future.delayed(const Duration(seconds: 6))
+    //           .then((value) => {Modular.to.navigate(Routes.home)});
+    //     } else {
+    //       Message.error(
+    //           message:
+    //               "Please check if your device is connected to the internet 🤷‍♂️🤷‍♂️",
+    //           context: context);
+    //     }
+    //   });
+    // });
   }
 
   @override

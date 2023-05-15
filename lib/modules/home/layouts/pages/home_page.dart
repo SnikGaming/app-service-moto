@@ -16,6 +16,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pagination_flutter/pagination.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/functions/logout.dart';
+import '../../../../components/search/search.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../network/api/google/google.dart';
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage>
   final _scrollController = ScrollController();
   bool isLogin = false;
   bool isProfileOpen = false;
-
+  String search = '';
   var indexData = 0;
   var totalPage = 0;
   String username = UserPrefer.getsetUserName() ?? 'GUEST';
@@ -100,8 +101,8 @@ class _HomePageState extends State<HomePage>
   }
 
   void loadData() async {
-    final productDataFuture =
-        APIProduct.getData(category_id: indexData + 1, page: page);
+    final productDataFuture = APIProduct.getData(
+        search: search, category_id: indexData + 1, page: page);
     final categoryDataFuture = APICategory.getData();
     List<dynamic> results =
         await Future.wait([productDataFuture, categoryDataFuture]);
@@ -120,33 +121,6 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  List<String> items = [
-    "Apple",
-    "Banana",
-    "Cherry",
-    "Durian",
-    "Eggfruit",
-    "Fig",
-    "Grapes",
-    "Honeydew",
-    "Jackfruit",
-    "Kiwi",
-    "Lemon",
-    "Mango",
-    "Nectarine",
-    "Orange",
-    "Pineapple",
-    "Quince",
-    "Raspberry",
-    "Strawberry",
-    "Tangerine",
-    "Ugli fruit",
-    "Vanilla bean",
-    "Watermelon",
-    "Xigua",
-    "Yellow watermelon",
-    "Zucchini",
-  ];
   double value = 3.5;
 
   @override
@@ -156,6 +130,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
     isCheck = SettingPrefer.getLightDark() ?? true;
     loadData();
+    UserPrefer.getImageUser() != null ? isLogin = true : false;
     _scrollController.addListener(() {
       // if (_scrollController.offset > 0) {
       //   setState(() {
@@ -196,7 +171,7 @@ class _HomePageState extends State<HomePage>
         maxCrossAxisExtent: 250,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        childAspectRatio: .5,
+        childAspectRatio: .8,
       ),
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.only(
@@ -228,10 +203,12 @@ class _HomePageState extends State<HomePage>
               ),
             ),
             IconButton(
-              onPressed: () {
+              onPressed: () async {
+                var data = await APIProduct.getData(
+                    category_id: 1, search: '', page: page);
                 showSearch(
                   context: context,
-                  delegate: MySearchDelegate(items: items),
+                  delegate: MySearchDelegate(items: data),
                 );
               },
               icon: const Icon(Icons.search),
@@ -259,73 +236,49 @@ class _HomePageState extends State<HomePage>
             child: const MySlider(),
           ),
         ),
-        //? Category
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          sliver: SliverGrid.builder(
-            itemCount: APICategory.apiCategory.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 90,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 1.0,
-            ),
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () async {
-                setState(() {
-                  productData = [];
-                  indexData = index;
-                  page = 1;
-                  loadData();
-                });
+        //!: Search
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            child: MySearchBar(
+              hintText: 'Tìm kiếm',
+              onSearch: (value) {
+                indexData = 0;
+                search = value;
+                page = 1;
+                loadData();
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: indexData == index
-                      ? const Color.fromARGB(255, 85, 34, 225)
-                      : const Color.fromARGB(255, 148, 142, 142),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: indexData == index
-                          ? const Color.fromARGB(255, 143, 90, 240)
-                          : Colors.grey,
-                      spreadRadius: 4,
-                      blurRadius: 7,
-                      offset: const Offset(1, 3), // changes position of shadow
-                    ),
-                  ],
+            ),
+          ),
+        ),
+        //? Category
+
+        SliverPadding(
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+          sliver: SliverToBoxAdapter(
+            child: SizedBox(
+              height: 100,
+              width: size.width,
+              // color: Colors.red,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, i) => Padding(
+                  padding: EdgeInsets.only(
+                      top: 10,
+                      bottom: 20,
+                      left: i % 2 == 0 ? 10 : 0,
+                      right: i % 2 == 0
+                          ? 10
+                          : i == APICategory.apiCategory.length - 1
+                              ? 10
+                              : 0),
+                  child: categoriesItem(i),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl:
-                          '${ConnectDb.url}${APICategory.apiCategory[index].image}',
-                      color: indexData == index ? white : black,
-                      height: 45,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    Text(
-                      '${APICategory.apiCategory[index].name}',
-                      style: TextStyle(
-                          color: indexData == index ? white : black,
-                          fontSize: 14,
-                          fontWeight: indexData == index
-                              ? FontWeight.w400
-                              : FontWeight.w600,
-                          letterSpacing: 1),
-                    )
-                  ],
-                ),
+                itemCount: APICategory.apiCategory.length,
               ),
             ),
           ),
         ),
-
         // SliverToBoxAdapter(
         //   child: SkelatonHome(),
         // ),
@@ -449,6 +402,62 @@ class _HomePageState extends State<HomePage>
         //?:footer
         _footer(size)
       ],
+    );
+  }
+
+  GestureDetector categoriesItem(int index) {
+    return GestureDetector(
+      onTap: () async {
+        search = '';
+        setState(() {
+          productData = [];
+          indexData = index;
+          page = 1;
+          loadData();
+        });
+      },
+      child: Container(
+        width: 90,
+        height: 90,
+        decoration: BoxDecoration(
+          color: indexData == index
+              ? const Color.fromARGB(255, 85, 34, 225)
+              : const Color.fromARGB(255, 148, 142, 142),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: indexData == index
+                  ? const Color.fromARGB(255, 143, 90, 240)
+                  : Colors.grey,
+              spreadRadius: 4,
+              blurRadius: 7,
+              offset: const Offset(1, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CachedNetworkImage(
+              imageUrl:
+                  '${ConnectDb.url}${APICategory.apiCategory[index].image}',
+              color: indexData == index ? white : black,
+              height: 45,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            Text(
+              '${APICategory.apiCategory[index].name}',
+              style: TextStyle(
+                  color: indexData == index ? white : black,
+                  fontSize: 14,
+                  fontWeight:
+                      indexData == index ? FontWeight.w400 : FontWeight.w600,
+                  letterSpacing: 1),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -667,7 +676,7 @@ class ItemProduct extends StatelessWidget {
           )
         ]),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           child: Container(
               color: SettingPrefer.getLightDark() == null ||
                       SettingPrefer.getLightDark()
@@ -681,9 +690,12 @@ class ItemProduct extends StatelessWidget {
                   Expanded(
                       flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(0),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
                           child: Container(
                             decoration: const BoxDecoration(),
                             child: CachedNetworkImage(
@@ -698,6 +710,7 @@ class ItemProduct extends StatelessWidget {
                           ),
                         ),
                       )),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16, right: 16),
@@ -721,35 +734,19 @@ class ItemProduct extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 14,
-                              ),
-                              Text(
-                                '${productData[index].like}',
-                                style: MyTextStyle.normal
-                                    .copyWith(fontSize: 12)
-                                    .copyWith(color: Colors.red),
-                              ),
-                            ],
-                          ),
                           const Spacer(),
                           Container(
-                            padding: const EdgeInsetsDirectional.all(8),
+                            padding: const EdgeInsetsDirectional.all(4),
                             color: Colors.black,
                             child: Text(
                                 formatCurrency(
                                     amount: '${productData[index].price}'),
                                 style: MyTextStyle.normal.copyWith(
                                   color: Colors.yellow,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                 )),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
                         ],
                       ),
                     ),

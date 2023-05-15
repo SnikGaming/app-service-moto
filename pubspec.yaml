@@ -59,7 +59,6 @@ dependencies:
   pull_to_refresh_flutter3: ^2.0.1
   rive: ^0.10.3
   custom_refresh_indicator: ^2.0.1
-  http: ^0.13.5
   device_preview: ^1.1.0
   animated_text_kit: ^4.2.2
   fluid_dialog: ^1.1.0
@@ -75,6 +74,7 @@ dependencies:
   in_app_review: ^2.0.6
   rating_dialog: ^2.0.4
   photo_view: ^0.14.0
+  skeleton_loader: ^2.0.0+4
   # flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:

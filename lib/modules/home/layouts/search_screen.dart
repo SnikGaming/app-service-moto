@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+// import '../../api/products/models/products.dart' as products;
+import '../api/products/models/products.dart';
 
 class MySearchDelegate extends SearchDelegate {
-  final List<String> items;
+  final List<Data> items;
 
   MySearchDelegate({required this.items});
 
@@ -29,15 +31,15 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<String> result = items
-        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+    List<Data> result = items
+        .where((item) => item.name!.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     return ListView.builder(
       itemCount: result.length,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text(result[index]),
+          title: Text(result[index].name!),
           onTap: () {
             close(context, result[index]);
           },
@@ -48,19 +50,20 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> suggestionList = query.isEmpty
+    List<Data> suggestionList = query.isEmpty
         ? []
         : items
-            .where((item) => item.toLowerCase().startsWith(query.toLowerCase()))
+            .where((item) =>
+                item.image!.toLowerCase().startsWith(query.toLowerCase()))
             .toList();
 
     return ListView.builder(
       itemCount: suggestionList.length,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
-          title: Text(suggestionList[index]),
+          title: Text(suggestionList[index].name!),
           onTap: () {
-            query = suggestionList[index];
+            query = suggestionList[index].name!;
             showResults(context);
           },
         );
