@@ -1,8 +1,10 @@
 import 'package:app/components/message/message.dart';
+import 'package:app/constants/style.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../../../components/button/mybutton.dart';
+import '../../../components/convert/format_money.dart';
 import '../../../components/style/text_style.dart';
 import '../../../preferences/user/user_preferences.dart';
 import '../layouts/detail_service.dart';
@@ -22,7 +24,7 @@ class Cart extends StatelessWidget {
     return FloatingActionButton(
       onPressed: () {
         int _quantity = 1;
-
+        String _note = '';
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -51,6 +53,7 @@ class Cart extends StatelessWidget {
                         children: [
                           const SizedBox(height: 20),
                           TextFormField(
+                            controller: TextEditingController(text: _note),
                             maxLines: null,
                             decoration: const InputDecoration(
                               labelText: 'Ghi chú',
@@ -105,7 +108,19 @@ class Cart extends StatelessWidget {
                           ),
                           // const Spacer(),
                           const SizedBox(
-                            height: 90,
+                            height: 10,
+                          ),
+                          Container(
+                            height: 20,
+                            width: size.width,
+                            // color: Colors.red,
+                            child: Text(
+                              'Tổng tiền : ${formatCurrency(amount: '${widget.data.price! * _quantity}')}',
+                              style: styleH3,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 40,
                           ),
                           SizedBox(
                             width: size.width,
@@ -118,7 +133,7 @@ class Cart extends StatelessWidget {
                                   icons: const Icon(Ionicons.cart),
                                   width: size.width * .6,
                                   onPressed: () {
-                                    check(_quantity, context, false);
+                                    check(_quantity, _note, context, false);
                                   },
                                   child: Text(
                                     'Thêm vào giỏ hàng',
@@ -129,7 +144,7 @@ class Cart extends StatelessWidget {
                                   backgroundColor: Colors.red,
                                   width: size.width * .3,
                                   onPressed: () {
-                                    check(_quantity, context, true);
+                                    check(_quantity, _note, context, true);
                                   },
                                   child: const Text(
                                     'Mua',
@@ -161,12 +176,21 @@ class Cart extends StatelessWidget {
     );
   }
 
-  check(_quantity, context, isBuy) {
+  check(_quantity, _note, context, isBuy) {
     if (UserPrefer.getToken() == null || UserPrefer.getToken() == 'null') {
       Message.error(
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
       if (_quantity < widget.data.number!) {
+        var total = _quantity * widget.data.price;
+        var json = {
+          'total': total,
+          'quantity': _quantity,
+          'id_sp': widget.data.id!,
+          'id_user': UserPrefer.getId(),
+          'date': DateTime.now()
+        };
+        print('abc ${json}');
         if (isBuy) {
           Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);

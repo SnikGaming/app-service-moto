@@ -8,14 +8,8 @@ String formatCurrency({required String amount}) {
   int? value = int.tryParse(amount);
   if (value == null) return "";
 
-  final format = NumberFormat.currency(locale: "vi_VN", symbol: "");
-
-  if (value >= 1000000) {
-    double result = value / 1000000.0;
-    return "${format.format(result)} triệu đồng";
-  } else if (value >= 1000) {
-    return "${format.format(value)} đồng";
-  } else {
-    return "Hết hàng";
-  }
+  return "${value.toString().replaceAllMapped(
+        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+        (Match m) => '${m[1]}.',
+      )}đ";
 }
