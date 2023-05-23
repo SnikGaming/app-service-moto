@@ -192,7 +192,7 @@ class Cart extends StatelessWidget {
         };
         print('abc ${json}');
         if (isBuy) {
-          Message.success(message: 'Mua thành công.', context: context);
+          // Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);
         } else {
           Message.success(

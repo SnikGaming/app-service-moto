@@ -1,4 +1,5 @@
 // ignore_for_file: unused_element, non_constant_identifier_names
+import 'package:app/modules/home/layouts/pages/cart_page.dart';
 import 'package:app/modules/home/layouts/pages/home_page.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const HomePage(),
     const ServicesPage(),
     const CalendarPage(),
+    const CartScreen(),
     const ProFilePage(),
   ];
 
@@ -84,6 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: const Icon(Icons.calendar_month_sharp),
                       title: const Text(
                         'Booking',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    FlashyTabBarItem(
+                      inactiveColor: Colors.white,
+                      activeColor: Colors.green,
+                      icon: const Icon(Icons.shopping_bag_sharp),
+                      title: const Text(
+                        'Profile',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

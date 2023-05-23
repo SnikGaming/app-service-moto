@@ -197,6 +197,14 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                                 color: Colors.red),
                                           ),
                                         ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          'Số lượng : ${widget.data.number}',
+                                          style: styleTitle.copyWith(
+                                              color: Colors.grey),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -218,13 +226,14 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                               alignment: Alignment.center,
                               children: [
                                 ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: zoomImage(
-                                      imageProvider: NetworkImage(
-                                          '${ConnectDb.url}${widget.data.image}'),
-                                      child: Image.network(
-                                          '${ConnectDb.url}${widget.data.image}'),
-                                    )),
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: zoomImage(
+                                    imageProvider: NetworkImage(
+                                        '${ConnectDb.url}${widget.data.image}'),
+                                    child: Image.network(
+                                        '${ConnectDb.url}${widget.data.image}'),
+                                  ),
+                                ),
                                 Positioned(
                                   right: 10,
                                   top: 10,

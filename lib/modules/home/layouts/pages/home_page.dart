@@ -25,6 +25,7 @@ import '../../../../preferences/product/product.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
 import 'package:badges/badges.dart' as badges;
+import '../../../details/api/product.dart';
 import '../../api/category/models/category.dart' as categories;
 import '../../api/login/api_login.dart';
 import '../../api/products/api_product.dart';
@@ -171,7 +172,7 @@ class _HomePageState extends State<HomePage>
         maxCrossAxisExtent: 250,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        childAspectRatio: .8,
+        childAspectRatio: .7,
       ),
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.only(
@@ -663,8 +664,11 @@ class ItemProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Modular.to.pushNamed(Routes.details, arguments: productData[index]);
+      onTap: () async {
+        var value = await getProductDetail(id: 1);
+        if (value != null) {
+          Modular.to.pushNamed(Routes.details, arguments: value);
+        }
         // serviceDetail(context, size, productData[index]);
       },
       child: Container(
