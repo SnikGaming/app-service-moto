@@ -8,6 +8,6 @@ class OrderModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute("/", child: (_, args) => const OrderScreen()),
+        ChildRoute("/", child: (_, args) => OrderScreen(json: args.data)),
       ];
 }

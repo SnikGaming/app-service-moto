@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:app/components/message/message.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -12,6 +15,9 @@ import '../../../app_constants.dart';
 import '../../api/cart/api_cart.dart';
 import '../../api/cart/model.dart' as CartModel;
 import '../../../../components/convert/format_money.dart';
+import '../../api/order/api_order.dart';
+import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -24,6 +30,35 @@ class _CartScreenState extends State<CartScreen> {
   List<bool> lsClick = [];
   bool isButton = true;
   bool selectAll = false;
+
+  String createOrder() {
+    List<Map<String, dynamic>> orderDetails = [];
+
+    for (int i = 0; i < lsClick.length; i++) {
+      if (lsClick[i]) {
+        Map<String, dynamic> order = {
+          "product_id": data[i].productId,
+          "quantity": data[i].quantity,
+        };
+        orderDetails.add(order);
+      }
+    }
+
+    Map<String, dynamic> jsonData = {
+      "address": "ấp Mỹ Nam 2, Mỹ Quý, Tháp Mười ĐỒng Tháp",
+      "Ship": "20000",
+      "date_order": DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+      "phone": "",
+      "sale": "",
+      "order_details": orderDetails,
+    };
+
+    String json = jsonEncode(jsonData);
+    print('test data $json');
+    return json;
+    // Send the JSON to the server or perform any other necessary actions
+  }
+
   void selectAllItems(bool value) {
     setState(() {
       selectAll = value;
@@ -97,14 +132,23 @@ class _CartScreenState extends State<CartScreen> {
       );
     }
 
-    Widget slidable(int i) {
+    Widget slidable(int i, context) {
       return Slidable(
-        key: const ValueKey(0),
-        endActionPane: const ActionPane(
+        key: ValueKey(0),
+        endActionPane: ActionPane(
           motion: ScrollMotion(),
           children: [
             SlidableAction(
-              onPressed: doNothing,
+              onPressed: (context) {
+                ApiCart.apiDeleteCarts(cartIds: [data[i].id!]);
+                // if (value == 200) {
+                //   Message.success(
+                //       message: 'Xóa thành công...!', context: context);
+                // } else {
+                //   Message.error(message: 'Xóa thất bại...!', context: context);
+                // }
+                loadData();
+              },
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               icon: Icons.delete,
@@ -295,7 +339,7 @@ class _CartScreenState extends State<CartScreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: lsClick.isEmpty
                                 ? const CircularProgressIndicator()
-                                : slidable(i),
+                                : slidable(i, context),
                           );
                         },
                       ),
@@ -337,8 +381,12 @@ class _CartScreenState extends State<CartScreen> {
                                   Expanded(
                                     child: MyButton(
                                       disable: isButton,
-                                      onPressed: () {
-                                        Modular.to.pushNamed(Routes.order);
+                                      onPressed: () async {
+                                        String json = createOrder();
+
+                                        // await APIOrder.addOrder(json: json);
+                                        Modular.to.pushNamed(Routes.order,
+                                            arguments: json);
                                       },
                                       child: Text(
                                         'THANH TOÁN',
@@ -362,7 +410,10 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-void doNothing(BuildContext context) {}
+void doNothing(BuildContext context) {
+  print('test data del');
+  ApiCart.apiDeleteCarts(cartIds: []);
+}
 
 class OrderOfCart {
   int id;

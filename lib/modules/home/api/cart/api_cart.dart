@@ -21,6 +21,27 @@ class ApiCart {
     }
   }
 
+  static Future<int> apiDeleteCarts({required List<int> cartIds}) async {
+    try {
+      final data = {"cart": []};
+
+      // Add cart IDs to the data
+      cartIds.forEach((id) {
+        data["cart"]?.add({"id": id});
+      });
+
+      final response = await ApiBase.post(path: '/api/carts_del', data: data);
+      if (response.statusCode == 200) {
+        return 200;
+      } else {
+        return 400;
+      }
+    } catch (e) {
+      print('Error: $e');
+      return 400;
+    }
+  }
+
   static Future<List<Data>> getData() async {
     try {
       final response = await ApiBase.get(path: '/api/carts/');

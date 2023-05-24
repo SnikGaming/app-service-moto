@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/districts/location.dart';
 import '../../../functions/hideExcessCharacters.dart';
 
 class OrderScreen extends StatefulWidget {
-  const OrderScreen({Key? key}) : super(key: key);
+  String json;
+  OrderScreen({Key? key, required this.json}) : super(key: key);
 
   @override
   _OrderScreenState createState() => _OrderScreenState();
@@ -58,7 +60,13 @@ class _OrderScreenState extends State<OrderScreen> {
                     ],
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      print('data test');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => LocationSelectionScreen()));
+                    },
                     icon: Icon(Icons.edit),
                   )
                   // Row(
