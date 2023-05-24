@@ -67,6 +67,35 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    Widget build2(BuildContext context) {
+      return FutureBuilder(
+        future: Future.delayed(const Duration(seconds: 2)),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            // Display the Container with the image after 5 seconds
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                setState(() {
+                  // Set your state here
+                });
+              }
+            });
+
+            return Container(
+              height: size.height,
+              width: size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/notdata.gif'),
+                ),
+              ),
+            );
+          }
+        },
+      );
+    }
 
     Widget slidable(int i) {
       return Slidable(
@@ -118,30 +147,34 @@ class _CartScreenState extends State<CartScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Row(
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: '${ConnectDb.url}${data[i].image}',
-                          height: 80,
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(data[i].productName!),
-                              Text(data[i].price.toString()),
-                              Text(
-                                'Tổng tiền: ${formatCurrency(amount: '${int.parse(data[i].price!) * data[i].quantity!}')}',
-                              ),
-                            ],
+                    InkWell(
+                      onTap: () => Modular.to.pushNamed(Routes.details,
+                          arguments: data[i].productId),
+                      child: Row(
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: '${ConnectDb.url}${data[i].image}',
+                            height: 80,
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(data[i].productName!),
+                                Text(data[i].price.toString()),
+                                Text(
+                                  'Tổng tiền: ${formatCurrency(amount: '${int.parse(data[i].price!) * data[i].quantity!}')}',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       color: Colors.red,
@@ -152,9 +185,11 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              setState(() {
-                                data[i].quantity = data[i].quantity! - 1;
-                              });
+                              if (data[i].quantity! > 1) {
+                                setState(() {
+                                  data[i].quantity = data[i].quantity! - 1;
+                                });
+                              }
                             },
                             child: const Icon(Icons.remove, size: 10),
                           ),
@@ -190,9 +225,14 @@ class _CartScreenState extends State<CartScreen> {
                                         onPressed: () {
                                           if (quantityController
                                               .text.isNotEmpty) {
-                                            data[i].quantity = int.parse(
-                                                quantityController.text);
+                                            if (int.parse(
+                                                    quantityController.text) >
+                                                1) {
+                                              data[i].quantity = int.parse(
+                                                  quantityController.text);
+                                            }
                                           }
+
                                           setState(() {});
                                           Navigator.of(context).pop();
                                         },
@@ -206,7 +246,7 @@ class _CartScreenState extends State<CartScreen> {
                             },
                             child: Text(
                               '${data[i].quantity}', // Số lượng hiển thị
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
                           GestureDetector(
@@ -233,7 +273,7 @@ class _CartScreenState extends State<CartScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'NOTIFICATION',
+            'CART',
             style: MyTextStyle.title,
           ),
           centerTitle: true,
@@ -242,77 +282,80 @@ class _CartScreenState extends State<CartScreen> {
         body: SizedBox(
           height: size.height,
           width: size.width,
-          child: Stack(
-            children: [
-              SizedBox(
-                height: size.height * 0.68,
-                child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, i) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: lsClick.isEmpty
-                          ? CircularProgressIndicator()
-                          : slidable(i),
-                    );
-                  },
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  // color: Colors.red,
-                  width: size.width,
-                  height: size.height * 0.12,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: selectAll,
-                              onChanged: (value) {
-                                selectAllItems(value!);
-                              },
-                            ),
-                            Text('Chọn tất cả'),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            isButton
-                                ? Container()
-                                : Expanded(
-                                    flex: 2,
-                                    child: Text(
-                                      'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
-                                      style:
-                                          title.copyWith(color: Colors.black),
+          child: data.length < 1
+              ? build2(context)
+              : Stack(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.68,
+                      child: ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, i) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: lsClick.isEmpty
+                                ? const CircularProgressIndicator()
+                                : slidable(i),
+                          );
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      child: SizedBox(
+                        // color: Colors.red,
+                        width: size.width,
+                        height: size.height * 0.12,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    value: selectAll,
+                                    onChanged: (value) {
+                                      selectAllItems(value!);
+                                    },
+                                  ),
+                                  const Text('Chọn tất cả'),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  isButton
+                                      ? Container()
+                                      : Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
+                                            style: title.copyWith(
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: MyButton(
+                                      disable: isButton,
+                                      onPressed: () {
+                                        Modular.to.pushNamed(Routes.order);
+                                      },
+                                      child: Text(
+                                        'THANH TOÁN',
+                                        style: title2.copyWith(
+                                            color: Colors.white),
+                                      ),
                                     ),
                                   ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: MyButton(
-                                disable: isButton,
-                                onPressed: () {
-                                  Modular.to.pushNamed(Routes.order);
-                                },
-                                child: Text(
-                                  'THANH TOÁN',
-                                  style: title2.copyWith(color: Colors.white),
-                                ),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );

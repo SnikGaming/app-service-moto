@@ -665,11 +665,7 @@ class ItemProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        var value = await getProductDetail(id: 1);
-        if (value != null) {
-          Modular.to.pushNamed(Routes.details, arguments: value);
-        }
-        // serviceDetail(context, size, productData[index]);
+        Modular.to.pushNamed(Routes.details, arguments: productData[index].id);
       },
       child: Container(
         decoration: const BoxDecoration(boxShadow: [

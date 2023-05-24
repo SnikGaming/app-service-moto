@@ -2,6 +2,7 @@ import 'package:app/components/message/message.dart';
 import 'package:app/constants/style.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import '../../home/api/products/models/products.dart' as products;
 
 import '../../../components/button/mybutton.dart';
 import '../../../components/convert/format_money.dart';
@@ -11,13 +12,14 @@ import '../layouts/detail_service.dart';
 import '../../home/api/cart/api_cart.dart';
 
 class Cart extends StatelessWidget {
-  const Cart({
+   Cart({
     super.key,
-    required this.widget,
+     this.data,
+    // required this.widget,
     required this.size,
   });
-
-  final DetailsServiceScreen widget;
+   products.Data? data;
+  // final DetailsServiceScreen widget;
   final Size size;
 
   @override
@@ -85,8 +87,7 @@ class Cart extends StatelessWidget {
                                   ),
                                   onChanged: (value) {
                                     setState(() {
-                                      if (int.tryParse(value)! >
-                                              widget.data.number! ||
+                                      if (int.tryParse(value)! > data!.number! ||
                                           value.length < 3) {
                                         quantity = int.tryParse(value) ?? 1;
                                       }
@@ -116,7 +117,7 @@ class Cart extends StatelessWidget {
                             width: size.width,
                             // color: Colors.red,
                             child: Text(
-                              'Tổng tiền : ${formatCurrency(amount: '${widget.data.price! * quantity}')}',
+                              'Tổng tiền : ${formatCurrency(amount: '${data!.price! * quantity}')}',
                               style: styleH3,
                             ),
                           ),
@@ -182,12 +183,12 @@ class Cart extends StatelessWidget {
       Message.error(
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
-      if (quantity < widget.data.number!) {
-        var total = quantity * widget.data.price;
+      if (quantity < data!.number!) {
+        var total = quantity * data!.price;
         var json = {
           'total': total,
           'quantity': quantity,
-          'id_sp': widget.data.id!,
+          'id_sp': data!.id!,
           'id_user': UserPrefer.getId(),
           'date': DateTime.now()
         };
@@ -196,7 +197,7 @@ class Cart extends StatelessWidget {
           // Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);
         } else {
-          var value = await ApiCart.apiCart(id: widget.data.id!, quantity: quantity);
+          var value = await ApiCart.apiCart(id: data!.id!, quantity: quantity);
           if (value == 200) {
             Message.success(
                 message: 'Thêm giỏ hàng thành công.', context: context);
