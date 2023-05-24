@@ -9,44 +9,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'components/districts/district.dart';
+import 'components/districts/location.dart';
 import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LocationSelectionScreen(),
-    );
+Future<void> main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  await SettingPrefer.init();
+  await ProductPrefer.init();
+  await UserPrefer.init();
+  // await APICategory.getData();
+  await APIBanner.getData();
+  // await APIProduct.getData();
+  if (UserPrefer.getToken() != null) {
+    await APIBooking.fetchBookings();
+    await APIAuth.getUser();
   }
+  runApp(ModularApp(module: AppModule(), child: const MyApp()));
+  // runApp(DevicePreview(
+  //     // enabled: kIsWeb,
+  //     builder: ((context) =>
+  //         ModularApp(module: AppModule(), child: const MyApp()))));
 }
-// Future<void> main(List<String> args) async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-//   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-//   SystemChrome.setPreferredOrientations([
-//     DeviceOrientation.portraitUp,
-//     DeviceOrientation.portraitDown,
-//   ]);
-//   await SettingPrefer.init();
-//   await ProductPrefer.init();
-//   await UserPrefer.init();
-//   // await APICategory.getData();
-//   await APIBanner.getData();
-//   // await APIProduct.getData();
-//   if (UserPrefer.getToken() != null) {
-//     await APIBooking.fetchBookings();
-//     await APIAuth.getUser();
-//   }
-//   runApp(ModularApp(module: AppModule(), child: const MyApp()));
-//   // runApp(DevicePreview(
-//   //     // enabled: kIsWeb,
-//   //     builder: ((context) =>
-//   //         ModularApp(module: AppModule(), child: const MyApp()))));
-// }

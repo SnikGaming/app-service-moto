@@ -7,7 +7,7 @@ Future<products.Data?> getProductDetail({required int id}) async {
   // print('this is user ');
   Response response;
   try {
-    response = await ApiBase.get(path: '/api/products/${id}');
+    response = await ApiBase.get(path: '/api/products/$id');
   } catch (e) {
     return null;
   }

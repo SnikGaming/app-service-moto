@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../functions/hideExcessCharacters.dart';
+
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
 
@@ -27,17 +29,44 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           children: [
             // Chọn địa chỉ giao hàng
-            TextFormField(
-              onChanged: (value) {
-                setState(() {
-                  selectedAddress = value;
-                });
-              },
-              decoration: const InputDecoration(
-                labelText: 'Địa chỉ giao hàng',
+            // TextFormField(
+            //   onChanged: (value) {
+            //     setState(() {
+            //       selectedAddress = value;
+            //     });
+            //   },
+            //   decoration: const InputDecoration(
+            //     labelText: 'Địa chỉ giao hàng',
+            //   ),
+            // ),
+            Container(
+              height: 60,
+              // color: Colors.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Số điện thoại 0383892964'),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                          '${hideExcessCharacters('Ấp Mỹ Nam 2, Xã Mỹ Quý,Huyện Tháp Mười, Đồng Tháp')}'),
+                    ],
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.edit),
+                  )
+                  // Row(
+                  //   children: [Icon(Icons.edit), Text('Chỉnh sửa')],
+                  // )
+                ],
               ),
             ),
-
             // Hiển thị danh sách sản phẩm trong giỏ hàng
             Expanded(
               child: ListView.builder(

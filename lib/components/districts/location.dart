@@ -1,10 +1,13 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:app/components/districts/province.dart';
-import 'package:app/components/message/message.dart';
 import 'package:flutter/material.dart';
 
 import 'data.dart';
 
 class LocationSelectionScreen extends StatefulWidget {
+  const LocationSelectionScreen({super.key});
+
   @override
   _LocationSelectionScreenState createState() =>
       _LocationSelectionScreenState();
@@ -19,6 +22,26 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
   Province? selectedProvince;
   District? selectedDistrict;
   Commune? selectedCommune;
+
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController houseNumberController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // phoneNumberController.text = UserPrefer.
+  }
+
+  @override
+  void dispose() {
+    phoneNumberController.dispose();
+    houseNumberController.dispose();
+    streetController.dispose();
+    noteController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +69,6 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                   selectedDistrict = null;
                   selectedCommune = null;
                   selectedDistricts = value.districts;
-                  print('data test $selectedDistricts');
                   selectedCommunes = [];
                 });
               },
@@ -103,7 +125,49 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                 );
               }).toList(),
             ),
-            TextButton(
+            const SizedBox(height: 16.0),
+            const Text(
+              'Số điện thoại',
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            TextFormField(
+              controller: phoneNumberController,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                hintText: 'Nhập số điện thoại',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            const Text(
+              'Số nhà/đường',
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            TextFormField(
+              controller: houseNumberController,
+              decoration: const InputDecoration(
+                hintText: 'Nhập số nhà/đường',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            const Text(
+              'Ghi chú',
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            TextFormField(
+              controller: noteController,
+              maxLines: 3,
+              decoration: const InputDecoration(
+                hintText: 'Nhập ghi chú',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
               onPressed: () {
                 if (selectedProvince != null &&
                     selectedDistrict != null &&
@@ -112,7 +176,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Selected Location'),
+                        title: const Text('Selected Location'),
                         content: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
@@ -120,6 +184,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                             Text('Province: ${selectedProvince!.name}'),
                             Text('District: ${selectedDistrict!.name}'),
                             Text('Commune: ${selectedCommune!.name}'),
+                            Text('Phone Number: ${phoneNumberController.text}'),
+                            Text(
+                                'House Number/Street: ${houseNumberController.text}'),
+                            Text('Note: ${noteController.text}'),
                           ],
                         ),
                         actions: [
@@ -127,7 +195,7 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('Close'),
+                            child: const Text('Close'),
                           ),
                         ],
                       );
@@ -135,14 +203,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text(
                           'Please select a province, district, and commune.'),
                     ),
                   );
                 }
               },
-              child: Text('ok'),
+              child: const Text('OK'),
             ),
           ],
         ),

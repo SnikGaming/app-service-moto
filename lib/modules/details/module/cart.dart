@@ -8,6 +8,7 @@ import '../../../components/convert/format_money.dart';
 import '../../../components/style/text_style.dart';
 import '../../../preferences/user/user_preferences.dart';
 import '../layouts/detail_service.dart';
+import '../../home/api/cart/api_cart.dart';
 
 class Cart extends StatelessWidget {
   const Cart({
@@ -23,8 +24,8 @@ class Cart extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        int _quantity = 1;
-        String _note = '';
+        int quantity = 1;
+        String note = '';
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -53,7 +54,7 @@ class Cart extends StatelessWidget {
                         children: [
                           const SizedBox(height: 20),
                           TextFormField(
-                            controller: TextEditingController(text: _note),
+                            controller: TextEditingController(text: note),
                             maxLines: null,
                             decoration: const InputDecoration(
                               labelText: 'Ghi chú',
@@ -67,8 +68,8 @@ class Cart extends StatelessWidget {
                           Row(
                             children: [
                               IconButton(
-                                onPressed: _quantity > 1
-                                    ? () => setState(() => _quantity--)
+                                onPressed: quantity > 1
+                                    ? () => setState(() => quantity--)
                                     : null,
                                 icon: const Icon(Icons.remove),
                               ),
@@ -87,19 +88,19 @@ class Cart extends StatelessWidget {
                                       if (int.tryParse(value)! >
                                               widget.data.number! ||
                                           value.length < 3) {
-                                        _quantity = int.tryParse(value) ?? 1;
+                                        quantity = int.tryParse(value) ?? 1;
                                       }
                                     });
                                   },
                                   controller:
-                                      TextEditingController(text: '$_quantity'),
+                                      TextEditingController(text: '$quantity'),
                                 ),
                               ),
                               const SizedBox(width: 16),
                               IconButton(
                                 onPressed: () => setState(() {
-                                  if (_quantity < 99) {
-                                    _quantity++;
+                                  if (quantity < 99) {
+                                    quantity++;
                                   }
                                 }),
                                 icon: const Icon(Icons.add),
@@ -110,12 +111,12 @@ class Cart extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          Container(
+                          SizedBox(
                             height: 20,
                             width: size.width,
                             // color: Colors.red,
                             child: Text(
-                              'Tổng tiền : ${formatCurrency(amount: '${widget.data.price! * _quantity}')}',
+                              'Tổng tiền : ${formatCurrency(amount: '${widget.data.price! * quantity}')}',
                               style: styleH3,
                             ),
                           ),
@@ -133,7 +134,7 @@ class Cart extends StatelessWidget {
                                   icons: const Icon(Ionicons.cart),
                                   width: size.width * .6,
                                   onPressed: () {
-                                    check(_quantity, _note, context, false);
+                                    check(quantity, note, context, false);
                                   },
                                   child: Text(
                                     'Thêm vào giỏ hàng',
@@ -144,7 +145,7 @@ class Cart extends StatelessWidget {
                                   backgroundColor: Colors.red,
                                   width: size.width * .3,
                                   onPressed: () {
-                                    check(_quantity, _note, context, true);
+                                    check(quantity, note, context, true);
                                   },
                                   child: const Text(
                                     'Mua',
@@ -176,16 +177,16 @@ class Cart extends StatelessWidget {
     );
   }
 
-  check(_quantity, _note, context, isBuy) {
+  check(quantity, note, context, isBuy) async {
     if (UserPrefer.getToken() == null || UserPrefer.getToken() == 'null') {
       Message.error(
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
-      if (_quantity < widget.data.number!) {
-        var total = _quantity * widget.data.price;
+      if (quantity < widget.data.number!) {
+        var total = quantity * widget.data.price;
         var json = {
           'total': total,
-          'quantity': _quantity,
+          'quantity': quantity,
           'id_sp': widget.data.id!,
           'id_user': UserPrefer.getId(),
           'date': DateTime.now()
@@ -195,8 +196,13 @@ class Cart extends StatelessWidget {
           // Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);
         } else {
-          Message.success(
-              message: 'Thêm giỏ hàng thành công', context: context);
+          var value = await ApiCart.apiCart(id: widget.data.id!, quantity: quantity);
+          if (value == 200) {
+            Message.success(
+                message: 'Thêm giỏ hàng thành công.', context: context);
+          } else {
+            Message.error(message: 'Thêm giỏ hàng thất bại.', context: context);
+          }
           Navigator.pop(context);
         }
         //API
