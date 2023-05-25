@@ -39,6 +39,7 @@ class _CartScreenState extends State<CartScreen> {
         Map<String, dynamic> order = {
           "product_id": data[i].productId,
           "quantity": data[i].quantity,
+          "price": data[i].price
         };
         orderDetails.add(order);
       }
@@ -376,7 +377,7 @@ class _CartScreenState extends State<CartScreen> {
                                       onPressed: () async {
                                         List<Map<String, dynamic>> json =
                                             createOrder();
-
+                                        print('data test ${json}');
                                         // await APIOrder.addOrder(json: json);
                                         Modular.to.pushNamed(Routes.order,
                                             arguments: json);

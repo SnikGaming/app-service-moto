@@ -55,8 +55,10 @@ class _OrderScreenState extends State<OrderScreen> {
       "name": name,
       "address": address,
       'idAddress': idAddress,
-      "Ship": "20000",
+      "ship": shippingFee,
       "date_order": DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+      "delivery_date": DateFormat('yyyy-MM-dd HH:mm:ss')
+          .format(DateTime.now().add(const Duration(days: 3))),
       "phone": phone,
       "sale": "",
       "order_details": widget.json,
@@ -149,10 +151,10 @@ class _OrderScreenState extends State<OrderScreen> {
                               onPressed: () async {
                                 await deleteData(lsData[index].id!);
                               },
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             ),
                           ),
-                          Divider(),
+                          const Divider(),
                         ],
                       ),
                     ),
@@ -161,7 +163,7 @@ class _OrderScreenState extends State<OrderScreen> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: 5,
-                itemBuilder: (context, index) => Payment(),
+                itemBuilder: (context, index) => const Payment(),
               ),
             ),
             ListTile(
@@ -208,9 +210,11 @@ class _OrderScreenState extends State<OrderScreen> {
                         print('data test ${jsonData} ');
                         var res = await addOrder(jsonData);
                         if (res == 200) {
+                          // ignore: use_build_context_synchronously
                           Message.success(
                               message: 'Thành Công', context: context);
                         } else {
+                          // ignore: use_build_context_synchronously
                           Message.error(
                               message: 'Thất bại $res', context: context);
                         }
