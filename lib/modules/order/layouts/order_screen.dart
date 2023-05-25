@@ -1,113 +1,173 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
+import 'package:app/components/message/message.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:app/functions/random_color.dart';
+import 'package:app/modules/home/api/address/model.dart' as address;
 
 import '../../../components/districts/location.dart';
+import '../../../components/slider/payment.dart';
 import '../../../functions/hideExcessCharacters.dart';
+import '../../home/api/address/api_address.dart';
+import '../../home/api/order/api_order.dart';
 
 class OrderScreen extends StatefulWidget {
-  String json;
-  OrderScreen({Key? key, required this.json}) : super(key: key);
+  final List<Map<String, dynamic>> json;
+
+  const OrderScreen({Key? key, required this.json}) : super(key: key);
 
   @override
   _OrderScreenState createState() => _OrderScreenState();
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  String selectedAddress = ''; // Địa chỉ giao hàng được chọn
-  String selectedPaymentMethod = ''; // Phương thức thanh toán được chọn
-  double shippingFee = 20000; // Phí ship
-  String discountCode = ''; // Mã giảm giá
-  double totalPrice = 500000; // Tổng số tiền cần thanh toán
+  List<address.Data> lsData = [];
+  String _address = '';
+  String _phone = '';
+  String _note = '';
+
+  String selectedAddress = '';
+  String selectedPaymentMethod = '';
+  double shippingFee = 20000;
+  String discountCode = '';
+  double totalPrice = 500000;
+  int selectedAddressIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  Future<int> addOrder(String jsonData) async {
+    int res = await APIOrder.addOrder(json: jsonData);
+    return res;
+  }
+
+  String createJson({
+    required String name,
+    required String address,
+    required String phone,
+    required int idAddress,
+  }) {
+    Map<String, dynamic> jsonData = {
+      "name": name,
+      "address": address,
+      'idAddress': idAddress,
+      "Ship": "20000",
+      "date_order": DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+      "phone": phone,
+      "sale": "",
+      "order_details": widget.json,
+    };
+
+    String json = jsonEncode(jsonData);
+    return json;
+  }
+
+  Future<void> loadData() async {
+    await APIAddress.fetchBookings();
+    lsData = APIAddress.lsData;
+    if (lsData.isEmpty) {
+      selectedAddressIndex = -1;
+    } else {
+      selectedAddressIndex = 0;
+    }
+    setState(() {});
+  }
+
+  void handleLocationSelected(
+      String name, String address, String phone, String note) async {
+    setState(() {
+      selectedAddress = '$address, $phone,$note';
+      _address = address;
+      _phone = phone;
+      _note = note;
+    });
+    await addData(name, address, phone);
+    await loadData();
+  }
+
+  Future<void> addData(String name, String address, String phone) async {
+    await APIAddress.addAddress(
+        {"name": name, "address": address, "phone_number": phone});
+  }
+
+  Future<void> deleteData(int id) async {
+    await APIAddress.deleteAddress(id);
+    await loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thanh toán'),
+        title: const Text('Thanh toán'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) => LocationSelectionScreen(
+                  onLocationSelected: handleLocationSelected,
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Chọn địa chỉ giao hàng
-            // TextFormField(
-            //   onChanged: (value) {
-            //     setState(() {
-            //       selectedAddress = value;
-            //     });
-            //   },
-            //   decoration: const InputDecoration(
-            //     labelText: 'Địa chỉ giao hàng',
-            //   ),
-            // ),
-            Container(
-              height: 60,
-              // color: Colors.red,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Số điện thoại 0383892964'),
-                      SizedBox(
-                        height: 10,
+            Expanded(
+              child: lsData.isEmpty
+                  ? Container(color: randomColor())
+                  : ListView.builder(
+                      itemCount: lsData.length,
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          ListTile(
+                            leading: Radio(
+                              value: index,
+                              groupValue: selectedAddressIndex,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedAddressIndex = value as int;
+                                });
+                              },
+                            ),
+                            title: Text(
+                              'Số điện thoại ${lsData[index].phoneNumber}',
+                            ),
+                            subtitle: Text(
+                              hideExcessCharacters(lsData[index].address!),
+                            ),
+                            trailing: IconButton(
+                              onPressed: () async {
+                                await deleteData(lsData[index].id!);
+                              },
+                              icon: Icon(Icons.delete),
+                            ),
+                          ),
+                          Divider(),
+                        ],
                       ),
-                      Text(
-                          '${hideExcessCharacters('Ấp Mỹ Nam 2, Xã Mỹ Quý,Huyện Tháp Mười, Đồng Tháp')}'),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      print('data test');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LocationSelectionScreen()));
-                    },
-                    icon: Icon(Icons.edit),
-                  )
-                  // Row(
-                  //   children: [Icon(Icons.edit), Text('Chỉnh sửa')],
-                  // )
-                ],
-              ),
+                    ),
             ),
-            // Hiển thị danh sách sản phẩm trong giỏ hàng
             Expanded(
               child: ListView.builder(
-                itemCount: 5, // Số lượng sản phẩm trong giỏ hàng
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Sản phẩm $index'),
-                    subtitle: Text('Giá: 100,000 đ'),
-                    trailing: Text('Số lượng: 1'),
-                  );
-                },
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                itemBuilder: (context, index) => Payment(),
               ),
             ),
-            // SizedBox(
-            //   height: 140,
-            //   child: ListView.builder(
-            //     scrollDirection: Axis.horizontal,
-
-            //     itemBuilder: (context, i) => Container(
-            //       // height: 140,
-            //       decoration:const BoxDecoration(
-            //         color: Colors.red,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // Phí ship
             ListTile(
-              title: Text('Phí ship'),
+              title: const Text('Phí ship'),
               trailing: Text('$shippingFee đ'),
             ),
-
-            // Nhập mã giảm giá
             TextFormField(
               onChanged: (value) {
                 setState(() {
@@ -115,30 +175,48 @@ class _OrderScreenState extends State<OrderScreen> {
                   // TODO: Áp dụng mã giảm giá và cập nhật totalPrice
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nhập mã giảm giá (nếu có)',
               ),
             ),
-
-            // Tổng số tiền và nút thanh toán
             Container(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Tổng cộng: ${totalPrice - shippingFee} đ', // Tổng số tiền cần thanh toán sau khi trừ phí ship
-                    style: TextStyle(
+                    'Tổng cộng: ${totalPrice - shippingFee} đ',
+                    style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Xử lý sự kiện khi người dùng bấm nút thanh toán
+                      if (selectedAddressIndex == -1) {
+                        Message.error(message: '-1', context: context);
+                      } else {
+                        String jsonData = createJson(
+                          name: lsData[selectedAddressIndex].name!,
+                          address: lsData[selectedAddressIndex].address!,
+                          phone: lsData[selectedAddressIndex].phoneNumber!,
+                          idAddress: lsData[selectedAddressIndex].id!,
+                        );
+
+                        print('data test ${jsonData} ');
+                        var res = await addOrder(jsonData);
+                        if (res == 200) {
+                          Message.success(
+                              message: 'Thành Công', context: context);
+                        } else {
+                          Message.error(
+                              message: 'Thất bại $res', context: context);
+                        }
+                      }
                     },
-                    child: Text('Thanh toán'),
+                    child: const Text('Thanh toán'),
                   ),
                 ],
               ),

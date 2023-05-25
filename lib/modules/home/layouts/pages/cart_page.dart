@@ -31,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
   bool isButton = true;
   bool selectAll = false;
 
-  String createOrder() {
+  List<Map<String, dynamic>> createOrder() {
     List<Map<String, dynamic>> orderDetails = [];
 
     for (int i = 0; i < lsClick.length; i++) {
@@ -44,18 +44,10 @@ class _CartScreenState extends State<CartScreen> {
       }
     }
 
-    Map<String, dynamic> jsonData = {
-      "address": "ấp Mỹ Nam 2, Mỹ Quý, Tháp Mười ĐỒng Tháp",
-      "Ship": "20000",
-      "date_order": DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-      "phone": "",
-      "sale": "",
-      "order_details": orderDetails,
-    };
-
-    String json = jsonEncode(jsonData);
+    String json = jsonEncode(orderDetails);
     print('test data $json');
-    return json;
+    // return json;
+    return orderDetails;
     // Send the JSON to the server or perform any other necessary actions
   }
 
@@ -382,7 +374,8 @@ class _CartScreenState extends State<CartScreen> {
                                     child: MyButton(
                                       disable: isButton,
                                       onPressed: () async {
-                                        String json = createOrder();
+                                        List<Map<String, dynamic>> json =
+                                            createOrder();
 
                                         // await APIOrder.addOrder(json: json);
                                         Modular.to.pushNamed(Routes.order,
