@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:app/components/message/message.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -15,9 +13,6 @@ import '../../../app_constants.dart';
 import '../../api/cart/api_cart.dart';
 import '../../api/cart/model.dart' as CartModel;
 import '../../../../components/convert/format_money.dart';
-import '../../api/order/api_order.dart';
-import 'dart:convert';
-import 'package:intl/intl.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -46,10 +41,8 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     String json = jsonEncode(orderDetails);
-    print('test data $json');
-    // return json;
+    // print('test data $json');
     return orderDetails;
-    // Send the JSON to the server or perform any other necessary actions
   }
 
   void selectAllItems(bool value) {
@@ -377,7 +370,7 @@ class _CartScreenState extends State<CartScreen> {
                                       onPressed: () async {
                                         List<Map<String, dynamic>> json =
                                             createOrder();
-                                        print('data test ${json}');
+
                                         // await APIOrder.addOrder(json: json);
                                         Modular.to.pushNamed(Routes.order,
                                             arguments: json);

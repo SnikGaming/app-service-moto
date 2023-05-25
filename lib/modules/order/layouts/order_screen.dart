@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/modules/home/api/address/model.dart' as address;
 
+import '../../../components/convert/format_money.dart';
 import '../../../components/districts/location.dart';
 import '../../../components/slider/payment.dart';
 import '../../../functions/hideExcessCharacters.dart';
@@ -33,7 +34,7 @@ class _OrderScreenState extends State<OrderScreen> {
   String discountCode = '';
   double totalPrice = 500000;
   int selectedAddressIndex = -1;
-
+  int total = 0;
   @override
   void initState() {
     super.initState();
@@ -71,6 +72,19 @@ class _OrderScreenState extends State<OrderScreen> {
   Future<void> loadData() async {
     await APIAddress.fetchBookings();
     lsData = APIAddress.lsData;
+
+    List<List<dynamic>> convertedList = widget.json.map((item) {
+      return [item['product_id'], item['quantity'], item['price']];
+    }).toList();
+
+    convertedList.forEach(
+      (e) {
+        int a = e[1];
+        int b = int.parse(e[2]);
+        total += a * b;
+      },
+    );
+
     if (lsData.isEmpty) {
       selectedAddressIndex = -1;
     } else {
@@ -187,7 +201,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Tổng cộng: ${totalPrice - shippingFee} đ',
+                    'Tổng cộng: ${formatCurrency(amount: '${total}')}',
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,

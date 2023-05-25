@@ -2,7 +2,7 @@
 
 import 'package:intl/intl.dart';
 
-String formatCurrency({required String amount}) {
+String formatCurrency({required amount}) {
   if (amount.isEmpty) return "";
 
   int? value = int.tryParse(amount);
