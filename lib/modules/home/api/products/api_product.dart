@@ -1,10 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:app/modules/home/api/APIBASE.dart';
-import 'package:dio/dio.dart';
 
 import 'package:app/preferences/product/product.dart';
-import '../../../../network/connect.dart';
 import 'models/products.dart';
 
 class APIProduct {

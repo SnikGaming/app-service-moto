@@ -1,4 +1,5 @@
-import 'dart:convert';
+// ignore_for_file: library_prefixes
+
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -40,7 +41,7 @@ class _CartScreenState extends State<CartScreen> {
       }
     }
 
-    String json = jsonEncode(orderDetails);
+    // String json = jsonEncode(orderDetails);
     // print('test data $json');
     return orderDetails;
   }
@@ -76,7 +77,6 @@ class _CartScreenState extends State<CartScreen> {
     data = ApiCart.lsCart;
     lsClick = List.generate(data.length, (index) => false);
     setState(() {});
-    print('data test ${ApiCart.lsCart.length}');
   }
 
   @override
@@ -120,9 +120,9 @@ class _CartScreenState extends State<CartScreen> {
 
     Widget slidable(int i, context) {
       return Slidable(
-        key: ValueKey(0),
+        key: const ValueKey(0),
         endActionPane: ActionPane(
-          motion: ScrollMotion(),
+          motion: const ScrollMotion(),
           children: [
             SlidableAction(
               onPressed: (context) {
@@ -312,7 +312,7 @@ class _CartScreenState extends State<CartScreen> {
         body: SizedBox(
           height: size.height,
           width: size.width,
-          child: data.length < 1
+          child: data.isEmpty
               ? build2(context)
               : Stack(
                   children: [
@@ -395,15 +395,4 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
-}
-
-void doNothing(BuildContext context) {
-  print('test data del');
-  ApiCart.apiDeleteCarts(cartIds: []);
-}
-
-class OrderOfCart {
-  int id;
-  int number;
-  OrderOfCart({required this.id, required this.number});
 }

@@ -22,7 +22,7 @@ class _MySliderState extends State<MySlider> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             width: 330, height: 200,
             // width: MediaQuery.of(context).size.width,
             // height: MediaQuery.of(context).size.width / 2.0,

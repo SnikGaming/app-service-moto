@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:app/network/connect.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:dio/dio.dart';

@@ -9,7 +9,7 @@ class Product {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
@@ -17,12 +17,12 @@ class Product {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['total_pages'] = this.totalPages;
-    data['current_page'] = this.currentPage;
+    data['total_pages'] = totalPages;
+    data['current_page'] = currentPage;
     return data;
   }
 }
@@ -62,16 +62,16 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['category_id'] = this.categoryId;
-    data['name'] = this.name;
-    data['image'] = this.image;
-    data['description'] = this.description;
-    data['number'] = this.number;
-    data['price'] = this.price;
-    data['like'] = this.like;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['category_id'] = categoryId;
+    data['name'] = name;
+    data['image'] = image;
+    data['description'] = description;
+    data['number'] = number;
+    data['price'] = price;
+    data['like'] = like;
+    data['status'] = status;
     return data;
   }
 }

@@ -1,7 +1,8 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:app/modules/home/api/cart/model.dart';
 
 import '../APIBASE.dart';
-import '../login/api_login.dart';
 
 class ApiCart {
   static List<Data> lsCart = [];
@@ -16,7 +17,6 @@ class ApiCart {
         // throw Exception("Failed to login");
       }
     } catch (e) {
-      print('data test $e');
       return 400;
     }
   }
@@ -26,9 +26,9 @@ class ApiCart {
       final data = {"cart": []};
 
       // Add cart IDs to the data
-      cartIds.forEach((id) {
+      for (var id in cartIds) {
         data["cart"]?.add({"id": id});
-      });
+      }
 
       final response = await ApiBase.post(path: '/api/carts_del', data: data);
       if (response.statusCode == 200) {
@@ -37,7 +37,6 @@ class ApiCart {
         return 400;
       }
     } catch (e) {
-      print('Error: $e');
       return 400;
     }
   }
@@ -51,7 +50,6 @@ class ApiCart {
       final List<Data> dataCart = dataCartJson
           .map((projectJson) => Data.fromJson(projectJson))
           .toList();
-      print('data test $dataCartJson');
       lsCart = dataCart;
       return dataCart;
     } catch (e) {

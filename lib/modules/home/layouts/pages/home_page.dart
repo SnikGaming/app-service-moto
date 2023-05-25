@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
 import 'package:app/components/button/mybutton.dart';
@@ -25,7 +27,6 @@ import '../../../../preferences/product/product.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
 import 'package:badges/badges.dart' as badges;
-import '../../../details/api/product.dart';
 import '../../api/category/models/category.dart' as categories;
 import '../../api/login/api_login.dart';
 import '../../api/products/api_product.dart';
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage>
 
       try {
         user = (await APIAuth.getUser())!;
-        print('ada ${UserPrefer.getImageUser()}');
+
         Modular.to.pushNamed(Routes.profile, arguments: [user]);
       } catch (e) {
         Message.warning(

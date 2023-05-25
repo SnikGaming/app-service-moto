@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, must_be_immutable, library_private_types_in_public_api, use_build_context_synchronously
+// ignore_for_file: deprecated_member_use, must_be_immutable, library_private_types_in_public_api, use_build_context_synchronously, no_logic_in_create_state
 
 import 'dart:io';
 
@@ -34,9 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       try {
         _image = File(pickedFile!.path);
-      } catch (e) {
-        print(e);
-      }
+      } catch (e) {}
     });
   }
 

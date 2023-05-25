@@ -8,7 +8,6 @@ import 'model.dart';
 class APIAddress {
   static List<Data> lsData = [];
   static Future<Response> addAddress(Map<String, dynamic> addressData) async {
-    print('data test ${addressData}');
     try {
       final response = await ApiBase.post(
         path: '/api/address',
@@ -16,7 +15,7 @@ class APIAddress {
       );
       return response;
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 
@@ -29,7 +28,6 @@ class APIAddress {
           .map((bookingJson) => Data.fromJson(bookingJson))
           .toList();
       lsData = data;
-      print('data test ${data[0].address}');
       return data;
     } catch (e) {
       return [];
@@ -41,7 +39,7 @@ class APIAddress {
       final response = await ApiBase.post(path: '/api/address_del/$id');
       // Xử lý kết quả nếu cần thiết
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 }

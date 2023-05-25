@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/style.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +10,16 @@ import '../../../components/button/mybutton.dart';
 import '../../../components/convert/format_money.dart';
 import '../../../components/style/text_style.dart';
 import '../../../preferences/user/user_preferences.dart';
-import '../layouts/detail_service.dart';
 import '../../home/api/cart/api_cart.dart';
 
 class Cart extends StatelessWidget {
-   Cart({
+  Cart({
     super.key,
-     this.data,
+    this.data,
     // required this.widget,
     required this.size,
   });
-   products.Data? data;
+  products.Data? data;
   // final DetailsServiceScreen widget;
   final Size size;
 
@@ -87,7 +88,8 @@ class Cart extends StatelessWidget {
                                   ),
                                   onChanged: (value) {
                                     setState(() {
-                                      if (int.tryParse(value)! > data!.number! ||
+                                      if (int.tryParse(value)! >
+                                              data!.number! ||
                                           value.length < 3) {
                                         quantity = int.tryParse(value) ?? 1;
                                       }
@@ -184,15 +186,6 @@ class Cart extends StatelessWidget {
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
       if (quantity < data!.number!) {
-        var total = quantity * data!.price;
-        var json = {
-          'total': total,
-          'quantity': quantity,
-          'id_sp': data!.id!,
-          'id_user': UserPrefer.getId(),
-          'date': DateTime.now()
-        };
-        print('abc ${json}');
         if (isBuy) {
           // Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);

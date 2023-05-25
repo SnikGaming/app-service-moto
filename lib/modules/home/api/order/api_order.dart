@@ -1,7 +1,6 @@
 import '../APIBASE.dart';
 
 class APIOrder {
-  
   static Future<int> addOrder({required String json}) async {
     try {
       final response =
@@ -13,7 +12,6 @@ class APIOrder {
         // throw Exception("Failed to login");
       }
     } catch (e) {
-      print('data test $e');
       return 400;
     }
   }

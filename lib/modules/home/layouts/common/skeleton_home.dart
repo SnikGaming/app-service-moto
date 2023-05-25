@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../components/skeleton/product_skeleton.dart';
-import '../../../../components/skeleton/skeleton.dart';
 
 class SkelatonHome extends StatelessWidget {
   const SkelatonHome({
