@@ -1,14 +1,22 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'dart:convert';
+
+import 'package:app/components/message/message.dart';
 import 'package:app/components/zoom/image.dart';
+import 'package:app/modules/home/layouts/pages/services_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
+import '../../../components/convert/calculate_time.dart';
 import '../../../components/convert/format_money.dart';
 import '../../../constants/style.dart';
 import '../../../network/connect.dart';
 import '../../home/api/products/models/products.dart' as products;
 import 'package:in_app_review/in_app_review.dart';
 
+import '../../home/api/review/api_review.dart';
+import '../../home/api/review/models/review.dart' as review;
 import '../api/product.dart';
 import '../module/cart.dart';
 
@@ -22,6 +30,7 @@ class DetailsServiceScreen extends StatefulWidget {
 
 class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
   late Future<products.Data> dataFuture;
+  List<review.Data> lsReview = [];
   products.Data? data;
 
   @override
@@ -30,8 +39,35 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
     loadData();
   }
 
+  String submitRatingAndComment(double rating, String? comment) {
+    // create a map with the necessary data
+    int ratingInt = rating.toInt();
+    Map<String, dynamic> jsonData = {
+      "product_id": widget.id.toString(),
+      "comment": comment,
+      "rating": ratingInt.toString(),
+      "time": DateTime.now().toString()
+    };
+
+    // convert the map to a JSON string
+    String jsonString = jsonEncode(jsonData);
+
+    print('JSON data: $jsonString');
+    return jsonString;
+  }
+
+  Future<int> sendReview(String json) async {
+    print('review data send  $json');
+    var res = await APIReview.add(json: json);
+    loadData();
+    return res;
+  }
+
   Future<void> loadData() async {
     data = await getProductDetail(id: widget.id);
+    var a = await APIReview.getData(id: widget.id);
+    print('review data send $a');
+    lsReview = APIReview.apiData;
     setState(() {});
   }
 
@@ -75,10 +111,20 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
       image: const FlutterLogo(size: 100),
       submitButtonText: 'Submit',
       commentHint: 'Set your custom comment hint',
-      onCancelled: () => print('cancelled'),
-      onSubmitted: (response) {
-        print('rating: ${response.rating}, comment: ${response.comment}');
-
+      onCancelled: () => print('submit cancelled'),
+      onSubmitted: (response) async {
+        print(
+            'submit rating: ${response.rating}, comment: ${response.comment}');
+//! add comment
+        String jsonData =
+            submitRatingAndComment(response.rating, response.comment);
+        int res = await sendReview(jsonData);
+        if (res == 201) {
+          Message.success(
+              message: 'Cảm ơn đã đánh giá sản phẩm >_< ', context: context);
+        } else {
+          Message.error(message: 'Đã có vấn đề gì đó', context: context);
+        }
         // TODO: add your own logic
         if (response.rating < 3.0) {
           // send their comments to your email or anywhere you wish
@@ -280,46 +326,44 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                         ],
                       ),
                     ),
+                    // Trong widget build, sau phần hiển thị thông tin sản phẩm, thêm đoạn code sau
+
                     Container(
                       constraints:
                           BoxConstraints(minHeight: 100, minWidth: size.width),
                       decoration: BoxDecoration(
-                          // color: Colors.grey, //randomColor(),
-                          borderRadius: BorderRadius.circular(30)),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                            'Thông tin sản phẩm',
-                            style: styleH1,
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
+                          const SizedBox(height: 20),
+                          const Text('Thông tin sản phẩm', style: styleH1),
+                          const SizedBox(height: 16),
                           Row(
                             children: [
-                              Text('50 Comments',
-                                  style: styleNormal.copyWith(
-                                    color: Colors.grey,
-                                    fontStyle: FontStyle.italic,
-                                  )),
+                              Text(
+                                'Nhấn vào đây để ',
+                                style: styleNormal.copyWith(
+                                  color: Colors.grey,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
                               GestureDetector(
                                 onTap: _showRatingDialog,
-                                child: Text(' (Click here)',
-                                    style: styleNormal.copyWith(
-                                        color: Colors.blue,
-                                        fontSize: 18,
-                                        fontStyle: FontStyle.italic,
-                                        fontWeight: FontWeight.bold)),
+                                child: Text(
+                                  '(Đánh giá sản phẩm này)',
+                                  style: styleNormal.copyWith(
+                                    color: Colors.blue,
+                                    fontSize: 18,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10),
                           Row(
                             children: [
                               Text(
@@ -329,34 +373,105 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                               Text(
                                 '${data!.like}',
                                 style: styleNormal.copyWith(
-                                    color: Colors.red, fontSize: 18),
+                                  color: Colors.red,
+                                  fontSize: 18,
+                                ),
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 8),
                               const Icon(
                                 Icons.favorite,
                                 color: Colors.red,
                               ),
                             ],
                           ),
-
-                          const SizedBox(
-                            height: 8,
-                          ),
+                          const SizedBox(height: 8),
                           Text(
                             '${data!.description}',
                             style: styleTitle,
                           ),
-
-                          const SizedBox(
-                            height: 100,
+                          const SizedBox(height: 16),
+                          Text(
+                            'Các đánh giá khách hàng:',
+                            style: styleNormal.copyWith(
+                                fontWeight: FontWeight.bold),
                           ),
-
-                          // Container(
-                          //   height: 129,
-                          //   color: Colors.red,
-                          // ),
+                          const SizedBox(height: 8),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: lsReview.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              '${ConnectDb.url}${lsReview[index].user!.imageUrl}',
+                                          height: 45,
+                                          width: 45,
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  ClipOval(
+                                            child: Image(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(lsReview[index].user!.name!,
+                                                style: subTitle.copyWith()),
+                                            Text(
+                                                calculateTimeDifference(
+                                                    DateTime.parse(
+                                                        lsReview[index].time!)),
+                                                style: subTitle.copyWith(
+                                                    color: Colors.grey)),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      child: Row(
+                                        children: List.generate(
+                                          lsReview[index].rating!,
+                                          (index) => const Icon(
+                                            Icons.star,
+                                            size: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      lsReview[index].comment ??
+                                          "Không có bình luận.",
+                                      style: lsReview[index].comment != null
+                                          ? styleNormal
+                                          : styleNormal.copyWith(
+                                              color: Colors.grey,
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),

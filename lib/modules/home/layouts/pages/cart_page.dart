@@ -24,6 +24,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   List<bool> lsClick = [];
+  bool isLoad = false;
   bool isButton = true;
   bool selectAll = false;
   List<Map<String, dynamic>> createOrder() {
@@ -77,6 +78,7 @@ class _CartScreenState extends State<CartScreen> {
     await ApiCart.getData();
     data = ApiCart.lsCart;
     lsClick = List.generate(data.length, (index) => false);
+    isLoad = true;
     setState(() {});
   }
 
@@ -353,90 +355,94 @@ class _CartScreenState extends State<CartScreen> {
         body: SizedBox(
           height: size.height,
           width: size.width,
-          child: data.isEmpty
-              ? build2(context)
-              //!: Hiển thị sản phẩm
-              : Stack(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.68,
-                      child: ListView.builder(
-                        itemCount: data.length,
-                        itemBuilder: (context, i) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: lsClick.isEmpty
-                                ? const CircularProgressIndicator()
-                                : slidable(i, context),
-                          );
-                        },
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      child: SizedBox(
-                        // color: Colors.red,
-                        width: size.width,
-                        height: size.height * 0.12,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Checkbox(
-                                    value: selectAll,
-                                    onChanged: (value) {
-                                      selectAllItems(value!);
-                                    },
-                                  ),
-                                  const Text('Chọn tất cả'),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  isButton
-                                      ? Container()
-                                      : Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
-                                            style: title.copyWith(
-                                                color: Colors.black),
-                                          ),
-                                        ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: MyButton(
-                                      disable: isButton,
-                                      onPressed: () async {
-                                        List<Map<String, dynamic>> json =
-                                            createOrder();
-
-                                        // Chuyển danh sách selectedIds qua màn hình Order
-                                        print('data test $json');
-                                        // await APIOrder.addOrder(json: json);
-                                        Modular.to
-                                            .pushNamed(Routes.order,
-                                                arguments: json)
-                                            .then((value) => loadData());
-                                      },
-                                      child: Text(
-                                        'THANH TOÁN',
-                                        style: title2.copyWith(
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+          child: isLoad == false
+              ? Center(child: CircularProgressIndicator())
+              : data.isEmpty
+                  ? Image.asset('assets/images/notdata.gif')
+                  // build2(context)
+                  //!: Hiển thị sản phẩm
+                  : Stack(
+                      children: [
+                        SizedBox(
+                          height: size.height * 0.68,
+                          child: ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (context, i) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: lsClick.isEmpty
+                                    ? const CircularProgressIndicator()
+                                    : slidable(i, context),
+                              );
+                            },
                           ),
                         ),
-                      ),
+                        Positioned(
+                          bottom: 0,
+                          child: SizedBox(
+                            // color: Colors.red,
+                            width: size.width,
+                            height: size.height * 0.12,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        value: selectAll,
+                                        onChanged: (value) {
+                                          selectAllItems(value!);
+                                        },
+                                      ),
+                                      const Text('Chọn tất cả'),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      isButton
+                                          ? Container()
+                                          : Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
+                                                style: title.copyWith(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: MyButton(
+                                          disable: isButton,
+                                          onPressed: () async {
+                                            List<Map<String, dynamic>> json =
+                                                createOrder();
+
+                                            // Chuyển danh sách selectedIds qua màn hình Order
+                                            print('data test $json');
+                                            // await APIOrder.addOrder(json: json);
+                                            Modular.to
+                                                .pushNamed(Routes.order,
+                                                    arguments: json)
+                                                .then((value) => loadData());
+                                          },
+                                          child: Text(
+                                            'THANH TOÁN',
+                                            style: title2.copyWith(
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
         ),
       ),
     );
