@@ -26,7 +26,6 @@ class _CartScreenState extends State<CartScreen> {
   List<bool> lsClick = [];
   bool isButton = true;
   bool selectAll = false;
-
   List<Map<String, dynamic>> createOrder() {
     List<Map<String, dynamic>> orderDetails = [];
 
@@ -35,7 +34,8 @@ class _CartScreenState extends State<CartScreen> {
         Map<String, dynamic> order = {
           "product_id": data[i].productId,
           "quantity": data[i].quantity,
-          "price": data[i].price
+          "price": data[i].price,
+          'cartId': data[i].id
         };
         orderDetails.add(order);
       }
@@ -127,12 +127,6 @@ class _CartScreenState extends State<CartScreen> {
             SlidableAction(
               onPressed: (context) {
                 ApiCart.apiDeleteCarts(cartIds: [data[i].id!]);
-                // if (value == 200) {
-                //   Message.success(
-                //       message: 'Xóa thành công...!', context: context);
-                // } else {
-                //   Message.error(message: 'Xóa thất bại...!', context: context);
-                // }
                 loadData();
               },
               backgroundColor: Colors.red,
@@ -195,10 +189,21 @@ class _CartScreenState extends State<CartScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(data[i].productName!),
-                                Text(data[i].price.toString()),
+                                Text(data[i].productName!,
+                                    style: title1.copyWith(color: Colors.blue)),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  'Giá : ${data[i].price.toString()}',
+                                  style: title1.copyWith(color: Colors.red),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
                                 Text(
                                   'Tổng tiền: ${formatCurrency(amount: '${int.parse(data[i].price!) * data[i].quantity!}')}',
+                                  style: title1.copyWith(color: Colors.black),
                                 ),
                               ],
                             ),
@@ -206,13 +211,18 @@ class _CartScreenState extends State<CartScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      color: Colors.red,
-                      width: 70,
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    //!: Số lượng
+                    SizedBox(
+                      // color: Colors.red,
+                      width: 90,
                       height: 30,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          //!: Số lượng -
                           GestureDetector(
                             onTap: () {
                               if (data[i].quantity! > 1) {
@@ -221,8 +231,21 @@ class _CartScreenState extends State<CartScreen> {
                                 });
                               }
                             },
-                            child: const Icon(Icons.remove, size: 10),
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.remove,
+                                size: 10,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
+                          //!: Hiển thị
                           GestureDetector(
                             onTap: () {
                               var quantityController = TextEditingController(
@@ -274,18 +297,36 @@ class _CartScreenState extends State<CartScreen> {
                               );
                               FocusScope.of(context).requestFocus(focusNode);
                             },
-                            child: Text(
-                              '${data[i].quantity}', // Số lượng hiển thị
-                              style: const TextStyle(color: Colors.white),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 30,
+                              width: 30,
+                              child: Text(
+                                '${data[i].quantity}', // Số lượng hiển thị
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
+                          //!: Số lượng -
                           GestureDetector(
                             onTap: () {
                               setState(() {
                                 data[i].quantity = data[i].quantity! + 1;
                               });
                             },
-                            child: const Icon(Icons.add, size: 10),
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                size: 10,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -314,6 +355,7 @@ class _CartScreenState extends State<CartScreen> {
           width: size.width,
           child: data.isEmpty
               ? build2(context)
+              //!: Hiển thị sản phẩm
               : Stack(
                   children: [
                     SizedBox(
@@ -371,9 +413,13 @@ class _CartScreenState extends State<CartScreen> {
                                         List<Map<String, dynamic>> json =
                                             createOrder();
 
+                                        // Chuyển danh sách selectedIds qua màn hình Order
+                                        print('data test $json');
                                         // await APIOrder.addOrder(json: json);
-                                        Modular.to.pushNamed(Routes.order,
-                                            arguments: json);
+                                        Modular.to
+                                            .pushNamed(Routes.order,
+                                                arguments: json)
+                                            .then((value) => loadData());
                                       },
                                       child: Text(
                                         'THANH TOÁN',

@@ -11,6 +11,7 @@ import '../../../components/districts/location.dart';
 import '../../../components/slider/payment.dart';
 import '../../../functions/hideExcessCharacters.dart';
 import '../../home/api/address/api_address.dart';
+import '../../home/api/cart/api_cart.dart';
 import '../../home/api/order/api_order.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _OrderScreenState extends State<OrderScreen> {
   String _address = '';
   String _phone = '';
   String _note = '';
-
+  List<int> cartId = [];
   String selectedAddress = '';
   String selectedPaymentMethod = '';
   double shippingFee = 20000;
@@ -74,13 +75,20 @@ class _OrderScreenState extends State<OrderScreen> {
     lsData = APIAddress.lsData;
 
     List<List<dynamic>> convertedList = widget.json.map((item) {
-      return [item['product_id'], item['quantity'], item['price']];
+      return [
+        item['product_id'],
+        item['quantity'],
+        item['price'],
+        item['cartId']
+      ];
     }).toList();
 
     convertedList.forEach(
       (e) {
         int a = e[1];
         int b = int.parse(e[2]);
+        print('data test ${e[0]}');
+        cartId.add(e[3]);
         total += a * b;
       },
     );
@@ -225,8 +233,12 @@ class _OrderScreenState extends State<OrderScreen> {
                         var res = await addOrder(jsonData);
                         if (res == 200) {
                           // ignore: use_build_context_synchronously
+                          ApiCart.apiDeleteCarts(cartIds: cartId);
+
                           Message.success(
                               message: 'Thành Công', context: context);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                         } else {
                           // ignore: use_build_context_synchronously
                           Message.error(

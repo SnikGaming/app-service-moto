@@ -1,5 +1,7 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:convert';
+
 import 'package:app/modules/home/api/cart/model.dart';
 
 import '../APIBASE.dart';
@@ -21,14 +23,16 @@ class ApiCart {
     }
   }
 
-  static Future<int> apiDeleteCarts({required List<int> cartIds}) async {
+  static Future<int> apiDeleteCarts({
+    required List<int> cartIds,
+  }) async {
     try {
-      final data = {"cart": []};
+      final data = {
+        "cart": cartIds.map((id) => {"id": id}).toList(),
+      };
 
-      // Add cart IDs to the data
-      for (var id in cartIds) {
-        data["cart"]?.add({"id": id});
-      }
+      String json = jsonEncode(data);
+      print('data test - $json ---');
 
       final response = await ApiBase.post(path: '/api/carts_del', data: data);
       if (response.statusCode == 200) {
