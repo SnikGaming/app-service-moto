@@ -73,6 +73,7 @@ class _CartScreenState extends State<CartScreen> {
 
   List<CartModel.Data> data = [];
   loadData() async {
+    isButton = true;
     await ApiCart.getData();
     data = ApiCart.lsCart;
     lsClick = List.generate(data.length, (index) => false);
@@ -252,7 +253,6 @@ class _CartScreenState extends State<CartScreen> {
                                 text: '${data[i].quantity}',
                               );
                               var focusNode = FocusNode();
-
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

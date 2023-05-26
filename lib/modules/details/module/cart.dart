@@ -180,6 +180,34 @@ class Cart extends StatelessWidget {
     );
   }
 
+  void _showProductDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Thông tin sản phẩm'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Tên sản phẩm: ${data!.name}'),
+              Text('Giá: ${formatCurrency(amount: '${data!.price}')}'),
+              Text('Số lượng: ${data!.number}'),
+              // Thêm các thông tin khác của sản phẩm tại đây
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              child: Text('Đóng'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   check(quantity, note, context, isBuy) async {
     if (UserPrefer.getToken() == null || UserPrefer.getToken() == 'null') {
       Message.error(
@@ -187,8 +215,9 @@ class Cart extends StatelessWidget {
     } else {
       if (quantity < data!.number!) {
         if (isBuy) {
-          // Message.success(message: 'Mua thành công.', context: context);
+          Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);
+          _showProductDialog(context); // Hiển thị hộp thoại thông tin sản phẩm
         } else {
           var value = await ApiCart.apiCart(id: data!.id!, quantity: quantity);
           if (value == 200) {
@@ -199,7 +228,6 @@ class Cart extends StatelessWidget {
           }
           Navigator.pop(context);
         }
-        //API
       } else {
         Message.error(
             message: 'Vui lòng kiểm tra lại số lượng', context: context);
