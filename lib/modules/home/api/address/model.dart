@@ -7,13 +7,13 @@ class Address {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -23,41 +23,53 @@ class Address {
 
 class Data {
   int? id;
-  int? userId;
   String? name;
-  String? address;
   String? phoneNumber;
-  String? createdAt;
-  String? updatedAt;
+  String? address;
+  int? idProvince;
+  String? province;
+  int? idDistrict;
+  String? district;
+  int? idWard;
+  String? ward;
 
   Data(
       {this.id,
-      this.userId,
       this.name,
-      this.address,
       this.phoneNumber,
-      this.createdAt,
-      this.updatedAt});
+      this.address,
+      this.idProvince,
+      this.province,
+      this.idDistrict,
+      this.district,
+      this.idWard,
+      this.ward});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['user_id'];
     name = json['name'];
-    address = json['address'];
     phoneNumber = json['phone_number'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    address = json['address'];
+    idProvince = json['idProvince'];
+    province = json['province'];
+    idDistrict = json['idDistrict'];
+    district = json['district'];
+    idWard = json['idWard'];
+    ward = json['ward'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['user_id'] = userId;
-    data['name'] = name;
-    data['address'] = address;
-    data['phone_number'] = phoneNumber;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['phone_number'] = this.phoneNumber;
+    data['address'] = this.address;
+    data['idProvince'] = this.idProvince;
+    data['province'] = this.province;
+    data['idDistrict'] = this.idDistrict;
+    data['district'] = this.district;
+    data['idWard'] = this.idWard;
+    data['ward'] = this.ward;
     return data;
   }
 }
