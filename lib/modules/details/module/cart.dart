@@ -4,6 +4,8 @@ import 'package:app/components/message/message.dart';
 import 'package:app/constants/style.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import '../../../components/districts/location_db.dart';
+import '../../home/api/location/api_location.dart';
 import '../../home/api/products/models/products.dart' as products;
 
 import '../../../components/button/mybutton.dart';
@@ -148,7 +150,25 @@ class Cart extends StatelessWidget {
                                   backgroundColor: Colors.red,
                                   width: size.width * .3,
                                   onPressed: () {
-                                    check(quantity, note, context, true);
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          padding: EdgeInsets.all(16),
+                                          child: Expanded(
+                                            child: LocationDropdown(
+                                              data: APILocation.dataLocation,
+                                              defaultProvinceId: 2,
+                                              defaultDistrictId: 36,
+                                              defaultWardId: 665,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+
+                                    // check(quantity, note, context, true);
                                   },
                                   child: const Text(
                                     'Mua',
