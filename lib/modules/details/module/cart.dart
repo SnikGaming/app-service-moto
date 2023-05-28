@@ -43,6 +43,19 @@ class _CartState extends State<Cart> {
     setState(() {});
   }
 
+  List<Map<String, dynamic>> createOrder() {
+    List<Map<String, dynamic>> orderDetails = [];
+
+    Map<String, dynamic> order = {
+      "product_id": widget.data!.id,
+      "quantity": quantity,
+      "price": widget.data!.price,
+      'total': quantity * widget.data!.price!,
+    };
+    orderDetails.add(order);
+    return orderDetails;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -168,12 +181,16 @@ class _CartState extends State<Cart> {
                                   backgroundColor: Colors.red,
                                   width: widget.size.width * .3,
                                   onPressed: () async {
+                                    List<Map<String, dynamic>> json =
+                                        createOrder();
                                     showModalBottomSheet(
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (context) =>
                                           AddressDisplayScreen(
-                                              selectedAddress: _address),
+                                        selectedAddress: _address,
+                                        json: json,
+                                      ),
                                     ).then((value) => loadData());
                                   },
                                   child: const Text(

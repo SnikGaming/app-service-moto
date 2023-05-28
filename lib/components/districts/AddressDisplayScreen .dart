@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field
 import 'dart:convert';
-
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/style/text_style.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +7,14 @@ import 'package:ionicons/ionicons.dart';
 import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
 import '../CusRichText/CusRichText.dart';
+import '../convert/format_money.dart';
 import 'AddressListScreen .dart';
 
 class AddressDisplayScreen extends StatefulWidget {
   final Address.Data? selectedAddress;
-
-  const AddressDisplayScreen({super.key, this.selectedAddress});
+  final List<Map<String, dynamic>> json;
+  const AddressDisplayScreen(
+      {super.key, this.selectedAddress, required this.json});
 
   @override
   _AddressDisplayScreenState createState() => _AddressDisplayScreenState();
@@ -28,6 +29,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   Address.Data? _selectedAddress;
   String? _selectedShippingMethod;
   String? _discountCode;
+  String total = '';
   String? _note; // New note field
   PaymentMethod _selectedPaymentMethod =
       PaymentMethod.cashOnDelivery; // Giá trị mặc định
@@ -37,10 +39,21 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
     });
   }
 
+  loadData() async {
+    _selectedAddress = widget.selectedAddress;
+
+    List<List<dynamic>> convertedList = widget.json.map((item) {
+      return [item['total']];
+    }).toList();
+    total = convertedList[0][0].toString();
+    print('location data --> ${total}');
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    _selectedAddress = widget.selectedAddress;
+    loadData();
   }
 
   void _openAddressListScreen() async {
@@ -255,9 +268,9 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const CusRichText(
+                        CusRichText(
                           text: 'Tổng tiền : ',
-                          selectedAddress: '120000000',
+                          selectedAddress: formatCurrency(amount: total),
                         ),
                         MyButton(
                           width: 130,
@@ -281,16 +294,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                               'note': _note,
                               'paymentId': _selectedPaymentMethod.index,
                               'sshipping': 0,
-                              'order_details': [
-                                {
-                                  'product_id':
-                                      1, // Replace with the actual product ID
-                                  'quantity':
-                                      5, // Replace with the actual quantity
-                                  'price':
-                                      '350000', // Replace with the actual price
-                                },
-                              ],
+                              'order_details': widget.json,
                             };
 
                             // Convert the JSON object to a string
