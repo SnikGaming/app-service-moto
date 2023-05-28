@@ -189,6 +189,7 @@ class _CartState extends State<Cart> {
                                       builder: (context) =>
                                           AddressDisplayScreen(
                                         selectedAddress: _address,
+                                        isBuy: true,
                                         json: json,
                                       ),
                                     ).then((value) => loadData());

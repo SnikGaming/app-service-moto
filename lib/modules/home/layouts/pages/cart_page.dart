@@ -1,16 +1,19 @@
 // ignore_for_file: library_prefixes, unused_element
 
+import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../components/button/mybutton.dart';
+import '../../../../components/districts/AddressDisplayScreen .dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../functions/check_true_false_list.dart';
 import '../../../../network/connect.dart';
 import '../../../app_constants.dart';
+import '../../api/address/api_address.dart';
 import '../../api/cart/api_cart.dart';
 import '../../api/cart/model.dart' as CartModel;
 import '../../../../components/convert/format_money.dart';
@@ -72,8 +75,15 @@ class _CartScreenState extends State<CartScreen> {
     return totalPrice;
   }
 
+  address.Data? _address;
   List<CartModel.Data> data = [];
   loadData() async {
+    await APIAddress.fetchAddress();
+    if (APIAddress.lsData.isNotEmpty) {
+      _address = APIAddress.lsData[0];
+    } else {
+      _address = null;
+    }
     isButton = true;
     await ApiCart.getData();
     data = ApiCart.lsCart;
@@ -421,11 +431,21 @@ class _CartScreenState extends State<CartScreen> {
 
                                             // Chuyển danh sách selectedIds qua màn hình Order
                                             print('data test $json');
+                                            showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              builder: (context) =>
+                                                  AddressDisplayScreen(
+                                                selectedAddress: _address,
+                                                isBuy: false,
+                                                json: json,
+                                              ),
+                                            ).then((value) => loadData());
                                             // await APIOrder.addOrder(json: json);
-                                            Modular.to
-                                                .pushNamed(Routes.order,
-                                                    arguments: json)
-                                                .then((value) => loadData());
+                                            // Modular.to
+                                            //     .pushNamed(Routes.order,
+                                            //         arguments: json)
+                                            //     .then((value) => loadData());
                                           },
                                           child: Text(
                                             'THANH TOÁN',

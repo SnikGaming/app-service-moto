@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field
+// ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field, use_build_context_synchronously
 import 'dart:convert';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/style/text_style.dart';
@@ -6,15 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
+
+import '../../modules/home/api/cart/api_cart.dart';
+import '../../modules/home/api/order/api_order.dart';
 import '../CusRichText/CusRichText.dart';
 import '../convert/format_money.dart';
+import '../message/message.dart';
 import 'AddressListScreen .dart';
 
 class AddressDisplayScreen extends StatefulWidget {
   final Address.Data? selectedAddress;
   final List<Map<String, dynamic>> json;
+  final bool isBuy;
   const AddressDisplayScreen(
-      {super.key, this.selectedAddress, required this.json});
+      {super.key,
+      this.selectedAddress,
+      required this.json,
+      required this.isBuy});
 
   @override
   _AddressDisplayScreenState createState() => _AddressDisplayScreenState();
@@ -27,9 +35,12 @@ enum PaymentMethod {
 
 class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   Address.Data? _selectedAddress;
+  late List<Address.Data> lsData = [];
+  List<int> cartId = [];
+
   String? _selectedShippingMethod;
   String? _discountCode;
-  String total = '';
+  int total = 0;
   String? _note; // New note field
   PaymentMethod _selectedPaymentMethod =
       PaymentMethod.cashOnDelivery; // Giá trị mặc định
@@ -39,14 +50,40 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
     });
   }
 
+  Future<int> addOrder(String jsonData) async {
+    int res = await APIOrder.addOrder(json: jsonData);
+    return res;
+  }
+
   loadData() async {
     _selectedAddress = widget.selectedAddress;
+    if (widget.isBuy) {
+      List<List<dynamic>> convertedList = widget.json.map((item) {
+        return [item['total']];
+      }).toList();
+      total = convertedList[0][0];
+      print('location data --> ${total}');
+    } else {
+      await APIAddress.fetchAddress();
+      lsData = APIAddress.lsData;
 
-    List<List<dynamic>> convertedList = widget.json.map((item) {
-      return [item['total']];
-    }).toList();
-    total = convertedList[0][0].toString();
-    print('location data --> ${total}');
+      List<List<dynamic>> convertedList = widget.json.map((item) {
+        return [
+          item['product_id'],
+          item['quantity'],
+          item['price'],
+          item['cartId']
+        ];
+      }).toList();
+
+      convertedList.forEach((e) {
+        int a = e[1];
+        int b = int.parse(e[2]);
+        cartId.add(e[3]);
+        total += a * b;
+      });
+    }
+
     setState(() {});
   }
 
@@ -54,6 +91,13 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   void initState() {
     super.initState();
     loadData();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   void _openAddressListScreen() async {
@@ -270,12 +314,12 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                       children: [
                         CusRichText(
                           text: 'Tổng tiền : ',
-                          selectedAddress: formatCurrency(amount: total),
+                          selectedAddress: formatCurrency(amount: '$total'),
                         ),
                         MyButton(
                           width: 130,
                           backgroundColor: Colors.red,
-                          onPressed: () {
+                          onPressed: () async {
                             // Create the JSON object
                             final json = {
                               'name': _selectedAddress!.name,
@@ -302,7 +346,38 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
 
                             // Print the JSON string (for testing purposes)
                             print('location data ${jsonString}');
-
+                            if (widget.isBuy) {
+                              var res = await addOrder(jsonString);
+                              if (res == 200) {
+                                Message.success(
+                                  message: 'Thành Công',
+                                  context: context,
+                                );
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              } else {
+                                Message.error(
+                                  message: 'Thất bại $res',
+                                  context: context,
+                                );
+                              }
+                            } else {
+                              var res = await addOrder(jsonString);
+                              if (res == 200) {
+                                ApiCart.apiDeleteCarts(cartIds: cartId);
+                                Message.success(
+                                  message: 'Thành Công',
+                                  context: context,
+                                );
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              } else {
+                                Message.error(
+                                  message: 'Thất bại $res',
+                                  context: context,
+                                );
+                              }
+                            }
                             // Perform further actions with the JSON string (e.g., send it to an API)
                           },
                           child: const Text(
