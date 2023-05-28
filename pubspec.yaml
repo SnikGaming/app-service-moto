@@ -76,6 +76,7 @@ dependencies:
   photo_view: ^0.14.0
   skeleton_loader: ^2.0.0+4
   flutter_icons: ^1.1.0
+  flutter_dynamic_icon: ^2.1.0
   # flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:
@@ -116,6 +117,7 @@ flutter:
     - assets/data/moto.json
     - assets/data/service.json
     - assets/appbar/
+    - assets/icons/cart/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

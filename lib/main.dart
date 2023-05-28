@@ -13,6 +13,7 @@ import 'components/districts/location.dart';
 import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
 import 'modules/home/api/location/api_location.dart';
+import 'modules/home/api/order/api_order.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,7 @@ Future<void> main(List<String> args) async {
   if (UserPrefer.getToken() != null) {
     await APIBooking.fetchBookings();
     await APIAuth.getUser();
+    await APIOrder.fetchOrder();
   }
   await APILocation.fetchLocation();
   runApp(ModularApp(module: AppModule(), child: const MyApp()));

@@ -25,7 +25,7 @@ class APIAuthUser {
       return 401;
     }
     try {
-      final response = await ApiBase.post( path: '/api/register/',data: data);
+      final response = await ApiBase.post(path: '/api/register/', data: data);
       if (response.statusCode == 200) {
         return 200;
       }

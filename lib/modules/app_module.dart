@@ -24,7 +24,6 @@ class AppModule extends Module {
         ModuleRoute(Routes.profile, module: ProfileModule()),
         ModuleRoute(Routes.notifications, module: NotificationModule()),
         ModuleRoute(Routes.order, module: OrderModule()),
-
       ];
 }
 
