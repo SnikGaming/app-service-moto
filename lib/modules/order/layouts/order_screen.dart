@@ -72,7 +72,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> loadData() async {
-    await APIAddress.fetchBookings();
+    await APIAddress.fetchAddress();
     lsData = APIAddress.lsData;
 
     List<List<dynamic>> convertedList = widget.json.map((item) {

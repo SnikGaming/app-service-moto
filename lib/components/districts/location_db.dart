@@ -1,10 +1,12 @@
-// ignore_for_file: null_check_always_fails
+// ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
 
+import 'package:app/components/message/message.dart';
 import 'package:flutter/material.dart';
 import 'package:app/modules/home/api/location/model.dart';
 
+import '../../modules/home/api/address/api_address.dart';
 import '../textformfield/customTextFormField.dart';
 import '../validator/phone.dart';
 
@@ -13,13 +15,20 @@ class LocationDropdown extends StatefulWidget {
   final int defaultProvinceId;
   final int defaultDistrictId;
   final int defaultWardId;
+  final String defaultPhone;
+  final String defaultName;
+  final String defaultAddress;
+  final int? id;
 
-  LocationDropdown({
-    required this.data,
-    this.defaultProvinceId = 0,
-    this.defaultDistrictId = 0,
-    this.defaultWardId = 0,
-  });
+  LocationDropdown(
+      {required this.data,
+      this.defaultProvinceId = 0,
+      this.defaultDistrictId = 0,
+      this.defaultWardId = 0,
+      this.defaultName = '',
+      this.defaultAddress = '',
+      this.defaultPhone = '',
+      this.id});
 
   @override
   _LocationDropdownState createState() => _LocationDropdownState();
@@ -38,12 +47,12 @@ class _LocationDropdownState extends State<LocationDropdown> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController noteController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    load();
     // Set default values based on the provided IDs
     if (widget.defaultProvinceId != 0) {
       selectedData = widget.data.firstWhere(
@@ -69,9 +78,18 @@ class _LocationDropdownState extends State<LocationDropdown> {
   void dispose() {
     nameController.dispose();
     phoneController.dispose();
-    noteController.dispose();
     addressController.dispose();
     super.dispose();
+  }
+
+  void load() {
+    if (widget.defaultName.isNotEmpty &&
+        widget.defaultAddress.isNotEmpty &&
+        widget.defaultPhone.isNotEmpty) {
+      nameController.text = widget.defaultName;
+      addressController.text = widget.defaultAddress;
+      phoneController.text = widget.defaultPhone;
+    }
   }
 
   @override
@@ -83,7 +101,7 @@ class _LocationDropdownState extends State<LocationDropdown> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
             CustomTextField(
@@ -93,7 +111,6 @@ class _LocationDropdownState extends State<LocationDropdown> {
               keyboardType: TextInputType.phone,
               validator: validatePhoneNumber,
             ),
-
             const SizedBox(height: 16),
             CustomTextField(
               controller: nameController,
@@ -178,13 +195,6 @@ class _LocationDropdownState extends State<LocationDropdown> {
             ),
             const SizedBox(height: 16),
 
-            // Note TextField
-            CustomTextField(
-              controller: noteController,
-              textInputAction: TextInputAction.next,
-              hintText: 'Note',
-            ),
-            const SizedBox(height: 16),
             // Submit Button
             TextButton(
               onPressed: _handleSubmit,
@@ -194,45 +204,65 @@ class _LocationDropdownState extends State<LocationDropdown> {
             // Selected Info
             _buildSelectedInfo(),
             Padding(
-                padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom * .6,
-            ))
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom * .6,
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _handleSubmit() {
-    setState(() {
-      selectedProvinceName = selectedData?.name ?? '';
-      selectedProvinceId = selectedData?.provinceId.toString() ?? '';
-      selectedDistrictName = selectedDistrict?.name ?? '';
-      selectedDistrictId = selectedDistrict?.districtId.toString() ?? '';
-      selectedWardName = selectedWard?.name ?? '';
-      selectedWardId = selectedWard?.wardsId.toString() ?? '';
-    });
+  void _handleSubmit() async {
+    if (selectedData == null ||
+        selectedDistrict == null ||
+        selectedWard == null) {
+      // Kiểm tra các dropdown đã được chọn hay chưa
+      Message.error(
+          message: 'Vui lòng chọn đầy đủ thông tin', context: context);
+      return;
+    }
 
-    final idProvince = selectedData?.provinceId ?? 0;
-    final idDistrict = selectedDistrict?.districtId ?? 0;
-    final idWard = selectedWard?.wardsId ?? 0;
+    final idProvince = selectedData!.provinceId;
+    final idDistrict = selectedDistrict!.districtId;
+    final idWard = selectedWard!.wardsId;
     final name = nameController.text;
     final phone = phoneController.text;
-    final note = noteController.text;
     final address = addressController.text;
+
+    if (name.isEmpty || phone.isEmpty || address.isEmpty) {
+      // Kiểm tra các trường dữ liệu không được để trống
+      Message.error(
+          message: 'Vui lòng điền đầy đủ thông tin', context: context);
+      return;
+    }
 
     final jsonData = {
       'idProvince': idProvince,
       'idDistrict': idDistrict,
       'idWard': idWard,
       'name': name,
-      'phone': phone,
-      'note': note,
+      'phone_number': phone,
       "address": address
     };
 
     final jsonString = json.encode(jsonData);
     print('location data $jsonString');
+    if (widget.id == null) {
+      var res = await APIAddress.addAddress(jsonData);
+      if (res.statusCode == 200) {
+        Message.success(message: 'Thêm thành công', context: context);
+        Navigator.pop(context);
+      } else {
+        Message.error(message: 'Thêm thất bại', context: context);
+      }
+    } else {
+      var res = await APIAddress.updateAddress(jsonData, widget.id!);
+
+      Message.success(message: 'Cập nhật thành công', context: context);
+      Navigator.pop(context);
+    }
   }
 
   Widget _buildSelectedInfo() {

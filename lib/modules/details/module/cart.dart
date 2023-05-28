@@ -1,10 +1,13 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/style.dart';
+import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import '../../../components/districts/AddressDisplayScreen .dart';
 import '../../../components/districts/location_db.dart';
+import '../../home/api/address/api_address.dart';
 import '../../home/api/location/api_location.dart';
 import '../../home/api/products/models/products.dart' as products;
 
@@ -14,23 +17,45 @@ import '../../../components/style/text_style.dart';
 import '../../../preferences/user/user_preferences.dart';
 import '../../home/api/cart/api_cart.dart';
 
-class Cart extends StatelessWidget {
+class Cart extends StatefulWidget {
   Cart({
-    super.key,
-    this.data,
-    // required this.widget,
+    Key? key,
+    required this.data,
     required this.size,
-  });
-  products.Data? data;
-  // final DetailsServiceScreen widget;
+  }) : super(key: key);
+
+  final products.Data? data;
   final Size size;
+
+  @override
+  _CartState createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  int quantity = 1;
+  String note = '';
+  address.Data? _address;
+  loadData() async {
+    await APIAddress.fetchAddress();
+    if (APIAddress.lsData.length > 0) {
+      _address = APIAddress.lsData[0];
+    } else {
+      _address = null;
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        int quantity = 1;
-        String note = '';
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -66,7 +91,8 @@ class Cart extends StatelessWidget {
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {
-                              // Xử lý khi ghi chú thay đổi
+                              // Handle note change
+                              note = value;
                             },
                           ),
                           const SizedBox(height: 20),
@@ -91,7 +117,7 @@ class Cart extends StatelessWidget {
                                   onChanged: (value) {
                                     setState(() {
                                       if (int.tryParse(value)! >
-                                              data!.number! ||
+                                              widget.data!.number! ||
                                           value.length < 3) {
                                         quantity = int.tryParse(value) ?? 1;
                                       }
@@ -112,24 +138,18 @@ class Cart extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // const Spacer(),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10),
                           SizedBox(
                             height: 20,
-                            width: size.width,
-                            // color: Colors.red,
+                            width: widget.size.width,
                             child: Text(
-                              'Tổng tiền : ${formatCurrency(amount: '${data!.price! * quantity}')}',
+                              'Tổng tiền : ${formatCurrency(amount: '${widget.data!.price! * quantity}')}',
                               style: styleH3,
                             ),
                           ),
-                          const SizedBox(
-                            height: 40,
-                          ),
+                          const SizedBox(height: 40),
                           SizedBox(
-                            width: size.width,
+                            width: widget.size.width,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -137,9 +157,9 @@ class Cart extends StatelessWidget {
                                   backgroundColor: Colors.white,
                                   borderColor: Colors.blue,
                                   icons: const Icon(Ionicons.cart),
-                                  width: size.width * .6,
+                                  width: widget.size.width * .6,
                                   onPressed: () {
-                                    check(quantity, note, context, false);
+                                    check(false);
                                   },
                                   child: Text(
                                     'Thêm vào giỏ hàng',
@@ -148,27 +168,15 @@ class Cart extends StatelessWidget {
                                 ),
                                 MyButton(
                                   backgroundColor: Colors.red,
-                                  width: size.width * .3,
-                                  onPressed: () {
+                                  width: widget.size.width * .3,
+                                  onPressed: () async {
                                     showModalBottomSheet(
                                       isScrollControlled: true,
                                       context: context,
-                                      builder: (BuildContext context) {
-                                        return Container(
-                                          padding: EdgeInsets.all(16),
-                                          child: Expanded(
-                                            child: LocationDropdown(
-                                              data: APILocation.dataLocation,
-                                              defaultProvinceId: 2,
-                                              defaultDistrictId: 36,
-                                              defaultWardId: 665,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-
-                                    // check(quantity, note, context, true);
+                                      builder: (context) =>
+                                          AddressDisplayScreen(
+                                              selectedAddress: _address),
+                                    ).then((value) => loadData());
                                   },
                                   child: const Text(
                                     'Mua',
@@ -209,10 +217,10 @@ class Cart extends StatelessWidget {
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Tên sản phẩm: ${data!.name}'),
-              Text('Giá: ${formatCurrency(amount: '${data!.price}')}'),
-              Text('Số lượng: ${data!.number}'),
-              // Thêm các thông tin khác của sản phẩm tại đây
+              Text('Tên sản phẩm: ${widget.data!.name}'),
+              Text('Giá: ${formatCurrency(amount: '${widget.data!.price}')}'),
+              Text('Số lượng: ${widget.data!.number}'),
+              // Add other product information here
             ],
           ),
           actions: [
@@ -228,18 +236,21 @@ class Cart extends StatelessWidget {
     );
   }
 
-  check(quantity, note, context, isBuy) async {
+  void check(bool isBuy) async {
     if (UserPrefer.getToken() == null || UserPrefer.getToken() == 'null') {
       Message.error(
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
-      if (quantity < data!.number!) {
+      if (quantity < widget.data!.number!) {
         if (isBuy) {
           Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);
-          _showProductDialog(context); // Hiển thị hộp thoại thông tin sản phẩm
+          _showProductDialog(context); // Show product information dialog
         } else {
-          var value = await ApiCart.apiCart(id: data!.id!, quantity: quantity);
+          var value = await ApiCart.apiCart(
+            id: widget.data!.id!,
+            quantity: quantity,
+          );
           if (value == 200) {
             Message.success(
                 message: 'Thêm giỏ hàng thành công.', context: context);
