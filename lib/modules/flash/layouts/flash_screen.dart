@@ -1,7 +1,5 @@
-import 'package:app/components/message/message.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/modules/app_constants.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';

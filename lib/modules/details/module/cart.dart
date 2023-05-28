@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, use_build_context_synchronously
+// ignore_for_file: must_be_immutable, use_build_context_synchronously, library_private_types_in_public_api
 
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/style.dart';
@@ -6,9 +6,7 @@ import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../../components/districts/AddressDisplayScreen .dart';
-import '../../../components/districts/location_db.dart';
 import '../../home/api/address/api_address.dart';
-import '../../home/api/location/api_location.dart';
 import '../../home/api/products/models/products.dart' as products;
 
 import '../../../components/button/mybutton.dart';
@@ -18,7 +16,7 @@ import '../../../preferences/user/user_preferences.dart';
 import '../../home/api/cart/api_cart.dart';
 
 class Cart extends StatefulWidget {
-  Cart({
+  const Cart({
     Key? key,
     required this.data,
     required this.size,
@@ -37,7 +35,7 @@ class _CartState extends State<Cart> {
   address.Data? _address;
   loadData() async {
     await APIAddress.fetchAddress();
-    if (APIAddress.lsData.length > 0) {
+    if (APIAddress.lsData.isNotEmpty) {
       _address = APIAddress.lsData[0];
     } else {
       _address = null;
@@ -213,7 +211,7 @@ class _CartState extends State<Cart> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Thông tin sản phẩm'),
+          title: const Text('Thông tin sản phẩm'),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -228,7 +226,7 @@ class _CartState extends State<Cart> {
               onPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text('Đóng'),
+              child: const Text('Đóng'),
             ),
           ],
         );

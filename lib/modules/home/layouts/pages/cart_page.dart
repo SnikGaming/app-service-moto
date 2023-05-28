@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, unused_element
 
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
@@ -356,7 +356,7 @@ class _CartScreenState extends State<CartScreen> {
           height: size.height,
           width: size.width,
           child: isLoad == false
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : data.isEmpty
                   ? Image.asset('assets/images/notdata.gif')
                   // build2(context)

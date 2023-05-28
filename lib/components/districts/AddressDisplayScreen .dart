@@ -1,4 +1,6 @@
-// ignore_for_file: library_private_types_in_public_api, library_prefixes
+// ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field
+import 'dart:convert';
+
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/style/text_style.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +51,6 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
     if (APIAddress.lsData.isEmpty) {
       _selectedAddress = null;
 
-      print('location data');
       return;
     }
     if (selectedAddress != null) {
@@ -254,14 +255,52 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CusRichText(
+                        const CusRichText(
                           text: 'Tổng tiền : ',
                           selectedAddress: '120000000',
                         ),
                         MyButton(
                           width: 130,
                           backgroundColor: Colors.red,
-                          onPressed: () {},
+                          onPressed: () {
+                            // Create the JSON object
+                            final json = {
+                              'name': _selectedAddress!.name,
+                              'address':
+                                  '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
+                              'idProvince': _selectedAddress!.idProvince,
+                              'idDistrict': _selectedAddress!.idDistrict,
+                              'idWard': _selectedAddress!.idWard,
+                              'ship': 20000.0,
+                              'date_order': DateTime.now().toIso8601String(),
+                              'delivery_date': DateTime.now()
+                                  .add(const Duration(days: 3))
+                                  .toIso8601String(),
+                              'phone': _selectedAddress!.phoneNumber,
+                              'sale': _discountCode,
+                              'note': _note,
+                              'paymentId': _selectedPaymentMethod.index,
+                              'sshipping': 0,
+                              'order_details': [
+                                {
+                                  'product_id':
+                                      1, // Replace with the actual product ID
+                                  'quantity':
+                                      5, // Replace with the actual quantity
+                                  'price':
+                                      '350000', // Replace with the actual price
+                                },
+                              ],
+                            };
+
+                            // Convert the JSON object to a string
+                            final jsonString = jsonEncode(json);
+
+                            // Print the JSON string (for testing purposes)
+                            print('location data ${jsonString}');
+
+                            // Perform further actions with the JSON string (e.g., send it to an API)
+                          },
                           child: const Text(
                             'Thanh toán',
                             style: title1,

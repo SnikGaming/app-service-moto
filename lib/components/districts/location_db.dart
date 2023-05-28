@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, null_check_always_fails, unused_local_variable
 
 import 'dart:convert';
 
@@ -20,8 +20,9 @@ class LocationDropdown extends StatefulWidget {
   final String defaultAddress;
   final int? id;
 
-  LocationDropdown(
-      {required this.data,
+  const LocationDropdown(
+      {super.key,
+      required this.data,
       this.defaultProvinceId = 0,
       this.defaultDistrictId = 0,
       this.defaultWardId = 0,
@@ -94,7 +95,7 @@ class _LocationDropdownState extends State<LocationDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
@@ -248,7 +249,6 @@ class _LocationDropdownState extends State<LocationDropdown> {
     };
 
     final jsonString = json.encode(jsonData);
-    print('location data $jsonString');
     if (widget.id == null) {
       var res = await APIAddress.addAddress(jsonData);
       if (res.statusCode == 200) {
@@ -259,9 +259,12 @@ class _LocationDropdownState extends State<LocationDropdown> {
       }
     } else {
       var res = await APIAddress.updateAddress(jsonData, widget.id!);
-
-      Message.success(message: 'Cập nhật thành công', context: context);
-      Navigator.pop(context);
+      if (res.statusCode == 200) {
+        Message.success(message: 'Cập nhật thành công', context: context);
+        Navigator.pop(context);
+      } else {
+        Message.error(message: 'Cập nhật thất bại', context: context);
+      }
     }
   }
 

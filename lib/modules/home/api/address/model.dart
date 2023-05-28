@@ -7,13 +7,13 @@ class Address {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -59,17 +59,17 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['phone_number'] = this.phoneNumber;
-    data['address'] = this.address;
-    data['idProvince'] = this.idProvince;
-    data['province'] = this.province;
-    data['idDistrict'] = this.idDistrict;
-    data['district'] = this.district;
-    data['idWard'] = this.idWard;
-    data['ward'] = this.ward;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['phone_number'] = phoneNumber;
+    data['address'] = address;
+    data['idProvince'] = idProvince;
+    data['province'] = province;
+    data['idDistrict'] = idDistrict;
+    data['district'] = district;
+    data['idWard'] = idWard;
+    data['ward'] = ward;
     return data;
   }
 }

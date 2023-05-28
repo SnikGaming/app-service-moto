@@ -1,9 +1,10 @@
+// ignore_for_file: file_names, must_be_immutable
+
 import 'package:flutter/material.dart';
 
-import '../../modules/home/api/address/model.dart' as Address;
 
 class CusRichText extends StatelessWidget {
-  CusRichText({
+  const CusRichText({
     super.key,
     required String selectedAddress,
     Color? color,
@@ -12,7 +13,7 @@ class CusRichText extends StatelessWidget {
         _text = text,
         _color = color;
 
-  Color? _color;
+  final Color? _color;
   final String _text;
   final String _selectedAddress;
 
