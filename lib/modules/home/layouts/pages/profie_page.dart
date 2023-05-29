@@ -27,7 +27,7 @@ class _ProFilePageState extends State<ProFilePage> {
       await APIOrder.fetchOrder(status: status);
     } else {
       await APIOrder.fetchOrder();
-    }
+    }     
     lsData = APIOrder.lsData;
 
     var dataStatus = await APIOrder.fetchOrderStatus();
@@ -53,6 +53,7 @@ class _ProFilePageState extends State<ProFilePage> {
     loadData();
   }
 
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -70,7 +71,7 @@ class _ProFilePageState extends State<ProFilePage> {
               ),
               //!: User
               const UserProfile(),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               //!: Đơn hàng của tôi
@@ -164,11 +165,9 @@ class _ProFilePageState extends State<ProFilePage> {
                       flex: 9,
                       child: Container(),
                     ),
-                    Expanded(
+                    const Expanded(
                       flex: 1,
-                      child: Container(
-                        child: Icon(Ionicons.chevron_forward_outline),
-                      ),
+                      child: Icon(Ionicons.chevron_forward_outline),
                     ),
                   ],
                 ),
@@ -182,12 +181,20 @@ class _ProFilePageState extends State<ProFilePage> {
                       itemBuilder: (context, i) {
                         var data = lsData[i];
                         return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 5),
                           child: Container(
-                            height: 120,
+                            height: 130,
                             width: size.width,
                             decoration: BoxDecoration(
-                                color: randomColor(),
+                                color: const Color.fromARGB(255, 225, 221, 221),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(5, 9),
+                                    blurRadius: 5,
+                                  )
+                                ],
                                 borderRadius: BorderRadius.circular(30)),
                             child: Padding(
                               padding: const EdgeInsets.all(14),
@@ -204,16 +211,11 @@ class _ProFilePageState extends State<ProFilePage> {
                                   CusRichText(
                                       selectedAddress: data.address.toString(),
                                       text: 'Địa chỉ : '),
-
-                                  // Expanded(
-                                  //   child: ListView.builder(
-                                  //     itemCount: data.product?.length,
-                                  //     itemBuilder: (context, j) => Container(
-                                  //       height: 5,
-                                  //       color: Colors.green,
-                                  //     ),
-                                  //   ),
-                                  // )
+                                  CusRichText(
+                                      selectedAddress: data.status == 3
+                                          ? "Đang giao, bạn vui lòng chuẩn bị tiền."
+                                          : "Đang xử lý",
+                                      text: 'Trạng thái : '),
                                 ],
                               ),
                             ),
