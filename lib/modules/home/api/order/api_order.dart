@@ -7,9 +7,14 @@ import '../APIBASE.dart';
 class APIOrder {
   static List<order.Data> lsData = [];
 
-  static Future<List<order.Data>> fetchOrder() async {
+  static Future<List<order.Data>> fetchOrder({int? status}) async {
     try {
-      final response = await ApiBase.get(path: '/api/orders/');
+      String path = '/api/orders/';
+      if (status != null) {
+        path += '?status=$status';
+      }
+
+      final response = await ApiBase.get(path: path);
       final jsonData = json.decode(response.toString());
       final List<dynamic> dataListJson = jsonData['data'];
       var toTal = jsonData['last_page'];
@@ -17,7 +22,7 @@ class APIOrder {
           .map((dataJson) => order.Data.fromJson(dataJson))
           .toList();
       lsData = Order;
-      print('location data ---> ${lsData[0].product![0].id}');
+      print('Order --> ${dataListJson}');
       return Order;
     } catch (e) {
       return [];
@@ -28,11 +33,12 @@ class APIOrder {
     try {
       final response = await ApiBase.get(path: '/api/orders_status/');
       final jsonData = json.decode(response.toString());
+      print('Order --> ${jsonData}');
 
       return jsonData['data'];
     } catch (e) {
       print('Order --> orders_status []');
-      return null;
+      return [];
     }
   }
 

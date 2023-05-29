@@ -33,7 +33,7 @@ Future<void> main(List<String> args) async {
   if (UserPrefer.getToken() != null) {
     await APIBooking.fetchBookings();
     await APIAuth.getUser();
-    await APIOrder.fetchOrder();
+    // await APIOrder.fetchOrder();
   }
   await APILocation.fetchLocation();
   runApp(ModularApp(module: AppModule(), child: const MyApp()));

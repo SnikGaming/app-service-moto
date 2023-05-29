@@ -1,10 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:app/components/CusRichText/CusRichText.dart';
 import 'package:app/components/mybage/mybage.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/modules/home/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
@@ -14,22 +16,32 @@ class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
 
   @override
-  State<ProFilePage> createState() => s();
+  State<ProFilePage> createState() => _ProFilePageState();
 }
 
-class s extends State<ProFilePage> {
+class _ProFilePageState extends State<ProFilePage> {
   List<order.Data> lsData = [];
-
-  @override
-  loadData() async {
-    await APIOrder.fetchOrder();
-    var dataStatus = await APIOrder.fetchOrderStatus();
-
+  int indexSelect = -1;
+  loadData({int? status}) async {
+    if (status != null) {
+      await APIOrder.fetchOrder(status: status);
+    } else {
+      await APIOrder.fetchOrder();
+    }
     lsData = APIOrder.lsData;
 
-    MyOrder.lsMyOrder[1].bage = dataStatus['status_1'].toString();
-    MyOrder.lsMyOrder[2].bage = dataStatus['status_2'].toString();
-    MyOrder.lsMyOrder[3].bage = dataStatus['status_3'].toString();
+    var dataStatus = await APIOrder.fetchOrderStatus();
+    if (dataStatus != []) {
+      try {
+        MyOrder.lsMyOrder[0].bage = dataStatus['status_2'].toString();
+        MyOrder.lsMyOrder[1].bage = dataStatus['status_1'].toString();
+        MyOrder.lsMyOrder[2].bage = dataStatus['status_3'].toString();
+        MyOrder.lsMyOrder[3].bage = dataStatus['status_4'].toString();
+        MyOrder.lsMyOrder[4].bage = dataStatus['status_0'].toString();
+      } catch (e) {
+        print(e);
+      }
+    }
 
     setState(() {});
   }
@@ -41,6 +53,7 @@ class s extends State<ProFilePage> {
     loadData();
   }
 
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
@@ -57,7 +70,7 @@ class s extends State<ProFilePage> {
               ),
               //!: User
               const UserProfile(),
-              const SizedBox(
+              SizedBox(
                 height: 16,
               ),
               //!: Đơn hàng của tôi
@@ -86,22 +99,27 @@ class s extends State<ProFilePage> {
                         itemCount: MyOrder.lsMyOrder.length,
                         itemBuilder: (context, i) {
                           var data = MyOrder.lsMyOrder[i];
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                left: 10,
-                                right:
-                                    MyOrder.lsMyOrder.length - 1 == i ? 10 : 0),
-                            child: Container(
-                              height: 80,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                color: randomColor(),
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {});
-                                },
+                          return GestureDetector(
+                            onTap: () {
+                              indexSelect = i;
+                              setState(() {});
+                              loadData(status: data.id);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: 10,
+                                  right: MyOrder.lsMyOrder.length - 1 == i
+                                      ? 10
+                                      : 0),
+                              child: Container(
+                                height: 80,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: indexSelect == i
+                                      ? Colors.red
+                                      : Colors.purple.shade400,
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
@@ -140,7 +158,68 @@ class s extends State<ProFilePage> {
                 height: 60,
                 width: size.width,
                 color: Colors.blue,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 9,
+                      child: Container(),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Icon(Ionicons.chevron_forward_outline),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(
+                height: 16,
+              ),
+              Expanded(
+                  child: ListView.builder(
+                      itemCount: lsData.length,
+                      itemBuilder: (context, i) {
+                        var data = lsData[i];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Container(
+                            height: 120,
+                            width: size.width,
+                            decoration: BoxDecoration(
+                                color: randomColor(),
+                                borderRadius: BorderRadius.circular(30)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(14),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CusRichText(
+                                      selectedAddress: data.name.toString(),
+                                      text: 'Tên người nhận : '),
+                                  CusRichText(
+                                      selectedAddress:
+                                          data.totalPrice.toString(),
+                                      text: 'Giá : '),
+                                  CusRichText(
+                                      selectedAddress: data.address.toString(),
+                                      text: 'Địa chỉ : '),
+
+                                  // Expanded(
+                                  //   child: ListView.builder(
+                                  //     itemCount: data.product?.length,
+                                  //     itemBuilder: (context, j) => Container(
+                                  //       height: 5,
+                                  //       color: Colors.green,
+                                  //     ),
+                                  //   ),
+                                  // )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }))
             ],
           ),
         ),
@@ -162,22 +241,26 @@ class UserProfile extends StatelessWidget {
         SizedBox(
             height: 80,
             width: 80,
-            child: CachedNetworkImage(
-              imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      '${ConnectDb.url}${UserPrefer.getImageUser()}')),
-              fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  const Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              imageUrl: '${ConnectDb.url}${UserPrefer.getImageUser()}',
-            )),
+            child: UserPrefer.getImageUser() == 'null' ||
+                    UserPrefer.getImageUser() == null
+                ? Container()
+                : CachedNetworkImage(
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            '${ConnectDb.url}${UserPrefer.getImageUser()}')),
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                    imageUrl: '${ConnectDb.url}${UserPrefer.getImageUser()}',
+                  )),
         const SizedBox(
           width: 8,
         ),
         //!: Name
         Text(
-          UserPrefer.getsetUserName(),
+          UserPrefer.getsetUserName() ?? "GUES",
           style: title2.copyWith(
             color: Colors.black,
           ),
@@ -191,23 +274,34 @@ class MyOrder {
   String image;
   String name;
   String? bage;
-  MyOrder({required this.image, required this.name, this.bage});
+  int id;
+  MyOrder(
+      {required this.image, required this.name, this.bage, required this.id});
   static List<MyOrder> lsMyOrder = [
     MyOrder(
         image: 'assets/icons/cart/wallet.png',
         name: 'Chờ thanh toán',
-        bage: ''),
+        bage: '',
+        id: 2),
     MyOrder(
         image: 'assets/icons/cart/parcel.png',
         name: 'Chờ vận chuyển',
-        bage: ''),
+        bage: '',
+        id: 1),
     MyOrder(
         image: 'assets/icons/cart/transportation-truck.png',
         name: 'Chờ giao hàng',
-        bage: ''),
+        bage: '',
+        id: 3),
     MyOrder(
-        image: 'assets/icons/cart/chat.png', name: 'Chưa đánh giá', bage: ''),
+        image: 'assets/icons/cart/chat.png',
+        name: 'Chưa đánh giá',
+        bage: '',
+        id: 4),
     MyOrder(
-        image: 'assets/icons/cart/briefcase.png', name: 'Đổi trả', bage: ''),
+        image: 'assets/icons/cart/briefcase.png',
+        name: 'Đổi trả',
+        bage: '',
+        id: 0),
   ];
 }
