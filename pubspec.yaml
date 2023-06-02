@@ -75,7 +75,7 @@ dependencies:
   rating_dialog: ^2.0.4
   photo_view: ^0.14.0
   skeleton_loader: ^2.0.0+4
-  flutter_icons: ^1.1.0
+  # flutter_icons: ^1.1.0
   flutter_dynamic_icon: ^2.1.0
   # flutter_facebook_auth: ^5.0.8
 

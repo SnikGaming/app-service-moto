@@ -14,6 +14,7 @@ import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
 import 'modules/home/api/location/api_location.dart';
 import 'modules/home/api/order/api_order.dart';
+import 'modules/home/api/payment/api_payment.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ Future<void> main(List<String> args) async {
     await APIAuth.getUser();
     // await APIOrder.fetchOrder();
   }
+  await APIPaymentMethod.fetchPayment();
   await APILocation.fetchLocation();
   runApp(ModularApp(module: AppModule(), child: const MyApp()));
   // runApp(DevicePreview(

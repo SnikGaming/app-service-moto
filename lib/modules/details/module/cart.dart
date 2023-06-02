@@ -31,7 +31,6 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   int quantity = 1;
-  String note = '';
   address.Data? _address;
   loadData() async {
     await APIAddress.fetchAddress();
@@ -87,25 +86,12 @@ class _CartState extends State<Cart> {
                   ),
                   child: Container(
                     color: Colors.white,
-                    height: 350 + MediaQuery.of(context).viewInsets.bottom,
+                    height: 250 + MediaQuery.of(context).viewInsets.bottom,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 16),
                       child: Column(
                         children: [
-                          const SizedBox(height: 20),
-                          TextFormField(
-                            controller: TextEditingController(text: note),
-                            maxLines: null,
-                            decoration: const InputDecoration(
-                              labelText: 'Ghi chú',
-                              border: OutlineInputBorder(),
-                            ),
-                            onChanged: (value) {
-                              // Handle note change
-                              note = value;
-                            },
-                          ),
                           const SizedBox(height: 20),
                           Row(
                             children: [
@@ -158,7 +144,8 @@ class _CartState extends State<Cart> {
                               style: styleH3,
                             ),
                           ),
-                          const SizedBox(height: 40),
+                          Spacer(),
+                          // const SizedBox(height: 40),
                           SizedBox(
                             width: widget.size.width,
                             child: Row(

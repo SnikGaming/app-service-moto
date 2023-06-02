@@ -2,13 +2,18 @@
 import 'dart:convert';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/style/text_style.dart';
+import 'package:app/modules/home/api/payment/api_payment.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
 
 import '../../modules/home/api/cart/api_cart.dart';
+import '../../modules/home/api/category/api_category.dart';
 import '../../modules/home/api/order/api_order.dart';
+import '../../modules/home/api/payment/payment_model.dart' as payment;
+import '../../network/connect.dart';
 import '../CusRichText/CusRichText.dart';
 import '../convert/format_money.dart';
 import '../message/message.dart';
@@ -28,27 +33,17 @@ class AddressDisplayScreen extends StatefulWidget {
   _AddressDisplayScreenState createState() => _AddressDisplayScreenState();
 }
 
-enum PaymentMethod {
-  cashOnDelivery,
-  paypal,
-}
-
 class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   Address.Data? _selectedAddress;
   late List<Address.Data> lsData = [];
   List<int> cartId = [];
+  List<payment.Data> lsPayment = [];
 
   String? _selectedShippingMethod;
+  payment.Data? _selectPayment;
   String? _discountCode;
   int total = 0;
   String? _note; // New note field
-  PaymentMethod _selectedPaymentMethod =
-      PaymentMethod.cashOnDelivery; // Giá trị mặc định
-  _selectPaymentMethod(PaymentMethod? paymentMethod) {
-    setState(() {
-      _selectedPaymentMethod = paymentMethod!;
-    });
-  }
 
   Future<int> addOrder(String jsonData) async {
     int res = await APIOrder.addOrder(json: jsonData);
@@ -56,6 +51,8 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   }
 
   loadData() async {
+    await APIPaymentMethod.fetchPayment();
+    lsPayment = APIPaymentMethod.lsData;
     _selectedAddress = widget.selectedAddress;
     if (widget.isBuy) {
       List<List<dynamic>> convertedList = widget.json.map((item) {
@@ -186,23 +183,46 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
+                            //!: Payment
+                            DropdownButtonFormField<payment.Data>(
+                              value: _selectPayment,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectPayment = value;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              items: List.generate(
+                                lsPayment.length,
+                                (index) => DropdownMenuItem(
+                                  value: lsPayment[index],
+                                  child: SizedBox(
+                                    height: 90,
+                                    width: 260,
+                                    child: Row(
+                                      children: [
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              '${ConnectDb.url}${lsPayment[index].image}',
+                                          height: 45,
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(lsPayment[index].name!),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                             const SizedBox(height: 8),
-                            ListTile(
-                              title: const Text('Thanh toán khi nhận hàng'),
-                              leading: Radio<PaymentMethod>(
-                                value: PaymentMethod.cashOnDelivery,
-                                groupValue: _selectedPaymentMethod,
-                                onChanged: _selectPaymentMethod,
-                              ),
-                            ),
-                            ListTile(
-                              title: const Text('Paypal'),
-                              leading: Radio<PaymentMethod>(
-                                value: PaymentMethod.paypal,
-                                groupValue: _selectedPaymentMethod,
-                                onChanged: _selectPaymentMethod,
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -336,8 +356,8 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                               'phone': _selectedAddress!.phoneNumber,
                               'sale': _discountCode,
                               'note': _note,
-                              'paymentId': _selectedPaymentMethod.index,
-                              'sshipping': 0,
+                              'paymentId': _selectPayment!.name,
+                              'shipping': 0,
                               'order_details': widget.json,
                             };
 

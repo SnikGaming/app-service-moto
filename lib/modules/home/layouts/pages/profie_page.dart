@@ -7,6 +7,7 @@ import 'package:app/modules/home/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import '../../../../components/convert/format_money.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
@@ -27,7 +28,7 @@ class _ProFilePageState extends State<ProFilePage> {
       await APIOrder.fetchOrder(status: status);
     } else {
       await APIOrder.fetchOrder();
-    }     
+    }
     lsData = APIOrder.lsData;
 
     var dataStatus = await APIOrder.fetchOrderStatus();
@@ -205,8 +206,8 @@ class _ProFilePageState extends State<ProFilePage> {
                                       selectedAddress: data.name.toString(),
                                       text: 'Tên người nhận : '),
                                   CusRichText(
-                                      selectedAddress:
-                                          data.totalPrice.toString(),
+                                      selectedAddress: formatCurrency(
+                                          amount: data.totalPrice.toString()),
                                       text: 'Giá : '),
                                   CusRichText(
                                       selectedAddress: data.address.toString(),
