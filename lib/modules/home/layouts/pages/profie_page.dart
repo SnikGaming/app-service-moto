@@ -46,11 +46,10 @@ class _ProFilePageState extends State<ProFilePage> {
             dataStatus['status_1'].toString(); //!: Chờ vận chuyển
         MyOrder.lsMyOrder[2].bage =
             dataStatus['status_3'].toString(); //!: Chờ giao hàng
+
         MyOrder.lsMyOrder[3].bage =
-            dataStatus['status_5'].toString(); //!: Đã mua
-        MyOrder.lsMyOrder[4].bage =
             dataStatus['status_4'].toString(); //!: Chưa đánh giá
-        MyOrder.lsMyOrder[5].bage =
+        MyOrder.lsMyOrder[4].bage =
             dataStatus['status_0'].toString(); //!: Đổi trả
       } catch (e) {
         print(e);
@@ -156,7 +155,7 @@ class _ProFilePageState extends State<ProFilePage> {
                       height: 8,
                     ),
                     Container(
-                      color: Colors.green,
+                      // color: Colors.green,
                       height: 80,
                       width: size.width,
                       // color: Colors.purple,
@@ -418,10 +417,8 @@ class MyOrder {
         bage: '',
         id: 3),
     MyOrder(
-        image: 'assets/icons/cart/chat.png', name: 'Đã mua', bage: '', id: 5),
-    MyOrder(
         image: 'assets/icons/cart/chat.png',
-        name: 'Chưa đánh giá',
+        name: 'Đã hoàn thành',
         bage: '',
         id: 4),
     MyOrder(
