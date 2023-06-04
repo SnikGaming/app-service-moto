@@ -5,6 +5,8 @@ import 'package:app/components/style/text_style.dart';
 import 'package:app/modules/home/api/payment/api_payment.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paypal/flutter_paypal.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
@@ -18,6 +20,7 @@ import '../CusRichText/CusRichText.dart';
 import '../convert/format_money.dart';
 import '../message/message.dart';
 import 'AddressListScreen .dart';
+import 'b.dart';
 
 class AddressDisplayScreen extends StatefulWidget {
   final Address.Data? selectedAddress;
@@ -183,6 +186,20 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => PayPalMethod(),
+                                  ));
+                                },
+                                child: Text('Paypal')),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => MySample(),
+                                  ));
+                                },
+                                child: Text('Credit')),
                             //!: Payment
                             DropdownButtonFormField<payment.Data>(
                               value: _selectPayment,
@@ -414,6 +431,63 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  UsePaypal PayPalMethod() {
+    return UsePaypal(
+      sandboxMode: true,
+      clientId:
+          "AQ-z5DPK42W8qrx7VSC2g2aF0PxY_Ko_KUYrNyxi4rlD_q9JY5c1muG1q9fSgRgHyjmc_eqPuGG0wX8S",
+      secretKey:
+          "EKOZxrCebxy9EYW6SzJM6TYBss8rJ1DaaikVSU6F39PKiNxAI9eLdAg0znnm3ku-Swqi3YcUEO8LnyBD",
+      returnURL: "https://samplesite.com/return",
+      cancelURL: "https://samplesite.com/cancel",
+      transactions: const [
+        {
+          "amount": {
+            "total": '0.01',
+            "currency": "USD",
+            "details": {
+              "subtotal": '0.01',
+              "shipping": '0',
+              "shipping_discount": 0
+            }
+          },
+          "description": "The payment transaction description.",
+          "payment_options": {
+            "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
+          },
+
+          //!:
+          "item_list": {
+            "items": [
+              {
+                "name": "A demo product",
+                "quantity": 1,
+                "price": '0.01',
+                "currency": "USD"
+              }
+            ],
+
+            //   // shipping address is not required though
+            //   // "shipping_address": {
+            //   //   "recipient_name": "Jane Foster",
+            //   //   "line1": "Travis County",
+            //   //   "line2": "",
+            //   //   "city": "Austin",
+            //   //   "country_code": "US",
+            //   //   "postal_code": "73301",
+            //   //   "phone": "+00000000",
+            //   //   "state": "Texas"
+            //   // },
+          }
+        }
+      ],
+      note: "Contact us for any questions on your order.",
+      onSuccess: (Map params) async {},
+      onError: (error) {},
+      onCancel: (params) {},
     );
   }
 }

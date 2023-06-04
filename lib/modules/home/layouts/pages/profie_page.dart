@@ -6,12 +6,18 @@ import 'package:app/functions/random_color.dart';
 import 'package:app/modules/home/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../../../components/convert/format_money.dart';
+import '../../../../components/districts/a.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../api/order/api_order.dart';
+import 'dart:convert';
+
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
 
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
@@ -34,17 +40,74 @@ class _ProFilePageState extends State<ProFilePage> {
     var dataStatus = await APIOrder.fetchOrderStatus();
     if (dataStatus != []) {
       try {
-        MyOrder.lsMyOrder[0].bage = dataStatus['status_2'].toString();
-        MyOrder.lsMyOrder[1].bage = dataStatus['status_1'].toString();
-        MyOrder.lsMyOrder[2].bage = dataStatus['status_3'].toString();
-        MyOrder.lsMyOrder[3].bage = dataStatus['status_4'].toString();
-        MyOrder.lsMyOrder[4].bage = dataStatus['status_0'].toString();
+        MyOrder.lsMyOrder[0].bage =
+            dataStatus['status_2'].toString(); //!: Chờ thanh toán
+        MyOrder.lsMyOrder[1].bage =
+            dataStatus['status_1'].toString(); //!: Chờ vận chuyển
+        MyOrder.lsMyOrder[2].bage =
+            dataStatus['status_3'].toString(); //!: Chờ giao hàng
+        MyOrder.lsMyOrder[3].bage =
+            dataStatus['status_5'].toString(); //!: Đã mua
+        MyOrder.lsMyOrder[4].bage =
+            dataStatus['status_4'].toString(); //!: Chưa đánh giá
+        MyOrder.lsMyOrder[5].bage =
+            dataStatus['status_0'].toString(); //!: Đổi trả
       } catch (e) {
         print(e);
       }
     }
 
     setState(() {});
+  }
+
+  Map<String, dynamic>? paymentIntent;
+
+  void makePayment() async {
+    try {
+      paymentIntent = await createPaymentIntent();
+      var gpay = PaymentSheetGooglePay(
+          merchantCountryCode: 'US', currencyCode: "US", testEnv: true);
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: paymentIntent!['client_secret'],
+          style: ThemeMode.dark,
+          merchantDisplayName: "Sabir",
+          googlePay: gpay,
+        ),
+      );
+      displayPaymentSheet();
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet();
+      print('Payment--> Done');
+    } catch (e) {
+      print(e);
+      print('Payment--> Done');
+    }
+  }
+
+  createPaymentIntent() async {
+    try {
+      Map<String, dynamic> body = {"amount": "1000", "currency": "US"};
+      http.Response response = await http.post(
+          Uri.parse("https://api.stripe.com/v1/payment_intents"),
+          body: body,
+          headers: {
+            "Authorization":
+                "Bearer sk_test_51MWx8OAVMyklfe3C3gP4wKOhTsRdF6r1PYhhg1PqupXDITMrV3asj5Mmf0G5F9moPL6zNfG3juK8KHgV9XNzFPlq00wmjWwZYA",
+            "Content-Type": "application/x-www-form-urlencoded"
+          });
+      return json.decode(response.body);
+    } catch (e) {
+      print(e);
+      throw Exception(e.toString());
+    }
   }
 
   @override
@@ -77,7 +140,7 @@ class _ProFilePageState extends State<ProFilePage> {
               ),
               //!: Đơn hàng của tôi
               SizedBox(
-                height: 136,
+                height: 120,
                 width: size.width,
                 // color: Colors.green,
                 child: Column(
@@ -92,8 +155,9 @@ class _ProFilePageState extends State<ProFilePage> {
                     const SizedBox(
                       height: 8,
                     ),
-                    SizedBox(
-                      height: 100,
+                    Container(
+                      color: Colors.green,
+                      height: 80,
                       width: size.width,
                       // color: Colors.purple,
                       child: ListView.builder(
@@ -101,21 +165,17 @@ class _ProFilePageState extends State<ProFilePage> {
                         itemCount: MyOrder.lsMyOrder.length,
                         itemBuilder: (context, i) {
                           var data = MyOrder.lsMyOrder[i];
-                          return GestureDetector(
-                            onTap: () {
-                              indexSelect = i;
-                              setState(() {});
-                              loadData(status: data.id);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 10,
-                                  right: MyOrder.lsMyOrder.length - 1 == i
-                                      ? 10
-                                      : 0),
+                          return Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                indexSelect = i;
+                                setState(() {});
+                                loadData(status: data.id);
+                              },
                               child: Container(
-                                height: 80,
-                                width: 100,
+                                height: 40,
+                                width: 80,
                                 decoration: BoxDecoration(
                                   color: indexSelect == i
                                       ? Colors.red
@@ -123,15 +183,15 @@ class _ProFilePageState extends State<ProFilePage> {
                                   borderRadius: BorderRadius.circular(18),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(4.0),
                                   child: Column(
                                     children: [
                                       MyBage(
                                         value: data.bage!,
                                         child: Image.asset(
                                           data.image,
-                                          height: 35,
-                                          width: 35,
+                                          height: 25,
+                                          width: 25,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -140,7 +200,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                       ),
                                       Text(
                                         data.name,
-                                        style: title1,
+                                        style: title1.copyWith(fontSize: 12),
                                         textAlign: TextAlign.center,
                                       )
                                     ],
@@ -156,21 +216,82 @@ class _ProFilePageState extends State<ProFilePage> {
                 ),
               ),
               //!: Slider Sp đang được giao
-              Container(
-                height: 60,
-                width: size.width,
-                color: Colors.blue,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 9,
-                      child: Container(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => UsePaypal(
+                      sandboxMode: true,
+                      clientId:
+                          "AQ-z5DPK42W8qrx7VSC2g2aF0PxY_Ko_KUYrNyxi4rlD_q9JY5c1muG1q9fSgRgHyjmc_eqPuGG0wX8S",
+                      secretKey:
+                          "EKOZxrCebxy9EYW6SzJM6TYBss8rJ1DaaikVSU6F39PKiNxAI9eLdAg0znnm3ku-Swqi3YcUEO8LnyBD",
+                      returnURL: "https://samplesite.com/return",
+                      cancelURL: "https://samplesite.com/cancel",
+                      transactions: const [
+                        {
+                          "amount": {
+                            "total": '0.01',
+                            "currency": "USD",
+                            "details": {
+                              "subtotal": '0.01',
+                              "shipping": '0',
+                              "shipping_discount": 0
+                            }
+                          },
+                          "description": "The payment transaction description.",
+                          // "payment_options": {
+                          //   "allowed_payment_method":
+                          //       "INSTANT_FUNDING_SOURCE"
+                          // },
+
+                          //!:
+                          // "item_list": {
+                          //   "items": [
+                          //     {
+                          //       "name": "A demo product",
+                          //       "quantity": 1,
+                          //       "price": '0.01',
+                          //       "currency": "USD"
+                          //     }
+                          //   ],
+
+                          //   // shipping address is not required though
+                          //   // "shipping_address": {
+                          //   //   "recipient_name": "Jane Foster",
+                          //   //   "line1": "Travis County",
+                          //   //   "line2": "",
+                          //   //   "city": "Austin",
+                          //   //   "country_code": "US",
+                          //   //   "postal_code": "73301",
+                          //   //   "phone": "+00000000",
+                          //   //   "state": "Texas"
+                          //   // },
+                          // }
+                        }
+                      ],
+                      note: "Contact us for any questions on your order.",
+                      onSuccess: (Map params) async {},
+                      onError: (error) {},
+                      onCancel: (params) {},
                     ),
-                    const Expanded(
-                      flex: 1,
-                      child: Icon(Ionicons.chevron_forward_outline),
-                    ),
-                  ],
+                  ));
+                },
+                child: Container(
+                  height: 60,
+                  width: size.width,
+                  color: Colors.blue,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 9,
+                        child: Container(),
+                      ),
+                      const Expanded(
+                        flex: 1,
+                        child: Icon(Ionicons.chevron_forward_outline),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
@@ -296,6 +417,8 @@ class MyOrder {
         name: 'Chờ giao hàng',
         bage: '',
         id: 3),
+    MyOrder(
+        image: 'assets/icons/cart/chat.png', name: 'Đã mua', bage: '', id: 5),
     MyOrder(
         image: 'assets/icons/cart/chat.png',
         name: 'Chưa đánh giá',

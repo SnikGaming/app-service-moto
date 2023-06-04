@@ -1,43 +1,28 @@
 class Booking {
   int? status;
   List<Data>? data;
-  int? currentPage;
-  int? lastPage;
-  int? perPage;
   int? totalItems;
 
-  Booking(
-      {this.status,
-      this.data,
-      this.currentPage,
-      this.lastPage,
-      this.perPage,
-      this.totalItems});
+  Booking({this.status, this.data, this.totalItems});
 
   Booking.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
-    currentPage = json['current_page'];
-    lastPage = json['last_page'];
-    perPage = json['per_page'];
     totalItems = json['total_items'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['current_page'] = currentPage;
-    data['last_page'] = lastPage;
-    data['per_page'] = perPage;
-    data['total_items'] = totalItems;
+    data['total_items'] = this.totalItems;
     return data;
   }
 }
@@ -47,6 +32,7 @@ class Data {
   int? customerId;
   int? mechanicId;
   String? color;
+  String? address;
   String? service;
   String? note;
   String? bookingTime;
@@ -59,6 +45,7 @@ class Data {
       this.customerId,
       this.mechanicId,
       this.color,
+      this.address,
       this.service,
       this.note,
       this.bookingTime,
@@ -71,6 +58,7 @@ class Data {
     customerId = json['customer_id'];
     mechanicId = json['mechanic_id'];
     color = json['color'];
+    address = json['address'];
     service = json['service'];
     note = json['note'];
     bookingTime = json['booking_time'];
@@ -80,17 +68,18 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['customer_id'] = customerId;
-    data['mechanic_id'] = mechanicId;
-    data['color'] = color;
-    data['service'] = service;
-    data['note'] = note;
-    data['booking_time'] = bookingTime;
-    data['status'] = status;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['customer_id'] = this.customerId;
+    data['mechanic_id'] = this.mechanicId;
+    data['color'] = this.color;
+    data['address'] = this.address;
+    data['service'] = this.service;
+    data['note'] = this.note;
+    data['booking_time'] = this.bookingTime;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

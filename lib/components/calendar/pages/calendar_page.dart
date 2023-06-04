@@ -3,10 +3,12 @@
 import 'dart:core';
 
 import 'package:app/components/calendar/utills/extensions.dart';
+import 'package:app/modules/home/api/booking/api_booking.dart';
 import 'package:cr_calendar/cr_calendar.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../../modules/home/api/booking/model.dart' as booking;
 import '../res/colors.dart';
 import '../utills/constants.dart';
 import '../widgets/create_event_dialog.dart';
@@ -32,10 +34,32 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
+    super.initState();
     _setTexts(_currentDate.year, _currentDate.month);
     _createExampleEvents();
 
-    super.initState();
+    loadData();
+  }
+
+  loadData() async {
+    await APIBooking.fetchBookings();
+    List<booking.Data> data = APIBooking.lsData;
+    data.forEach((e) {
+      _calendarController.addEvent(
+        CalendarEventModel(
+          eventColor: int.parse(e.color!) == 0
+              ? eventColors[4]
+              : int.parse(e.color!) == 1
+                  ? eventColors[0]
+                  : eventColors[3],
+          name: e.note!,
+          addressCal: e.address!,
+          begin: DateTime.parse(e.bookingTime!),
+          end: DateTime.parse(e.bookingTime!),
+        ),
+      );
+    });
+    setState(() {});
   }
 
   @override
@@ -167,6 +191,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<void> _addEvent() async {
     final event = await showDialog(
         context: context, builder: (context) => const CreateEventDialog());
+
     if (event != null) {
       _calendarController.addEvent(event);
     }

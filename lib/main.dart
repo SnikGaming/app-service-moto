@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'components/districts/b.dart';
 import 'components/districts/location.dart';
 import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
@@ -17,6 +19,9 @@ import 'modules/home/api/order/api_order.dart';
 import 'modules/home/api/payment/api_payment.dart';
 
 Future<void> main(List<String> args) async {
+  Stripe.publishableKey =
+      "pk_test_51MWx8OAVMyklfe3CsjEzA1CiiY0XBTlHYbZ8jQlGtVFIwQi4aNeGv8J1HUw4rgSavMTLzTwgn0XRlwoTVRFXyu2h00mRUeWmAf";
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

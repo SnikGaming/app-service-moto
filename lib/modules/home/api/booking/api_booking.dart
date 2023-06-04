@@ -12,7 +12,7 @@ class APIBooking {
       final response = await ApiBase.get(path: '/api/bookings/');
       final jsonData = json.decode(response.toString());
       final List<dynamic> bookingListJson = jsonData['data'];
-      toTal = jsonData['last_page'];
+      toTal = jsonData['total_items'];
       final List<Data> bookings = bookingListJson
           .map((bookingJson) => Data.fromJson(bookingJson))
           .toList();
