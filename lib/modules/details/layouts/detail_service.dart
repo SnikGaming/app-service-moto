@@ -162,6 +162,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
         : Scaffold(
             appBar: AppBar(
               title: Text('Purchase ${data!.name}'),
+              backgroundColor: const Color.fromARGB(255, 113, 66, 223),
             ),
             floatingActionButton: Cart(data: data!, size: size),
             body: Container(

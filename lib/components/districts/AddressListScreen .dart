@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
 import '../../modules/home/api/location/api_location.dart';
+import '../../modules/home/layouts/pages/services_page.dart';
 import 'location_db.dart';
 
 class AddressListScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 129, 67, 230),
         title: const Text('Address List'),
       ),
       body: ListView.builder(
@@ -51,20 +53,35 @@ class _AddressListScreenState extends State<AddressListScreen> {
           } else {
             final address = addresses[index];
             return ListTile(
-              title: Text(address.name!),
+              tileColor: Color.fromRGBO(61, 54, 54, 0.473),
+              title: Text(
+                address.name!,
+                style: h1.copyWith(
+                  color: Colors.white,
+                ),
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(address.phoneNumber!),
                   Text(
-                      '${address.address}, ${address.ward}, ${address.district}, ${address.province}'),
+                    address.phoneNumber!,
+                    style: h1.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    '${address.address}, ${address.ward}, ${address.district}, ${address.province}',
+                    style: h1.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.edit),
+                    icon: const Icon(Icons.edit, color: Colors.yellowAccent),
                     onPressed: () {
                       addressLocation(
                           context: context,
@@ -80,7 +97,10 @@ class _AddressListScreenState extends State<AddressListScreen> {
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
                     onPressed: () {
                       APIAddress.deleteAddress(address.id!);
                       loadData();

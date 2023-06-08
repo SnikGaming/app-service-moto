@@ -123,312 +123,339 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
-        child: SizedBox(
-          height: size.height,
-          width: size.width,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Stack(
-              children: [
-                SizedBox(
-                  height: size.height * .9,
-                  // color: Colors.red,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Address
-                      Container(
-                        constraints: const BoxConstraints(
-                          minHeight: 60,
-                        ),
-                        width: size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(),
-                        ),
-                        child: GestureDetector(
-                          onTap: _openAddressListScreen,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: _selectedAddress == null
-                                ? SizedBox(
-                                    width: size.width,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Thêm địa chỉ mới',
-                                          style: title1.copyWith(
-                                              color: Colors.blue),
-                                        ),
-                                        const Icon(Icons.add,
-                                            color: Colors.blue),
-                                      ],
-                                    ),
-                                  )
-                                : SelectAddress(
-                                    selectedAddress: _selectedAddress),
+        child: Stack(
+          children: [
+            Container(
+              height: size.height,
+              width: size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/bg_booking.png'),
+                    fit: BoxFit.cover),
+              ),
+            ),
+            SizedBox(
+              height: size.height,
+              width: size.width,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height: size.height * .9,
+                      // color: Colors.red,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            height: 40,
                           ),
-                        ),
-                      ),
-                      // List sản phẩm được truyền vào
-
-                      // Payment
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Phương thức thanh toán',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                          // Address
+                          Container(
+                            constraints: const BoxConstraints(
+                              minHeight: 80,
                             ),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => PayPalMethod(),
-                                  ));
-                                },
-                                child: Text('Paypal')),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => MySample(),
-                                  ));
-                                },
-                                child: Text('Credit')),
-                            //!: Payment
-                            DropdownButtonFormField<payment.Data>(
-                              value: _selectPayment,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectPayment = value;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
+                            width: size.width,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 104, 58, 213),
+                              borderRadius: BorderRadius.circular(16),
+                              // border: Border.all(),
+                            ),
+                            child: GestureDetector(
+                              onTap: _openAddressListScreen,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: _selectedAddress == null
+                                    ? SizedBox(
+                                        width: size.width,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Thêm địa chỉ mới',
+                                              style: title1.copyWith(
+                                                  color: Colors.blue),
+                                            ),
+                                            const Icon(Icons.add,
+                                                color: Colors.blue),
+                                          ],
+                                        ),
+                                      )
+                                    : SelectAddress(
+                                        selectedAddress: _selectedAddress,
+                                        colorText: Colors.white,
+                                        titleColor: Colors.white,
+                                      ),
                               ),
-                              items: List.generate(
-                                lsPayment.length,
-                                (index) => DropdownMenuItem(
-                                  value: lsPayment[index],
-                                  child: SizedBox(
-                                    height: 90,
-                                    width: 260,
-                                    child: Row(
-                                      children: [
-                                        CachedNetworkImage(
-                                          imageUrl:
-                                              '${ConnectDb.url}${lsPayment[index].image}',
-                                          height: 45,
-                                          placeholder: (context, url) =>
-                                              const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
+                            ),
+                          ),
+                          // List sản phẩm được truyền vào
+
+                          // Payment
+                          Container(
+                            width: size.width,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Phương thức thanh toán',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (_) => PayPalMethod(),
+                                      ));
+                                    },
+                                    child: const Text('Paypal')),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (_) => MySample(),
+                                      ));
+                                    },
+                                    child: const Text('Credit')),
+                                //!: Payment
+                                DropdownButtonFormField<payment.Data>(
+                                  value: _selectPayment,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectPayment = value;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  items: List.generate(
+                                    lsPayment.length,
+                                    (index) => DropdownMenuItem(
+                                      value: lsPayment[index],
+                                      child: SizedBox(
+                                        height: 90,
+                                        width: 260,
+                                        child: Row(
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl:
+                                                  '${ConnectDb.url}${lsPayment[index].image}',
+                                              height: 45,
+                                              placeholder: (context, url) =>
+                                                  const CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                            ),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(lsPayment[index].name!),
+                                          ],
                                         ),
-                                        const SizedBox(
-                                          width: 20,
-                                        ),
-                                        Text(lsPayment[index].name!),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                        ),
-                      ),
-                      // Ô nhập mã giảm giá
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Mã giảm giá',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            const SizedBox(height: 8),
-                            TextField(
-                              onChanged: (value) {
-                                setState(() {
-                                  _discountCode = value;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                hintText: 'Nhập mã giảm giá',
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Note
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Ghi chú',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            TextField(
-                              onChanged: (value) {
-                                setState(() {
-                                  _note = value;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                hintText: 'Nhập ghi chú',
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Phí ship
-                      Container(
-                        width: size.width,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Hình thức vận chuyển',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            const SizedBox(height: 8),
-                            DropdownButtonFormField<String>(
-                              value: _selectedShippingMethod,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedShippingMethod = value;
-                                });
-                              },
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                              ),
-                              items: const [
-                                DropdownMenuItem<String>(
-                                  value: 'Phương thức 1',
-                                  child: Text('Phương thức 1'),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'Phương thức 2',
-                                  child: Text('Phương thức 2'),
-                                ),
-                                // Add more shipping methods as needed
+                                const SizedBox(height: 8),
                               ],
                             ),
+                          ),
+                          // Ô nhập mã giảm giá
+                          Container(
+                            width: size.width,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Mã giảm giá',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                const SizedBox(height: 8),
+                                TextField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _discountCode = value;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                    hintText: 'Nhập mã giảm giá',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Note
+                          Container(
+                            width: size.width,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Ghi chú',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                TextField(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _note = value;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                    hintText: 'Nhập ghi chú',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Phí ship
+                          Container(
+                            width: size.width,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Hình thức vận chuyển',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                const SizedBox(height: 8),
+                                DropdownButtonFormField<String>(
+                                  value: _selectedShippingMethod,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedShippingMethod = value;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  items: const [
+                                    DropdownMenuItem<String>(
+                                      value: 'Phương thức 1',
+                                      child: Text('Phương thức 1'),
+                                    ),
+                                    DropdownMenuItem<String>(
+                                      value: 'Phương thức 2',
+                                      child: Text('Phương thức 2'),
+                                    ),
+                                    // Add more shipping methods as needed
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      child: SizedBox(
+                        height: size.height * .1,
+                        width: size.width,
+                        // color: Colors.green,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CusRichText(
+                              text: 'Tổng tiền : ',
+                              selectedAddress: formatCurrency(amount: '$total'),
+                            ),
+                            MyButton(
+                              width: 130,
+                              backgroundColor: Colors.red,
+                              onPressed: () async {
+                                // Create the JSON object
+                                final json = {
+                                  'name': _selectedAddress!.name,
+                                  'address':
+                                      '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
+                                  'idProvince': _selectedAddress!.idProvince,
+                                  'idDistrict': _selectedAddress!.idDistrict,
+                                  'idWard': _selectedAddress!.idWard,
+                                  'ship': 20000.0,
+                                  'date_order':
+                                      DateTime.now().toIso8601String(),
+                                  'delivery_date': DateTime.now()
+                                      .add(const Duration(days: 3))
+                                      .toIso8601String(),
+                                  'phone': _selectedAddress!.phoneNumber,
+                                  'sale': _discountCode,
+                                  'note': _note,
+                                  'paymentId': _selectPayment!.name,
+                                  'shipping': 0,
+                                  'order_details': widget.json,
+                                };
+
+                                // Convert the JSON object to a string
+                                final jsonString = jsonEncode(json);
+
+                                // Print the JSON string (for testing purposes)
+                                print('location data ${jsonString}');
+                                if (widget.isBuy) {
+                                  var res = await addOrder(jsonString);
+                                  if (res == 200) {
+                                    Message.success(
+                                      message: 'Thành Công',
+                                      context: context,
+                                    );
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                  } else {
+                                    Message.error(
+                                      message: 'Thất bại $res',
+                                      context: context,
+                                    );
+                                  }
+                                } else {
+                                  var res = await addOrder(jsonString);
+                                  if (res == 200) {
+                                    ApiCart.apiDeleteCarts(cartIds: cartId);
+                                    Message.success(
+                                      message: 'Thành Công',
+                                      context: context,
+                                    );
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                  } else {
+                                    Message.error(
+                                      message: 'Thất bại $res',
+                                      context: context,
+                                    );
+                                  }
+                                }
+                                // Perform further actions with the JSON string (e.g., send it to an API)
+                              },
+                              child: const Text(
+                                'Thanh toán',
+                                style: title1,
+                              ),
+                            )
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Positioned(
-                  bottom: 0,
-                  child: SizedBox(
-                    height: size.height * .1,
-                    width: size.width,
-                    // color: Colors.green,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CusRichText(
-                          text: 'Tổng tiền : ',
-                          selectedAddress: formatCurrency(amount: '$total'),
-                        ),
-                        MyButton(
-                          width: 130,
-                          backgroundColor: Colors.red,
-                          onPressed: () async {
-                            // Create the JSON object
-                            final json = {
-                              'name': _selectedAddress!.name,
-                              'address':
-                                  '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
-                              'idProvince': _selectedAddress!.idProvince,
-                              'idDistrict': _selectedAddress!.idDistrict,
-                              'idWard': _selectedAddress!.idWard,
-                              'ship': 20000.0,
-                              'date_order': DateTime.now().toIso8601String(),
-                              'delivery_date': DateTime.now()
-                                  .add(const Duration(days: 3))
-                                  .toIso8601String(),
-                              'phone': _selectedAddress!.phoneNumber,
-                              'sale': _discountCode,
-                              'note': _note,
-                              'paymentId': _selectPayment!.name,
-                              'shipping': 0,
-                              'order_details': widget.json,
-                            };
-
-                            // Convert the JSON object to a string
-                            final jsonString = jsonEncode(json);
-
-                            // Print the JSON string (for testing purposes)
-                            print('location data ${jsonString}');
-                            if (widget.isBuy) {
-                              var res = await addOrder(jsonString);
-                              if (res == 200) {
-                                Message.success(
-                                  message: 'Thành Công',
-                                  context: context,
-                                );
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                              } else {
-                                Message.error(
-                                  message: 'Thất bại $res',
-                                  context: context,
-                                );
-                              }
-                            } else {
-                              var res = await addOrder(jsonString);
-                              if (res == 200) {
-                                ApiCart.apiDeleteCarts(cartIds: cartId);
-                                Message.success(
-                                  message: 'Thành Công',
-                                  context: context,
-                                );
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                              } else {
-                                Message.error(
-                                  message: 'Thất bại $res',
-                                  context: context,
-                                );
-                              }
-                            }
-                            // Perform further actions with the JSON string (e.g., send it to an API)
-                          },
-                          child: const Text(
-                            'Thanh toán',
-                            style: title1,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -493,12 +520,21 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
 }
 
 class SelectAddress extends StatelessWidget {
-  const SelectAddress({
+  SelectAddress({
     super.key,
     required Address.Data? selectedAddress,
-  }) : _selectedAddress = selectedAddress;
+    Color? colorUser,
+    Color? colorText,
+    Color? titleColor,
+  })  : _selectedAddress = selectedAddress,
+        _colorUser = colorUser,
+        _colorText = colorText,
+        _titleColor = titleColor;
 
   final Address.Data? _selectedAddress;
+  Color? _colorUser;
+  Color? _colorText;
+  Color? _titleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -511,22 +547,29 @@ class SelectAddress extends StatelessWidget {
             children: [
               CusRichText(
                 text: "Người nhận : ",
+                titleColor: _titleColor,
                 selectedAddress: _selectedAddress!.name!,
-                color: Colors.blue,
+                color: _colorUser ?? Colors.blue,
               ),
               const SizedBox(
                 height: 8,
               ),
               CusRichText(
-                  text: "Số điện thoại : ",
-                  selectedAddress: _selectedAddress!.phoneNumber!),
+                text: "Số điện thoại : ",
+                titleColor: _titleColor,
+                selectedAddress: _selectedAddress!.phoneNumber!,
+                color: _colorText ?? Colors.black,
+              ),
               const SizedBox(
                 height: 8,
               ),
               CusRichText(
-                  text: "Địa chỉ : ",
-                  selectedAddress:
-                      '${_selectedAddress!.address!}, ${_selectedAddress!.ward!}, ${_selectedAddress!.district!}, ${_selectedAddress!.province!}.'),
+                text: "Địa chỉ : ",
+                titleColor: _titleColor,
+                selectedAddress:
+                    '${_selectedAddress!.address!}, ${_selectedAddress!.ward!}, ${_selectedAddress!.district!}, ${_selectedAddress!.province!}.',
+                color: _colorText ?? Colors.black,
+              ),
             ],
           ),
         ),

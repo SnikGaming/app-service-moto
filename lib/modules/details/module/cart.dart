@@ -85,8 +85,7 @@ class _CartState extends State<Cart> {
                     topRight: Radius.circular(20),
                   ),
                   child: Container(
-                    color: Colors.white,
-                    height: 250 + MediaQuery.of(context).viewInsets.bottom,
+                    height: 200 + MediaQuery.of(context).viewInsets.bottom,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 16),
@@ -105,7 +104,7 @@ class _CartState extends State<Cart> {
                               SizedBox(
                                 height: 45,
                                 width: 50,
-                                child: TextField(
+                                child: TextFormField(
                                   keyboardType: TextInputType.number,
                                   textAlign: TextAlign.center,
                                   decoration: const InputDecoration(
@@ -144,7 +143,7 @@ class _CartState extends State<Cart> {
                               style: styleH3,
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           // const SizedBox(height: 40),
                           SizedBox(
                             width: widget.size.width,
@@ -155,7 +154,7 @@ class _CartState extends State<Cart> {
                                   backgroundColor: Colors.white,
                                   borderColor: Colors.blue,
                                   icons: const Icon(Ionicons.cart),
-                                  width: widget.size.width * .6,
+                                  width: widget.size.width * .55,
                                   onPressed: () {
                                     check(false);
                                   },
@@ -163,6 +162,9 @@ class _CartState extends State<Cart> {
                                     'Thêm vào giỏ hàng',
                                     style: title1.copyWith(color: Colors.blue),
                                   ),
+                                ),
+                                const SizedBox(
+                                  width: 8,
                                 ),
                                 MyButton(
                                   backgroundColor: Colors.red,

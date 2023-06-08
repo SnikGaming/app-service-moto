@@ -2,18 +2,21 @@
 
 import 'package:flutter/material.dart';
 
-
 class CusRichText extends StatelessWidget {
   const CusRichText({
     super.key,
     required String selectedAddress,
     Color? color,
+    Color? titleColor,
     required String text,
   })  : _selectedAddress = selectedAddress,
         _text = text,
-        _color = color;
+        _color = color,
+        _titleColor = titleColor;
 
   final Color? _color;
+  final Color? _titleColor;
+
   final String _text;
   final String _selectedAddress;
 
@@ -24,7 +27,7 @@ class CusRichText extends StatelessWidget {
         text: _text,
         style: DefaultTextStyle.of(context)
             .style
-            .copyWith(fontWeight: FontWeight.bold),
+            .copyWith(fontWeight: FontWeight.bold, color: _titleColor),
         children: <TextSpan>[
           TextSpan(
             text: _selectedAddress,
