@@ -20,8 +20,7 @@ import 'modules/home/api/payment/api_payment.dart';
 
 Future<void> main(List<String> args) async {
   Stripe.publishableKey =
-      "pk_test_51MWx8OAVMyklfe3CsjEzA1CiiY0XBTlHYbZ8jQlGtVFIwQi4aNeGv8J1HUw4rgSavMTLzTwgn0XRlwoTVRFXyu2h00mRUeWmAf";
-
+      'pk_test_51NGFj9Kl8H5lkAhSTO7jGUiuz6bp4LETENvHSBEqRwm5zGNPKxDsunHj7v0CiUleIY8Fa4vg4fefV0ZfQqbqNktf00DLp5lLTX';
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

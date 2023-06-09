@@ -53,7 +53,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
           } else {
             final address = addresses[index];
             return ListTile(
-              tileColor: Color.fromRGBO(61, 54, 54, 0.473),
+              tileColor: Color.fromRGBO(102, 21, 207, 0.571),
               title: Text(
                 address.name!,
                 style: h1.copyWith(

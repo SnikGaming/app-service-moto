@@ -21,6 +21,7 @@ import '../convert/format_money.dart';
 import '../message/message.dart';
 import 'AddressListScreen .dart';
 import 'b.dart';
+import 'package:http/http.dart' as http;
 
 class AddressDisplayScreen extends StatefulWidget {
   final Address.Data? selectedAddress;
@@ -38,6 +39,101 @@ class AddressDisplayScreen extends StatefulWidget {
 
 class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   Address.Data? _selectedAddress;
+
+  Map<String, dynamic>? paymentIntern;
+
+  displayPaymentSheet() async {
+    try {
+      // Create the JSON object
+      final json = {
+        'name': _selectedAddress!.name,
+        'address':
+            '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
+        'idProvince': _selectedAddress!.idProvince,
+        'idDistrict': _selectedAddress!.idDistrict,
+        'idWard': _selectedAddress!.idWard,
+        'ship': 20000.0,
+        'date_order': DateTime.now().toIso8601String(),
+        'delivery_date':
+            DateTime.now().add(const Duration(days: 3)).toIso8601String(),
+        'phone': _selectedAddress!.phoneNumber,
+        'sale': _discountCode,
+        'note': _note,
+        'paymentId': _selectPayment!.name,
+        'shipping': 0,
+        'order_details': widget.json,
+      };
+
+      // Convert the JSON object to a string
+      final jsonString = jsonEncode(json);
+      await Stripe.instance.presentPaymentSheet().then(
+        (value) async {
+          var res = await addOrder(jsonString);
+          if (res == 200) {
+            Message.success(
+              message: 'Thành Công',
+              context: context,
+            );
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          } else {
+            Message.error(
+              message: 'Thất bại',
+              context: context,
+            );
+          }
+        },
+      );
+      print('done --> ');
+    } catch (e) {
+      print('abc--> faild $e');
+      throw Exception(e);
+    }
+  }
+
+  void makePayment() async {
+    try {
+      paymentIntern = await createPaymentIntern();
+
+      var gpay = const PaymentSheetGooglePay(
+        merchantCountryCode: "US",
+        currencyCode: "VND",
+        testEnv: true,
+      );
+
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: paymentIntern!["client_secret"],
+        style: ThemeMode.dark,
+        merchantDisplayName: "Sabir",
+        googlePay: gpay,
+      ));
+      displayPaymentSheet();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  createPaymentIntern() async {
+    try {
+      Map<String, dynamic> body = {
+        "amount": total.toString(),
+        "currency": "VND",
+      };
+
+      http.Response response = await http.post(
+          Uri.parse("https://api.stripe.com/v1/payment_intents"),
+          body: body,
+          headers: {
+            "Authorization":
+                "Bearer sk_test_51NGFj9Kl8H5lkAhSt9tOnFlXKvDnv3Jz2nFviGxq67oY9GeaVoVXiebA76nDAyj2gdKVSaYPyhgNHfHEZGI0SmbK00FBuWKQUf",
+            "Content-Type": "application/x-www-form-urlencoded",
+          });
+      return json.decode(response.body);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   late List<Address.Data> lsData = [];
   List<int> cartId = [];
   List<payment.Data> lsPayment = [];
@@ -205,28 +301,30 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) => PayPalMethod(),
-                                      ));
-                                    },
-                                    child: const Text('Paypal')),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (_) => MySample(),
-                                      ));
-                                    },
-                                    child: const Text('Credit')),
+                                // TextButton(
+                                //     onPressed: () {
+                                //       Navigator.of(context)
+                                //           .push(MaterialPageRoute(
+                                //         builder: (_) => PayPalMethod(),
+                                //       ));
+                                //     },
+                                //     child: const Text('Paypal')),
+                                // TextButton(
+                                //     onPressed: () {
+                                //       makePayment();
+                                //       // Navigator.of(context)
+                                //       //     .push(MaterialPageRoute(
+                                //       //   builder: (_) => MySample(),
+                                //       // ));
+                                //     },
+                                //     child: const Text('Credit')),
                                 //!: Payment
                                 DropdownButtonFormField<payment.Data>(
                                   value: _selectPayment,
                                   onChanged: (value) {
                                     setState(() {
                                       _selectPayment = value;
+                                      print('abc->> ${_selectPayment!.name!}');
                                     });
                                   },
                                   decoration: const InputDecoration(
@@ -409,19 +507,24 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                 // Print the JSON string (for testing purposes)
                                 print('location data ${jsonString}');
                                 if (widget.isBuy) {
-                                  var res = await addOrder(jsonString);
-                                  if (res == 200) {
-                                    Message.success(
-                                      message: 'Thành Công',
-                                      context: context,
-                                    );
-                                    Navigator.of(context)
-                                        .popUntil((route) => route.isFirst);
+                                  if (_selectPayment!.name != null &&
+                                      _selectPayment!.name == 'Momo') {
+                                    makePayment();
                                   } else {
-                                    Message.error(
-                                      message: 'Thất bại $res',
-                                      context: context,
-                                    );
+                                    var res = await addOrder(jsonString);
+                                    if (res == 200) {
+                                      Message.success(
+                                        message: 'Thành Công',
+                                        context: context,
+                                      );
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    } else {
+                                      Message.error(
+                                        message: 'Thất bại',
+                                        context: context,
+                                      );
+                                    }
                                   }
                                 } else {
                                   var res = await addOrder(jsonString);
