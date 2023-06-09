@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field, use_build_context_synchronously, non_constant_identifier_names, must_be_immutable
 import 'dart:convert';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/style/text_style.dart';
@@ -635,9 +635,9 @@ class SelectAddress extends StatelessWidget {
         _titleColor = titleColor;
 
   final Address.Data? _selectedAddress;
-  Color? _colorUser;
-  Color? _colorText;
-  Color? _titleColor;
+  final Color? _colorUser;
+  final Color? _colorText;
+  final Color? _titleColor;
 
   @override
   Widget build(BuildContext context) {
