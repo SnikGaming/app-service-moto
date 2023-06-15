@@ -40,31 +40,59 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   Address.Data? _selectedAddress;
 
   Map<String, dynamic>? paymentIntern;
+  String returnJson() {
+    final json = {
+      'name': _selectedAddress!.name,
+      'address':
+          '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
+      'idProvince': _selectedAddress!.idProvince,
+      'idDistrict': _selectedAddress!.idDistrict,
+      'idWard': _selectedAddress!.idWard,
+      'ship': 20000.0,
+      'date_order': DateTime.now().toIso8601String(),
+      'delivery_date':
+          DateTime.now().add(const Duration(days: 3)).toIso8601String(),
+      'phone': _selectedAddress!.phoneNumber,
+      'sale': _discountCode,
+      'note': _note,
+      'paymentId': _selectPayment!.name,
+      'shipping': 0,
+      'order_details': widget.json,
+    };
+
+    // Convert the JSON object to a string
+    final jsonString = jsonEncode(json);
+
+    // Print the JSON string (for testing purposes)
+    print('location data ${jsonString}');
+    return jsonString;
+  }
 
   displayPaymentSheet() async {
     try {
-      // Create the JSON object
-      final json = {
-        'name': _selectedAddress!.name,
-        'address':
-            '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
-        'idProvince': _selectedAddress!.idProvince,
-        'idDistrict': _selectedAddress!.idDistrict,
-        'idWard': _selectedAddress!.idWard,
-        'ship': 20000.0,
-        'date_order': DateTime.now().toIso8601String(),
-        'delivery_date':
-            DateTime.now().add(const Duration(days: 3)).toIso8601String(),
-        'phone': _selectedAddress!.phoneNumber,
-        'sale': _discountCode,
-        'note': _note,
-        'paymentId': _selectPayment!.name,
-        'shipping': 0,
-        'order_details': widget.json,
-      };
+      // // Create the JSON object
+      // final json = {
+      //   'name': _selectedAddress!.name,
+      //   'address':
+      //       '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
+      //   'idProvince': _selectedAddress!.idProvince,
+      //   'idDistrict': _selectedAddress!.idDistrict,
+      //   'idWard': _selectedAddress!.idWard,
+      //   'ship': 20000.0,
+      //   'date_order': DateTime.now().toIso8601String(),
+      //   'delivery_date':
+      //       DateTime.now().add(const Duration(days: 3)).toIso8601String(),
+      //   'phone': _selectedAddress!.phoneNumber,
+      //   'sale': _discountCode,
+      //   'note': _note,
+      //   'paymentId': _selectPayment!.name,
+      //   'shipping': 0,
+      //   'order_details': widget.json,
+      // };
 
-      // Convert the JSON object to a string
-      final jsonString = jsonEncode(json);
+      // // Convert the JSON object to a string
+      // final jsonString = jsonEncode(json);
+      String jsonString = returnJson();
       await Stripe.instance.presentPaymentSheet().then(
         (value) async {
           var res = await addOrder(jsonString);
@@ -478,36 +506,10 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                               width: 130,
                               backgroundColor: Colors.red,
                               onPressed: () async {
-                                // Create the JSON object
-                                final json = {
-                                  'name': _selectedAddress!.name,
-                                  'address':
-                                      '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
-                                  'idProvince': _selectedAddress!.idProvince,
-                                  'idDistrict': _selectedAddress!.idDistrict,
-                                  'idWard': _selectedAddress!.idWard,
-                                  'ship': 20000.0,
-                                  'date_order':
-                                      DateTime.now().toIso8601String(),
-                                  'delivery_date': DateTime.now()
-                                      .add(const Duration(days: 3))
-                                      .toIso8601String(),
-                                  'phone': _selectedAddress!.phoneNumber,
-                                  'sale': _discountCode,
-                                  'note': _note,
-                                  'paymentId': _selectPayment!.name,
-                                  'shipping': 0,
-                                  'order_details': widget.json,
-                                };
-
-                                // Convert the JSON object to a string
-                                final jsonString = jsonEncode(json);
-
-                                // Print the JSON string (for testing purposes)
-                                print('location data ${jsonString}');
+                                String jsonString = returnJson();
                                 if (widget.isBuy) {
                                   if (_selectPayment!.name != null &&
-                                      _selectPayment!.name == 'Momo') {
+                                      _selectPayment!.name == 'Stripe') {
                                     makePayment();
                                   } else {
                                     var res = await addOrder(jsonString);
