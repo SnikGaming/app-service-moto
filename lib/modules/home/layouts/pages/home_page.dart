@@ -22,6 +22,7 @@ import '../../../../components/functions/logout.dart';
 import '../../../../components/search/search.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
+import '../../../../components/value_app.dart';
 import '../../../../network/api/google/google.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/product/product.dart';
@@ -741,8 +742,12 @@ class ItemProduct extends StatelessWidget {
                             padding: const EdgeInsetsDirectional.all(4),
                             color: Colors.black,
                             child: Text(
-                                formatCurrency(
-                                    amount: '${productData[index].price}'),
+                                productData[index].number! > 0
+                                    ? formatCurrency(
+                                        amount: '${productData[index].price}')
+                                    : productData[index].like! > 0
+                                        ? outOfStock
+                                        : notProduct,
                                 style: MyTextStyle.normal.copyWith(
                                   color: Colors.yellow,
                                   fontSize: 14,

@@ -7,9 +7,11 @@ import 'package:app/components/zoom/image.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import '../../../components/convert/calculate_time.dart';
 import '../../../components/convert/format_money.dart';
+import '../../../components/value_app.dart';
 import '../../../constants/style.dart';
 import '../../../network/connect.dart';
 import '../../home/api/products/models/products.dart' as products;
@@ -94,7 +96,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
       initialRating: 1.0,
       // your app's name?
       title: const Text(
-        'Rating Dialog',
+        productReviews,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 25,
@@ -103,14 +105,17 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
       ),
       // encourage your user to leave a high rating?
       message: const Text(
-        'Tap a star to set your rating. Add more description here if you want.',
+        txtRateReview,
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 15),
       ),
       // your app's logo?
-      image: const FlutterLogo(size: 100),
-      submitButtonText: 'Submit',
-      commentHint: 'Set your custom comment hint',
+      image: Image.asset(
+        txtLogon,
+        height: 100,
+      ), // const FlutterLogo(size: 100),
+      submitButtonText: txtSend,
+      commentHint: txtReviewProduct,
       onCancelled: () => print('submit cancelled'),
       onSubmitted: (response) async {
         print(
@@ -120,10 +125,9 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
             submitRatingAndComment(response.rating, response.comment);
         int res = await sendReview(jsonData);
         if (res == 201) {
-          Message.success(
-              message: 'Cảm ơn đã đánh giá sản phẩm >_< ', context: context);
+          Message.success(message: successfulProductReview, context: context);
         } else {
-          Message.error(message: 'Đã có vấn đề gì đó', context: context);
+          Message.error(message: errorProductReview, context: context);
         }
         // TODO: add your own logic
         if (response.rating < 3.0) {
@@ -155,7 +159,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
             width: size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/loading.gif'),
+                image: AssetImage(loadingImage),
               ),
             ),
           ))
@@ -164,7 +168,8 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
               title: Text('Purchase ${data!.name}'),
               backgroundColor: const Color.fromARGB(255, 113, 66, 223),
             ),
-            floatingActionButton: Cart(data: data!, size: size),
+            floatingActionButton:
+                data!.number! > 0 ? Cart(data: data!, size: size) : null,
             body: Container(
               color: const Color(0xffF0F0F0),
               height: MediaQuery.of(context).size.height,
@@ -231,18 +236,15 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                               ),
                                             ),
                                             const SizedBox(
-                                              height: 10,
+                                              height: 16,
                                             ),
-                                            SizedBox(
-                                              width: size.width,
-                                              child: Text(
-                                                'Số lượng ${data!.number}',
-                                                style: styleH3,
-                                                softWrap: true,
-                                              ),
+                                            Text(
+                                              'Số lượng : ${data!.number}',
+                                              style: styleTitle.copyWith(
+                                                  color: Colors.grey),
                                             ),
                                             const SizedBox(
-                                              height: 10,
+                                              height: 16,
                                             ),
                                             Container(
                                               width: 160,
@@ -255,7 +257,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                               ),
                                             ),
                                             const SizedBox(
-                                              height: 10,
+                                              height: 16,
                                             ),
                                             Container(
                                               padding: const EdgeInsets.all(12),
@@ -265,19 +267,20 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                                     BorderRadius.circular(18),
                                               ),
                                               child: Text(
-                                                formatCurrency(
-                                                    amount: '${data!.price}'),
+                                                data!.number! > 0
+                                                    ? formatCurrency(
+                                                        amount:
+                                                            '${data!.price}')
+                                                    : data!.like! > 0
+                                                        ? outOfStock
+                                                        : notProduct,
                                                 style: styleH3.copyWith(
-                                                    color: Colors.red),
+                                                  color: Colors.red,
+                                                ),
                                               ),
                                             ),
                                             const SizedBox(
                                               height: 10,
-                                            ),
-                                            Text(
-                                              'Số lượng : ${data!.number}',
-                                              style: styleTitle.copyWith(
-                                                  color: Colors.grey),
                                             ),
                                           ],
                                         ),
@@ -306,17 +309,6 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                             '${ConnectDb.url}${data!.image}'),
                                         child: Image.network(
                                             '${ConnectDb.url}${data!.image}'),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 10,
-                                      top: 10,
-                                      child: IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        ),
                                       ),
                                     ),
                                   ],
@@ -368,20 +360,20 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                           Row(
                             children: [
                               Text(
-                                'Số lượt yêu thích : ',
+                                'Đã bán : ',
                                 style: styleNormal.copyWith(color: Colors.grey),
                               ),
                               Text(
                                 '${data!.like}',
                                 style: styleNormal.copyWith(
-                                  color: Colors.red,
+                                  color: Colors.blue,
                                   fontSize: 18,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
+                                Ionicons.cart_outline,
+                                color: Colors.blue,
                               ),
                             ],
                           ),

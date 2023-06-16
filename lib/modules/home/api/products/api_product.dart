@@ -7,13 +7,13 @@ import 'models/products.dart';
 
 class APIProduct {
   static List<Data> apiProducts = [];
-  static Future<List<Data>> getData({
-    int? category_id,
-    int page = 1,
-    String search = '',
-    int min_price = 0,
-    int max_price = 999999999,
-  }) async {
+  static Future<List<Data>> getData(
+      {int? category_id,
+      int page = 1,
+      String search = '',
+      int min_price = 0,
+      int max_price = 999999999,
+      int tag = 2}) async {
     try {
       final response =
           await ApiBase.get(path: '/api/products/', queryParameters: {
@@ -22,6 +22,7 @@ class APIProduct {
         "search": search,
         "min_price": min_price,
         "max_price": max_price,
+        "tag": tag
       });
       final jsonData = response.data;
       final List<dynamic> projectListJson = jsonData['data'];

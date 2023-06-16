@@ -55,7 +55,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
       'phone': _selectedAddress!.phoneNumber,
       'sale': _discountCode,
       'note': _note,
-      'paymentId': _selectPayment!.name,
+      'paymentId': _selectPayment!.id,
       'shipping': 0,
       'order_details': widget.json,
     };
@@ -70,28 +70,6 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
 
   displayPaymentSheet() async {
     try {
-      // // Create the JSON object
-      // final json = {
-      //   'name': _selectedAddress!.name,
-      //   'address':
-      //       '${_selectedAddress!.address}, ${_selectedAddress!.ward}, ${_selectedAddress!.district}, ${_selectedAddress!.province}',
-      //   'idProvince': _selectedAddress!.idProvince,
-      //   'idDistrict': _selectedAddress!.idDistrict,
-      //   'idWard': _selectedAddress!.idWard,
-      //   'ship': 20000.0,
-      //   'date_order': DateTime.now().toIso8601String(),
-      //   'delivery_date':
-      //       DateTime.now().add(const Duration(days: 3)).toIso8601String(),
-      //   'phone': _selectedAddress!.phoneNumber,
-      //   'sale': _discountCode,
-      //   'note': _note,
-      //   'paymentId': _selectPayment!.name,
-      //   'shipping': 0,
-      //   'order_details': widget.json,
-      // };
-
-      // // Convert the JSON object to a string
-      // final jsonString = jsonEncode(json);
       String jsonString = returnJson();
       await Stripe.instance.presentPaymentSheet().then(
         (value) async {
@@ -170,15 +148,17 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   String? _discountCode;
   int total = 0;
   String? _note; // New note field
-
+  ShipCode? _ship;
   Future<int> addOrder(String jsonData) async {
     int res = await APIOrder.addOrder(json: jsonData);
     return res;
   }
 
   loadData() async {
+    _ship = ShipCode.lsShipCode[0];
     await APIPaymentMethod.fetchPayment();
     lsPayment = APIPaymentMethod.lsData;
+    _selectPayment = lsPayment[0];
     _selectedAddress = widget.selectedAddress;
     if (widget.isBuy) {
       List<List<dynamic>> convertedList = widget.json.map((item) {
@@ -461,27 +441,23 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                       fontSize: 16),
                                 ),
                                 const SizedBox(height: 8),
-                                DropdownButtonFormField<String>(
-                                  value: _selectedShippingMethod,
+                                DropdownButtonFormField<ShipCode>(
                                   onChanged: (value) {
                                     setState(() {
-                                      _selectedShippingMethod = value;
+                                      _ship = value;
                                     });
                                   },
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem<String>(
-                                      value: 'Phương thức 1',
-                                      child: Text('Phương thức 1'),
-                                    ),
-                                    DropdownMenuItem<String>(
-                                      value: 'Phương thức 2',
-                                      child: Text('Phương thức 2'),
-                                    ),
-                                    // Add more shipping methods as needed
-                                  ],
+                                  value: _ship,
+                                  items: List.generate(
+                                      ShipCode.lsShipCode.length,
+                                      (index) => DropdownMenuItem(
+                                            value: ShipCode.lsShipCode[index],
+                                            child: Container(
+                                              child: Text(
+                                                '${ShipCode.lsShipCode[index].name} - ${formatCurrency(amount: ' ${ShipCode.lsShipCode[index].price}')}',
+                                              ),
+                                            ),
+                                          )),
                                 ),
                               ],
                             ),
@@ -506,14 +482,32 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                               width: 130,
                               backgroundColor: Colors.red,
                               onPressed: () async {
-                                String jsonString = returnJson();
-                                if (widget.isBuy) {
-                                  if (_selectPayment!.name != null &&
-                                      _selectPayment!.name == 'Stripe') {
-                                    makePayment();
+                                if (_selectedAddress != null) {
+                                  String jsonString = returnJson();
+                                  if (widget.isBuy) {
+                                    if (_selectPayment!.name != null &&
+                                        _selectPayment!.name == 'Stripe') {
+                                      makePayment();
+                                    } else {
+                                      var res = await addOrder(jsonString);
+                                      if (res == 200) {
+                                        Message.success(
+                                          message: 'Thành Công',
+                                          context: context,
+                                        );
+                                        Navigator.of(context)
+                                            .popUntil((route) => route.isFirst);
+                                      } else {
+                                        Message.error(
+                                          message: 'Thất bại',
+                                          context: context,
+                                        );
+                                      }
+                                    }
                                   } else {
                                     var res = await addOrder(jsonString);
                                     if (res == 200) {
+                                      ApiCart.apiDeleteCarts(cartIds: cartId);
                                       Message.success(
                                         message: 'Thành Công',
                                         context: context,
@@ -522,27 +516,15 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                           .popUntil((route) => route.isFirst);
                                     } else {
                                       Message.error(
-                                        message: 'Thất bại',
+                                        message: 'Thất bại $res',
                                         context: context,
                                       );
                                     }
                                   }
                                 } else {
-                                  var res = await addOrder(jsonString);
-                                  if (res == 200) {
-                                    ApiCart.apiDeleteCarts(cartIds: cartId);
-                                    Message.success(
-                                      message: 'Thành Công',
-                                      context: context,
-                                    );
-                                    Navigator.of(context)
-                                        .popUntil((route) => route.isFirst);
-                                  } else {
-                                    Message.error(
-                                      message: 'Thất bại $res',
-                                      context: context,
-                                    );
-                                  }
+                                  Message.warning(
+                                      message: 'Thieu thong tin',
+                                      context: context);
                                 }
                                 // Perform further actions with the JSON string (e.g., send it to an API)
                               },
@@ -600,7 +582,6 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                 "currency": "USD"
               }
             ],
-
             //   // shipping address is not required though
             //   // "shipping_address": {
             //   //   "recipient_name": "Jane Foster",
@@ -684,4 +665,14 @@ class SelectAddress extends StatelessWidget {
       ],
     );
   }
+}
+
+class ShipCode {
+  String name;
+  String price;
+  ShipCode({required this.name, required this.price});
+  static List<ShipCode> lsShipCode = [
+    ShipCode(name: 'Thanh toán 1', price: '20000'),
+    ShipCode(name: 'Thanh toán 2', price: '45000'),
+  ];
 }
