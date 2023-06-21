@@ -66,52 +66,54 @@ class _FlashScreenState extends State<FlashScreen>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SafeArea(
-        child: Scaffold(
-            backgroundColor: black,
-            body: SizedBox(
-              height: size.height,
-              width: size.width,
-              child: Stack(
+      child: Scaffold(
+        backgroundColor: black,
+        body: SizedBox(
+          height: size.height,
+          width: size.width,
+          child: Stack(
+            children: [
+              Lottie.asset('assets/flashscreen/routine.json',
+                  repeat: false, height: size.height),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Lottie.asset('assets/flashscreen/routine.json',
-                      repeat: false, height: size.height),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      Lottie.asset('assets/banners/7n69eEGbIn.json',
-                          controller: _controller, onLoaded: (onload) {
-                        _controller
-                          ..duration = onload.duration
-                          ..forward();
-                      }),
-                      const SizedBox(
-                        height: 16,
+                  const Spacer(),
+                  Lottie.asset('assets/banners/7n69eEGbIn.json',
+                      controller: _controller, onLoaded: (onload) {
+                    _controller
+                      ..duration = onload.duration
+                      ..forward();
+                  }),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  SpinKitFadingCircle(
+                      itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: index.isEven ? Colors.red : Colors.green,
                       ),
-                      SpinKitFadingCircle(
-                          itemBuilder: (BuildContext context, int index) {
-                        return DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: index.isEven ? Colors.red : Colors.green,
-                          ),
-                        );
-                      }),
-                      const Spacer(),
-                      const Text(
-                        'By development',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 2,
-                            fontSize: 16),
-                      ),
-                      const SizedBox(
-                        height: 46,
-                      ),
-                    ],
+                    );
+                  }),
+                  const Spacer(),
+                  const Text(
+                    'By development',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 2,
+                        fontSize: 16),
+                  ),
+                  const SizedBox(
+                    height: 46,
                   ),
                 ],
               ),
-            )));
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -306,13 +306,13 @@ class _ProFilePageState extends State<ProFilePage> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 5),
                           child: Container(
-                            height: 200,
+                            height: data.status == 3 ? 180 : 200,
                             width: size.width,
                             decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 225, 221, 221),
+                                color: const Color.fromARGB(255, 255, 255, 255),
                                 boxShadow: const [
                                   BoxShadow(
-                                    color: Colors.grey,
+                                    color: Color.fromARGB(255, 213, 205, 205),
                                     offset: Offset(5, 9),
                                     blurRadius: 5,
                                   )
@@ -331,7 +331,9 @@ class _ProFilePageState extends State<ProFilePage> {
                                   ),
                                   CusRichText(
                                       selectedAddress: formatCurrency(
-                                          amount: data.totalPrice.toString()),
+                                        amount: data.totalPrice.toString(),
+                                      ),
+                                      color: Colors.red,
                                       text: 'Giá : '),
                                   const SizedBox(
                                     height: 10,
@@ -347,46 +349,52 @@ class _ProFilePageState extends State<ProFilePage> {
                                               height: 10,
                                             ),
                                             CusRichText(
-                                                selectedAddress:
-                                                    "Đã thanh toán",
-                                                text: 'Đơn hàng : '),
+                                              selectedAddress: "Đã thanh toán",
+                                              text: 'Đơn hàng : ',
+                                              color: Colors.green,
+                                            ),
                                           ],
                                         ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   CusRichText(
-                                      selectedAddress: data.status == 3
-                                          ? "Đang giao, bạn vui lòng chuẩn bị tiền."
-                                          : "Đang xử lý",
-                                      text: 'Trạng thái : '),
+                                    selectedAddress: data.status == 3
+                                        ? "Đang giao, bạn vui lòng chuẩn bị tiền."
+                                        : "Đang xử lý",
+                                    text: 'Trạng thái : ',
+                                    color: Colors.blue,
+                                  ),
                                   const Spacer(),
-                                  SizedBox(
-                                    width: size.width,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(),
-                                        InkWell(
-                                          onTap: () {},
-                                          child: Container(
-                                            height: 30,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              color: const Color.fromARGB(
-                                                  255, 255, 255, 255),
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                            child: const Center(
-                                              child: Text('Hủy'),
-                                            ),
+                                  data.status == 3
+                                      ? Container()
+                                      : SizedBox(
+                                          width: size.width,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(),
+                                              InkWell(
+                                                onTap: () {},
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                    color: const Color.fromARGB(
+                                                        255, 195, 183, 183),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                  ),
+                                                  child: const Center(
+                                                    child: Text('Hủy'),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                        )
                                 ],
                               ),
                             ),

@@ -21,9 +21,12 @@ const txtReviewProduct = 'Hãy nói gì đó về sản phẩm.';
 const txtSend = 'Gửi';
 const txtAdressList = 'Địa chỉ';
 const txtAddAddress = 'Thêm địa chỉ';
-
+const txtCart = 'Giỏ hàng';
+const txtSelectAll = 'Chọn tất cả';
+const txtThanhToan = 'THANH TOÁN';
 //!: Image
 const loadingImage = 'assets/images/loading.gif';
 const txtLogon = 'assets/logo/logo.jpg';
 const imageBooking = 'assets/images/bgbooking.png';
 const imageBooking_abc = 'assets/images/bg_booking.png';
+const imageNodata = 'assets/images/notdata.gif';

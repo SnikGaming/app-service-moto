@@ -10,6 +10,7 @@ import '../../../../components/button/mybutton.dart';
 import '../../../../components/districts/AddressDisplayScreen .dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../components/style/textstyle.dart';
+import '../../../../components/value_app.dart';
 import '../../../../functions/check_true_false_list.dart';
 import '../../../../network/connect.dart';
 import '../../../app_constants.dart';
@@ -356,7 +357,7 @@ class _CartScreenState extends State<CartScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'CART',
+            txtCart,
             style: MyTextStyle.title,
           ),
           centerTitle: true,
@@ -368,13 +369,13 @@ class _CartScreenState extends State<CartScreen> {
           child: isLoad == false
               ? const Center(child: CircularProgressIndicator())
               : data.isEmpty
-                  ? Image.asset('assets/images/notdata.gif')
+                  ? Image.asset(imageNodata)
                   // build2(context)
                   //!: Hiển thị sản phẩm
                   : Stack(
                       children: [
                         SizedBox(
-                          height: size.height * 0.68,
+                          height: size.height * 0.64,
                           child: ListView.builder(
                             itemCount: data.length,
                             itemBuilder: (context, i) {
@@ -392,7 +393,7 @@ class _CartScreenState extends State<CartScreen> {
                           child: SizedBox(
                             // color: Colors.red,
                             width: size.width,
-                            height: size.height * 0.12,
+                            height: size.height * 0.16,
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
@@ -406,7 +407,7 @@ class _CartScreenState extends State<CartScreen> {
                                           selectAllItems(value!);
                                         },
                                       ),
-                                      const Text('Chọn tất cả'),
+                                      const Text(txtSelectAll),
                                     ],
                                   ),
                                   Row(
@@ -440,7 +441,10 @@ class _CartScreenState extends State<CartScreen> {
                                                 isBuy: false,
                                                 json: json,
                                               ),
-                                            ).then((value) => loadData());
+                                            ).then((value) {
+                                              selectAll = false;
+                                              loadData();
+                                            });
                                             // await APIOrder.addOrder(json: json);
                                             // Modular.to
                                             //     .pushNamed(Routes.order,
@@ -448,7 +452,7 @@ class _CartScreenState extends State<CartScreen> {
                                             //     .then((value) => loadData());
                                           },
                                           child: Text(
-                                            'THANH TOÁN',
+                                           txtThanhToan,
                                             style: title2.copyWith(
                                                 color: Colors.white),
                                           ),
