@@ -339,6 +339,19 @@ class _ProFilePageState extends State<ProFilePage> {
                                   CusRichText(
                                       selectedAddress: data.address.toString(),
                                       text: 'Địa chỉ : '),
+                                  data.payment == 1
+                                      ? Container()
+                                      : const Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            CusRichText(
+                                                selectedAddress:
+                                                    "Đã thanh toán",
+                                                text: 'Đơn hàng : '),
+                                          ],
+                                        ),
                                   const SizedBox(
                                     height: 10,
                                   ),

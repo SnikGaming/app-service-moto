@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field, use_build_context_synchronously, non_constant_identifier_names, must_be_immutable
+// ignore_for_file: library_private_types_in_public_api, library_prefixes, file_names, unused_field, use_build_context_synchronously, non_constant_identifier_names, must_be_immutable, equal_keys_in_map
 import 'dart:convert';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/style/text_style.dart';
@@ -11,7 +11,6 @@ import 'package:ionicons/ionicons.dart';
 import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
 import '../../modules/home/api/cart/api_cart.dart';
-import '../../modules/home/api/category/api_category.dart';
 import '../../modules/home/api/order/api_order.dart';
 import '../../modules/home/api/payment/payment_model.dart' as payment;
 import '../../network/connect.dart';
@@ -19,7 +18,6 @@ import '../CusRichText/CusRichText.dart';
 import '../convert/format_money.dart';
 import '../message/message.dart';
 import 'AddressListScreen .dart';
-import 'b.dart';
 import 'package:http/http.dart' as http;
 
 class AddressDisplayScreen extends StatefulWidget {

@@ -49,7 +49,7 @@ class Data {
   int? totalPrice;
   String? address;
   String? name;
-  String? payment;
+  int? payment;
 
   String? note;
   int? ship;
@@ -108,7 +108,7 @@ class Data {
     data['name'] = name;
     data['note'] = note;
     data['ship'] = ship;
-    data['payment'] = payment;
+    data['payment'] = this.payment;
     data['booking_date'] = bookingDate;
     data['delivery date'] = deliveryDate;
     data['created_at'] = createdAt;
