@@ -49,6 +49,8 @@ class Data {
   int? totalPrice;
   String? address;
   String? name;
+  String? payment;
+
   String? note;
   int? ship;
   String? bookingDate;
@@ -66,6 +68,7 @@ class Data {
       this.name,
       this.note,
       this.ship,
+      this.payment,
       this.bookingDate,
       this.deliveryDate,
       this.createdAt,
@@ -77,6 +80,8 @@ class Data {
     userId = json['user_id'];
     status = json['status'];
     totalPrice = json['total_price'];
+    payment = json['payment'];
+
     address = json['address'];
     name = json['name'];
     note = json['note'];
@@ -103,6 +108,7 @@ class Data {
     data['name'] = name;
     data['note'] = note;
     data['ship'] = ship;
+    data['payment'] = payment;
     data['booking_date'] = bookingDate;
     data['delivery date'] = deliveryDate;
     data['created_at'] = createdAt;
