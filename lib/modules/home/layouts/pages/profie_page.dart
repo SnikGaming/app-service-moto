@@ -8,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:ionicons/ionicons.dart';
+import '../../../../components/button/mybutton.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/districts/a.dart';
 import '../../../../components/style/text_style.dart';
@@ -64,7 +65,7 @@ class _ProFilePageState extends State<ProFilePage> {
   void makePayment() async {
     try {
       paymentIntent = await createPaymentIntent();
-      var gpay = PaymentSheetGooglePay(
+      var gpay = const PaymentSheetGooglePay(
           merchantCountryCode: 'US', currencyCode: "US", testEnv: true);
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -305,7 +306,7 @@ class _ProFilePageState extends State<ProFilePage> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 5),
                           child: Container(
-                            height: 130,
+                            height: 180,
                             width: size.width,
                             decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 225, 221, 221),
@@ -325,18 +326,54 @@ class _ProFilePageState extends State<ProFilePage> {
                                   CusRichText(
                                       selectedAddress: data.name.toString(),
                                       text: 'Tên người nhận : '),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
                                   CusRichText(
                                       selectedAddress: formatCurrency(
                                           amount: data.totalPrice.toString()),
                                       text: 'Giá : '),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
                                   CusRichText(
                                       selectedAddress: data.address.toString(),
                                       text: 'Địa chỉ : '),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
                                   CusRichText(
                                       selectedAddress: data.status == 3
                                           ? "Đang giao, bạn vui lòng chuẩn bị tiền."
                                           : "Đang xử lý",
                                       text: 'Trạng thái : '),
+                                  const Spacer(),
+                                  SizedBox(
+                                    width: size.width,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(),
+                                        InkWell(
+                                          onTap: () {},
+                                          child: Container(
+                                            height: 30,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              color: const Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            child: const Center(
+                                              child: Text('Hủy'),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
