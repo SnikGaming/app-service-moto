@@ -56,8 +56,9 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
       'sale': _discountCode,
       'note': _note,
       'paymentId': _selectPayment!.id,
-      'shipping': 0,
+      'ship': _ship!.price,
       'order_details': widget.json,
+      'payment': _selectPayment!.id
     };
 
     // Convert the JSON object to a string

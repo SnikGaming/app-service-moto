@@ -306,7 +306,7 @@ class _ProFilePageState extends State<ProFilePage> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 5),
                           child: Container(
-                            height: 180,
+                            height: 200,
                             width: size.width,
                             decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 225, 221, 221),
@@ -359,7 +359,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                           onTap: () {},
                                           child: Container(
                                             height: 30,
-                                            width: 120,
+                                            width: 100,
                                             decoration: BoxDecoration(
                                               color: const Color.fromARGB(
                                                   255, 255, 255, 255),
