@@ -24,6 +24,9 @@ const txtAddAddress = 'Thêm địa chỉ';
 const txtCart = 'Giỏ hàng';
 const txtSelectAll = 'Chọn tất cả';
 const txtThanhToan = 'THANH TOÁN';
+const txtHome = 'Trang chủ';
+const txtBooking = 'Đặt lịch';
+const txtOrder = 'Đơn hàng';
 //!: Image
 const loadingImage = 'assets/images/loading.gif';
 const txtLogon = 'assets/logo/logo.jpg';

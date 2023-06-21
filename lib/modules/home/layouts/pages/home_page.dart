@@ -37,6 +37,8 @@ import '../../api/login/model.dart' as users;
 import '../common/skeleton_home.dart';
 import 'package:ionicons/ionicons.dart';
 
+import 'chat_screen.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -157,6 +159,21 @@ class _HomePageState extends State<HomePage>
     username = UserPrefer.getsetUserName() ?? 'GUEST';
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                child: ChatScreen(),
+              );
+            },
+          );
+        },
+        child: const Icon(Ionicons.chatbox_ellipses_outline),
+      ),
       backgroundColor:
           SettingPrefer.getLightDark() == null || SettingPrefer.getLightDark()
               ? white

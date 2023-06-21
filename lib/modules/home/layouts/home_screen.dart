@@ -7,6 +7,7 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/calendar/pages/calendar_page.dart';
+import '../../../components/value_app.dart';
 import '../../../constants/colors.dart';
 import '../../../functions/onWillPop.dart';
 
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       activeColor: Colors.green,
                       icon: const Icon(Icons.home),
                       title: const Text(
-                        'HOME',
+                        txtHome,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -82,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       activeColor: Colors.green,
                       icon: const Icon(Icons.calendar_month_sharp),
                       title: const Text(
-                        'Booking',
+                        txtBooking,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -91,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       activeColor: Colors.green,
                       icon: const Icon(Icons.shopping_bag_sharp),
                       title: const Text(
-                        'Profile',
+                        txtCart,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -100,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       activeColor: Colors.green,
                       icon: const Icon(Icons.settings),
                       title: const Text(
-                        'Profile',
+                        txtOrder,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
