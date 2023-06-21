@@ -1,8 +1,10 @@
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, null_check_always_fails, unused_local_variable
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, null_check_always_fails, unused_local_variable, unused_element
 
 import 'dart:convert';
 
+import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/message/message.dart';
+import 'package:app/components/style/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:app/modules/home/api/location/model.dart';
 
@@ -95,9 +97,10 @@ class _LocationDropdownState extends State<LocationDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
+      height: size.height,
+      width: size.width,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +125,7 @@ class _LocationDropdownState extends State<LocationDropdown> {
             // Data Dropdown
             DropdownButton<Data>(
               value: selectedData,
-              hint: const Text('Select Data'),
+              hint: const Text('Tỉnh/ Thành phố'),
               onChanged: (Data? newValue) {
                 setState(() {
                   selectedData = newValue;
@@ -147,7 +150,7 @@ class _LocationDropdownState extends State<LocationDropdown> {
             // District Dropdown
             DropdownButton<Districts>(
               value: selectedDistrict,
-              hint: const Text('Select District'),
+              hint: const Text('Quận/ Huyện'),
               onChanged: (Districts? newValue) {
                 setState(() {
                   selectedDistrict = newValue;
@@ -171,7 +174,7 @@ class _LocationDropdownState extends State<LocationDropdown> {
             // Ward Dropdown
             DropdownButton<Wards>(
               value: selectedWard,
-              hint: const Text('Select Ward'),
+              hint: const Text('Phường/ Xã'),
               onChanged: (Wards? newValue) {
                 setState(() {
                   selectedWard = newValue;
@@ -196,14 +199,17 @@ class _LocationDropdownState extends State<LocationDropdown> {
             ),
             const SizedBox(height: 16),
 
-            // Submit Button
-            TextButton(
+            MyButton(
               onPressed: _handleSubmit,
-              child: const Text('Submit'),
+              backgroundColor: Colors.red,
+              child: Text(
+                'Lưu',
+                style: h2.copyWith(fontSize: 16),
+              ),
             ),
             const SizedBox(height: 16),
             // Selected Info
-            _buildSelectedInfo(),
+            // _buildSelectedInfo(),
             Padding(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom * .6,

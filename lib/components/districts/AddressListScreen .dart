@@ -5,6 +5,7 @@ import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
 import '../../modules/home/api/location/api_location.dart';
 import '../../modules/home/layouts/pages/services_page.dart';
+import '../value_app.dart';
 import 'location_db.dart';
 
 class AddressListScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 129, 67, 230),
-        title: const Text('Address List'),
+        title: const Text(txtAdressList),
       ),
       body: ListView.builder(
         itemCount: addresses.length + 1, // +1 for the "Add Address" button
@@ -43,7 +44,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
           if (index == addresses.length) {
             // Last item, display the "Add Address" button
             return ListTile(
-              title: const Text('Add Address'),
+              title: const Text(txtAddAddress),
               leading: const Icon(Icons.add),
               onTap: () {
                 addressLocation(context: context).then((value) => loadData());
@@ -53,7 +54,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
           } else {
             final address = addresses[index];
             return ListTile(
-              tileColor: Color.fromRGBO(102, 21, 207, 0.571),
+              tileColor: const Color.fromRGBO(102, 21, 207, 0.571),
               title: Text(
                 address.name!,
                 style: h1.copyWith(

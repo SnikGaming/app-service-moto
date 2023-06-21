@@ -19,7 +19,11 @@ const txtRateReview = 'Vui lòng chọn mức độ hài lòng của bạn về 
 const txtReviewProduct = 'Hãy nói gì đó về sản phẩm.';
 // const txtSend = 'Send';
 const txtSend = 'Gửi';
+const txtAdressList = 'Địa chỉ';
+const txtAddAddress = 'Thêm địa chỉ';
 
 //!: Image
 const loadingImage = 'assets/images/loading.gif';
 const txtLogon = 'assets/logo/logo.jpg';
+const imageBooking = 'assets/images/bgbooking.png';
+const imageBooking_abc = 'assets/images/bg_booking.png';

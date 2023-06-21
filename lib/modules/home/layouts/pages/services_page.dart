@@ -3,6 +3,7 @@ import 'package:app/modules/home/api/booking/model.dart' as Booking;
 import 'package:flutter/material.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
+import '../../../../components/value_app.dart';
 import '../../../../functions/random_color.dart';
 import '../../api/booking/api_booking.dart';
 
@@ -66,8 +67,7 @@ class _ServicesPageState extends State<ServicesPage> {
                   width: size.width,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage('assets/images/bgbooking.png'),
-                        fit: BoxFit.cover),
+                        image: AssetImage(imageBooking), fit: BoxFit.cover),
                   ),
                 ),
               ),
