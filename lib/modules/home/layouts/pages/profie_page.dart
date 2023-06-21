@@ -139,7 +139,7 @@ class _ProFilePageState extends State<ProFilePage> {
               ),
               //!: Đơn hàng của tôi
               SizedBox(
-                height: 120,
+                height: 140,
                 width: size.width,
                 // color: Colors.green,
                 child: Column(
@@ -154,9 +154,9 @@ class _ProFilePageState extends State<ProFilePage> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Container(
+                    SizedBox(
                       // color: Colors.green,
-                      height: 80,
+                      height: 90,
                       width: size.width,
                       // color: Colors.purple,
                       child: ListView.builder(
@@ -173,7 +173,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                 loadData(status: data.id);
                               },
                               child: Container(
-                                height: 40,
+                                height: 50,
                                 width: 80,
                                 decoration: BoxDecoration(
                                   color: indexSelect == i
