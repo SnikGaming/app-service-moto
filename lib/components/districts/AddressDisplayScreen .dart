@@ -36,6 +36,7 @@ class AddressDisplayScreen extends StatefulWidget {
 
 class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   Address.Data? _selectedAddress;
+  int lastTotal = 0;
 
   Map<String, dynamic>? paymentIntern;
   String returnJson() {
@@ -120,7 +121,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
   createPaymentIntern() async {
     try {
       Map<String, dynamic> body = {
-        "amount": total.toString(),
+        "amount": lastTotal.toString(),
         "currency": "VND",
       };
 
@@ -185,6 +186,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
         total += a * b;
       });
     }
+    lastTotal = total + int.parse(_ship!.price);
 
     setState(() {});
   }
@@ -444,6 +446,8 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                   onChanged: (value) {
                                     setState(() {
                                       _ship = value;
+                                      lastTotal =
+                                          total + int.parse(_ship!.price);
                                     });
                                   },
                                   value: _ship,
@@ -475,7 +479,8 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                           children: [
                             CusRichText(
                               text: 'Tổng tiền : ',
-                              selectedAddress: formatCurrency(amount: '$total'),
+                              selectedAddress:
+                                  formatCurrency(amount: '$lastTotal'),
                             ),
                             MyButton(
                               width: 130,
@@ -669,9 +674,21 @@ class SelectAddress extends StatelessWidget {
 class ShipCode {
   String name;
   String price;
-  ShipCode({required this.name, required this.price});
+  String description;
+  ShipCode(
+      {required this.name, required this.price, required this.description});
   static List<ShipCode> lsShipCode = [
-    ShipCode(name: 'Thanh toán 1', price: '20000'),
-    ShipCode(name: 'Thanh toán 2', price: '45000'),
+    ShipCode(
+        name: 'Thường',
+        price: '30000',
+        description: 'Sản phẩm sẽ được giao trong 7 - 10 ngày.'),
+    ShipCode(
+        name: 'Nhanh',
+        price: '45000',
+        description: 'Sản phẩm sẽ giao trong 3- 5 ngày.'),
+    // ShipCode(
+    //     name: 'Hỏa tốc',
+    //     price: '60000',
+    //     description: 'Sản phẩm sẽ được giao trong 24h tiếp theo.'),
   ];
 }

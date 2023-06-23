@@ -231,7 +231,8 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                               width: size.width,
                                               child: Text(
                                                 '${data!.name}',
-                                                style: styleH2,
+                                                style: styleH2.copyWith(
+                                                    fontSize: 14),
                                                 softWrap: true,
                                               ),
                                             ),

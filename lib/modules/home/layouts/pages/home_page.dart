@@ -36,6 +36,7 @@ import '../../api/products/models/products.dart' as products;
 import '../../api/login/model.dart' as users;
 import '../common/skeleton_home.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'chat_screen.dart';
 
@@ -160,19 +161,27 @@ class _HomePageState extends State<HomePage>
     final size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                padding: const EdgeInsets.all(16),
-                child: ChatScreen(),
-              );
-            },
-          );
+        onPressed: () async {
+          //!: Contact
+          // final Uri _url = Uri(scheme: 'mailto', path: 'tranthoilong@gmail.com');
+          final Uri _url = Uri(scheme: 'tel', path: '0334666651');
+
+          // final Uri _url = Uri.parse('https://m.facebook.com/TranThoiLong/');
+          if (!await launchUrl(_url)) {
+            throw Exception('Could not launch $_url');
+          }
+          // showModalBottomSheet(
+          //   isScrollControlled: true,
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return Container(
+          //       padding: const EdgeInsets.all(16),
+          //       child: ChatScreen(),
+          //     );
+          //   },
+          // );
         },
-        child: const Icon(Ionicons.chatbox_ellipses_outline),
+        child: const Icon(Icons.phone),
       ),
       backgroundColor:
           SettingPrefer.getLightDark() == null || SettingPrefer.getLightDark()
