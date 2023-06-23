@@ -42,7 +42,7 @@ class _ProFilePageState extends State<ProFilePage> {
     if (dataStatus != []) {
       try {
         MyOrder.lsMyOrder[0].bage =
-            dataStatus['status_2'].toString(); //!: Chờ thanh toán
+            dataStatus['status_2'].toString(); //!: Huy doi tra
         MyOrder.lsMyOrder[1].bage =
             dataStatus['status_1'].toString(); //!: Chờ vận chuyển
         MyOrder.lsMyOrder[2].bage =
@@ -50,8 +50,8 @@ class _ProFilePageState extends State<ProFilePage> {
 
         MyOrder.lsMyOrder[3].bage =
             dataStatus['status_4'].toString(); //!: Chưa đánh giá
-        MyOrder.lsMyOrder[4].bage =
-            dataStatus['status_0'].toString(); //!: Đổi trả
+        // MyOrder.lsMyOrder[4].bage =
+        //     dataStatus['status_2'].toString(); //!: Đổi trả
       } catch (e) {
         print(e);
       }
@@ -306,7 +306,7 @@ class _ProFilePageState extends State<ProFilePage> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 5),
                           child: Container(
-                            height: data.status == 3 ? 180 : 200,
+                            height: data.status == 1 ? 200 : 170,
                             width: size.width,
                             decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 255, 255, 255),
@@ -361,14 +361,17 @@ class _ProFilePageState extends State<ProFilePage> {
                                   CusRichText(
                                     selectedAddress: data.status == 3
                                         ? "Đang giao, bạn vui lòng chuẩn bị tiền."
-                                        : "Đang xử lý",
+                                        : data.status == 4
+                                            ? "Giao thành công"
+                                            : data.status == 2
+                                                ? "Đơn hàng đã hủy, hoặc giao không thành công"
+                                                : "Đang đóng gói",
                                     text: 'Trạng thái : ',
                                     color: Colors.blue,
                                   ),
                                   const Spacer(),
-                                  data.status == 3
-                                      ? Container()
-                                      : SizedBox(
+                                  data.status == 1
+                                      ? SizedBox(
                                           width: size.width,
                                           child: Row(
                                             mainAxisAlignment:
@@ -376,7 +379,36 @@ class _ProFilePageState extends State<ProFilePage> {
                                             children: [
                                               Container(),
                                               InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          'Thông báo'),
+                                                      content: const Text(
+                                                          'Bạn có chắc muốn hủy đơn hàng này ?'),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(false),
+                                                          child: const Text(
+                                                              'Không'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(true),
+                                                          child:
+                                                              const Text('Có'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
                                                 child: Container(
                                                   height: 30,
                                                   width: 100,
@@ -395,6 +427,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                             ],
                                           ),
                                         )
+                                      : Container()
                                 ],
                               ),
                             ),
@@ -461,7 +494,7 @@ class MyOrder {
   static List<MyOrder> lsMyOrder = [
     MyOrder(
         image: 'assets/icons/cart/wallet.png',
-        name: 'Chờ thanh toán',
+        name: 'Hủy, đổi trả',
         bage: '',
         id: 2),
     MyOrder(
@@ -479,10 +512,10 @@ class MyOrder {
         name: 'Đã hoàn thành',
         bage: '',
         id: 4),
-    MyOrder(
-        image: 'assets/icons/cart/briefcase.png',
-        name: 'Đổi trả',
-        bage: '',
-        id: 0),
+    // MyOrder(
+    //     image: 'assets/icons/cart/briefcase.png',
+    //     name: 'Đổi trả',
+    //     bage: '',
+    //     id: 2),
   ];
 }
