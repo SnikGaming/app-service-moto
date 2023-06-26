@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage>
         maxCrossAxisExtent: 250,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        childAspectRatio: .7,
+        childAspectRatio: .53,
       ),
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.only(
@@ -447,8 +447,8 @@ class _HomePageState extends State<HomePage>
         });
       },
       child: Container(
-        width: 90,
-        height: 90,
+        width: 80,
+        height: 80,
         decoration: BoxDecoration(
           color: indexData == index
               ? const Color.fromARGB(255, 85, 34, 225)
@@ -472,15 +472,18 @@ class _HomePageState extends State<HomePage>
               imageUrl:
                   '${ConnectDb.url}${APICategory.apiCategory[index].image}',
               color: indexData == index ? white : black,
-              height: 45,
+              height: 30,
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            const SizedBox(
+              height: 4,
             ),
             Text(
               '${APICategory.apiCategory[index].name}',
               style: TextStyle(
                   color: indexData == index ? white : black,
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight:
                       indexData == index ? FontWeight.w400 : FontWeight.w600,
                   letterSpacing: 1),
@@ -711,13 +714,15 @@ class _ItemProductState extends State<ItemProduct> {
         Modular.to.pushNamed(Routes.details, arguments: productData[index].id);
       },
       child: Container(
-        decoration: const BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(3, 3),
-            blurRadius: 16,
-          )
-        ]),
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(3, 3),
+              blurRadius: 16,
+            )
+          ],
+        ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Container(
@@ -731,71 +736,29 @@ class _ItemProductState extends State<ItemProduct> {
               child: Column(
                 children: [
                   Expanded(
-                      flex: 2,
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(0),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                              child: Container(
-                                decoration: const BoxDecoration(),
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      '${ConnectDb.url}${productData[index].image}',
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                ),
-                              ),
-                            ),
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        child: Container(
+                          decoration: const BoxDecoration(),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${ConnectDb.url}${productData[index].image}',
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                           ),
-                          Positioned(
-                            right: 0,
-                            child: IconButton(
-                              onPressed: () async {
-                                final value = await APIProduct.create(
-                                    id: productData[index].id!);
-
-                                if (value == 200) {
-                                  if (productData[index].love == 1) {
-                                    productData[index].love = 0;
-                                  } else {
-                                    productData[index].love = 1;
-                                  }
-                                  Message.success(
-                                      message:
-                                          'Đã thêm vào danh sách yêu thích.',
-                                      context: context);
-                                } else {
-                                  if (productData[index].love == 1) {
-                                    productData[index].love = 0;
-                                  } else {
-                                    productData[index].love = 1;
-                                  }
-                                  Message.success(
-                                      message:
-                                          'Đã bỏ khỏi danh sách yêu thích.',
-                                      context: context);
-                                }
-                                setState(() {});
-                                print(
-                                    'data products adgashdfasghdf ${productData[index].love}');
-                              },
-                              icon: Icon(
-                                  productData[index].love == 1
-                                      ? Ionicons.heart
-                                      : Ionicons.heart_outline,
-                                  color: Colors.red),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Expanded(
                     child: Padding(
@@ -821,22 +784,64 @@ class _ItemProductState extends State<ItemProduct> {
                             ),
                           ),
                           const Spacer(),
-                          Container(
-                            padding: const EdgeInsetsDirectional.all(4),
-                            color: Colors.black,
-                            child: Text(
-                                productData[index].number! > 0
-                                    ? formatCurrency(
-                                        amount: '${productData[index].price}')
-                                    : productData[index].like! > 0
-                                        ? outOfStock
-                                        : notProduct,
-                                style: MyTextStyle.normal.copyWith(
-                                  color: Colors.yellow,
-                                  fontSize: 14,
-                                )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: const EdgeInsetsDirectional.all(4),
+                                // color: Colors.black,
+                                child: Text(
+                                    productData[index].number! > 0
+                                        ? formatCurrency(
+                                            amount:
+                                                '${productData[index].price}')
+                                        : productData[index].like! > 0
+                                            ? outOfStock
+                                            : notProduct,
+                                    style: MyTextStyle.normal.copyWith(
+                                      color: Colors.purple,
+                                      fontSize: 14,
+                                    )),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  final value = await APIProduct.create(
+                                      id: productData[index].id!);
+
+                                  if (value == 200) {
+                                    if (productData[index].love == 1) {
+                                      productData[index].love = 0;
+                                    } else {
+                                      productData[index].love = 1;
+                                    }
+                                    Message.success(
+                                        message:
+                                            'Đã thêm vào danh sách yêu thích.',
+                                        context: context);
+                                  } else {
+                                    if (productData[index].love == 1) {
+                                      productData[index].love = 0;
+                                    } else {
+                                      productData[index].love = 1;
+                                    }
+                                    Message.success(
+                                        message:
+                                            'Đã bỏ khỏi danh sách yêu thích.',
+                                        context: context);
+                                  }
+                                  setState(() {});
+                                  print(
+                                      'data products adgashdfasghdf ${productData[index].love}');
+                                },
+                                child: Icon(
+                                    productData[index].love == 1
+                                        ? Ionicons.heart
+                                        : Ionicons.heart_outline,
+                                    color: Colors.red),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
