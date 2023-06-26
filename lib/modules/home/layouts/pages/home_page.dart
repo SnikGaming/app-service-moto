@@ -681,9 +681,23 @@ class _HomePageState extends State<HomePage>
   }
 }
 
-class ItemProduct extends StatelessWidget {
+class ItemProduct extends StatefulWidget {
   const ItemProduct({
     super.key,
+    required this.productData,
+    required this.index,
+  });
+  final int index;
+  final List<products.Data> productData;
+  @override
+  State<ItemProduct> createState() => _ItemProductState(
+        productData: productData,
+        index: index,
+      );
+}
+
+class _ItemProductState extends State<ItemProduct> {
+  _ItemProductState({
     required this.productData,
     required this.index,
   });
@@ -718,26 +732,69 @@ class ItemProduct extends StatelessWidget {
                 children: [
                   Expanded(
                       flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          ),
-                          child: Container(
-                            decoration: const BoxDecoration(),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  '${ConnectDb.url}${productData[index].image}',
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(0),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                              child: Container(
+                                decoration: const BoxDecoration(),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      '${ConnectDb.url}${productData[index].image}',
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator()),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          Positioned(
+                            right: 0,
+                            child: IconButton(
+                              onPressed: () async {
+                                final value = await APIProduct.create(
+                                    id: productData[index].id!);
+
+                                if (value == 200) {
+                                  if (productData[index].love == 1) {
+                                    productData[index].love = 0;
+                                  } else {
+                                    productData[index].love = 1;
+                                  }
+                                  Message.success(
+                                      message:
+                                          'Đã thêm vào danh sách yêu thích.',
+                                      context: context);
+                                } else {
+                                  if (productData[index].love == 1) {
+                                    productData[index].love = 0;
+                                  } else {
+                                    productData[index].love = 1;
+                                  }
+                                  Message.success(
+                                      message:
+                                          'Đã bỏ khỏi danh sách yêu thích.',
+                                      context: context);
+                                }
+                                setState(() {});
+                                print(
+                                    'data products adgashdfasghdf ${productData[index].love}');
+                              },
+                              icon: Icon(
+                                  productData[index].love == 1
+                                      ? Ionicons.heart
+                                      : Ionicons.heart_outline,
+                                  color: Colors.red),
+                            ),
+                          ),
+                        ],
                       )),
                   const SizedBox(height: 8),
                   Expanded(

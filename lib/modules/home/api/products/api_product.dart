@@ -3,10 +3,24 @@
 import 'package:app/modules/home/api/APIBASE.dart';
 
 import 'package:app/preferences/product/product.dart';
+import 'package:app/preferences/user/user_preferences.dart';
 import 'models/products.dart';
 
 class APIProduct {
   static List<Data> apiProducts = [];
+  static create({required int id}) async {
+    final value = {'product_id': id};
+    try {
+      final response = await ApiBase.post(path: '/api/favorites/', data: value);
+      if (response.statusCode == 200) {
+        return 200;
+      } else
+        return 400;
+    } catch (e) {
+      return 401;
+    }
+  }
+
   static Future<List<Data>> getData(
       {int? category_id,
       int page = 1,
@@ -14,9 +28,12 @@ class APIProduct {
       int min_price = 0,
       int max_price = 999999999,
       int tag = 2}) async {
+    String link = '/api/products/';
     try {
-      final response =
-          await ApiBase.get(path: '/api/products/', queryParameters: {
+      if (UserPrefer.getToken() != null) {
+        link = '/api/sp/';
+      }
+      final response = await ApiBase.get(path: link, queryParameters: {
         "category_id": category_id,
         "page": page,
         "search": search,
@@ -32,6 +49,7 @@ class APIProduct {
           .map((projectJson) => Data.fromJson(projectJson))
           .toList();
       apiProducts = projectList;
+      print('data products $jsonData');
       return projectList;
     } catch (e) {
       return [];

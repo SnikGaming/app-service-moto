@@ -1,3 +1,3 @@
 class ConnectDb {
-  static const url = 'http://192.168.43.193:8000';
+  static const url = 'http://10.10.1.91:8000';
 }

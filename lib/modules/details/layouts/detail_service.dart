@@ -208,7 +208,9 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                   Positioned(
                                     bottom: 0,
                                     child: Container(
-                                      height: size.height * .26,
+                                      // height: size.height * .26,
+                                      constraints: BoxConstraints(
+                                          minHeight: size.height * .18),
                                       width: size.width * .7,
                                       decoration: const BoxDecoration(
                                           // color: Colors.blue,
@@ -231,8 +233,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                               width: size.width,
                                               child: Text(
                                                 '${data!.name}',
-                                                style: styleH2.copyWith(
-                                                    fontSize: 14),
+                                                style: styleH2,
                                                 softWrap: true,
                                               ),
                                             ),
@@ -247,19 +248,19 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                             const SizedBox(
                                               height: 16,
                                             ),
-                                            Container(
-                                              width: 160,
-                                              alignment: Alignment.center,
-                                              child: Row(
-                                                children: List.generate(
-                                                  5,
-                                                  (i) => const Icon(Icons.star),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
+                                            // Container(
+                                            //   width: 160,
+                                            //   alignment: Alignment.center,
+                                            //   child: Row(
+                                            //     children: List.generate(
+                                            //       5,
+                                            //       (i) => const Icon(Icons.star),
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                            // const SizedBox(
+                                            //   height: 16,
+                                            // ),
                                             Container(
                                               padding: const EdgeInsets.all(12),
                                               decoration: BoxDecoration(

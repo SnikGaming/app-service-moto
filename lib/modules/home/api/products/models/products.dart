@@ -37,6 +37,7 @@ class Data {
   int? price;
   int? like;
   int? status;
+  int? love;
 
   Data(
       {this.id,
@@ -47,6 +48,7 @@ class Data {
       this.number,
       this.price,
       this.like,
+      this.love,
       this.status});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,7 @@ class Data {
     price = json['price'];
     like = json['like'];
     status = json['status'];
+    love = json['love'];
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +75,8 @@ class Data {
     data['price'] = price;
     data['like'] = like;
     data['status'] = status;
+    data['love'] = love;
+
     return data;
   }
 }
