@@ -10,13 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'components/districts/b.dart';
-import 'components/districts/location.dart';
 import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
 import 'modules/home/api/favorites/api.dart';
 import 'modules/home/api/location/api_location.dart';
-import 'modules/home/api/order/api_order.dart';
 import 'modules/home/api/payment/api_payment.dart';
 
 Future<void> main(List<String> args) async {

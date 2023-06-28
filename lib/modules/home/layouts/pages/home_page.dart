@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pagination_flutter/pagination.dart';
 import '../../../../components/convert/format_money.dart';
-import '../../../../components/districts/a.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/search/search.dart';
 import '../../../../components/slider/slider.dart';
@@ -38,7 +37,6 @@ import '../common/skeleton_home.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'chat_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

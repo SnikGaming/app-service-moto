@@ -15,7 +15,6 @@ class APIPaymentMethod {
       final List<Data> data =
           dataListJson.map((dataJson) => Data.fromJson(dataJson)).toList();
       lsData = data;
-      print('data payment --> ${dataListJson}');
       return data;
     } catch (e) {
       return [];

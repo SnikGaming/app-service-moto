@@ -22,7 +22,6 @@ class APIOrder {
           .map((dataJson) => order.Data.fromJson(dataJson))
           .toList();
       lsData = Order;
-      print('Order --> ${dataListJson}');
       return Order;
     } catch (e) {
       return [];
@@ -33,11 +32,9 @@ class APIOrder {
     try {
       final response = await ApiBase.get(path: '/api/orders_status/');
       final jsonData = json.decode(response.toString());
-      print('Order --> ${jsonData}');
 
       return jsonData['data'];
     } catch (e) {
-      print('Order --> orders_status []');
       return [];
     }
   }

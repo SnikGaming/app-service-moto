@@ -2,15 +2,12 @@
 
 import 'package:app/components/CusRichText/CusRichText.dart';
 import 'package:app/components/mybage/mybage.dart';
-import 'package:app/functions/random_color.dart';
 import 'package:app/modules/home/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:ionicons/ionicons.dart';
-import '../../../../components/button/mybutton.dart';
 import '../../../../components/convert/format_money.dart';
-import '../../../../components/districts/a.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
