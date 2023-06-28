@@ -8,9 +8,9 @@ class APIFavorites {
   static Future<List<Data>> getData({
     int page = 1,
   }) async {
-    String link = '/api/products/';
     try {
-      final response = await ApiBase.get(path: link, queryParameters: {
+      final response =
+          await ApiBase.get(path: '/api/favorites/', queryParameters: {
         "page": page,
       });
       final jsonData = response.data;
@@ -22,7 +22,7 @@ class APIFavorites {
           .map((projectJson) => Data.fromJson(projectJson))
           .toList();
       data = projectList;
-      print('data products $jsonData');
+
       return projectList;
     } catch (e) {
       return [];

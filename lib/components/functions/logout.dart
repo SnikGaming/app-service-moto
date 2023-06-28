@@ -11,6 +11,7 @@ class LogoutApp {
       UserPrefer.removesetToken(),
       UserPrefer.removeId(),
       UserPrefer.removeGioiTinh(),
+      UserPrefer.removeScore(),
       SettingPrefer.removeLightDark(),
     ]);
   }

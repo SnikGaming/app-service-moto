@@ -14,6 +14,7 @@ import 'components/districts/b.dart';
 import 'components/districts/location.dart';
 import 'modules/home/api/banner/api_banner.dart';
 import 'modules/home/api/booking/api_booking.dart';
+import 'modules/home/api/favorites/api.dart';
 import 'modules/home/api/location/api_location.dart';
 import 'modules/home/api/order/api_order.dart';
 import 'modules/home/api/payment/api_payment.dart';
@@ -35,9 +36,10 @@ Future<void> main(List<String> args) async {
   // await APICategory.getData();
   await APIBanner.getData();
   // await APIProduct.getData();
-  if (UserPrefer.getToken() != null) {
+  if (UserPrefer.getToken() != null && UserPrefer.getToken() != 'null') {
     await APIBooking.fetchBookings();
     await APIAuth.getUser();
+    await APIFavorites.getData();
     // await APIOrder.fetchOrder();
   }
   await APIPaymentMethod.fetchPayment();

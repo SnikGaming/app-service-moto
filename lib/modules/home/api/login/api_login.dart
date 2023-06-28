@@ -40,6 +40,9 @@ class APIAuth {
   }
 
   static void saveUserData(Map<String, dynamic> jsonData) {
+    print('score user ${jsonData['score']}');
+    UserPrefer.setScore(value: jsonData['score']);
+
     UserPrefer.setEmail(value: jsonData['email']);
     if (jsonData['image'] != '/storage/user/Null') {
       UserPrefer.setImageUser(value: jsonData['image']);

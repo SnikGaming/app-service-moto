@@ -56,4 +56,18 @@ class APIOrder {
       return 400;
     }
   }
+
+  static Future<int> huy({required String id}) async {
+    try {
+      final response = await ApiBase.post(path: '/api/huy/$id');
+      if (response.statusCode == 200) {
+        return 200;
+      } else {
+        return 400;
+        // throw Exception("Failed to login");
+      }
+    } catch (e) {
+      return 400;
+    }
+  }
 }

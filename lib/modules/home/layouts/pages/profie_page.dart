@@ -341,7 +341,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                   CusRichText(
                                       selectedAddress: data.address.toString(),
                                       text: 'Địa chỉ : '),
-                                  data.payment == 1
+                                  data.payment == 1 || data.status == 2
                                       ? Container()
                                       : const Column(
                                           children: [
@@ -398,10 +398,15 @@ class _ProFilePageState extends State<ProFilePage> {
                                                               'Không'),
                                                         ),
                                                         TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(true),
+                                                          onPressed: () async {
+                                                            await APIOrder.huy(
+                                                                id: '${data.id}');
+                                                            loadData();
+
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true);
+                                                          },
                                                           child:
                                                               const Text('Có'),
                                                         ),

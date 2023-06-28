@@ -1,11 +1,8 @@
-import 'package:app/components/message/message.dart';
-import 'package:app/modules/home/api/booking/model.dart' as Booking;
+import 'package:app/functions/random_color.dart';
 import 'package:flutter/material.dart';
-import 'package:searchbar_animation/searchbar_animation.dart';
-
+import 'package:pagination_flutter/pagination.dart';
 import '../../../../components/value_app.dart';
-import '../../../../functions/random_color.dart';
-import '../../api/booking/api_booking.dart';
+import '../../api/favorites/api.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
@@ -19,7 +16,18 @@ class _ServicesPageState extends State<ServicesPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _scrollController.addListener(() {});
     loadData();
+  }
+
+  final _scrollController = ScrollController();
+
+  void scrollData() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   void setStateIfMounted(VoidCallback fn) {
@@ -28,30 +36,26 @@ class _ServicesPageState extends State<ServicesPage> {
     }
   }
 
-  List<Booking.Data> lsBooking = [];
-  // loadData() async {
-  //   await APIBooking.fetchBookings();
-  //   lsBooking = APIBooking.lsData;
-  //   setState(() {});
-  // }
-  Future<List<Booking.Data>> loadData() async {
-    await APIBooking.fetchBookings();
-    return APIBooking.lsData;
+  loadData() async {
+    await APIFavorites.getData(page: page);
+    setState(() {});
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _scrollController.dispose();
   }
 
+  int page = 1;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('BOOKING'),
+        title: const Text('YÊU THÍCH'),
       ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -71,217 +75,136 @@ class _ServicesPageState extends State<ServicesPage> {
                   ),
                 ),
               ),
-              Column(
-                children: [
-                  SearchBarAnimation(
-                    textEditingController: TextEditingController(),
-                    isOriginalAnimation: true,
-                    enableKeyboardFocus: true,
-                    onExpansionComplete: () {
-                      Message.success(
-                          context: context, message: 'on onExpansionComplete');
-
-                      debugPrint(
-                          'do something just after searchbox is opened.');
-                    },
-                    onCollapseComplete: () {
-                      Message.success(context: context, message: 'on collapse');
-                      debugPrint(
-                          'do something just after searchbox is closed.');
-                    },
-                    onPressButton: (isSearchBarOpens) {
-                      print(isSearchBarOpens);
-                      Message.success(
-                          context: context, message: 'on isSearchBarOpens');
-
-                      // debugPrint(
-                      //     'do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
-                    },
-                    trailingWidget: const Icon(
-                      Icons.search,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    secondaryButtonWidget: const Icon(
-                      Icons.close,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    buttonWidget: const Icon(
-                      Icons.search,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 20, left: 20, bottom: 30, top: 20),
-                    child: SizedBox(
-                      height: 55,
-                      width: size.width,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, i) => Padding(
-                                padding: EdgeInsets.only(
-                                    left: i == 0 ? 0 : 10, right: 10),
-                                child: Container(
-                                  height: 45,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    color: randomColor(),
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                ),
-                              )),
-                    ),
-                  ),
-                  Expanded(
-                      // height: size.height - 330,
-                      //?: Loading data
-                      child: FutureBuilder<List<Booking.Data>>(
-                    future: APIBooking.fetchBookings(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final lsBooking = snapshot.data!;
-                        return ListView.builder(
-                          itemCount: lsBooking.length,
-                          itemBuilder: (context, i) => GestureDetector(
-                            onTap: () async {
-                              print('data ____');
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 20,
-                                right: 20,
-                                top: i == 0 ? 0 : 20,
-                                bottom: i == lsBooking.length - 1 ? 200 : 0,
+              Container(
+                height: size.height * .8,
+                width: size.width,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: APIFavorites.data.length + 1,
+                  itemBuilder: (context, i) {
+                    if (i < APIFavorites.data.length) {
+                      final data = APIFavorites.data[i];
+                      return Container(
+                        height: 120,
+                        color: randomColor(),
+                        child: Text('$i'),
+                      );
+                    } else {
+                      return Container(
+                        height: 120,
+                        color: Colors.grey, // Màu sắc của nút "Next"
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Pagination(
+                              numOfPages: APIFavorites.total!,
+                              selectedPage: page,
+                              pagesVisible: 3,
+                              spacing: 10,
+                              onPageChanged: (value) {
+                                // scrollData();
+                                setState(() {
+                                  page = value;
+                                  loadData();
+                                });
+                              },
+                              nextIcon: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 14,
                               ),
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  minHeight: 80,
-                                ),
-                                width: size.width,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                    width: 1,
-                                    color: const Color.fromARGB(
-                                        255, 149, 101, 211),
-                                  ),
-                                  borderRadius: BorderRadius.circular(30),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Booking ${i + 1}",
-                                            style: title,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "${lsBooking[i].bookingTime}",
-                                                style: subTitle,
-                                              ),
-                                              const Icon(Icons.calendar_today),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Icon(Icons.location_on),
-                                          Text(
-                                            "${lsBooking[i].service}",
-                                            style: subTitle,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        'BOOKING',
-                                        style: title.copyWith(
-                                          color: randomColor(),
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Flexible(
-                                            flex: 1,
-                                            child: Icon(
-                                              Icons.note,
-                                              color: Colors.orange,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Flexible(
-                                            flex: 9,
-                                            child: Text(
-                                              "${lsBooking[i].note}",
-                                              style: subTitle,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                              previousIcon: const Icon(
+                                Icons.arrow_back_ios,
+                                size: 14,
+                              ),
+                              activeTextStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              activeBtnStyle: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(38),
                                   ),
                                 ),
+                              ),
+                              inactiveBtnStyle: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(38),
+                                )),
+                              ),
+                              inactiveTextStyle: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                  ))
-                ],
-              ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () => setState(() {
+                                    // scrollData();
+                                    page = 1;
+                                    loadData();
+                                  }),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: randomColor(),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    height: 30,
+                                    width: 100,
+                                    child: Center(
+                                        child: Text(
+                                      'Đầu trang',
+                                      style: h1.copyWith(color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      // scrollData();
+                                      page = APIFavorites.total;
+                                      loadData();
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: randomColor(),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    height: 30,
+                                    width: 100,
+                                    child: Center(
+                                        child: Text(
+                                      'Cuối trang',
+                                      style: h1.copyWith(color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
+              )
             ],
           ),
         ),
       ),
     );
-  }
-
-  _addService(data) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(builder: (BuildContext context,
-              StateSetter setState /*You can rename this!*/) {
-            return Container(
-              height: 400,
-            );
-          });
-        });
   }
 }
 
