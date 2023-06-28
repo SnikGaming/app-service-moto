@@ -14,6 +14,7 @@ import '../../../../components/districts/a.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
+import '../../api/login/api_login.dart';
 import '../../api/order/api_order.dart';
 import 'dart:convert';
 
@@ -401,6 +402,13 @@ class _ProFilePageState extends State<ProFilePage> {
                                                           onPressed: () async {
                                                             await APIOrder.huy(
                                                                 id: '${data.id}');
+                                                            if (data.payment !=
+                                                                1) {
+                                                              await APIAuth
+                                                                  .getUser();
+                                                              print(
+                                                                  'score user ${UserPrefer.getScore()}');
+                                                            }
                                                             loadData();
 
                                                             Navigator.of(

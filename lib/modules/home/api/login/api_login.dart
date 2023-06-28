@@ -40,7 +40,6 @@ class APIAuth {
   }
 
   static void saveUserData(Map<String, dynamic> jsonData) {
-    print('score user ${jsonData['score']}');
     UserPrefer.setScore(value: jsonData['score']);
 
     UserPrefer.setEmail(value: jsonData['email']);
