@@ -3,13 +3,16 @@ import 'package:app/modules/home/layouts/pages/cart_page.dart';
 import 'package:app/modules/home/layouts/pages/home_page.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
+import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../components/calendar/pages/calendar_page.dart';
 import '../../../components/value_app.dart';
 import '../../../constants/colors.dart';
 import '../../../functions/onWillPop.dart';
+import '../../app_constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,12 +31,21 @@ class _HomeScreenState extends State<HomeScreen> {
     const ProFilePage(),
   ];
 
+  checkLogin() {
+    if (UserPrefer.getToken() == null || UserPrefer.getToken() == 'null') {
+      return false;
+    }
+    return true;
+  }
+
   Future<void> refreshData() async {
     await Future.delayed(const Duration(seconds: 3));
   }
 
   @override
-  void initState() => super.initState();
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +68,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: black,
                   selectedIndex: _selectedIndex,
                   showElevation: true,
-                  onItemSelected: (index) => setState(() {
-                    _selectedIndex = index;
-                  }),
+                  onItemSelected: (index) {
+                    if (checkLogin()) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    } else {
+                      Modular.to
+                          .pushNamed(Routes.login)
+                          .then((value) => setState(() {
+                                Navigator.pop(context);
+                              })); 
+                    }
+                  },
                   items: [
                     FlashyTabBarItem(
                       inactiveColor: Colors.white,
