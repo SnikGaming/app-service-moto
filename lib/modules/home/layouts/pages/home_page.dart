@@ -37,7 +37,6 @@ import '../common/skeleton_home.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

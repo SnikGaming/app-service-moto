@@ -1,10 +1,13 @@
+import 'package:app/components/style/text_style.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pagination_flutter/pagination.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/value_app.dart';
 import '../../../../network/connect.dart';
+import '../../../app_constants.dart';
 import '../../api/favorites/api.dart';
 
 class ServicesPage extends StatefulWidget {
@@ -78,7 +81,7 @@ class _ServicesPageState extends State<ServicesPage> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: size.height * .8,
                 width: size.width,
                 child: APIFavorites.data.length == 0
@@ -89,55 +92,76 @@ class _ServicesPageState extends State<ServicesPage> {
                         itemBuilder: (context, i) {
                           if (i < APIFavorites.data.length) {
                             final data = APIFavorites.data[i];
-                            return Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Container(
-                                  constraints: BoxConstraints(minHeight: 120),
-                                  decoration: BoxDecoration(
-                                    color: randomColor(),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  '${ConnectDb.url}${data.image}',
-                                              // height: 30,
-                                              placeholder: (context, url) =>
-                                                  const CircularProgressIndicator(),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
+                            return GestureDetector(
+                              onTap: () async {
+                                Modular.to.pushNamed(Routes.details,
+                                    arguments: data.productId);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Container(
+                                    constraints:
+                                        const BoxConstraints(minHeight: 120),
+                                    decoration: BoxDecoration(
+                                      // color: randomColor(),
+                                      color: const Color.fromARGB(
+                                          255, 206, 205, 205),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    '${ConnectDb.url}${data.image}',
+                                                // height: 30,
+                                                placeholder: (context, url) =>
+                                                    const CircularProgressIndicator(),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Flexible(
-                                        child: Column(
-                                          children: [
-                                            Text(data.name!),
-                                            Text(formatCurrency(
-                                              amount: data.price.toString(),
-                                            )),
-                                          ],
+                                        Flexible(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                data.name!,
+                                                style: title2,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                formatCurrency(
+                                                  amount: data.price.toString(),
+                                                ),
+                                                style: title2.copyWith(
+                                                    color: Colors.purple),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             );
                           } else {
-                            return Container(
+                            return SizedBox(
                               height: 120,
-                              color: Colors.grey, // Màu sắc của nút "Next"
+                              // color: Colors.grey, // Màu sắc của nút "Next"
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
