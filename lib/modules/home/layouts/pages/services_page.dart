@@ -9,6 +9,7 @@ import '../../../../components/value_app.dart';
 import '../../../../network/connect.dart';
 import '../../../app_constants.dart';
 import '../../api/favorites/api.dart';
+import '../../api/products/api_product.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
@@ -131,25 +132,46 @@ class _ServicesPageState extends State<ServicesPage> {
                                           ),
                                         ),
                                         Flexible(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                data.name!,
-                                                style: title2,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                formatCurrency(
-                                                  amount: data.price.toString(),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 16),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  data.name!,
+                                                  style: title2,
                                                 ),
-                                                style: title2.copyWith(
-                                                    color: Colors.purple),
-                                              ),
-                                            ],
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  formatCurrency(
+                                                    amount:
+                                                        data.price.toString(),
+                                                  ),
+                                                  style: title2.copyWith(
+                                                      color: Colors.purple),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Spacer(),
+                                                    GestureDetector(
+                                                        onTap: () async {
+                                                          final value =
+                                                              await APIProduct
+                                                                  .create(
+                                                                      id: data
+                                                                          .productId!);
+                                                          loadData();
+                                                        },
+                                                        child: Icon(
+                                                            Icons.favorite)),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],
