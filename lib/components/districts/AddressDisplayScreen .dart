@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/style/text_style.dart';
 import 'package:app/modules/home/api/payment/api_payment.dart';
+import 'package:app/preferences/user/user_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
@@ -490,22 +491,33 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                   String jsonString = returnJson();
                                   if (widget.isBuy) {
                                     if (_selectPayment!.name != null &&
-                                        _selectPayment!.name == 'Stripe') {
+                                        _selectPayment!.id == 2) {
                                       makePayment();
                                     } else {
-                                      var res = await addOrder(jsonString);
-                                      if (res == 200) {
-                                        Message.success(
-                                          message: 'Thành Công',
-                                          context: context,
-                                        );
-                                        Navigator.of(context)
-                                            .popUntil((route) => route.isFirst);
-                                      } else {
+                                      if (_selectPayment!.id! == 3 &&
+                                          lastTotal >
+                                              int.parse(
+                                                  UserPrefer.getScore())) {
                                         Message.error(
-                                          message: 'Thất bại',
-                                          context: context,
-                                        );
+                                            message:
+                                                'Bạn không đủ tiền trong ví của mình',
+                                            context: context);
+                                        // return;
+                                      } else {
+                                        var res = await addOrder(jsonString);
+                                        if (res == 200) {
+                                          Message.success(
+                                            message: 'Thành Công',
+                                            context: context,
+                                          );
+                                          Navigator.of(context).popUntil(
+                                              (route) => route.isFirst);
+                                        } else {
+                                          Message.error(
+                                            message: 'Thất bại',
+                                            context: context,
+                                          );
+                                        }
                                       }
                                     }
                                   } else {
