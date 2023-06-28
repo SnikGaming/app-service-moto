@@ -135,7 +135,57 @@ class _ProFilePageState extends State<ProFilePage> {
                 height: 24,
               ),
               //!: User
-              const UserProfile(),
+              Row(
+                children: [
+                  //!: Image
+                  SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: UserPrefer.getImageUser() == 'null' ||
+                              UserPrefer.getImageUser() == null
+                          ? Container()
+                          : CachedNetworkImage(
+                              imageBuilder: (context, imageProvider) =>
+                                  CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          '${ConnectDb.url}${UserPrefer.getImageUser()}')),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              imageUrl:
+                                  '${ConnectDb.url}${UserPrefer.getImageUser()}',
+                            )),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  //!: Name
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        UserPrefer.getsetUserName() ?? "GUES",
+                        style: title2.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        formatCurrency(
+                          amount: UserPrefer.getScore(),
+                        ),
+                        style: title2.copyWith(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 16,
               ),
@@ -406,6 +456,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                                                 1) {
                                                               await APIAuth
                                                                   .getUser();
+
                                                               print(
                                                                   'score user ${UserPrefer.getScore()}');
                                                             }
@@ -451,48 +502,6 @@ class _ProFilePageState extends State<ProFilePage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class UserProfile extends StatelessWidget {
-  const UserProfile({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        //!: Image
-        SizedBox(
-            height: 80,
-            width: 80,
-            child: UserPrefer.getImageUser() == 'null' ||
-                    UserPrefer.getImageUser() == null
-                ? Container()
-                : CachedNetworkImage(
-                    imageBuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            '${ConnectDb.url}${UserPrefer.getImageUser()}')),
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    imageUrl: '${ConnectDb.url}${UserPrefer.getImageUser()}',
-                  )),
-        const SizedBox(
-          width: 8,
-        ),
-        //!: Name
-        Text(
-          UserPrefer.getsetUserName() ?? "GUES",
-          style: title2.copyWith(
-            color: Colors.black,
-          ),
-        ),
-      ],
     );
   }
 }
