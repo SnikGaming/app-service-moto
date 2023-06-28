@@ -1,7 +1,10 @@
 import 'package:app/functions/random_color.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pagination_flutter/pagination.dart';
+import '../../../../components/convert/format_money.dart';
 import '../../../../components/value_app.dart';
+import '../../../../network/connect.dart';
 import '../../api/favorites/api.dart';
 
 class ServicesPage extends StatefulWidget {
@@ -78,127 +81,175 @@ class _ServicesPageState extends State<ServicesPage> {
               Container(
                 height: size.height * .8,
                 width: size.width,
-                child: ListView.builder(
-                  controller: _scrollController,
-                  itemCount: APIFavorites.data.length + 1,
-                  itemBuilder: (context, i) {
-                    if (i < APIFavorites.data.length) {
-                      final data = APIFavorites.data[i];
-                      return Container(
-                        height: 120,
-                        color: randomColor(),
-                        child: Text('$i'),
-                      );
-                    } else {
-                      return Container(
-                        height: 120,
-                        color: Colors.grey, // Màu sắc của nút "Next"
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Pagination(
-                              numOfPages: APIFavorites.total!,
-                              selectedPage: page,
-                              pagesVisible: 3,
-                              spacing: 10,
-                              onPageChanged: (value) {
-                                // scrollData();
-                                setState(() {
-                                  page = value;
-                                  loadData();
-                                });
-                              },
-                              nextIcon: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                              ),
-                              previousIcon: const Icon(
-                                Icons.arrow_back_ios,
-                                size: 14,
-                              ),
-                              activeTextStyle: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              activeBtnStyle: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.black),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(38),
+                child: APIFavorites.data.length == 0
+                    ? Container()
+                    : ListView.builder(
+                        controller: _scrollController,
+                        itemCount: APIFavorites.data.length + 1,
+                        itemBuilder: (context, i) {
+                          if (i < APIFavorites.data.length) {
+                            final data = APIFavorites.data[i];
+                            return Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Container(
+                                  constraints: BoxConstraints(minHeight: 120),
+                                  decoration: BoxDecoration(
+                                    color: randomColor(),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  '${ConnectDb.url}${data.image}',
+                                              // height: 30,
+                                              placeholder: (context, url) =>
+                                                  const CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Column(
+                                          children: [
+                                            Text(data.name!),
+                                            Text(formatCurrency(
+                                              amount: data.price.toString(),
+                                            )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              inactiveBtnStyle: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(38),
-                                )),
-                              ),
-                              inactiveTextStyle: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => setState(() {
-                                    // scrollData();
-                                    page = 1;
-                                    loadData();
-                                  }),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: randomColor(),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    height: 30,
-                                    width: 100,
-                                    child: Center(
-                                        child: Text(
-                                      'Đầu trang',
-                                      style: h1.copyWith(color: Colors.white),
-                                    )),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
+                            );
+                          } else {
+                            return Container(
+                              height: 120,
+                              color: Colors.grey, // Màu sắc của nút "Next"
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Pagination(
+                                    numOfPages: APIFavorites.total!,
+                                    selectedPage: page,
+                                    pagesVisible: 3,
+                                    spacing: 10,
+                                    onPageChanged: (value) {
                                       // scrollData();
-                                      page = APIFavorites.total;
-                                      loadData();
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: randomColor(),
-                                      borderRadius: BorderRadius.circular(16),
+                                      setState(() {
+                                        page = value;
+                                        loadData();
+                                      });
+                                    },
+                                    nextIcon: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 14,
                                     ),
-                                    height: 30,
-                                    width: 100,
-                                    child: Center(
-                                        child: Text(
-                                      'Cuối trang',
-                                      style: h1.copyWith(color: Colors.white),
-                                    )),
+                                    previousIcon: const Icon(
+                                      Icons.arrow_back_ios,
+                                      size: 14,
+                                    ),
+                                    activeTextStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    activeBtnStyle: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.black),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(38),
+                                        ),
+                                      ),
+                                    ),
+                                    inactiveBtnStyle: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(38),
+                                      )),
+                                    ),
+                                    inactiveTextStyle: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  },
-                ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => setState(() {
+                                          // scrollData();
+                                          page = 1;
+                                          loadData();
+                                        }),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: randomColor(),
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          height: 30,
+                                          width: 100,
+                                          child: Center(
+                                              child: Text(
+                                            'Đầu trang',
+                                            style: h1.copyWith(
+                                                color: Colors.white),
+                                          )),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            // scrollData();
+                                            page = APIFavorites.total;
+                                            loadData();
+                                          });
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: randomColor(),
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          height: 30,
+                                          width: 100,
+                                          child: Center(
+                                              child: Text(
+                                            'Cuối trang',
+                                            style: h1.copyWith(
+                                                color: Colors.white),
+                                          )),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                      ),
               )
             ],
           ),
