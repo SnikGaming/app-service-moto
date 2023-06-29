@@ -58,24 +58,24 @@ class APIProduct {
     }
   }
 
-  static Future<List<Data>> getDataById({required List<int> data}) async {
-    try {
-      final response = await ApiBase.post(
-        path: '/api/getProductById/',
-        data: {"product_ids": data},
-      );
+  // static Future<List<Data>> getDataById({required List<int> data}) async {
+  //   try {
+  //     final response = await ApiBase.post(
+  //       path: '/api/getProductById/',
+  //       data: {"product_ids": data},
+  //     );
 
-      final jsonData = response.data;
-      print('data products af $jsonData');
-      final List<dynamic> projectListJson = jsonData['data'];
+  //     final jsonData = response.data;
+  //     print('data products af $jsonData');
+  //     final List<dynamic> projectListJson = jsonData['data'];
 
-      final List<Data> projectList = projectListJson
-          .map((projectJson) => Data.fromJson(projectJson))
-          .toList();
-      dataOrder = projectList;
-      return projectList;
-    } catch (e) {
-      return [];
-    }
-  }
+  //     final List<Data> projectList = projectListJson
+  //         .map((projectJson) => Data.fromJson(projectJson))
+  //         .toList();
+  //     dataOrder = projectList;
+  //     return projectList;
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 }

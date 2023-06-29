@@ -357,17 +357,10 @@ class _ProFilePageState extends State<ProFilePage> {
 
                         return GestureDetector(
                           onTap: () async {
-                            List<int> dataSent = [];
-                            var value = data.product;
-                            value!.forEach((element) {
-                              dataSent.add(element.id!);
-                              print('abc ${element.id}');
-                            });
-
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => OrderDetails(value: dataSent),
+                                  builder: (_) => OrderDetails(value: data.id!),
                                 ));
                           },
                           child: Padding(
