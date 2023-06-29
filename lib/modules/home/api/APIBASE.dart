@@ -16,8 +16,10 @@ class ApiBase {
   static Future<Response> get(
       {required String path, Map<String, dynamic>? queryParameters}) async {
     return await dio.get("${ConnectDb.url}$path",
-        options: Options(   
-            headers: {'Authorization': 'Bearer ${UserPrefer.getToken()}'}),
+        options: Options(headers: {
+          'Content-type': 'application/json',
+          'Authorization': 'Bearer ${UserPrefer.getToken()}'
+        }),
         queryParameters: queryParameters);
   }
 

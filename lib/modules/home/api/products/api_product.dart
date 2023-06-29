@@ -8,6 +8,8 @@ import 'models/products.dart';
 
 class APIProduct {
   static List<Data> apiProducts = [];
+  static List<Data> dataOrder = [];
+
   static create({required int id}) async {
     final value = {'product_id': id};
     try {
@@ -50,6 +52,27 @@ class APIProduct {
           .toList();
       apiProducts = projectList;
       print('data products $jsonData');
+      return projectList;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  static Future<List<Data>> getDataById({required List<int> data}) async {
+    try {
+      final response = await ApiBase.post(
+        path: '/api/getProductById/',
+        data: {"product_ids": data},
+      );
+
+      final jsonData = response.data;
+      print('data products af $jsonData');
+      final List<dynamic> projectListJson = jsonData['data'];
+
+      final List<Data> projectList = projectListJson
+          .map((projectJson) => Data.fromJson(projectJson))
+          .toList();
+      dataOrder = projectList;
       return projectList;
     } catch (e) {
       return [];

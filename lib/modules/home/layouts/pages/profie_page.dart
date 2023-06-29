@@ -11,12 +11,16 @@ import '../../../../components/convert/format_money.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
+import '../../../order_details/order_details.dart';
 import '../../api/login/api_login.dart';
 import '../../api/order/api_order.dart';
 import 'dart:convert';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
+
+import '../../api/products/api_product.dart';
+import '../../api/products/models/products.dart';
 
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
@@ -350,146 +354,172 @@ class _ProFilePageState extends State<ProFilePage> {
                       itemCount: lsData.length,
                       itemBuilder: (context, i) {
                         var data = lsData[i];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 5),
-                          child: Container(
-                            height: data.status == 1 ? 200 : 170,
-                            width: size.width,
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 255, 255, 255),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color.fromARGB(255, 213, 205, 205),
-                                    offset: Offset(5, 9),
-                                    blurRadius: 5,
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(30)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CusRichText(
-                                      selectedAddress: data.name.toString(),
-                                      text: 'Tên người nhận : '),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  CusRichText(
-                                      selectedAddress: formatCurrency(
-                                        amount: data.totalPrice.toString(),
-                                      ),
-                                      color: Colors.red,
-                                      text: 'Giá : '),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  CusRichText(
-                                      selectedAddress: data.address.toString(),
-                                      text: 'Địa chỉ : '),
-                                  data.payment == 1 || data.status == 2
-                                      ? Container()
-                                      : const Column(
-                                          children: [
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            CusRichText(
-                                              selectedAddress: "Đã thanh toán",
-                                              text: 'Đơn hàng : ',
-                                              color: Colors.green,
-                                            ),
-                                          ],
+
+                        return GestureDetector(
+                          onTap: () async {
+                            List<int> dataSent = [];
+                            var value = data.product;
+                            value!.forEach((element) {
+                              dataSent.add(element.id!);
+                              print('abc ${element.id}');
+                            });
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => OrderDetails(value: dataSent),
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 5),
+                            child: Container(
+                              height: data.status == 1 ? 200 : 170,
+                              width: size.width,
+                              decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromARGB(255, 213, 205, 205),
+                                      offset: Offset(5, 9),
+                                      blurRadius: 5,
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(14),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CusRichText(
+                                        selectedAddress: data.name.toString(),
+                                        text: 'Tên người nhận : '),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    CusRichText(
+                                        selectedAddress: formatCurrency(
+                                          amount: data.totalPrice.toString(),
                                         ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  CusRichText(
-                                    selectedAddress: data.status == 3
-                                        ? "Đang giao, bạn vui lòng chuẩn bị tiền."
-                                        : data.status == 4
-                                            ? "Giao thành công"
-                                            : data.status == 2
-                                                ? "Đơn hàng đã hủy, hoặc giao không thành công"
-                                                : "Đang đóng gói",
-                                    text: 'Trạng thái : ',
-                                    color: Colors.blue,
-                                  ),
-                                  const Spacer(),
-                                  data.status == 1
-                                      ? SizedBox(
-                                          width: size.width,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                        color: Colors.red,
+                                        text: 'Giá : '),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    CusRichText(
+                                        selectedAddress:
+                                            data.address.toString(),
+                                        text: 'Địa chỉ : '),
+                                    data.payment == 1 || data.status == 2
+                                        ? Container()
+                                        : const Column(
                                             children: [
-                                              Container(),
-                                              InkWell(
-                                                onTap: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (context) =>
-                                                        AlertDialog(
-                                                      title: const Text(
-                                                          'Thông báo'),
-                                                      content: const Text(
-                                                          'Bạn có chắc muốn hủy đơn hàng này ?'),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(false),
-                                                          child: const Text(
-                                                              'Không'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            await APIOrder.huy(
-                                                                id: '${data.id}');
-                                                            if (data.payment !=
-                                                                1) {
-                                                              await APIAuth
-                                                                  .getUser();
-
-                                                              print(
-                                                                  'score user ${UserPrefer.getScore()}');
-                                                            }
-                                                            loadData();
-
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(true);
-                                                          },
-                                                          child:
-                                                              const Text('Có'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                                child: Container(
-                                                  height: 30,
-                                                  width: 100,
-                                                  decoration: BoxDecoration(
-                                                    color: const Color.fromARGB(
-                                                        255, 195, 183, 183),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text('Hủy'),
-                                                  ),
-                                                ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              CusRichText(
+                                                selectedAddress:
+                                                    "Đã thanh toán",
+                                                text: 'Đơn hàng : ',
+                                                color: Colors.green,
                                               ),
                                             ],
                                           ),
-                                        )
-                                      : Container()
-                                ],
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    CusRichText(
+                                      selectedAddress: data.status == 3
+                                          ? "Đang giao, bạn vui lòng chuẩn bị tiền."
+                                          : data.status == 4
+                                              ? "Giao thành công"
+                                              : data.status == 2
+                                                  ? "Đơn hàng đã hủy, hoặc giao không thành công"
+                                                  : "Đang đóng gói",
+                                      text: 'Trạng thái : ',
+                                      color: Colors.blue,
+                                    ),
+                                    const Spacer(),
+                                    data.status == 1
+                                        ? SizedBox(
+                                            width: size.width,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(),
+                                                InkWell(
+                                                  onTap: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          AlertDialog(
+                                                        title: const Text(
+                                                            'Thông báo'),
+                                                        content: const Text(
+                                                            'Bạn có chắc muốn hủy đơn hàng này ?'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(false),
+                                                            child: const Text(
+                                                                'Không'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await APIOrder.huy(
+                                                                  id: '${data.id}');
+                                                              if (data.payment !=
+                                                                  1) {
+                                                                await APIAuth
+                                                                    .getUser();
+
+                                                                print(
+                                                                    'score user ${UserPrefer.getScore()}');
+                                                              }
+                                                              loadData();
+
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(true);
+                                                            },
+                                                            child: const Text(
+                                                                'Có'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    height: 30,
+                                                    width: 100,
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              195,
+                                                              183,
+                                                              183),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30),
+                                                    ),
+                                                    child: const Center(
+                                                      child: Text('Hủy'),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : Container()
+                                  ],
+                                ),
                               ),
                             ),
                           ),
