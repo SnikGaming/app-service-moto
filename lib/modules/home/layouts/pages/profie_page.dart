@@ -1,5 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'dart:convert';
+
 import 'package:app/components/CusRichText/CusRichText.dart';
 
 import 'package:app/components/mybage/mybage.dart';
@@ -15,7 +17,6 @@ import '../../../../preferences/user/user_preferences.dart';
 import '../../../order_details/order_details.dart';
 import '../../api/login/api_login.dart';
 import '../../api/order/api_order.dart';
-import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
@@ -27,61 +28,27 @@ class ProFilePage extends StatefulWidget {
 }
 
 class _ProFilePageState extends State<ProFilePage> {
-  List<order.Data> lsData = [];
-  int indexSelect = -1;
-  loadData({int? status}) async {
-    if (status != null) {
-      await APIOrder.fetchOrder(status: status);
-    } else {
-      await APIOrder.fetchOrder();
-    }
-    lsData = APIOrder.lsData;
-
-    var dataStatus = await APIOrder.fetchOrderStatus();
-    if (dataStatus != []) {
-      try {
-        MyOrder.lsMyOrder[0].bage =
-            dataStatus['status_2'].toString(); //!: Huy doi tra
-        MyOrder.lsMyOrder[1].bage =
-            dataStatus['status_1'].toString(); //!: Chờ vận chuyển
-        MyOrder.lsMyOrder[2].bage =
-            dataStatus['status_3'].toString(); //!: Chờ giao hàng
-
-        MyOrder.lsMyOrder[3].bage =
-            dataStatus['status_4'].toString(); //!: Chưa đánh giá
-        // MyOrder.lsMyOrder[4].bage =
-        //     dataStatus['status_2'].toString(); //!: Đổi trả
-      } catch (e) {
-        print(e);
-      }
-    }
-
-    setState(() {});
-  }
-
   Map<String, dynamic>? paymentIntern;
-
   displayPaymentSheet() async {
     try {
       // String jsonString = returnJson();
-      await Stripe.instance.presentPaymentSheet();
-      // .then(
-      //   (value) async {
-      //     var res = await addOrder(jsonString);
-      //     if (res == 200) {
-      //       Message.success(
-      //         message: 'Thành Công',
-      //         context: context,
-      //       );
-      // Navigator.of(context).popUntil((route) => route.isFirst);
-      //     } else {
-      //       Message.error(
-      //         message: 'Thất bại',
-      //         context: context,
-      //       );
-      //     }
-      //   },
-      // );
+      await Stripe.instance.presentPaymentSheet().then(
+        (value) async {
+          // var res = await addOrder(jsonString);
+          // if (res == 200) {
+          //   Message.success(
+          //     message: 'Thành Công',
+          //     context: context,
+          //   );
+          //   Navigator.of(context).popUntil((route) => route.isFirst);
+          // } else {
+          //   Message.error(
+          //     message: 'Thất bại',
+          //     context: context,
+          //   );
+          // }
+        },
+      );
       print('done --> ');
     } catch (e) {
       print('abc--> faild $e');
@@ -115,7 +82,7 @@ class _ProFilePageState extends State<ProFilePage> {
   createPaymentIntern() async {
     try {
       Map<String, dynamic> body = {
-        "amount": '1000',
+        "amount": '100000',
         "currency": "VND",
       };
 
@@ -131,6 +98,38 @@ class _ProFilePageState extends State<ProFilePage> {
     } catch (e) {
       throw Exception(e.toString());
     }
+  }
+
+  List<order.Data> lsData = [];
+  int indexSelect = -1;
+  loadData({int? status}) async {
+    if (status != null) {
+      await APIOrder.fetchOrder(status: status);
+    } else {
+      await APIOrder.fetchOrder();
+    }
+    lsData = APIOrder.lsData;
+
+    var dataStatus = await APIOrder.fetchOrderStatus();
+    if (dataStatus != []) {
+      try {
+        MyOrder.lsMyOrder[0].bage =
+            dataStatus['status_2'].toString(); //!: Huy doi tra
+        MyOrder.lsMyOrder[1].bage =
+            dataStatus['status_1'].toString(); //!: Chờ vận chuyển
+        MyOrder.lsMyOrder[2].bage =
+            dataStatus['status_3'].toString(); //!: Chờ giao hàng
+
+        MyOrder.lsMyOrder[3].bage =
+            dataStatus['status_4'].toString(); //!: Chưa đánh giá
+        // MyOrder.lsMyOrder[4].bage =
+        //     dataStatus['status_2'].toString(); //!: Đổi trả
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    setState(() {});
   }
 
   var addScore = TextEditingController();
@@ -211,7 +210,6 @@ class _ProFilePageState extends State<ProFilePage> {
                           IconButton(
                             onPressed: () async {
                               makePayment();
-
                               // showModalBottomSheet(
                               //   context: context,
                               //   isScrollControlled: true,
