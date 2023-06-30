@@ -92,7 +92,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
       print('done --> ');
     } catch (e) {
       print('abc--> faild $e');
-      throw Exception(e);
+      // throw Exception(e);
     }
   }
 

@@ -10,6 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+import '../../../../components/button/mybutton.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
@@ -30,6 +31,7 @@ class ProFilePage extends StatefulWidget {
 class _ProFilePageState extends State<ProFilePage> {
   Map<String, dynamic>? paymentIntern;
   displayPaymentSheet() async {
+    //   score = value!;
     try {
       // String jsonString = returnJson();
       await Stripe.instance.presentPaymentSheet().then(
@@ -52,11 +54,13 @@ class _ProFilePageState extends State<ProFilePage> {
       print('done --> ');
     } catch (e) {
       print('abc--> faild $e');
-      throw Exception(e);
+      // throw Exception(e);
     }
   }
 
   void makePayment() async {
+    ad = score;
+
     try {
       paymentIntern = await createPaymentIntern();
 
@@ -79,10 +83,12 @@ class _ProFilePageState extends State<ProFilePage> {
     }
   }
 
+  String ad = '100000';
+  String score = "";
   createPaymentIntern() async {
     try {
       Map<String, dynamic> body = {
-        "amount": '100000',
+        "amount": ad,
         "currency": "VND",
       };
 
@@ -98,6 +104,10 @@ class _ProFilePageState extends State<ProFilePage> {
     } catch (e) {
       throw Exception(e.toString());
     }
+  }
+
+  loadUser() async {
+    await APIAuth.getUser();
   }
 
   List<order.Data> lsData = [];
@@ -132,13 +142,12 @@ class _ProFilePageState extends State<ProFilePage> {
     setState(() {});
   }
 
-  var addScore = TextEditingController();
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loadData();
+    loadUser();
   }
 
   bool _isExpanded = false;
@@ -209,39 +218,42 @@ class _ProFilePageState extends State<ProFilePage> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              makePayment();
-                              // showModalBottomSheet(
-                              //   context: context,
-                              //   isScrollControlled: true,
-                              //   shape: const RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.only(
-                              //       topLeft: Radius.circular(20),
-                              //       topRight: Radius.circular(20),
-                              //     ),
-                              //   ),
-                              //   builder: (BuildContext context) =>
-                              //       StatefulBuilder(
-                              //     builder: (BuildContext context, setState) {
-                              //       return SizedBox(
-                              //         height: 200,
-                              //         child: Column(
-                              //           children: [
-                              //             TextFormField(
-                              //               controller: addScore,
-                              //               decoration: const InputDecoration(),
-                              //             ),
-                              //             MyButton(
-                              //               onPressed: () async {
-                              //                 makePayment();
-                              //               },
-                              //               child: const Text('Nạp'),
-                              //             )
-                              //           ],
-                              //         ),
-                              //       );
-                              //     },
-                              //   ),
-                              // );
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (BuildContext context) =>
+                                    StatefulBuilder(
+                                  builder: (BuildContext context, setState) {
+                                    return SizedBox(
+                                      height: 200,
+                                      child: Column(
+                                        children: [
+                                          TextFormField(
+                                            controller: TextEditingController(
+                                                text: score),
+                                            onChanged: (a) {
+                                              score = a;
+                                            },
+                                            decoration: const InputDecoration(),
+                                          ),
+                                          MyButton(
+                                            onPressed: () async {
+                                              makePayment();
+                                            },
+                                            child: const Text('Nạp'),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
                             },
                             icon: const Icon(Icons.add),
                           ),
