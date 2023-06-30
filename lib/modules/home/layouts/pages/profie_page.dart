@@ -100,6 +100,9 @@ class _ProFilePageState extends State<ProFilePage> {
                 "Bearer sk_test_51NGFj9Kl8H5lkAhSt9tOnFlXKvDnv3Jz2nFviGxq67oY9GeaVoVXiebA76nDAyj2gdKVSaYPyhgNHfHEZGI0SmbK00FBuWKQUf",
             "Content-Type": "application/x-www-form-urlencoded",
           });
+
+      await APIAuth.updateScore(value: int.parse(ad));
+      loadUser();
       return json.decode(response.body);
     } catch (e) {
       throw Exception(e.toString());
@@ -108,6 +111,7 @@ class _ProFilePageState extends State<ProFilePage> {
 
   loadUser() async {
     await APIAuth.getUser();
+    setState(() {});
   }
 
   List<order.Data> lsData = [];

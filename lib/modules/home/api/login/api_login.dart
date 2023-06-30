@@ -6,6 +6,21 @@ import '../APIBASE.dart';
 class APIAuth {
   static Data userLogin = Data();
 
+  static Future<int> updateScore({required int value}) async {
+    try {
+      final response =
+          await ApiBase.post(path: '/api/updateScore', data: {"score": value});
+      if (response.statusCode == 200) {
+        return 200;
+      } else {
+        return 400;
+        // throw Exception("Failed to login");
+      }
+    } catch (e) {
+      return 400;
+    }
+  }
+
   static Future<int> login(
       {String email = "long@gmail.com", String password = "12345678"}) async {
     try {
