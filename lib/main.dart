@@ -38,7 +38,7 @@ Future<void> main(List<String> args) async {
     await APIAuth.getUser();
     await APIFavorites.getData();
     // await APIOrder.fetchOrder();
-  }
+  } 
   await APIPaymentMethod.fetchPayment();
   await APILocation.fetchLocation();
   runApp(ModularApp(module: AppModule(), child: const MyApp()));

@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:app/components/CusRichText/CusRichText.dart';
+import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/mybage/mybage.dart';
 import 'package:app/modules/home/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
@@ -62,27 +63,7 @@ class _ProFilePageState extends State<ProFilePage> {
     setState(() {});
   }
 
-  Map<String, dynamic>? paymentIntent;
-
-  void makePayment() async {
-    try {
-      paymentIntent = await createPaymentIntent();
-      var gpay = const PaymentSheetGooglePay(
-          merchantCountryCode: 'US', currencyCode: "US", testEnv: true);
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: paymentIntent!['client_secret'],
-          style: ThemeMode.dark,
-          merchantDisplayName: "Sabir",
-          googlePay: gpay,
-        ),
-      );
-      displayPaymentSheet();
-    } catch (e) {
-      print(e);
-      throw e;
-    }
-  }
+  Map<String, dynamic>? paymentIntern;
 
   displayPaymentSheet() async {
     try {
@@ -94,20 +75,47 @@ class _ProFilePageState extends State<ProFilePage> {
     }
   }
 
-  createPaymentIntent() async {
+  void makePayment() async {
     try {
-      Map<String, dynamic> body = {"amount": "1000", "currency": "US"};
+      paymentIntern = await createPaymentIntern();
+
+      var gpay = const PaymentSheetGooglePay(
+        merchantCountryCode: "US",
+        currencyCode: "VND",
+        testEnv: true,
+      );
+
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: paymentIntern!["client_secret"],
+        style: ThemeMode.dark,
+        merchantDisplayName: "Sabir",
+        googlePay: gpay,
+      ));
+      displayPaymentSheet();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  var addScore = TextEditingController();
+  createPaymentIntern() async {
+    try {
+      Map<String, dynamic> body = {
+        "amount": addScore.text,
+        "currency": "VND",
+      };
+
       http.Response response = await http.post(
           Uri.parse("https://api.stripe.com/v1/payment_intents"),
           body: body,
           headers: {
             "Authorization":
-                "Bearer sk_test_51MWx8OAVMyklfe3C3gP4wKOhTsRdF6r1PYhhg1PqupXDITMrV3asj5Mmf0G5F9moPL6zNfG3juK8KHgV9XNzFPlq00wmjWwZYA",
-            "Content-Type": "application/x-www-form-urlencoded"
+                "Bearer sk_test_51NGFj9Kl8H5lkAhSt9tOnFlXKvDnv3Jz2nFviGxq67oY9GeaVoVXiebA76nDAyj2gdKVSaYPyhgNHfHEZGI0SmbK00FBuWKQUf",
+            "Content-Type": "application/x-www-form-urlencoded",
           });
       return json.decode(response.body);
     } catch (e) {
-      print(e);
       throw Exception(e.toString());
     }
   }
@@ -174,14 +182,53 @@ class _ProFilePageState extends State<ProFilePage> {
                       SizedBox(
                         height: 5,
                       ),
-                      Text(
-                        formatCurrency(
-                          amount: UserPrefer.getScore(),
-                        ),
-                        style: title2.copyWith(
-                          color: Colors.grey,
-                          fontSize: 14,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            formatCurrency(
+                              amount: UserPrefer.getScore(),
+                            ),
+                            style: title2.copyWith(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                                builder: (BuildContext context) =>
+                                    StatefulBuilder(
+                                  builder: (BuildContext context, setState) {
+                                    return Container(
+                                      height: 200,
+                                      child: Column(
+                                        children: [
+                                          TextFormField(
+                                            controller: addScore,
+                                            decoration: InputDecoration(),
+                                          ),
+                                          MyButton(
+                                            onPressed: () {},
+                                            child: Text('Nạp'),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -268,84 +315,87 @@ class _ProFilePageState extends State<ProFilePage> {
                 ),
               ),
               //!: Slider Sp đang được giao
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => UsePaypal(
-                      sandboxMode: true,
-                      clientId:
-                          "AQ-z5DPK42W8qrx7VSC2g2aF0PxY_Ko_KUYrNyxi4rlD_q9JY5c1muG1q9fSgRgHyjmc_eqPuGG0wX8S",
-                      secretKey:
-                          "EKOZxrCebxy9EYW6SzJM6TYBss8rJ1DaaikVSU6F39PKiNxAI9eLdAg0znnm3ku-Swqi3YcUEO8LnyBD",
-                      returnURL: "https://samplesite.com/return",
-                      cancelURL: "https://samplesite.com/cancel",
-                      transactions: const [
-                        {
-                          "amount": {
-                            "total": '0.01',
-                            "currency": "USD",
-                            "details": {
-                              "subtotal": '0.01',
-                              "shipping": '0',
-                              "shipping_discount": 0
-                            }
-                          },
-                          "description": "The payment transaction description.",
-                          // "payment_options": {
-                          //   "allowed_payment_method":
-                          //       "INSTANT_FUNDING_SOURCE"
-                          // },
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (_) => UsePaypal(
+              //         sandboxMode: true,
+              //         clientId:
+              //             "AQ-z5DPK42W8qrx7VSC2g2aF0PxY_Ko_KUYrNyxi4rlD_q9JY5c1muG1q9fSgRgHyjmc_eqPuGG0wX8S",
+              //         secretKey:
+              //             "EKOZxrCebxy9EYW6SzJM6TYBss8rJ1DaaikVSU6F39PKiNxAI9eLdAg0znnm3ku-Swqi3YcUEO8LnyBD",
+              //         returnURL: "https://samplesite.com/return",
+              //         cancelURL: "https://samplesite.com/cancel",
+              //         transactions: const [
+              //           {
+              //             "amount": {
+              //               "total": '0.01',
+              //               "currency": "USD",
+              //               "details": {
+              //                 "subtotal": '0.01',
+              //                 "shipping": '0',
+              //                 "shipping_discount": 0
+              //               }
+              //             },
+              //             "description": "The payment transaction description.",
+              //             // "payment_options": {
+              //             //   "allowed_payment_method":
+              //             //       "INSTANT_FUNDING_SOURCE"
+              //             // },
 
-                          //!:
-                          // "item_list": {
-                          //   "items": [
-                          //     {
-                          //       "name": "A demo product",
-                          //       "quantity": 1,
-                          //       "price": '0.01',
-                          //       "currency": "USD"
-                          //     }
-                          //   ],
+              //             //!:
+              //             // "item_list": {
+              //             //   "items": [
+              //             //     {
+              //             //       "name": "A demo product",
+              //             //       "quantity": 1,
+              //             //       "price": '0.01',
+              //             //       "currency": "USD"
+              //             //     }
+              //             //   ],
 
-                          //   // shipping address is not required though
-                          //   // "shipping_address": {
-                          //   //   "recipient_name": "Jane Foster",
-                          //   //   "line1": "Travis County",
-                          //   //   "line2": "",
-                          //   //   "city": "Austin",
-                          //   //   "country_code": "US",
-                          //   //   "postal_code": "73301",
-                          //   //   "phone": "+00000000",
-                          //   //   "state": "Texas"
-                          //   // },
-                          // }
-                        }
-                      ],
-                      note: "Contact us for any questions on your order.",
-                      onSuccess: (Map params) async {},
-                      onError: (error) {},
-                      onCancel: (params) {},
-                    ),
-                  ));
-                },
-                child: Container(
-                  height: 60,
-                  width: size.width,
-                  color: Colors.blue,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 9,
-                        child: Container(),
-                      ),
-                      const Expanded(
-                        flex: 1,
-                        child: Icon(Ionicons.chevron_forward_outline),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              //             //   // shipping address is not required though
+              //             //   // "shipping_address": {
+              //             //   //   "recipient_name": "Jane Foster",
+              //             //   //   "line1": "Travis County",
+              //             //   //   "line2": "",
+              //             //   //   "city": "Austin",
+              //             //   //   "country_code": "US",
+              //             //   //   "postal_code": "73301",
+              //             //   //   "phone": "+00000000",
+              //             //   //   "state": "Texas"
+              //             //   // },
+              //             // }
+              //           }
+              //         ],
+              //         note: "Contact us for any questions on your order.",
+              //         onSuccess: (Map params) async {},
+              //         onError: (error) {},
+              //         onCancel: (params) {},
+              //       ),
+              //     ));
+              //   },
+              //   child: Container(
+              //     height: 60,
+              //     width: size.width,
+              //     color: Colors.blue,
+              //     child: Text('Ví'),
+              //     // child: Row(
+              //     //   children: [
+              //     //     Expanded(
+              //     //       flex: 9,
+              //     //       child: Container(),
+              //     //     ),
+              //     //     const Expanded(
+              //     //       flex: 1,
+              //     //       child: Icon(Ionicons.chevron_forward_outline),
+              //     //     ),
+              //     //   ],
+
+              //     // ),
+              //   ),
+              // ),
+
               const SizedBox(
                 height: 16,
               ),

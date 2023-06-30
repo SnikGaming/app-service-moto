@@ -208,6 +208,7 @@ class _CartState extends State<Cart> {
             },
           ),
         );
+    
       },
       child: const Icon(Icons.shopping_bag),
     );
