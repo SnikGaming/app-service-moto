@@ -1,13 +1,13 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:app/components/CusRichText/CusRichText.dart';
-import 'package:app/components/button/mybutton.dart';
+
 import 'package:app/components/mybage/mybage.dart';
 import 'package:app/modules/home/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_paypal/flutter_paypal.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
@@ -17,11 +17,7 @@ import '../../api/login/api_login.dart';
 import '../../api/order/api_order.dart';
 import 'dart:convert';
 
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
-
-import '../../api/products/api_product.dart';
-import '../../api/products/models/products.dart';
 
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
@@ -67,11 +63,29 @@ class _ProFilePageState extends State<ProFilePage> {
 
   displayPaymentSheet() async {
     try {
+      // String jsonString = returnJson();
       await Stripe.instance.presentPaymentSheet();
-      print('Payment--> Done');
+      // .then(
+      //   (value) async {
+      //     var res = await addOrder(jsonString);
+      //     if (res == 200) {
+      //       Message.success(
+      //         message: 'Thành Công',
+      //         context: context,
+      //       );
+      // Navigator.of(context).popUntil((route) => route.isFirst);
+      //     } else {
+      //       Message.error(
+      //         message: 'Thất bại',
+      //         context: context,
+      //       );
+      //     }
+      //   },
+      // );
+      print('done --> ');
     } catch (e) {
-      print(e);
-      print('Payment--> Done');
+      print('abc--> faild $e');
+      throw Exception(e);
     }
   }
 
@@ -98,11 +112,10 @@ class _ProFilePageState extends State<ProFilePage> {
     }
   }
 
-  var addScore = TextEditingController();
   createPaymentIntern() async {
     try {
       Map<String, dynamic> body = {
-        "amount": addScore.text,
+        "amount": '1000',
         "currency": "VND",
       };
 
@@ -119,6 +132,8 @@ class _ProFilePageState extends State<ProFilePage> {
       throw Exception(e.toString());
     }
   }
+
+  var addScore = TextEditingController();
 
   @override
   void initState() {
@@ -179,7 +194,7 @@ class _ProFilePageState extends State<ProFilePage> {
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Row(
@@ -194,37 +209,41 @@ class _ProFilePageState extends State<ProFilePage> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
-                                ),
-                                builder: (BuildContext context) =>
-                                    StatefulBuilder(
-                                  builder: (BuildContext context, setState) {
-                                    return Container(
-                                      height: 200,
-                                      child: Column(
-                                        children: [
-                                          TextFormField(
-                                            controller: addScore,
-                                            decoration: InputDecoration(),
-                                          ),
-                                          MyButton(
-                                            onPressed: () {},
-                                            child: Text('Nạp'),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
+                            onPressed: () async {
+                              makePayment();
+
+                              // showModalBottomSheet(
+                              //   context: context,
+                              //   isScrollControlled: true,
+                              //   shape: const RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.only(
+                              //       topLeft: Radius.circular(20),
+                              //       topRight: Radius.circular(20),
+                              //     ),
+                              //   ),
+                              //   builder: (BuildContext context) =>
+                              //       StatefulBuilder(
+                              //     builder: (BuildContext context, setState) {
+                              //       return SizedBox(
+                              //         height: 200,
+                              //         child: Column(
+                              //           children: [
+                              //             TextFormField(
+                              //               controller: addScore,
+                              //               decoration: const InputDecoration(),
+                              //             ),
+                              //             MyButton(
+                              //               onPressed: () async {
+                              //                 makePayment();
+                              //               },
+                              //               child: const Text('Nạp'),
+                              //             )
+                              //           ],
+                              //         ),
+                              //       );
+                              //     },
+                              //   ),
+                              // );
                             },
                             icon: const Icon(Icons.add),
                           ),
