@@ -110,10 +110,12 @@ class _HomePageState extends State<HomePage>
     final categoryDataFuture = APICategory.getData();
     List<dynamic> results =
         await Future.wait([productDataFuture, categoryDataFuture]);
-    productData = results[0];
-    categoryData = results[1];
-    totalPage = ProductPrefer.getTotal()!;
-    setState(() {});
+
+    setState(() {
+      productData = results[0];
+      categoryData = results[1];
+      totalPage = ProductPrefer.getTotal()!;
+    });
   }
 
   @override
@@ -230,13 +232,18 @@ class _HomePageState extends State<HomePage>
               ),
             ),
             IconButton(
+              //!:Xử lý search
               onPressed: () async {
                 var data = await APIProduct.getData(
                     category_id: 1, search: '', page: page);
                 showSearch(
                   context: context,
                   delegate: MySearchDelegate(items: data),
-                );
+                ).then((value) {
+                  if (value != null) {
+                    Modular.to.pushNamed(Routes.details, arguments: value.id);
+                  }
+                });
               },
               icon: const Icon(Icons.search),
             )
@@ -269,12 +276,12 @@ class _HomePageState extends State<HomePage>
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: MySearchBar(
               hintText: 'Tìm kiếm',
-              onSearch: (value) {
+              onSearch: (value) => setState(() {
                 indexData = 0;
                 search = value;
                 page = 1;
                 loadData();
-              },
+              }),
             ),
           ),
         ),

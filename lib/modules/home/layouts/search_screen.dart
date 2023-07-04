@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import '../../api/products/models/products.dart' as products;
+import '../../../network/connect.dart';
 import '../api/products/models/products.dart';
 
 class MySearchDelegate extends SearchDelegate {
@@ -38,11 +40,20 @@ class MySearchDelegate extends SearchDelegate {
     return ListView.builder(
       itemCount: result.length,
       itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text(result[index].name!),
-          onTap: () {
-            close(context, result[index]);
-          },
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: CachedNetworkImage(
+              imageUrl: '${ConnectDb.url}${result[index].image}',
+              // height: 30,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            title: Text(result[index].name!),
+            onTap: () {
+              close(context, result[index]);
+            },
+          ),
         );
       },
     );
@@ -61,6 +72,12 @@ class MySearchDelegate extends SearchDelegate {
       itemCount: suggestionList.length,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
+          leading: CachedNetworkImage(
+            imageUrl: '${ConnectDb.url}${suggestionList[index].image}',
+            height: 30,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
           title: Text(suggestionList[index].name!),
           onTap: () {
             query = suggestionList[index].name!;
