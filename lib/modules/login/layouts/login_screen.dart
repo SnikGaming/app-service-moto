@@ -1,7 +1,8 @@
 import 'package:app/components/from/login/frm_login.dart';
 import 'package:app/components/from/register/frm_register.dart';
 import 'package:app/components/textfield/login/text_field_email.dart';
-import 'package:app/constants/const_text.dart';
+import 'package:app/components/value_app.dart';
+
 import 'package:app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -10,6 +11,7 @@ import '../../../components/from/otp/frm_otp.dart';
 import '../../../components/message/message.dart';
 import '../../../components/style/text_style.dart';
 import '../../../constants/colors.dart';
+import '../../../network/api/otp.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,6 +26,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool isRegister = true;
   bool isSendEmailSuccess = false;
   late AnimationController _animation;
+  var email = TextEditingController();
 
   @override
   void dispose() {
@@ -129,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen>
                           GestureDetector(
                             onTap: () {
                               Message.success(
-                                  message: 'Forgotpass', context: context);
+                                  message: forgotPassword, context: context);
                               showModalBottomSheet<void>(
                                   transitionAnimationController: _animation,
                                   context: context,
@@ -149,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                 height: 30,
                                               ),
                                               Text(
-                                                'FORGOT PASSWORD',
+                                                forgotPassword,
                                                 style: SettingApp
                                                     .fontSignNegative
                                                     .copyWith(
@@ -174,7 +177,9 @@ class _LoginScreenState extends State<LoginScreen>
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              const TextFieldEmail(),
+                                              TextFieldEmail(
+                                                controller: email,
+                                              ),
                                               // ignore: prefer_const_constructors
                                               SizedBox(
                                                 height: 10,
@@ -191,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   });
                             },
                             child: const Text(
-                              'Forgot password',
+                              forgotPassword,
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.w400,
@@ -200,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen>
                           ),
                           // ignore: prefer_const_constructors
                           Text(
-                            ' or ',
+                            ' $or ',
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
@@ -208,12 +213,12 @@ class _LoginScreenState extends State<LoginScreen>
                           GestureDetector(
                             onTap: () {
                               Message.success(
-                                  message: 'Register', context: context);
+                                  message: register, context: context);
                               isRegister = !isRegister;
                               setState(() {});
                             },
                             child: Text(
-                              isRegister ? 'Register ?' : 'Login',
+                              isRegister ? '$register ?' : login,
                               style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w400,
@@ -233,8 +238,15 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  _sendEmailForgotPassword() {
-    Navigator.pop(context);
-    displayTextInputDialog(context, _otp);
+  _sendEmailForgotPassword() async {
+    var value = generateRandomNumber();
+    bool res = await sendOTP(email: email.text, otp: value.toString());
+    if (res) {
+      Message.success(message: sucSend, context: context);
+      Navigator.pop(context);
+      displayTextInputDialog(context, _otp);
+    } else {
+      Message.error(message: failSend, context: context);
+    }
   }
 }

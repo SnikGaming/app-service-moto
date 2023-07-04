@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../../../constants/const_text.dart';
+import '../../value_app.dart';
 
 class TextFieldPassword extends StatefulWidget {
   final TextEditingController? controller;
+  final bool? isCPassword;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final int? lengthCharacter;
@@ -17,6 +18,7 @@ class TextFieldPassword extends StatefulWidget {
       this.validator,
       this.onFieldSubmitted,
       this.onChanged,
+      this.isCPassword = true,
       super.key});
 
   @override
@@ -27,13 +29,9 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
   bool isPassword = true;
 
   String? _checkPassword(value) {
- 
-
     if (value == null || value.isEmpty) {
       return textIsRequired;
-      
     }
-  
 
     return null;
   }
@@ -62,7 +60,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
         LengthLimitingTextInputFormatter(widget.lengthCharacter ?? 32)
       ],
       decoration: InputDecoration(
-        hintText: textPassword,
+        hintText: widget.isCPassword! ? password : cpassword,
         hintStyle: const TextStyle(
             // fontFamily: fontFamily,
             color: Color(0xffC6CCD3),

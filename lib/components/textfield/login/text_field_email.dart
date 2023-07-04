@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:validators/validators.dart';
 
-import '../../../constants/const_text.dart';
+import '../../value_app.dart';
 
 class TextFieldEmail extends StatefulWidget {
   final TextEditingController? controller;
@@ -70,7 +70,7 @@ class _TextFieldEmailState extends State<TextFieldEmail> {
       onChanged: widget.onChanged ?? _onChange,
       controller: widget.controller,
       decoration: InputDecoration(
-        hintText: widget.text ?? textEmail,
+        hintText: widget.text ?? 'Email',
         hintStyle: const TextStyle(
             fontWeight: FontWeight.w400,
             color: Color(0xffC6CCD3),

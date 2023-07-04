@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/components/textfield/login/text_field_email.dart';
+import 'package:app/components/value_app.dart';
 import 'package:flutter/material.dart';
 import '../../../modules/home/api/user/register.dart';
 import '../../button/button.dart';
@@ -39,6 +40,7 @@ class _FrmRegisterState extends State<FrmRegister> {
             height: 10,
           ),
           TextFieldPassword(
+            isCPassword: false,
             controller: _repassword,
           ),
           const SizedBox(
@@ -55,7 +57,7 @@ class _FrmRegisterState extends State<FrmRegister> {
               height: 40,
               child: const Center(
                   child: Text(
-                'Register',
+                register,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     letterSpacing: 1,
@@ -77,13 +79,13 @@ class _FrmRegisterState extends State<FrmRegister> {
           c_password: _repassword.text);
       if (response == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Register successful.💕'),
+          content: Text(registerSuc),
           backgroundColor: Colors.green,
         ));
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Register failed.💕'),
+          content: Text(registerFail),
           backgroundColor: Colors.red,
         ));
       }

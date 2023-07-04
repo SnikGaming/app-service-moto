@@ -52,13 +52,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         imageFile: _image);
     if (response == 200) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Update successful.💕'),
+        content: Text('Chỉnh sửa thành công.💕'),
         backgroundColor: Colors.green,
       ));
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Update failed.💕'),
+        content: Text('Chỉnh sửa thất bại.💕'),
         backgroundColor: Colors.red,
       ));
     }
@@ -174,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 16.0),
                       textFieldInput(
                         controller: _fullNameController,
-                        labelText: 'Full Name',
+                        labelText: 'Họ & tên',
                       ),
                       const SizedBox(height: 16.0),
                       textFieldInput(
@@ -184,19 +184,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 16.0),
                       textFieldInput(
+                        keyboardType: TextInputType.phone,
                         controller: _phoneController,
-                        labelText: 'Phone',
+                        labelText: 'Số điện thoại',
                       ),
                       const SizedBox(height: 16.0),
                       textFieldInput(
                         controller: _addressController,
-                        labelText: 'Address',
+                        labelText: 'Địa chỉ',
                       ),
                       const SizedBox(height: 16.0),
                       Column(
                         children: [
                           RadioListTile<Gender>(
-                            title: const Text('Male'),
+                            title: const Text('Nam'),
                             value: Gender.male,
                             groupValue: _gender,
                             onChanged: (value) {
@@ -206,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                           ),
                           RadioListTile<Gender>(
-                            title: const Text('Female'),
+                            title: const Text('Nữ'),
                             value: Gender.female,
                             groupValue: _gender,
                             onChanged: (value) {
@@ -216,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                           ),
                           RadioListTile<Gender>(
-                            title: const Text('Other'),
+                            title: const Text('Khác'),
                             value: Gender.other,
                             groupValue: _gender,
                             onChanged: (value) {
@@ -239,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: size.width * .3,
                               child: const Center(
                                 child: Text(
-                                  'Cancel',
+                                  'Hủy',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
@@ -254,7 +255,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: size.width * .3,
                               child: const Center(
                                 child: Text(
-                                  'Save',
+                                  'Lưu',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
@@ -283,10 +284,12 @@ class textFieldInput extends StatelessWidget {
   TextEditingController controller;
   String labelText;
   bool? isReadonly;
+  TextInputType? keyboardType;
   textFieldInput({
     super.key,
     required this.controller,
     required this.labelText,
+    this.keyboardType,
     this.isReadonly = false,
   });
 
@@ -294,6 +297,7 @@ class textFieldInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
       enabled: !isReadonly!,
       onChanged: (value) {
         if (value.length > 20) {

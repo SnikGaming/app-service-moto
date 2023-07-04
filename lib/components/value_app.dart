@@ -33,3 +33,33 @@ const txtLogon = 'assets/logo/logo.jpg';
 const imageBooking = 'assets/images/bgbooking.png';
 const imageBooking_abc = 'assets/images/bg_booking.png';
 const imageNodata = 'assets/images/notdata.gif';
+
+//!: Login
+const forgotPassword = 'Quên mật khẩu';
+const register = 'Đăng ký';
+const or = 'hoặc';
+const password = 'Mật khẩu';
+const cpassword = 'Nhập lại mật khẩu';
+
+const login = 'Đăng nhập';
+const sucSend = 'Gửi thành công';
+const failSend = 'Gửi thất bại';
+
+//!: Mail service
+const mailService = 'tranthoilong@gmail.com';
+const keyService = 'wnuxgczhxvegtvoz';
+const subjectService = 'OTP Verification';
+
+//!: Login
+const textLogin_Title = "Hey, hello✌️";
+const textLogin_subTitle = "Enter the information you entered while register.";
+const textLogin_remember = "Remember me";
+const textLogin_ForgotPassword = "Forgot password?";
+
+//!: Register
+const registerSuc = 'Thành công.💕';
+const registerFail = 'Thất bại.💕';
+
+//!: Validator
+const textEmailFormat = "Invalid email format";
+const textIsRequired = "This field is required";
