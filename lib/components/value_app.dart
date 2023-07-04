@@ -51,15 +51,13 @@ const keyService = 'wnuxgczhxvegtvoz';
 const subjectService = 'OTP Verification';
 
 //!: Login
-const textLogin_Title = "Hey, hello✌️";
+const textLogin_Title = "Hey, xin chào✌️";
 const textLogin_subTitle = "Enter the information you entered while register.";
-const textLogin_remember = "Remember me";
-const textLogin_ForgotPassword = "Forgot password?";
 
 //!: Register
 const registerSuc = 'Thành công.💕';
 const registerFail = 'Thất bại.💕';
 
 //!: Validator
-const textEmailFormat = "Invalid email format";
-const textIsRequired = "This field is required";
+const textEmailFormat = "Định dạng email không hợp lệ.";
+const textIsRequired = "Trường này là bắt buộc.";
