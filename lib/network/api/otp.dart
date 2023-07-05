@@ -24,7 +24,7 @@ Future<bool> sendOTP(
     ..subject = subject
     ..text =
         'Kính gửi khách hàng thân mến,\n\nChúng tôi xin gửi mã OTP (One-Time Password) để xác thực quá trình đăng nhập vào ứng dụng SNIK Sửa Xe. Vui lòng sử dụng mã OTP sau đây để hoàn thành quá trình xác thực:\n\nMã OTP của bạn là: $otp\n\nXin lưu ý rằng mã OTP này chỉ có hiệu lực trong một thời gian giới hạn và chỉ sử dụng cho mục đích xác thực đăng nhập. Vui lòng không chia sẻ mã OTP này với bất kỳ ai, bao gồm cả đội ngũ hỗ trợ của chúng tôi.\nNếu bạn không yêu cầu mã OTP này, xin hãy bỏ qua thông báo này và đảm bảo bảo mật thông tin đăng nhập của mình.\n\nTrân trọng,\nĐội ngũ SNIK Sửa Xe';
-  ;
+
   try {
     final sendReport = await send(message, smtpServer);
     // print('Message sent: ' + sendReport.toString());

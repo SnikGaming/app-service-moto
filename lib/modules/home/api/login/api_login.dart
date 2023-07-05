@@ -41,6 +41,26 @@ class APIAuth {
     }
   }
 
+  static Future<int> loginGoogle(
+      {required String email, required String name}) async {
+    try {
+      final response = await ApiBase.post(
+          path: '/api/google', data: {"email": email, "name": name});
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = response.data;
+        final String tempToken = responseData['token'];
+        final token = extractToken(tempToken);
+        UserPrefer.setToken(value: token!);
+        getUser();
+        return 200;
+      } else {
+        throw Exception("Failed to login");
+      }
+    } catch (e) {
+      return 400;
+    }
+  }
+
   static Future<Data?> getUser() async {
     // print('this is user ');
     Response response;

@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../../modules/home/api/login/api_login.dart';
+
 class AuthWithGoogle {
   static GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -55,7 +57,9 @@ class AuthWithGoogle {
     await UserPrefer.setUserName(value: user.user!.displayName);
     await UserPrefer.setEmail(value: user.user!.email);
 
-    await UserPrefer.setImageUser(value: user.user!.photoURL);
+    // await UserPrefer.setImageUser(value: user.user!.photoURL);
     await UserPrefer.setToken(value: user.user!.photoURL);
+    await APIAuth.loginGoogle(
+        email: user.user!.email, name: user.user!.displayName);
   }
 }

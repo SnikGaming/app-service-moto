@@ -68,6 +68,7 @@ class _OrderScreenState extends State<OrderScreen> {
     };
 
     String json = jsonEncode(jsonData);
+    print('json order--> $json');
     return json;
   }
 

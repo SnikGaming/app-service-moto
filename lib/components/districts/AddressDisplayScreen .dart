@@ -489,6 +489,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                               onPressed: () async {
                                 if (_selectedAddress != null) {
                                   String jsonString = returnJson();
+                                  print('data test $jsonString');
                                   if (widget.isBuy) {
                                     if (_selectPayment!.name != null &&
                                         _selectPayment!.id == 2) {
