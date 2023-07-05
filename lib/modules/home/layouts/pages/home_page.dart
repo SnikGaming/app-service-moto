@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage>
     _animationController.dispose();
     // ignore: todo
     _scrollController.dispose();
-    // TODO: implement dispose
+
     super.dispose();
   }
 

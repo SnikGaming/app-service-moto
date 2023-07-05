@@ -69,17 +69,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedIndex: _selectedIndex,
                   showElevation: true,
                   onItemSelected: (index) {
-                    if (checkLogin()) {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    } else {
-                      Modular.to
-                          .pushNamed(Routes.login)
-                          .then((value) => setState(() {
-                                Navigator.pop(context);
-                              }));
-                    }
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                    // if (checkLogin()) {
+
+                    // } else {
+                    //   Modular.to
+                    //       .pushNamed(Routes.login)
+                    //       .then((value) => setState(() {
+                    //             Navigator.pop(context);
+                    //           }));
+                    // }
                   },
                   items: [
                     FlashyTabBarItem(

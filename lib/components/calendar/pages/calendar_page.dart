@@ -4,6 +4,7 @@ import 'dart:core';
 
 import 'package:app/components/calendar/utills/extensions.dart';
 import 'package:app/modules/home/api/booking/api_booking.dart';
+import 'package:app/preferences/user/user_preferences.dart';
 import 'package:cr_calendar/cr_calendar.dart';
 
 import 'package:flutter/material.dart';
@@ -95,10 +96,13 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addEvent,
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton:
+          UserPrefer.getToken() == null || UserPrefer.getToken() == 'null'
+              ? null
+              : FloatingActionButton(
+                  onPressed: _addEvent,
+                  child: const Icon(Icons.add),
+                ),
       body: Stack(
         children: [
           SingleChildScrollView(

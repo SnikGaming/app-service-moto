@@ -3,7 +3,9 @@ import 'package:app/functions/random_color.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pagination_flutter/pagination.dart';
+import '../../../../components/calendar/res/colors.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/value_app.dart';
 import '../../../../network/connect.dart';
@@ -60,6 +62,7 @@ class _ServicesPageState extends State<ServicesPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: violet,
         title: const Text('YÊU THÍCH'),
       ),
       body: SingleChildScrollView(
@@ -84,7 +87,9 @@ class _ServicesPageState extends State<ServicesPage> {
                 height: size.height * .8,
                 width: size.width,
                 child: APIFavorites.data.length == 0
-                    ? Container()
+                    ? Center(
+                        child: Lottie.network(imageNoData, height: 200),
+                      )
                     : ListView.builder(
                         controller: _scrollController,
                         itemCount: APIFavorites.data.length + 1,

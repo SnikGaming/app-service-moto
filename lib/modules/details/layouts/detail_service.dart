@@ -14,6 +14,7 @@ import '../../../components/convert/format_money.dart';
 import '../../../components/value_app.dart';
 import '../../../constants/style.dart';
 import '../../../network/connect.dart';
+import '../../../preferences/user/user_preferences.dart';
 import '../../home/api/products/models/products.dart' as products;
 import 'package:in_app_review/in_app_review.dart';
 
@@ -165,11 +166,15 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
           ))
         : Scaffold(
             appBar: AppBar(
-              title: Text('Purchase ${data!.name}'),
+              title: Text('${data!.name}'),
               backgroundColor: const Color.fromARGB(255, 113, 66, 223),
             ),
             floatingActionButton:
-                data!.number! > 0 ? Cart(data: data!, size: size) : null,
+                UserPrefer.getToken() == null || UserPrefer.getToken() == 'null'
+                    ? null
+                    : data!.number! > 0
+                        ? Cart(data: data!, size: size)
+                        : null,
             body: Container(
               color: const Color(0xffF0F0F0),
               height: MediaQuery.of(context).size.height,

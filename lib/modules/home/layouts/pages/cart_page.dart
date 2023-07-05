@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:lottie/lottie.dart';
 import '../../../../components/button/mybutton.dart';
+import '../../../../components/calendar/res/colors.dart';
 import '../../../../components/districts/AddressDisplayScreen .dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../components/style/textstyle.dart';
@@ -105,10 +107,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
+  void dispose() => super.dispose();
 
   @override
   Widget build(BuildContext context) {
@@ -372,7 +371,7 @@ class _CartScreenState extends State<CartScreen> {
             style: MyTextStyle.title,
           ),
           centerTitle: true,
-          backgroundColor: Colors.purple,
+          backgroundColor: violet,
         ),
         body: SizedBox(
           height: size.height,
@@ -380,7 +379,9 @@ class _CartScreenState extends State<CartScreen> {
           child: isLoad == false
               ? const Center(child: CircularProgressIndicator())
               : data.isEmpty
-                  ? Image.asset(imageNodata)
+                  ? Center(
+                      child: Lottie.network(imageNoData, height: 200),
+                    )
                   // build2(context)
                   //!: Hiển thị sản phẩm
                   : Stack(

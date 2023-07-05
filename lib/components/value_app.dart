@@ -35,6 +35,8 @@ const txtLogon = 'assets/logo/logo.jpg';
 const imageBooking = 'assets/images/bgbooking.png';
 const imageBooking_abc = 'assets/images/bg_booking.png';
 const imageNodata = 'assets/images/notdata.gif';
+const imageNoData =
+    'https://assets7.lottiefiles.com/packages/lf20_th7LblsQX2.json';
 
 //!: Login
 const forgotPassword = 'Quên mật khẩu';
@@ -63,3 +65,5 @@ const registerFail = 'Thất bại.💕';
 //!: Validator
 const textEmailFormat = "Định dạng email không hợp lệ.";
 const textIsRequired = "Trường này là bắt buộc.";
+
+const textByDev = 'By development';

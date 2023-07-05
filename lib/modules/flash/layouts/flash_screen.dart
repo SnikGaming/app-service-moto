@@ -6,6 +6,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../components/value_app.dart';
+
 class FlashScreen extends StatefulWidget {
   const FlashScreen({super.key});
 
@@ -28,6 +30,8 @@ class _FlashScreenState extends State<FlashScreen>
   _checkInternet() async {
     Future.delayed(const Duration(seconds: 6))
         .then((value) => {Modular.to.navigate(Routes.home)});
+
+    //!:
     // Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
     //   setState(() {
     //     _isConnected = (result != ConnectivityResult.none);
@@ -73,8 +77,20 @@ class _FlashScreenState extends State<FlashScreen>
           width: size.width,
           child: Stack(
             children: [
-              Lottie.asset('assets/flashscreen/routine.json',
-                  repeat: false, height: size.height),
+              // Lottie.asset('assets/flashscreen/routine.json',
+              //     repeat: false, height: size.height),
+              Lottie.network(
+                'https://assets7.lottiefiles.com/packages/lf20_45yVVIguYH.json',
+                repeat: true,
+                height: size.height,
+                fit: BoxFit.cover,
+              ),
+              Lottie.network(
+                'https://assets7.lottiefiles.com/packages/lf20_g63n5jcl.json',
+                repeat: true,
+                height: size.height,
+                fit: BoxFit.cover,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -98,7 +114,7 @@ class _FlashScreenState extends State<FlashScreen>
                   }),
                   const Spacer(),
                   const Text(
-                    'By development',
+                    textByDev,
                     style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w600,
