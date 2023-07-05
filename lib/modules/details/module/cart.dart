@@ -34,12 +34,15 @@ class _CartState extends State<Cart> {
   address.Data? _address;
   loadData() async {
     await APIAddress.fetchAddress();
-    if (APIAddress.lsData.isNotEmpty) {
-      _address = APIAddress.lsData[0];
-    } else {
-      _address = null;
+    if (mounted) {
+      setState(() {
+        if (APIAddress.lsData.isNotEmpty) {
+          _address = APIAddress.lsData[0];
+        } else {
+          _address = null;
+        }
+      });
     }
-    setState(() {});
   }
 
   List<Map<String, dynamic>> createOrder() {
@@ -60,6 +63,12 @@ class _CartState extends State<Cart> {
     // TODO: implement initState
     super.initState();
     loadData();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -172,16 +181,15 @@ class _CartState extends State<Cart> {
                                   onPressed: () async {
                                     List<Map<String, dynamic>> json =
                                         createOrder();
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      context: context,
-                                      builder: (context) =>
-                                          AddressDisplayScreen(
-                                        selectedAddress: _address,
-                                        isBuy: true,
-                                        json: json,
-                                      ),
-                                    ).then((value) => loadData());
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => AddressDisplayScreen(
+                                            selectedAddress: _address,
+                                            isBuy: true,
+                                            json: json,
+                                          ),
+                                        )).then((value) => loadData());
                                   },
                                   child: const Text(
                                     'Mua',

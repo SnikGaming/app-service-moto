@@ -37,15 +37,13 @@ class _ServicesPageState extends State<ServicesPage> {
     );
   }
 
-  void setStateIfMounted(VoidCallback fn) {
-    if (mounted) {
-      setState(fn);
-    }
-  }
-
   loadData() async {
     await APIFavorites.getData(page: page);
-    setState(() {});
+    if (mounted) {
+      setState(() {
+        // Update the state here
+      });
+    }
   }
 
   @override

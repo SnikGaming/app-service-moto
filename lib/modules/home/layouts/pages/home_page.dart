@@ -111,12 +111,13 @@ class _HomePageState extends State<HomePage>
     final categoryDataFuture = APICategory.getData();
     List<dynamic> results =
         await Future.wait([productDataFuture, categoryDataFuture]);
-
-    setState(() {
-      productData = results[0];
-      categoryData = results[1];
-      totalPage = ProductPrefer.getTotal()!;
-    });
+    if (mounted) {
+      setState(() {
+        productData = results[0];
+        categoryData = results[1];
+        totalPage = ProductPrefer.getTotal()!;
+      });
+    }
   }
 
   @override

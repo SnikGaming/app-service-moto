@@ -44,22 +44,26 @@ class _CalendarPageState extends State<CalendarPage> {
   loadData() async {
     await APIBooking.fetchBookings();
     List<booking.Data> data = APIBooking.lsData;
-    for (var e in data) {
-      _calendarController.addEvent(
-        CalendarEventModel(
-          eventColor: int.parse(e.color!) == 0
-              ? eventColors[4]
-              : int.parse(e.color!) == 1
-                  ? eventColors[0]
-                  : eventColors[3],
-          name: e.note!,
-          addressCal: e.address!,
-          begin: DateTime.parse(e.bookingTime!),
-          end: DateTime.parse(e.bookingTime!),
-        ),
-      );
+
+    if (mounted) {
+      setState(() {
+        for (var e in data) {
+          _calendarController.addEvent(
+            CalendarEventModel(
+              eventColor: int.parse(e.color!) == 0
+                  ? eventColors[4]
+                  : int.parse(e.color!) == 1
+                      ? eventColors[0]
+                      : eventColors[3],
+              name: e.note!,
+              addressCal: e.address!,
+              begin: DateTime.parse(e.bookingTime!),
+              end: DateTime.parse(e.bookingTime!),
+            ),
+          );
+        }
+      });
     }
-    setState(() {});
   }
 
   @override

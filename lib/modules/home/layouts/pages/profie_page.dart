@@ -23,7 +23,6 @@ import 'package:http/http.dart' as http;
 
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
-
   @override
   State<ProFilePage> createState() => _ProFilePageState();
 }
@@ -125,25 +124,28 @@ class _ProFilePageState extends State<ProFilePage> {
     lsData = APIOrder.lsData;
 
     var dataStatus = await APIOrder.fetchOrderStatus();
-    if (dataStatus != []) {
-      try {
-        MyOrder.lsMyOrder[0].bage =
-            dataStatus['status_2'].toString(); //!: Huy doi tra
-        MyOrder.lsMyOrder[1].bage =
-            dataStatus['status_1'].toString(); //!: Chờ vận chuyển
-        MyOrder.lsMyOrder[2].bage =
-            dataStatus['status_3'].toString(); //!: Chờ giao hàng
 
-        MyOrder.lsMyOrder[3].bage =
-            dataStatus['status_4'].toString(); //!: Chưa đánh giá
-        // MyOrder.lsMyOrder[4].bage =
-        //     dataStatus['status_2'].toString(); //!: Đổi trả
-      } catch (e) {
-        print(e);
-      }
+    if (mounted) {
+      setState(() {
+        if (dataStatus != []) {
+          try {
+            MyOrder.lsMyOrder[0].bage =
+                dataStatus['status_2'].toString(); //!: Huy doi tra
+            MyOrder.lsMyOrder[1].bage =
+                dataStatus['status_1'].toString(); //!: Chờ vận chuyển
+            MyOrder.lsMyOrder[2].bage =
+                dataStatus['status_3'].toString(); //!: Chờ giao hàng
+
+            MyOrder.lsMyOrder[3].bage =
+                dataStatus['status_4'].toString(); //!: Chưa đánh giá
+            // MyOrder.lsMyOrder[4].bage =
+            //     dataStatus['status_2'].toString(); //!: Đổi trả
+          } catch (e) {
+            print(e);
+          }
+        }
+      });
     }
-
-    setState(() {});
   }
 
   @override
@@ -152,6 +154,12 @@ class _ProFilePageState extends State<ProFilePage> {
     super.initState();
     loadData();
     loadUser();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   bool _isExpanded = false;

@@ -80,17 +80,22 @@ class _CartScreenState extends State<CartScreen> {
   List<CartModel.Data> data = [];
   loadData() async {
     await APIAddress.fetchAddress();
-    if (APIAddress.lsData.isNotEmpty) {
-      _address = APIAddress.lsData[0];
-    } else {
-      _address = null;
-    }
-    isButton = true;
     await ApiCart.getData();
-    data = ApiCart.lsCart;
-    lsClick = List.generate(data.length, (index) => false);
-    isLoad = true;
-    setState(() {});
+
+    if (mounted) {
+      setState(() {
+        if (APIAddress.lsData.isNotEmpty) {
+          _address = APIAddress.lsData[0];
+        } else {
+          _address = null;
+        }
+        isButton = true;
+
+        data = ApiCart.lsCart;
+        lsClick = List.generate(data.length, (index) => false);
+        isLoad = true;
+      });
+    }
   }
 
   @override
@@ -437,20 +442,32 @@ class _CartScreenState extends State<CartScreen> {
                                                 createOrder();
 
                                             // Chuyển danh sách selectedIds qua màn hình Order
-                                            print('data test $json');
-                                            showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              context: context,
-                                              builder: (context) =>
-                                                  AddressDisplayScreen(
-                                                selectedAddress: _address,
-                                                isBuy: false,
-                                                json: json,
-                                              ),
-                                            ).then((value) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      AddressDisplayScreen(
+                                                    selectedAddress: _address,
+                                                    isBuy: false,
+                                                    json: json,
+                                                  ),
+                                                )).then((value) {
                                               selectAll = false;
                                               loadData();
                                             });
+                                            // showModalBottomSheet(
+                                            //   isScrollControlled: true,
+                                            //   context: context,
+                                            //   builder: (context) =>
+                                            //       AddressDisplayScreen(
+                                            //     selectedAddress: _address,
+                                            //     isBuy: false,
+                                            //     json: json,
+                                            //   ),
+                                            // ).then((value) {
+                                            //   selectAll = false;
+                                            //   loadData();
+                                            // });
                                             // await APIOrder.addOrder(json: json);
                                             // Modular.to
                                             //     .pushNamed(Routes.order,
