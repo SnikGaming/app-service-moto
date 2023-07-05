@@ -15,7 +15,7 @@ class AuthWithGoogle {
     try {
       await googleSignIn.signOut();
     } catch (e) {
-      print("Error while signing out: $e");
+      // print("Error while signing out: $e");
     }
   }
 
@@ -37,17 +37,17 @@ class AuthWithGoogle {
           .signInWithCredential(credential)
           .then((value) => _saveData(value, credential));
       // In ra các thông tin của user để kiểm tra
-      print("User email: ${credential}");
-      print("User email: ${userCredential.user!.email}");
+      // print("User email: ${credential}");
+      // print("User email: ${userCredential.user!.email}");
 
-      print("User display name: ${userCredential.user!.displayName}");
-      print("User photoURL: ${userCredential.user!.photoURL}");
+      // print("User display name: ${userCredential.user!.displayName}");
+      // print("User photoURL: ${userCredential.user!.photoURL}");
       // Hiển thị một thông báo thành công (Message là một widget cần được định nghĩa trước đó)
       // Message.show(message: 'Sign in success!', type: MessageType.success);
       // Lưu thông tin User (nếu có)
       // SaveUser(userCredential);
     } catch (e) {
-      print("Error while sign in with Google: $e");
+      // print("Error while sign in with Google: $e");
       // Hiển thị một thông báo lỗi
       // Message.show(message: 'Sign in failed!', type: MessageType.error);
     }

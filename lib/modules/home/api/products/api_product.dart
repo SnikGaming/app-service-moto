@@ -16,8 +16,9 @@ class APIProduct {
       final response = await ApiBase.post(path: '/api/favorites/', data: value);
       if (response.statusCode == 200) {
         return 200;
-      } else
+      } else {
         return 400;
+      }
     } catch (e) {
       return 401;
     }

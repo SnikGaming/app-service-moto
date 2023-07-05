@@ -243,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen>
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           title: Text('Vui lòng đợi'),
           content: Text('Đang gửi email...'),
         );

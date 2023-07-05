@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
@@ -8,7 +10,7 @@ import '../../value_app.dart';
 class PasswordInputDialog extends StatefulWidget {
   final String email;
 
-  const PasswordInputDialog({required this.email});
+  const PasswordInputDialog({super.key, required this.email});
 
   @override
   _PasswordInputDialogState createState() => _PasswordInputDialogState();
@@ -128,9 +130,9 @@ class _PasswordInputDialogState extends State<PasswordInputDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Thoát'),
+          child: const Text('Thoát'),
         ),
-        TextButton(onPressed: _butRegister, child: Text('Lưu'))
+        TextButton(onPressed: _butRegister, child: const Text('Lưu'))
       ],
     );
   }

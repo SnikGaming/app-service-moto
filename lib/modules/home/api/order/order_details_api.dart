@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:app/modules/home/api/order/order_details.dart';
@@ -14,7 +16,6 @@ class APIOrderDetails {
 
       final List<Data> Order =
           dataListJson.map((dataJson) => Data.fromJson(dataJson)).toList();
-      print('abc $Order');
       data = Order;
       return Order;
     } catch (e) {

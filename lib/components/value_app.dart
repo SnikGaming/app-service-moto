@@ -1,4 +1,6 @@
 //!:
+// ignore_for_file: constant_identifier_names
+
 const notProduct = 'Không có hàng';
 const outOfStock = 'Hết hàng';
 
@@ -19,7 +21,7 @@ const txtRateReview = 'Vui lòng chọn mức độ hài lòng của bạn về 
 const txtReviewProduct = 'Hãy nói gì đó về sản phẩm.';
 // const txtSend = 'Send';
 const txtSend = 'Gửi';
-const txtAdressList = 'Địa chỉ';
+const txtAddressList = 'Địa chỉ';
 const txtAddAddress = 'Thêm địa chỉ';
 const txtCart = 'Giỏ hàng';
 const txtSelectAll = 'Chọn tất cả';

@@ -10,8 +10,8 @@ class OrderStatus {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -35,11 +35,11 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status_0'] = this.status0;
-    data['status_1'] = this.status1;
-    data['status_2'] = this.status2;
-    data['status_3'] = this.status3;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status_0'] = status0;
+    data['status_1'] = status1;
+    data['status_2'] = status2;
+    data['status_3'] = status3;
     return data;
   }
 }

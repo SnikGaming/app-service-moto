@@ -84,7 +84,7 @@ class _CartState extends State<Cart> {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: Container(
+                  child: SizedBox(
                     height: 200 + MediaQuery.of(context).viewInsets.bottom,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -208,7 +208,6 @@ class _CartState extends State<Cart> {
             },
           ),
         );
-    
       },
       child: const Icon(Icons.shopping_bag),
     );

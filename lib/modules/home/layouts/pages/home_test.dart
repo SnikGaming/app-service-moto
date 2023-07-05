@@ -1,57 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 
-class HomeTest extends StatefulWidget {
-  const HomeTest({super.key});
-
-  @override
-  State<HomeTest> createState() => _HomeTestState();
-}
-
-class _HomeTestState extends State<HomeTest> {
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Container(
-        height: size.height,
-        width: size.width,
-        //   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2)
-        // child: GridView.builder(
-        //   itemCount: 5,
-        //   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        //     mainAxisSpacing: 10,
-        //     crossAxisSpacing: 10,
-        //     childAspectRatio: .6,
-        //     maxCrossAxisExtent: 200,
-        //   ),
-        //   itemBuilder: (_, i) => const CusThemeSkeletonProducts(),
-        // ),
-        child: Column(
-          children: [
-            Container(
-              width: size.width,
-              height: 100,
-              child: ListView.builder(
-                // physics: NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: const BoxDecoration(color: Colors.white),
-                    child: const CusThemeSkeletonCategories(),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class CusThemeSkeletonProducts extends StatelessWidget {
   const CusThemeSkeletonProducts({
     super.key,

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, no_logic_in_create_state
 
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
@@ -163,9 +163,9 @@ class _HomePageState extends State<HomePage>
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           //!: Contact
-          final Uri _url = Uri(scheme: 'tel', path: '0334666651');
-          if (!await launchUrl(_url)) {
-            throw Exception('Could not launch $_url');
+          final Uri url = Uri(scheme: 'tel', path: '0334666651');
+          if (!await launchUrl(url)) {
+            throw Exception('Could not launch $url');
           }
         },
         child: const Icon(Icons.phone),
@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage>
                       : i == 6 - 1
                           ? 10
                           : 0),
-              child: CusThemeSkeletonCategories(),
+              child: const CusThemeSkeletonCategories(),
             ),
             itemCount: 6,
           ),
@@ -861,8 +861,6 @@ class _ItemProductState extends State<ItemProduct> {
                                         context: context);
                                   }
                                   setState(() {});
-                                  print(
-                                      'data products adgashdfasghdf ${productData[index].love}');
                                 },
                                 child: Icon(
                                     productData[index].love == 1

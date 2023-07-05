@@ -36,7 +36,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 129, 67, 230),
-        title: const Text(txtAdressList),
+        title: const Text(txtAddressList),
       ),
       body: ListView.builder(
         itemCount: addresses.length + 1, // +1 for the "Add Address" button

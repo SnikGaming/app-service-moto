@@ -9,7 +9,7 @@ class Favorite {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
@@ -17,12 +17,12 @@ class Favorite {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['total_pages'] = this.totalPages;
-    data['current_page'] = this.currentPage;
+    data['total_pages'] = totalPages;
+    data['current_page'] = currentPage;
     return data;
   }
 }
@@ -56,14 +56,14 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['product_id'] = this.productId;
-    data['name'] = this.name;
-    data['price'] = this.price;
-    data['image'] = this.image;
-    data['like'] = this.like;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['product_id'] = productId;
+    data['name'] = name;
+    data['price'] = price;
+    data['image'] = image;
+    data['like'] = like;
     return data;
   }
 }

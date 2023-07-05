@@ -6,9 +6,8 @@ import 'package:app/modules/home/api/payment/api_payment.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:ionicons/ionicons.dart';
+import '../../models/shipcode_model.dart';
 import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
 import '../../modules/home/api/cart/api_cart.dart';
@@ -20,6 +19,8 @@ import '../convert/format_money.dart';
 import '../message/message.dart';
 import 'AddressListScreen .dart';
 import 'package:http/http.dart' as http;
+
+import 'address_select.dart';
 
 class AddressDisplayScreen extends StatefulWidget {
   final Address.Data? selectedAddress;
@@ -310,23 +311,6 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
-                                // TextButton(
-                                //     onPressed: () {
-                                //       Navigator.of(context)
-                                //           .push(MaterialPageRoute(
-                                //         builder: (_) => PayPalMethod(),
-                                //       ));
-                                //     },
-                                //     child: const Text('Paypal')),
-                                // TextButton(
-                                //     onPressed: () {
-                                //       makePayment();
-                                //       // Navigator.of(context)
-                                //       //     .push(MaterialPageRoute(
-                                //       //   builder: (_) => MySample(),
-                                //       // ));
-                                //     },
-                                //     child: const Text('Credit')),
                                 //!: Payment
                                 DropdownButtonFormField<payment.Data>(
                                   value: _selectPayment,
@@ -511,6 +495,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                             message: 'Thành Công',
                                             context: context,
                                           );
+
                                           Navigator.of(context).popUntil(
                                               (route) => route.isFirst);
                                         } else {
@@ -563,145 +548,4 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
       ),
     );
   }
-
-  UsePaypal PayPalMethod() {
-    return UsePaypal(
-      sandboxMode: true,
-      clientId:
-          "AQ-z5DPK42W8qrx7VSC2g2aF0PxY_Ko_KUYrNyxi4rlD_q9JY5c1muG1q9fSgRgHyjmc_eqPuGG0wX8S",
-      secretKey:
-          "EKOZxrCebxy9EYW6SzJM6TYBss8rJ1DaaikVSU6F39PKiNxAI9eLdAg0znnm3ku-Swqi3YcUEO8LnyBD",
-      returnURL: "https://samplesite.com/return",
-      cancelURL: "https://samplesite.com/cancel",
-      transactions: const [
-        {
-          "amount": {
-            "total": '0.01',
-            "currency": "USD",
-            "details": {
-              "subtotal": '0.01',
-              "shipping": '0',
-              "shipping_discount": 0
-            }
-          },
-          "description": "The payment transaction description.",
-          "payment_options": {
-            "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
-          },
-
-          //!:
-          "item_list": {
-            "items": [
-              {
-                "name": "A demo product",
-                "quantity": 1,
-                "price": '0.01',
-                "currency": "USD"
-              }
-            ],
-            //   // shipping address is not required though
-            //   // "shipping_address": {
-            //   //   "recipient_name": "Jane Foster",
-            //   //   "line1": "Travis County",
-            //   //   "line2": "",
-            //   //   "city": "Austin",
-            //   //   "country_code": "US",
-            //   //   "postal_code": "73301",
-            //   //   "phone": "+00000000",
-            //   //   "state": "Texas"
-            //   // },
-          }
-        }
-      ],
-      note: "Contact us for any questions on your order.",
-      onSuccess: (Map params) async {},
-      onError: (error) {},
-      onCancel: (params) {},
-    );
-  }
-}
-
-class SelectAddress extends StatelessWidget {
-  SelectAddress({
-    super.key,
-    required Address.Data? selectedAddress,
-    Color? colorUser,
-    Color? colorText,
-    Color? titleColor,
-  })  : _selectedAddress = selectedAddress,
-        _colorUser = colorUser,
-        _colorText = colorText,
-        _titleColor = titleColor;
-
-  final Address.Data? _selectedAddress;
-  final Color? _colorUser;
-  final Color? _colorText;
-  final Color? _titleColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CusRichText(
-                text: "Người nhận : ",
-                titleColor: _titleColor,
-                selectedAddress: _selectedAddress!.name!,
-                color: _colorUser ?? Colors.blue,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              CusRichText(
-                text: "Số điện thoại : ",
-                titleColor: _titleColor,
-                selectedAddress: _selectedAddress!.phoneNumber!,
-                color: _colorText ?? Colors.black,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              CusRichText(
-                text: "Địa chỉ : ",
-                titleColor: _titleColor,
-                selectedAddress:
-                    '${_selectedAddress!.address!}, ${_selectedAddress!.ward!}, ${_selectedAddress!.district!}, ${_selectedAddress!.province!}.',
-                color: _colorText ?? Colors.black,
-              ),
-            ],
-          ),
-        ),
-        const Expanded(
-          flex: 1,
-          child: Icon(Ionicons.chevron_forward_outline),
-        ),
-      ],
-    );
-  }
-}
-
-class ShipCode {
-  String name;
-  String price;
-  String description;
-  ShipCode(
-      {required this.name, required this.price, required this.description});
-  static List<ShipCode> lsShipCode = [
-    ShipCode(
-        name: 'Thường',
-        price: '30000',
-        description: 'Sản phẩm sẽ được giao trong 7 - 10 ngày.'),
-    ShipCode(
-        name: 'Nhanh',
-        price: '45000',
-        description: 'Sản phẩm sẽ giao trong 3- 5 ngày.'),
-    // ShipCode(
-    //     name: 'Hỏa tốc',
-    //     price: '60000',
-    //     description: 'Sản phẩm sẽ được giao trong 24h tiếp theo.'),
-  ];
 }

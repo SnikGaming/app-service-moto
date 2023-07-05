@@ -44,7 +44,7 @@ class _CalendarPageState extends State<CalendarPage> {
   loadData() async {
     await APIBooking.fetchBookings();
     List<booking.Data> data = APIBooking.lsData;
-    data.forEach((e) {
+    for (var e in data) {
       _calendarController.addEvent(
         CalendarEventModel(
           eventColor: int.parse(e.color!) == 0
@@ -58,7 +58,7 @@ class _CalendarPageState extends State<CalendarPage> {
           end: DateTime.parse(e.bookingTime!),
         ),
       );
-    });
+    }
     setState(() {});
   }
 

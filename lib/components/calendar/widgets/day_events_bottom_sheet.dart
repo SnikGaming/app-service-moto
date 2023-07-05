@@ -42,7 +42,7 @@ class DayEventsBottomSheet extends StatelessWidget {
                     } else {
                       final event = events[index - 1];
                       return Container(
-                          constraints: BoxConstraints(minHeight: 140),
+                          constraints: const BoxConstraints(minHeight: 140),
                           child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 4),
@@ -91,13 +91,13 @@ class DayEventsBottomSheet extends StatelessWidget {
                                         height: 140,
                                         color: Colors.yellow,
                                         width: 50,
-                                        child: Icon(Icons.edit),
+                                        child: const Icon(Icons.edit),
                                       ),
                                       Container(
                                         color: Colors.red,
                                         width: 50,
                                         height: 140,
-                                        child: Icon(Icons.delete),
+                                        child: const Icon(Icons.delete),
                                       )
                                     ],
                                   ))));

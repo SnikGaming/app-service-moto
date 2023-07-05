@@ -89,7 +89,7 @@ class _FrmRegisterState extends State<FrmRegister> {
     if (value!.isEmpty) {
       return textIsRequired;
     }
-    if (value!.length < 8) {
+    if (value.length < 8) {
       return 'Mật khẩu cần ít nhất 8 ký tự';
     }
 

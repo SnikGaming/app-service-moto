@@ -100,6 +100,12 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     Widget build2(BuildContext context) {
@@ -452,7 +458,7 @@ class _CartScreenState extends State<CartScreen> {
                                             //     .then((value) => loadData());
                                           },
                                           child: Text(
-                                           txtThanhToan,
+                                            txtThanhToan,
                                             style: title2.copyWith(
                                                 color: Colors.white),
                                           ),

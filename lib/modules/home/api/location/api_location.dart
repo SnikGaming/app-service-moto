@@ -15,7 +15,6 @@ class APILocation {
         .map((bookingJson) => Data.fromJson(bookingJson))
         .toList();
     // lsData = dataJson;
-    print('location data $bookingListJson');
     dataLocation = dataJson;
     return dataLocation;
   }

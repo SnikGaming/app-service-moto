@@ -1,7 +1,6 @@
 import 'package:app/components/value_app.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:app/components/message/message.dart' as mes;
 import 'dart:math';
 
 int generateRandomNumber() {
@@ -30,7 +29,6 @@ Future<bool> sendOTP(
     // print('Message sent: ' + sendReport.toString());
     return true;
   } catch (e) {
-    print('Error sending email: $e');
     return false;
   }
 }

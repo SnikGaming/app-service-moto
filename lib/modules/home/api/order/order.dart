@@ -108,7 +108,7 @@ class Data {
     data['name'] = name;
     data['note'] = note;
     data['ship'] = ship;
-    data['payment'] = this.payment;
+    data['payment'] = payment;
     data['booking_date'] = bookingDate;
     data['delivery date'] = deliveryDate;
     data['created_at'] = createdAt;

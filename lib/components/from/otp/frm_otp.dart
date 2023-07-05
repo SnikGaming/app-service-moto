@@ -62,7 +62,6 @@ Future<void> displayTextInputDialog(BuildContext context, otp, email) async {
                     outlineBorderRadius: 15,
                     style: const TextStyle(fontSize: 17),
                     onChanged: (pin) {
-                      print('pin----> $pin');
                     },
                     onCompleted: (pin) async {
                       var res = await APIOtp.checkOtp(email: email, otp: pin);
