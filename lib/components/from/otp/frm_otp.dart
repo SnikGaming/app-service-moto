@@ -50,7 +50,9 @@ Future<void> displayTextInputDialog(BuildContext context, otp) async {
                     fieldStyle: FieldStyle.box,
                     outlineBorderRadius: 15,
                     style: const TextStyle(fontSize: 17),
-                    onChanged: (pin) {},
+                    onChanged: (pin) {
+                      print('pin----> $pin');
+                    },
                     onCompleted: (pin) {
                       Navigator.pop(context);
                       otp.clear();

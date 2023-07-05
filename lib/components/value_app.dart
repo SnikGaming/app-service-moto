@@ -46,8 +46,8 @@ const sucSend = 'Gửi thành công';
 const failSend = 'Gửi thất bại';
 
 //!: Mail service
-const mailService = 'tranthoilong@gmail.com';
-const keyService = 'wnuxgczhxvegtvoz';
+const mailService = 'tranthoilong.test@gmail.com'; //'tranthoilong@gmail.com';
+const keyService = 'xxclnxkoxawaxwau'; //'wnuxgczhxvegtvoz';
 const subjectService = 'OTP Verification';
 
 //!: Login

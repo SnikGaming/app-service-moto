@@ -12,6 +12,7 @@ import '../../../components/message/message.dart';
 import '../../../components/style/text_style.dart';
 import '../../../constants/colors.dart';
 import '../../../network/api/otp.dart';
+import '../../home/api/otp/otp_api.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -238,15 +239,37 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  _sendEmailForgotPassword() async {
+  _sendEmailForgotPassword() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Vui lòng đợi'),
+          content: Text('Đang gửi email...'),
+        );
+      },
+    );
+
     var value = generateRandomNumber();
-    bool res = await sendOTP(email: email.text, otp: value.toString());
-    if (res) {
-      Message.success(message: sucSend, context: context);
+    sendOTP(email: email.text, otp: value.toString()).then((sendEmailResult) {
+      if (sendEmailResult) {
+        return APIOtp.createOtp(email: email.text, otp: value.toString());
+      } else {
+        throw Exception('Failed to send email');
+      }
+    }).then((createOtpResult) {
       Navigator.pop(context);
-      displayTextInputDialog(context, _otp);
-    } else {
+      if (createOtpResult) {
+        Message.success(message: sucSend, context: context);
+        Navigator.pop(context);
+        displayTextInputDialog(context, _otp);
+      } else {
+        Message.error(message: failSend, context: context);
+      }
+    }).catchError((error) {
+      Navigator.pop(context);
       Message.error(message: failSend, context: context);
-    }
+    });
   }
 }
