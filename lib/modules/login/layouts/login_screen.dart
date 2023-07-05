@@ -2,7 +2,6 @@ import 'package:app/components/from/login/frm_login.dart';
 import 'package:app/components/from/register/frm_register.dart';
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:app/components/value_app.dart';
-
 import 'package:app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';

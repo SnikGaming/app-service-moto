@@ -83,6 +83,7 @@ dependencies:
   flutter_credit_card: ^3.0.6
   like_button: ^2.0.5
   mailer: ^6.0.1
+  skeletons: ^0.0.3
   # flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:

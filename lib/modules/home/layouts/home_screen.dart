@@ -1,6 +1,8 @@
 // ignore_for_file: unused_element, non_constant_identifier_names
 import 'package:app/modules/home/layouts/pages/cart_page.dart';
 import 'package:app/modules/home/layouts/pages/home_page.dart';
+import 'package:app/modules/home/layouts/pages/home_test.dart';
+import 'package:app/modules/home/layouts/pages/home_test1.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/preferences/user/user_preferences.dart';
@@ -28,7 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const ServicesPage(),
     const CalendarPage(),
     const CartScreen(),
-    const ProFilePage(),
+    // const ProFilePage(),
+    const HomePageTest()
   ];
 
   checkLogin() {
@@ -78,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           .pushNamed(Routes.login)
                           .then((value) => setState(() {
                                 Navigator.pop(context);
-                              })); 
+                              }));
                     }
                   },
                   items: [

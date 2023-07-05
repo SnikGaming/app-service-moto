@@ -8,6 +8,7 @@ import 'package:app/constants/colors.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/api/category/api_category.dart';
+import 'package:app/modules/home/layouts/pages/home_test.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
@@ -33,7 +34,7 @@ import '../../api/login/api_login.dart';
 import '../../api/products/api_product.dart';
 import '../../api/products/models/products.dart' as products;
 import '../../api/login/model.dart' as users;
-import '../common/skeleton_home.dart';
+
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -194,7 +195,7 @@ class _HomePageState extends State<HomePage>
   CustomScrollView _customScrollview(BuildContext context, size) {
     //?: Data products
 
-    var sliverList = SliverGrid.builder(
+    var sliverProducts = SliverGrid.builder(
       itemCount: productData.length,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 250,
@@ -208,6 +209,73 @@ class _HomePageState extends State<HomePage>
         child: ItemProduct(
           productData: productData,
           index: index,
+        ),
+      ),
+    );
+
+    var sliverSkeletonProducs = SliverGrid.builder(
+      itemCount: 20,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 250,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        childAspectRatio: .53,
+      ),
+      itemBuilder: (context, index) => Padding(
+        padding: EdgeInsets.only(
+            left: index % 2 == 0 ? 16 : 0, right: index % 2 == 0 ? 0 : 16),
+        child: const CusThemeSkeletonProducts(),
+      ),
+    );
+    var sliverCategories = SliverPadding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+          height: 100,
+          width: size.width,
+          // color: Colors.red,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, i) => Padding(
+              padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 20,
+                  left: i % 2 == 0 ? 10 : 0,
+                  right: i % 2 == 0
+                      ? 10
+                      : i == APICategory.apiCategory.length - 1
+                          ? 10
+                          : 0),
+              child: categoriesItem(i),
+            ),
+            itemCount: APICategory.apiCategory.length,
+          ),
+        ),
+      ),
+    );
+    var sliverSkeletonCategories = SliverPadding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+          height: 100,
+          width: size.width,
+          // color: Colors.red,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, i) => Padding(
+              padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 20,
+                  left: i % 2 == 0 ? 10 : 0,
+                  right: i % 2 == 0
+                      ? 10
+                      : i == 6 - 1
+                          ? 10
+                          : 0),
+              child: CusThemeSkeletonCategories(),
+            ),
+            itemCount: 6,
+          ),
         ),
       ),
     );
@@ -286,40 +354,14 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         //? Category
-
-        SliverPadding(
-          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-          sliver: SliverToBoxAdapter(
-            child: SizedBox(
-              height: 100,
-              width: size.width,
-              // color: Colors.red,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, i) => Padding(
-                  padding: EdgeInsets.only(
-                      top: 10,
-                      bottom: 20,
-                      left: i % 2 == 0 ? 10 : 0,
-                      right: i % 2 == 0
-                          ? 10
-                          : i == APICategory.apiCategory.length - 1
-                              ? 10
-                              : 0),
-                  child: categoriesItem(i),
-                ),
-                itemCount: APICategory.apiCategory.length,
-              ),
-            ),
-          ),
-        ),
+        APICategory.apiCategory.isEmpty
+            ? sliverSkeletonCategories
+            : sliverCategories,
         // SliverToBoxAdapter(
         //   child: SkelatonHome(),
         // ),
         //!: Data product
-        productData.isEmpty
-            ? const SliverToBoxAdapter(child: SkelatonHome())
-            : sliverList,
+        productData.isEmpty ? sliverSkeletonProducs : sliverProducts,
         const SliverToBoxAdapter(
           child: SizedBox(
             height: 40,
