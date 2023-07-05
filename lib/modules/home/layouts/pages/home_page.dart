@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage>
   String search = '';
   var indexData = 0;
   var totalPage = 0;
-  String username = UserPrefer.getsetUserName() ?? 'GUEST';
+  String username = UserPrefer.getsetUserName() ?? 'Khách';
   int page = 1;
   List<products.Data> productData = [];
   List<categories.Data> categoryData = [];
@@ -157,29 +157,16 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    username = UserPrefer.getsetUserName() ?? 'GUEST';
+    username = UserPrefer.getsetUserName() ?? 'Khách';
     final size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           //!: Contact
-          // final Uri _url = Uri(scheme: 'mailto', path: 'tranthoilong@gmail.com');
           final Uri _url = Uri(scheme: 'tel', path: '0334666651');
-
-          // final Uri _url = Uri.parse('https://m.facebook.com/TranThoiLong/');
           if (!await launchUrl(_url)) {
             throw Exception('Could not launch $_url');
           }
-          // showModalBottomSheet(
-          //   isScrollControlled: true,
-          //   context: context,
-          //   builder: (BuildContext context) {
-          //     return Container(
-          //       padding: const EdgeInsets.all(16),
-          //       child: ChatScreen(),
-          //     );
-          //   },
-          // );
         },
         child: const Icon(Icons.phone),
       ),
@@ -338,6 +325,7 @@ class _HomePageState extends State<HomePage>
             child: const MySlider(),
           ),
         ),
+
         //!: Search
         SliverToBoxAdapter(
           child: Padding(
@@ -357,9 +345,6 @@ class _HomePageState extends State<HomePage>
         APICategory.apiCategory.isEmpty
             ? sliverSkeletonCategories
             : sliverCategories,
-        // SliverToBoxAdapter(
-        //   child: SkelatonHome(),
-        // ),
         //!: Data product
         productData.isEmpty ? sliverSkeletonProducs : sliverProducts,
         const SliverToBoxAdapter(
