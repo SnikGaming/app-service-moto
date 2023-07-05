@@ -70,6 +70,8 @@ class _FrmRegisterState extends State<FrmRegister> {
         ],
       ),
     );
+  
+  
   }
 
   String? validateConfirmPassword(String? value) {

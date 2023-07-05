@@ -263,7 +263,8 @@ class _LoginScreenState extends State<LoginScreen>
       if (createOtpResult) {
         Message.success(message: sucSend, context: context);
         Navigator.pop(context);
-        displayTextInputDialog(context, _otp);
+        displayTextInputDialog(context, _otp, email.text);
+        email.clear();
       } else {
         Message.error(message: failSend, context: context);
       }
