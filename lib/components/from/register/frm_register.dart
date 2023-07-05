@@ -34,12 +34,14 @@ class _FrmRegisterState extends State<FrmRegister> {
             height: 10,
           ),
           TextFieldPassword(
+            validator: validatePassword,
             controller: _password,
           ),
           const SizedBox(
             height: 10,
           ),
           TextFieldPassword(
+            validator: validateConfirmPassword,
             isCPassword: false,
             controller: _repassword,
           ),
@@ -68,6 +70,48 @@ class _FrmRegisterState extends State<FrmRegister> {
         ],
       ),
     );
+  }
+
+  String? validateConfirmPassword(String? value) {
+    if (value!.isEmpty) {
+      return textIsRequired;
+    }
+    if (value != _password.text) {
+      return 'Mật khẩu và Xác nhận mật khẩu không trùng khớp';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    // Ít nhất 8 ký tự
+    if (value!.isEmpty) {
+      return textIsRequired;
+    }
+    if (value!.length < 8) {
+      return 'Mật khẩu cần ít nhất 8 ký tự';
+    }
+
+    // Ít nhất một chữ cái thường
+    if (!value.contains(RegExp(r'[a-z]'))) {
+      return 'Mật khẩu cần ít nhất một chữ cái thường';
+    }
+
+    // Ít nhất một chữ cái in hoa
+    if (!value.contains(RegExp(r'[A-Z]'))) {
+      return 'Mật khẩu cần ít nhất một chữ cái in hoa';
+    }
+
+    // Ít nhất một chữ số
+    if (!value.contains(RegExp(r'[0-9]'))) {
+      return 'Mật khẩu cần ít nhất một chữ số';
+    }
+
+    // Ít nhất một ký tự đặc biệt (trong danh sách @$!%*#?&)
+    if (!value.contains(RegExp(r'[@\$!%*#?&]'))) {
+      return 'Mật khẩu cần ít nhất một ký tự đặc biệt';
+    }
+
+    return null; // Mật khẩu hợp lệ
   }
 
   _butRegister() async {
