@@ -2,6 +2,7 @@
 import 'package:app/modules/home/layouts/pages/cart_page.dart';
 import 'package:app/modules/home/layouts/pages/home_page.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
+import 'package:app/modules/home/layouts/pages/profile.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const ServicesPage(),
     const CalendarPage(),
     const CartScreen(),
+    const MyTestProfile(),
     const ProFilePage(),
   ];
 
@@ -72,15 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       _selectedIndex = index;
                     });
-                    // if (checkLogin()) {
-
-                    // } else {
-                    //   Modular.to
-                    //       .pushNamed(Routes.login)
-                    //       .then((value) => setState(() {
-                    //             Navigator.pop(context);
-                    //           }));
-                    // }
                   },
                   items: [
                     FlashyTabBarItem(
