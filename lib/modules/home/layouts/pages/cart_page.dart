@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:app/components/message/message.dart';
 import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
@@ -286,121 +287,167 @@ class _CartScreenState extends State<CartScreen> {
                       height: 8,
                     ),
                     //!: Số lượng
-                    SizedBox(
-                      // color: Colors.red,
-                      width: 90,
-                      height: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          //!: Số lượng -
-                          GestureDetector(
-                            onTap: () {
-                              if (data[i].quantity! > 1) {
-                                setState(() {
-                                  data[i].quantity = data[i].quantity! - 1;
-                                });
-                              }
-                            },
-                            child: Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.remove,
-                                size: 10,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          //!: Hiển thị
-                          GestureDetector(
-                            onTap: () {
-                              var quantityController = TextEditingController(
-                                text: '${data[i].quantity}',
-                              );
-                              var focusNode = FocusNode();
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Nhập số lượng'),
-                                    content: TextField(
-                                      controller: quantityController,
-                                      keyboardType: TextInputType.number,
-                                      focusNode: focusNode,
-                                      autofocus: true,
-                                      onChanged: (value) {
-                                        quantityController.text = value;
-                                      },
+                    data[i].number == 0
+                        ? Container()
+                        : SizedBox(
+                            // color: Colors.red,
+                            width: 90,
+                            height: 30,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                //!: Số lượng -
+                                GestureDetector(
+                                  onTap: () {
+                                    if (data[i].quantity! > 1) {
+                                      setState(() {
+                                        data[i].quantity =
+                                            data[i].quantity! - 1;
+                                      });
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Xác nhận xóa'),
+                                            content: const Text(
+                                                'Bạn có chắc chắn muốn xóa?'),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text('Hủy'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // Đóng hộp thoại
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text('Xóa'),
+                                                onPressed: () {
+                                                  deleteData(i);
+                                                  // Gọi hàm xử lý khi xác nhận xóa
+                                                  Navigator.of(context)
+                                                      .pop(); // Đóng hộp thoại
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white),
+                                      shape: BoxShape.circle,
                                     ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Hủy'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          if (quantityController
-                                              .text.isNotEmpty) {
-                                            if (int.parse(
-                                                    quantityController.text) >
-                                                1) {
-                                              data[i].quantity = int.parse(
-                                                  quantityController.text);
-                                            }
-                                          }
+                                    child: const Icon(
+                                      Icons.remove,
+                                      size: 10,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                //!: Hiển thị
+                                GestureDetector(
+                                  onTap: () {
+                                    var quantityController =
+                                        TextEditingController(
+                                      text: '${data[i].quantity}',
+                                    );
+                                    var focusNode = FocusNode();
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Nhập số lượng'),
+                                          content: TextField(
+                                            controller: quantityController,
+                                            keyboardType: TextInputType.number,
+                                            focusNode: focusNode,
+                                            autofocus: true,
+                                            onChanged: (value) {
+                                              quantityController.text = value;
+                                            },
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Hủy'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                if (quantityController
+                                                    .text.isNotEmpty) {
+                                                  if (int.parse(
+                                                          quantityController
+                                                              .text) >
+                                                      1) {
+                                                    data[i].quantity =
+                                                        int.parse(
+                                                            quantityController
+                                                                .text);
+                                                  }
+                                                }
 
-                                          setState(() {});
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Xác nhận'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                              FocusScope.of(context).requestFocus(focusNode);
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 30,
-                              width: 30,
-                              child: Text(
-                                '${data[i].quantity}', // Số lượng hiển thị
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                                                setState(() {});
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Xác nhận'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    FocusScope.of(context)
+                                        .requestFocus(focusNode);
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 30,
+                                    width: 30,
+                                    child: Text(
+                                      '${data[i].quantity}', // Số lượng hiển thị
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                //!: Số lượng -
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (data[i].quantity! >=
+                                          data[i].number!) {
+                                        Message.warning(
+                                            message: txtIsQuantity,
+                                            context: context);
+                                      } else {
+                                        data[i].quantity =
+                                            data[i].quantity! + 1;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.add,
+                                      size: 10,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          //!: Số lượng -
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                data[i].quantity = data[i].quantity! + 1;
-                              });
-                            },
-                            child: Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.add,
-                                size: 10,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),

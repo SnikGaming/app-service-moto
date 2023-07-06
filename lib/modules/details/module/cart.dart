@@ -6,6 +6,7 @@ import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../../components/districts/AddressDisplayScreen .dart';
+import '../../../components/value_app.dart';
 import '../../home/api/address/api_address.dart';
 import '../../home/api/products/models/products.dart' as products;
 
@@ -215,7 +216,7 @@ class _CartState extends State<Cart> {
                                     check(false);
                                   },
                                   child: Text(
-                                    'Thêm vào giỏ hàng',
+                                    txtAddCart,
                                     style: title1.copyWith(color: Colors.blue),
                                   ),
                                 ),
@@ -303,7 +304,7 @@ class _CartState extends State<Cart> {
       Message.error(
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
-      if (int.parse('${_number.text}') < widget.data!.number!) {
+      if (int.parse('${_number.text}') <= widget.data!.number!) {
         if (isBuy) {
           Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);

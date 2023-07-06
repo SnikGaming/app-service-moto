@@ -1,7 +1,6 @@
 //!:
 // ignore_for_file: constant_identifier_names
 
-
 const outOfStock = 'Hết hàng';
 
 //!: Product review
@@ -17,12 +16,15 @@ const productReviews = 'ĐÁNH GIÁ';
 // const txtRateReview =
 //     'Please rate the product according to the satisfaction level 1-5';
 const txtRateReview = 'Vui lòng chọn mức độ hài lòng của bạn về sản phẩm.';
+const txtIsQuantity = 'Không đủ sản phẩm trong kho';
 // const txtReviewProduct = 'Please add a review for the product';
 const txtReviewProduct = 'Hãy nói gì đó về sản phẩm.';
 // const txtSend = 'Send';
 const txtSend = 'Gửi';
 const txtAddressList = 'Địa chỉ';
 const txtAddAddress = 'Thêm địa chỉ';
+const txtAddCart = 'Thêm vào giỏ hàng';
+
 const txtCart = 'Giỏ hàng';
 const txtSelectAll = 'Chọn tất cả';
 const txtThanhToan = 'THANH TOÁN';
