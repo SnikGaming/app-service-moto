@@ -39,6 +39,7 @@ class _CartState extends State<Cart> {
     await APIAddress.fetchAddress();
     if (mounted) {
       setState(() {
+        enteredValue = 1;
         if (APIAddress.lsData.isNotEmpty) {
           _address = APIAddress.lsData[0];
         } else {
