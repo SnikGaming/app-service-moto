@@ -2,7 +2,7 @@
 
 import 'package:app/components/message/message.dart';
 import 'package:app/components/textfield/login/text_field_password.dart';
-import 'package:app/constants/const_text.dart';
+
 import 'package:app/modules/app_constants.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +12,7 @@ import '../../../network/api/google/google.dart';
 import '../../button/button.dart';
 import '../../functions/logout.dart';
 import '../../textfield/login/text_field_email.dart';
+import '../../value_app.dart';
 
 class FromLogin extends StatefulWidget {
   const FromLogin({super.key});
@@ -77,7 +78,7 @@ class _FromLoginState extends State<FromLogin> {
                 height: 40,
                 child: const Center(
                     child: Text(
-                  textLogin_Login,
+                  login,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1,

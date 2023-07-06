@@ -28,6 +28,8 @@ class Product {
 }
 
 class Data {
+  int? id;
+  int? categoryId;
   String? name;
   String? image;
   String? description;
@@ -35,17 +37,23 @@ class Data {
   int? price;
   int? like;
   int? status;
+  int? love;
 
   Data(
-      {this.name,
+      {this.id,
+      this.categoryId,
+      this.name,
       this.image,
       this.description,
       this.number,
       this.price,
       this.like,
+      this.love,
       this.status});
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    categoryId = json['category_id'];
     name = json['name'];
     image = json['image'];
     description = json['description'];
@@ -53,10 +61,13 @@ class Data {
     price = json['price'];
     like = json['like'];
     status = json['status'];
+    love = json['love'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['category_id'] = categoryId;
     data['name'] = name;
     data['image'] = image;
     data['description'] = description;
@@ -64,6 +75,8 @@ class Data {
     data['price'] = price;
     data['like'] = like;
     data['status'] = status;
+    data['love'] = love;
+
     return data;
   }
 }

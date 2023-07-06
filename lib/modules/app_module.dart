@@ -9,6 +9,7 @@ import '../components/calendar/res/colors.dart';
 import 'app_constants.dart';
 import 'login/login_module.dart';
 import 'notifile/notifica_module.dart';
+import 'order/order_module.dart';
 
 class AppModule extends Module {
   @override
@@ -22,6 +23,7 @@ class AppModule extends Module {
         ModuleRoute(Routes.details, module: DetailsModule()),
         ModuleRoute(Routes.profile, module: ProfileModule()),
         ModuleRoute(Routes.notifications, module: NotificationModule()),
+        ModuleRoute(Routes.order, module: OrderModule()),
       ];
 }
 

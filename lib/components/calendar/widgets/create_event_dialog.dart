@@ -26,7 +26,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   int _selectedColorIndex = 0;
   final _eventNameController = TextEditingController();
 
-  String _rangeButtonText = 'Select date';
+  String _rangeButtonText = 'Chọn ngày';
 
   DateTime? _beginDate;
   DateTime? _endDate;
@@ -123,6 +123,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 16),
 
                 /// Date selection button.
@@ -236,6 +237,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         name: _eventNameController.text,
         begin: beginDate,
         end: endDate,
+        addressCal: "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM",
         eventColor: eventColors[_selectedColorIndex],
       ),
     );

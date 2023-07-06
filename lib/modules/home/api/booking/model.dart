@@ -1,18 +1,9 @@
 class Booking {
   int? status;
   List<Data>? data;
-  int? currentPage;
-  int? lastPage;
-  int? perPage;
   int? totalItems;
 
-  Booking(
-      {this.status,
-      this.data,
-      this.currentPage,
-      this.lastPage,
-      this.perPage,
-      this.totalItems});
+  Booking({this.status, this.data, this.totalItems});
 
   Booking.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -22,9 +13,6 @@ class Booking {
         data!.add(Data.fromJson(v));
       });
     }
-    currentPage = json['current_page'];
-    lastPage = json['last_page'];
-    perPage = json['per_page'];
     totalItems = json['total_items'];
   }
 
@@ -34,9 +22,6 @@ class Booking {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['current_page'] = currentPage;
-    data['last_page'] = lastPage;
-    data['per_page'] = perPage;
     data['total_items'] = totalItems;
     return data;
   }
@@ -47,6 +32,7 @@ class Data {
   int? customerId;
   int? mechanicId;
   String? color;
+  String? address;
   String? service;
   String? note;
   String? bookingTime;
@@ -59,6 +45,7 @@ class Data {
       this.customerId,
       this.mechanicId,
       this.color,
+      this.address,
       this.service,
       this.note,
       this.bookingTime,
@@ -71,6 +58,7 @@ class Data {
     customerId = json['customer_id'];
     mechanicId = json['mechanic_id'];
     color = json['color'];
+    address = json['address'];
     service = json['service'];
     note = json['note'];
     bookingTime = json['booking_time'];
@@ -85,6 +73,7 @@ class Data {
     data['customer_id'] = customerId;
     data['mechanic_id'] = mechanicId;
     data['color'] = color;
+    data['address'] = address;
     data['service'] = service;
     data['note'] = note;
     data['booking_time'] = bookingTime;

@@ -9,7 +9,7 @@ class DetailsModule extends Module {
   @override
   List<ModularRoute> get routes => [
         ChildRoute('/',
-            child: (_, args) => DetailsServiceScreen(data: args.data)),
+            child: (_, args) => DetailsServiceScreen(id: args.data)),
         // ChildRoute('/product',
         //     child: (_, args) => DetailProductScreen(data: args.data)),
       ];

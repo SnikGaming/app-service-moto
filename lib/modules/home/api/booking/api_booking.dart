@@ -9,10 +9,10 @@ class APIBooking {
 
   static Future<List<Data>> fetchBookings() async {
     try {
-      final response = await ApiBase.get('/api/bookings/');
+      final response = await ApiBase.get(path: '/api/bookings/');
       final jsonData = json.decode(response.toString());
       final List<dynamic> bookingListJson = jsonData['data'];
-      toTal = jsonData['last_page'];
+      toTal = jsonData['total_items'];
       final List<Data> bookings = bookingListJson
           .map((bookingJson) => Data.fromJson(bookingJson))
           .toList();
@@ -25,7 +25,7 @@ class APIBooking {
 
   static createBooking({required Map<String, String> data}) async {
     try {
-      final response = await ApiBase.post('/api/bookings/', data);
+      final response = await ApiBase.post(path: '/api/bookings/', data: data);
       if (response.statusCode == 200) {
         return 200;
       }

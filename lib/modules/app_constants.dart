@@ -7,4 +7,5 @@ class Routes {
   static const profile = "/profile";
 
   static const notifications = "/notifications";
+  static const order = '/order';
 }

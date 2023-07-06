@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, no_logic_in_create_state
+
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
 import 'package:app/components/button/mybutton.dart';
@@ -6,6 +8,7 @@ import 'package:app/constants/colors.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/api/category/api_category.dart';
+import 'package:app/modules/home/layouts/pages/home_test.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
@@ -16,8 +19,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pagination_flutter/pagination.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/functions/logout.dart';
+import '../../../../components/search/search.dart';
 import '../../../../components/slider/slider.dart';
 import '../../../../components/style/textstyle.dart';
+import '../../../../components/value_app.dart';
 import '../../../../network/api/google/google.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/product/product.dart';
@@ -29,8 +34,9 @@ import '../../api/login/api_login.dart';
 import '../../api/products/api_product.dart';
 import '../../api/products/models/products.dart' as products;
 import '../../api/login/model.dart' as users;
-import '../common/skeleton_home.dart';
+
 import 'package:ionicons/ionicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -45,10 +51,10 @@ class _HomePageState extends State<HomePage>
   final _scrollController = ScrollController();
   bool isLogin = false;
   bool isProfileOpen = false;
-
+  String search = '';
   var indexData = 0;
   var totalPage = 0;
-  String username = UserPrefer.getsetUserName() ?? 'GUEST';
+  String username = UserPrefer.getsetUserName() ?? 'Khách';
   int page = 1;
   List<products.Data> productData = [];
   List<categories.Data> categoryData = [];
@@ -85,7 +91,7 @@ class _HomePageState extends State<HomePage>
 
       try {
         user = (await APIAuth.getUser())!;
-        print('ada ${UserPrefer.getImageUser()}');
+
         Modular.to.pushNamed(Routes.profile, arguments: [user]);
       } catch (e) {
         Message.warning(
@@ -100,15 +106,18 @@ class _HomePageState extends State<HomePage>
   }
 
   void loadData() async {
-    final productDataFuture =
-        APIProduct.getData(category_id: indexData + 1, page: page);
+    final productDataFuture = APIProduct.getData(
+        search: search, category_id: indexData + 1, page: page);
     final categoryDataFuture = APICategory.getData();
     List<dynamic> results =
         await Future.wait([productDataFuture, categoryDataFuture]);
-    productData = results[0];
-    categoryData = results[1];
-    totalPage = ProductPrefer.getTotal()!;
-    setState(() {});
+    if (mounted) {
+      setState(() {
+        productData = results[0];
+        categoryData = results[1];
+        totalPage = ProductPrefer.getTotal()!;
+      });
+    }
   }
 
   @override
@@ -116,37 +125,10 @@ class _HomePageState extends State<HomePage>
     _animationController.dispose();
     // ignore: todo
     _scrollController.dispose();
-    // TODO: implement dispose
+
     super.dispose();
   }
 
-  List<String> items = [
-    "Apple",
-    "Banana",
-    "Cherry",
-    "Durian",
-    "Eggfruit",
-    "Fig",
-    "Grapes",
-    "Honeydew",
-    "Jackfruit",
-    "Kiwi",
-    "Lemon",
-    "Mango",
-    "Nectarine",
-    "Orange",
-    "Pineapple",
-    "Quince",
-    "Raspberry",
-    "Strawberry",
-    "Tangerine",
-    "Ugli fruit",
-    "Vanilla bean",
-    "Watermelon",
-    "Xigua",
-    "Yellow watermelon",
-    "Zucchini",
-  ];
   double value = 3.5;
 
   @override
@@ -156,6 +138,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
     isCheck = SettingPrefer.getLightDark() ?? true;
     loadData();
+    UserPrefer.getImageUser() != null ? isLogin = true : false;
     _scrollController.addListener(() {
       // if (_scrollController.offset > 0) {
       //   setState(() {
@@ -175,9 +158,19 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    username = UserPrefer.getsetUserName() ?? 'GUEST';
+    username = UserPrefer.getsetUserName() ?? 'Khách';
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          //!: Contact
+          final Uri url = Uri(scheme: 'tel', path: '0334666651');
+          if (!await launchUrl(url)) {
+            throw Exception('Could not launch $url');
+          }
+        },
+        child: const Icon(Icons.phone),
+      ),
       backgroundColor:
           SettingPrefer.getLightDark() == null || SettingPrefer.getLightDark()
               ? white
@@ -190,13 +183,13 @@ class _HomePageState extends State<HomePage>
   CustomScrollView _customScrollview(BuildContext context, size) {
     //?: Data products
 
-    var sliverList = SliverGrid.builder(
+    var sliverProducts = SliverGrid.builder(
       itemCount: productData.length,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 250,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        childAspectRatio: .5,
+        childAspectRatio: .53,
       ),
       itemBuilder: (context, index) => Padding(
         padding: EdgeInsets.only(
@@ -204,6 +197,73 @@ class _HomePageState extends State<HomePage>
         child: ItemProduct(
           productData: productData,
           index: index,
+        ),
+      ),
+    );
+
+    var sliverSkeletonProducs = SliverGrid.builder(
+      itemCount: 4,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 250,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        childAspectRatio: .53,
+      ),
+      itemBuilder: (context, index) => Padding(
+        padding: EdgeInsets.only(
+            left: index % 2 == 0 ? 16 : 0, right: index % 2 == 0 ? 0 : 16),
+        child: const CusThemeSkeletonProducts(),
+      ),
+    );
+    var sliverCategories = SliverPadding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+          height: 100,
+          width: size.width,
+          // color: Colors.red,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, i) => Padding(
+              padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 20,
+                  left: i % 2 == 0 ? 10 : 0,
+                  right: i % 2 == 0
+                      ? 10
+                      : i == APICategory.apiCategory.length - 1
+                          ? 10
+                          : 0),
+              child: categoriesItem(i),
+            ),
+            itemCount: APICategory.apiCategory.length,
+          ),
+        ),
+      ),
+    );
+    var sliverSkeletonCategories = SliverPadding(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+          height: 100,
+          width: size.width,
+          // color: Colors.red,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, i) => Padding(
+              padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 20,
+                  left: i % 2 == 0 ? 10 : 0,
+                  right: i % 2 == 0
+                      ? 10
+                      : i == 6 - 1
+                          ? 10
+                          : 0),
+              child: const CusThemeSkeletonCategories(),
+            ),
+            itemCount: 6,
+          ),
         ),
       ),
     );
@@ -228,11 +288,18 @@ class _HomePageState extends State<HomePage>
               ),
             ),
             IconButton(
-              onPressed: () {
+              //!:Xử lý search
+              onPressed: () async {
+                var data = await APIProduct.getData(
+                    category_id: 1, search: '', page: page);
                 showSearch(
                   context: context,
-                  delegate: MySearchDelegate(items: items),
-                );
+                  delegate: MySearchDelegate(items: data),
+                ).then((value) {
+                  if (value != null) {
+                    Modular.to.pushNamed(Routes.details, arguments: value.id);
+                  }
+                });
               },
               icon: const Icon(Icons.search),
             )
@@ -259,80 +326,28 @@ class _HomePageState extends State<HomePage>
             child: const MySlider(),
           ),
         ),
-        //? Category
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          sliver: SliverGrid.builder(
-            itemCount: APICategory.apiCategory.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 90,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 1.0,
-            ),
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () async {
-                setState(() {
-                  productData = [];
-                  indexData = index;
-                  page = 1;
-                  loadData();
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: indexData == index
-                      ? const Color.fromARGB(255, 85, 34, 225)
-                      : const Color.fromARGB(255, 148, 142, 142),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: indexData == index
-                          ? const Color.fromARGB(255, 143, 90, 240)
-                          : Colors.grey,
-                      spreadRadius: 4,
-                      blurRadius: 7,
-                      offset: const Offset(1, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl:
-                          '${ConnectDb.url}${APICategory.apiCategory[index].image}',
-                      color: indexData == index ? white : black,
-                      height: 45,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    Text(
-                      '${APICategory.apiCategory[index].name}',
-                      style: TextStyle(
-                          color: indexData == index ? white : black,
-                          fontSize: 14,
-                          fontWeight: indexData == index
-                              ? FontWeight.w400
-                              : FontWeight.w600,
-                          letterSpacing: 1),
-                    )
-                  ],
-                ),
-              ),
+
+        //!: Search
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            child: MySearchBar(
+              hintText: 'Tìm kiếm',
+              onSearch: (value) => setState(() {
+                indexData = 0;
+                search = value;
+                page = 1;
+                loadData();
+              }),
             ),
           ),
         ),
-
-        // SliverToBoxAdapter(
-        //   child: SkelatonHome(),
-        // ),
+        //? Category
+        APICategory.apiCategory.isEmpty
+            ? sliverSkeletonCategories
+            : sliverCategories,
         //!: Data product
-        productData.isEmpty
-            ? const SliverToBoxAdapter(child: SkelatonHome())
-            : sliverList,
+        productData.isEmpty ? sliverSkeletonProducs : sliverProducts,
         const SliverToBoxAdapter(
           child: SizedBox(
             height: 40,
@@ -449,6 +464,65 @@ class _HomePageState extends State<HomePage>
         //?:footer
         _footer(size)
       ],
+    );
+  }
+
+  GestureDetector categoriesItem(int index) {
+    return GestureDetector(
+      onTap: () async {
+        search = '';
+        setState(() {
+          productData = [];
+          indexData = index;
+          page = 1;
+          loadData();
+        });
+      },
+      child: Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          color: indexData == index
+              ? const Color.fromARGB(255, 85, 34, 225)
+              : const Color.fromARGB(255, 148, 142, 142),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: indexData == index
+                  ? const Color.fromARGB(255, 143, 90, 240)
+                  : Colors.grey,
+              spreadRadius: 4,
+              blurRadius: 7,
+              offset: const Offset(1, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CachedNetworkImage(
+              imageUrl:
+                  '${ConnectDb.url}${APICategory.apiCategory[index].image}',
+              color: indexData == index ? white : black,
+              height: 30,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              '${APICategory.apiCategory[index].name}',
+              style: TextStyle(
+                  color: indexData == index ? white : black,
+                  fontSize: 12,
+                  fontWeight:
+                      indexData == index ? FontWeight.w400 : FontWeight.w600,
+                  letterSpacing: 1),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -642,9 +716,23 @@ class _HomePageState extends State<HomePage>
   }
 }
 
-class ItemProduct extends StatelessWidget {
+class ItemProduct extends StatefulWidget {
   const ItemProduct({
     super.key,
+    required this.productData,
+    required this.index,
+  });
+  final int index;
+  final List<products.Data> productData;
+  @override
+  State<ItemProduct> createState() => _ItemProductState(
+        productData: productData,
+        index: index,
+      );
+}
+
+class _ItemProductState extends State<ItemProduct> {
+  _ItemProductState({
     required this.productData,
     required this.index,
   });
@@ -654,20 +742,21 @@ class ItemProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Modular.to.pushNamed(Routes.details, arguments: productData[index]);
-        // serviceDetail(context, size, productData[index]);
+      onTap: () async {
+        Modular.to.pushNamed(Routes.details, arguments: productData[index].id);
       },
       child: Container(
-        decoration: const BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(3, 3),
-            blurRadius: 16,
-          )
-        ]),
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(3, 3),
+              blurRadius: 16,
+            )
+          ],
+        ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           child: Container(
               color: SettingPrefer.getLightDark() == null ||
                       SettingPrefer.getLightDark()
@@ -679,25 +768,30 @@ class ItemProduct extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            decoration: const BoxDecoration(),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  '${ConnectDb.url}${productData[index].image}',
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        child: Container(
+                          decoration: const BoxDecoration(),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${ConnectDb.url}${productData[index].image}',
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                           ),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16, right: 16),
@@ -721,35 +815,61 @@ class ItemProduct extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const Spacer(),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 14,
+                              Container(
+                                padding: const EdgeInsetsDirectional.all(4),
+                                // color: Colors.black,
+                                child: Text(
+                                    productData[index].number! > 0
+                                        ? formatCurrency(
+                                            amount:
+                                                '${productData[index].price}')
+                                        : outOfStock,
+                                    style: MyTextStyle.normal.copyWith(
+                                      color: Colors.purple,
+                                      fontSize: 14,
+                                    )),
                               ),
-                              Text(
-                                '${productData[index].like}',
-                                style: MyTextStyle.normal
-                                    .copyWith(fontSize: 12)
-                                    .copyWith(color: Colors.red),
+                              GestureDetector(
+                                onTap: () async {
+                                  final value = await APIProduct.create(
+                                      id: productData[index].id!);
+
+                                  if (value == 200) {
+                                    if (productData[index].love == 1) {
+                                      productData[index].love = 0;
+                                    } else {
+                                      productData[index].love = 1;
+                                    }
+                                    Message.success(
+                                        message:
+                                            'Đã thêm vào danh sách yêu thích.',
+                                        context: context);
+                                  } else {
+                                    if (productData[index].love == 1) {
+                                      productData[index].love = 0;
+                                    } else {
+                                      productData[index].love = 1;
+                                    }
+                                    Message.success(
+                                        message:
+                                            'Đã bỏ khỏi danh sách yêu thích.',
+                                        context: context);
+                                  }
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                    productData[index].love == 1
+                                        ? Ionicons.heart
+                                        : Ionicons.heart_outline,
+                                    color: Colors.red),
                               ),
                             ],
                           ),
-                          const Spacer(),
-                          Container(
-                            padding: const EdgeInsetsDirectional.all(8),
-                            color: Colors.black,
-                            child: Text(
-                                formatCurrency(
-                                    amount: '${productData[index].price}'),
-                                style: MyTextStyle.normal.copyWith(
-                                  color: Colors.yellow,
-                                  fontSize: 16,
-                                )),
-                          ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),

@@ -41,8 +41,8 @@ class DayEventsBottomSheet extends StatelessWidget {
                       );
                     } else {
                       final event = events[index - 1];
-                      return SizedBox(
-                          height: 100,
+                      return Container(
+                          constraints: const BoxConstraints(minHeight: 140),
                           child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 4),
@@ -67,6 +67,11 @@ class DayEventsBottomSheet extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
+                                                event.addressCal,
+                                                style: const TextStyle(
+                                                    fontSize: 16),
+                                              ),
+                                              Text(
                                                 event.name,
                                                 style: const TextStyle(
                                                     fontSize: 16),
@@ -81,7 +86,19 @@ class DayEventsBottomSheet extends StatelessWidget {
                                             ],
                                           ),
                                         ),
-                                      ))
+                                      )),
+                                      Container(
+                                        height: 140,
+                                        color: Colors.yellow,
+                                        width: 50,
+                                        child: const Icon(Icons.edit),
+                                      ),
+                                      Container(
+                                        color: Colors.red,
+                                        width: 50,
+                                        height: 140,
+                                        child: const Icon(Icons.delete),
+                                      )
                                     ],
                                   ))));
                     }

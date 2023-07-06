@@ -5,7 +5,7 @@ class UserPrefer {
 
   static const __imageUser = 'pic';
   static const __id = 'id';
-
+  static const _score = 'score';
   static const __gioitinh = 'gioitinh';
 
   static const _data = "token";
@@ -20,6 +20,12 @@ class UserPrefer {
       await preferences!.setString(_email, value);
   static getEmail() => preferences!.getString(_email);
   static Future removeEmail() async => await preferences!.remove(_email);
+
+//! Score(),
+  static Future setScore({required String value}) async =>
+      await preferences!.setString(_score, value);
+  static getScore() => preferences!.getString(_score);
+  static Future removeScore() async => await preferences!.remove(_score);
 
   // //! Login user
   static Future setImageUser({required String value}) async =>
