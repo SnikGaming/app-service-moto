@@ -12,7 +12,7 @@ String? validatePhoneNumber(String? value) {
   }
   // Kiểm tra số điện thoại thuộc Việt Nam
   if (!value.startsWith('0')) {
-    return 'Số điện thoại phải bắt đầu bằng số 0';
+    return 'Số điện thoại không đúng.';
   }
   // Thêm các kiểm tra khác tùy theo yêu cầu cụ thể của bạn
 

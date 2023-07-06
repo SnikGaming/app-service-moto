@@ -6,7 +6,7 @@ import '../../modules/home/api/address/model.dart' as Address;
 import '../../modules/home/api/location/api_location.dart';
 import '../../modules/home/layouts/pages/services_page.dart';
 import '../value_app.dart';
-import 'location_db.dart';
+import 'form_input_address.dart';
 
 class AddressListScreen extends StatefulWidget {
   const AddressListScreen({Key? key});
@@ -143,7 +143,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                     name != null &&
                     address != null &&
                     id != null
-                ? LocationDropdown(
+                ? FormInputLocation(
                     data: APILocation.dataLocation,
                     defaultProvinceId: defaultProvinceId,
                     defaultDistrictId: defaultDistrictId,
@@ -153,7 +153,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                     defaultPhone: phone,
                     id: id,
                   )
-                : LocationDropdown(
+                : FormInputLocation(
                     data: APILocation.dataLocation,
                   ),
           ),

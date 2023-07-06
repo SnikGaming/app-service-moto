@@ -12,7 +12,7 @@ import '../../modules/home/api/address/api_address.dart';
 import '../textformfield/customTextFormField.dart';
 import '../validator/phone.dart';
 
-class LocationDropdown extends StatefulWidget {
+class FormInputLocation extends StatefulWidget {
   final List<Data> data;
   final int defaultProvinceId;
   final int defaultDistrictId;
@@ -22,22 +22,24 @@ class LocationDropdown extends StatefulWidget {
   final String defaultAddress;
   final int? id;
 
-  const LocationDropdown(
-      {super.key,
-      required this.data,
-      this.defaultProvinceId = 0,
-      this.defaultDistrictId = 0,
-      this.defaultWardId = 0,
-      this.defaultName = '',
-      this.defaultAddress = '',
-      this.defaultPhone = '',
-      this.id});
+  const FormInputLocation({
+    super.key,
+    required this.data,
+    this.defaultProvinceId = 0,
+    this.defaultDistrictId = 0,
+    this.defaultWardId = 0,
+    this.defaultName = '',
+    this.defaultAddress = '',
+    this.defaultPhone = '',
+    this.id,
+  });
 
   @override
-  _LocationDropdownState createState() => _LocationDropdownState();
+  _FormInputLocationState createState() => _FormInputLocationState();
 }
 
-class _LocationDropdownState extends State<LocationDropdown> {
+class _FormInputLocationState extends State<FormInputLocation> {
+  final _formKey = GlobalKey<FormState>();
   Data? selectedData;
   Districts? selectedDistrict;
   Wards? selectedWard;
@@ -108,97 +110,117 @@ class _LocationDropdownState extends State<LocationDropdown> {
             const SizedBox(
               height: 100,
             ),
-            CustomTextField(
-              controller: phoneController,
-              textInputAction: TextInputAction.next,
-              hintText: 'Nhập số điện thoại',
-              keyboardType: TextInputType.phone,
-              validator: validatePhoneNumber,
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomTextField(
+                    controller: phoneController,
+                    textInputAction: TextInputAction.next,
+                    hintText: 'Nhập số điện thoại',
+                    keyboardType: TextInputType.phone,
+                    validator: validatePhoneNumber,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextField(
+                    controller: nameController,
+                    textInputAction: TextInputAction.next,
+                    hintText: 'Tên người nhận hàng',
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Tên người dùng không được để trống.';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  // Data Dropdown
+                  DropdownButton<Data>(
+                    value: selectedData,
+                    hint: const Text('Tỉnh/ Thành phố'),
+                    onChanged: (Data? newValue) {
+                      setState(() {
+                        selectedData = newValue;
+                        selectedDistrict = null;
+                        selectedWard = null;
+                        selectedProvinceName = '';
+                        selectedProvinceId = '';
+                        selectedDistrictName = '';
+                        selectedDistrictId = '';
+                        selectedWardName = '';
+                        selectedWardId = '';
+                      });
+                    },
+                    items: widget.data.map<DropdownMenuItem<Data>>((Data data) {
+                      return DropdownMenuItem<Data>(
+                        value: data,
+                        child: Text(data.name!),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 16),
+                  // District Dropdown
+                  DropdownButton<Districts>(
+                    value: selectedDistrict,
+                    hint: const Text('Quận/ Huyện'),
+                    onChanged: (Districts? newValue) {
+                      setState(() {
+                        selectedDistrict = newValue;
+                        selectedWard = null;
+                        selectedDistrictName = '';
+                        selectedDistrictId = '';
+                        selectedWardName = '';
+                        selectedWardId = '';
+                      });
+                    },
+                    items: selectedData?.districts
+                            ?.map<DropdownMenuItem<Districts>>(
+                                (Districts district) {
+                          return DropdownMenuItem<Districts>(
+                            value: district,
+                            child: Text(district.name!),
+                          );
+                        }).toList() ??
+                        [],
+                  ),
+                  const SizedBox(height: 16),
+                  // Ward Dropdown
+                  DropdownButton<Wards>(
+                    value: selectedWard,
+                    hint: const Text('Phường/ Xã'),
+                    onChanged: (Wards? newValue) {
+                      setState(() {
+                        selectedWard = newValue;
+                        selectedWardName = '';
+                        selectedWardId = '';
+                      });
+                    },
+                    items: selectedDistrict?.wards
+                            ?.map<DropdownMenuItem<Wards>>((Wards ward) {
+                          return DropdownMenuItem<Wards>(
+                            value: ward,
+                            child: Text(ward.name!),
+                          );
+                        }).toList() ??
+                        [],
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextField(
+                    controller: addressController,
+                    textInputAction: TextInputAction.next,
+                    hintText: 'Số nhà/Tên đường',
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Số nhà/tên đường không được để trống.';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              controller: nameController,
-              textInputAction: TextInputAction.next,
-              hintText: 'Tên người nhận hàng',
-            ),
-            const SizedBox(height: 16),
-            // Data Dropdown
-            DropdownButton<Data>(
-              value: selectedData,
-              hint: const Text('Tỉnh/ Thành phố'),
-              onChanged: (Data? newValue) {
-                setState(() {
-                  selectedData = newValue;
-                  selectedDistrict = null;
-                  selectedWard = null;
-                  selectedProvinceName = '';
-                  selectedProvinceId = '';
-                  selectedDistrictName = '';
-                  selectedDistrictId = '';
-                  selectedWardName = '';
-                  selectedWardId = '';
-                });
-              },
-              items: widget.data.map<DropdownMenuItem<Data>>((Data data) {
-                return DropdownMenuItem<Data>(
-                  value: data,
-                  child: Text(data.name!),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 16),
-            // District Dropdown
-            DropdownButton<Districts>(
-              value: selectedDistrict,
-              hint: const Text('Quận/ Huyện'),
-              onChanged: (Districts? newValue) {
-                setState(() {
-                  selectedDistrict = newValue;
-                  selectedWard = null;
-                  selectedDistrictName = '';
-                  selectedDistrictId = '';
-                  selectedWardName = '';
-                  selectedWardId = '';
-                });
-              },
-              items: selectedData?.districts
-                      ?.map<DropdownMenuItem<Districts>>((Districts district) {
-                    return DropdownMenuItem<Districts>(
-                      value: district,
-                      child: Text(district.name!),
-                    );
-                  }).toList() ??
-                  [],
-            ),
-            const SizedBox(height: 16),
-            // Ward Dropdown
-            DropdownButton<Wards>(
-              value: selectedWard,
-              hint: const Text('Phường/ Xã'),
-              onChanged: (Wards? newValue) {
-                setState(() {
-                  selectedWard = newValue;
-                  selectedWardName = '';
-                  selectedWardId = '';
-                });
-              },
-              items: selectedDistrict?.wards
-                      ?.map<DropdownMenuItem<Wards>>((Wards ward) {
-                    return DropdownMenuItem<Wards>(
-                      value: ward,
-                      child: Text(ward.name!),
-                    );
-                  }).toList() ??
-                  [],
-            ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              controller: addressController,
-              textInputAction: TextInputAction.next,
-              hintText: 'Số nhà/Tên đường',
-            ),
-            const SizedBox(height: 16),
-
             MyButton(
               onPressed: _handleSubmit,
               backgroundColor: Colors.red,
@@ -222,6 +244,11 @@ class _LocationDropdownState extends State<LocationDropdown> {
   }
 
   void _handleSubmit() async {
+    if (!_formKey.currentState!.validate()) {
+      // Form validation failed
+      return;
+    }
+
     if (selectedData == null ||
         selectedDistrict == null ||
         selectedWard == null) {
