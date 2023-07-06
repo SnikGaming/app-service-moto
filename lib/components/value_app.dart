@@ -1,7 +1,7 @@
 //!:
 // ignore_for_file: constant_identifier_names
 
-const notProduct = 'Không có hàng';
+
 const outOfStock = 'Hết hàng';
 
 //!: Product review

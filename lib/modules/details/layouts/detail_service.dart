@@ -278,9 +278,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                                     ? formatCurrency(
                                                         amount:
                                                             '${data!.price}')
-                                                    : data!.like! > 0
-                                                        ? outOfStock
-                                                        : notProduct,
+                                                    : outOfStock,
                                                 style: styleH3.copyWith(
                                                   color: Colors.red,
                                                 ),

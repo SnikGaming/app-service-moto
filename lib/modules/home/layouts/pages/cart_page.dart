@@ -31,6 +31,11 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  deleteData(i) {
+    ApiCart.apiDeleteCarts(cartIds: [data[i].id!]);
+    loadData();
+  }
+
   Color randomColor() {
     Random random = Random();
     int red = random.nextInt(256);
@@ -72,8 +77,9 @@ class _CartScreenState extends State<CartScreen> {
 
   void selectAllItems(bool value) {
     setState(() {
+      var test = data.where((item) => item.number != 0).toList();
       selectAll = value;
-      lsClick = List.generate(data.length, (index) => value);
+      lsClick = List.generate(test.length, (index) => value);
       isButton = checkList(lsClick);
 
       // Check if all elements in lsClick are true
@@ -97,6 +103,9 @@ class _CartScreenState extends State<CartScreen> {
 
   address.Data? _address;
   List<CartModel.Data> data = [];
+
+  List<CartModel.Data> dataWithZeroNumber = [];
+
   loadData() async {
     await APIAddress.fetchAddress();
     await ApiCart.getData();
@@ -111,8 +120,14 @@ class _CartScreenState extends State<CartScreen> {
         isButton = true;
 
         data = ApiCart.lsCart;
+        dataWithZeroNumber = data.where((item) => item.number == 0).toList();
+        List<CartModel.Data> dataWithNonZeroNumber =
+            data.where((item) => item.number != 0).toList();
+
+        data = dataWithNonZeroNumber;
         lsClick = List.generate(data.length, (index) => false);
         isLoad = true;
+        data = data + dataWithZeroNumber;
       });
     }
   }
@@ -166,10 +181,7 @@ class _CartScreenState extends State<CartScreen> {
           motion: const ScrollMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {
-                ApiCart.apiDeleteCarts(cartIds: [data[i].id!]);
-                loadData();
-              },
+              onPressed: (context) => deleteData(i),
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               icon: Icons.delete,
@@ -190,25 +202,29 @@ class _CartScreenState extends State<CartScreen> {
           ),
           child: Row(
             children: [
-              Checkbox(
-                side: const BorderSide(color: Colors.white),
-                activeColor: Colors.red,
-                shape: const CircleBorder(),
-                value: lsClick[i],
-                onChanged: (value) {
-                  setState(() {
-                    lsClick[i] = value!;
-                    isButton = checkList(lsClick);
+              data[i].number == 0
+                  ? Container(
+                      width: 40,
+                    )
+                  : Checkbox(
+                      side: const BorderSide(color: Colors.white),
+                      activeColor: Colors.red,
+                      shape: const CircleBorder(),
+                      value: lsClick[i],
+                      onChanged: (value) {
+                        setState(() {
+                          lsClick[i] = value!;
+                          isButton = checkList(lsClick);
 
-                    // Check if all values in lsClick are true
-                    if (lsClick.every((element) => element)) {
-                      selectAll = true;
-                    } else {
-                      selectAll = false;
-                    }
-                  });
-                },
-              ),
+                          // Check if all values in lsClick are true
+                          if (lsClick.every((element) => element)) {
+                            selectAll = true;
+                          } else {
+                            selectAll = false;
+                          }
+                        });
+                      },
+                    ),
               Expanded(
                 flex: 1,
                 child: Column(
@@ -424,7 +440,7 @@ class _CartScreenState extends State<CartScreen> {
                             itemBuilder: (context, i) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: lsClick.isEmpty
+                                child: data.isEmpty
                                     ? const CircularProgressIndicator()
                                     : slidable(i, context),
                               );

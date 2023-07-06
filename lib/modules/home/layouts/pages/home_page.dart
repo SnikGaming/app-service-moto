@@ -827,9 +827,7 @@ class _ItemProductState extends State<ItemProduct> {
                                         ? formatCurrency(
                                             amount:
                                                 '${productData[index].price}')
-                                        : productData[index].like! > 0
-                                            ? outOfStock
-                                            : notProduct,
+                                        : outOfStock,
                                     style: MyTextStyle.normal.copyWith(
                                       color: Colors.purple,
                                       fontSize: 14,
