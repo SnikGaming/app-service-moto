@@ -36,8 +36,6 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   address.Data? _address;
   loadData() async {
-    enteredValue = 1;
-
     await APIAddress.fetchAddress();
     if (mounted) {
       setState(() {
@@ -245,37 +243,33 @@ class _CartState extends State<Cart> {
   }
 
   void check(bool isBuy) async {
-    if (UserPrefer.getToken() == null || UserPrefer.getToken() == 'null') {
-      Message.error(
-          message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
-    } else {
-      if (enteredValue <= widget.data!.number!) {
-        if (isBuy) {
-          Message.success(message: 'Mua thành công.', context: context);
-          Navigator.pop(context);
-          _showProductDialog(context); // Show product information dialog
-        } else {
-          var value = await ApiCart.apiCart(
-            id: widget.data!.id!,
-            quantity: enteredValue,
-          );
-          if (value == 200) {
-            Message.success(
-                message: 'Thêm giỏ hàng thành công.', context: context);
-            loadData();
-            widget.updateCartData();
-            setState(() {});
-          } else {
-            Message.error(message: 'Thêm giỏ hàng thất bại.', context: context);
-            loadData();
-          }
-          Navigator.pop(context);
-        }
+    if (enteredValue <= widget.data!.number!) {
+      if (isBuy) {
+        Message.success(message: 'Mua thành công.', context: context);
+        Navigator.pop(context);
+        _showProductDialog(context); // Show product information dialog
       } else {
-        Message.error(
-            message: 'Vui lòng kiểm tra lại số lượng', context: context);
-        loadData();
+        var value = await ApiCart.apiCart(
+          id: widget.data!.id!,
+          quantity: enteredValue,
+        );
+        if (value == 200) {
+          Message.success(
+              message: 'Thêm giỏ hàng thành công.', context: context);
+          enteredValue = 1;
+
+          widget.updateCartData();
+          setState(() {});
+        } else {
+          Message.error(message: 'Thêm giỏ hàng thất bại.', context: context);
+          enteredValue = 1;
+        }
+        Navigator.pop(context);
       }
+    } else {
+      Message.error(
+          message: 'Vui lòng kiểm tra lại số lượng', context: context);
+      enteredValue = 1;
     }
   }
 }

@@ -4,11 +4,14 @@ import 'dart:convert';
 
 import 'package:app/components/message/message.dart';
 import 'package:app/components/zoom/image.dart';
+import 'package:app/functions/random_color.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rating_dialog/rating_dialog.dart';
+import '../../../components/calendar/res/colors.dart';
 import '../../../components/convert/calculate_time.dart';
 import '../../../components/convert/format_money.dart';
 import '../../../components/value_app.dart';
@@ -415,24 +418,37 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        CachedNetworkImage(
-                                          imageUrl:
-                                              '${ConnectDb.url}${lsReview[index].user!.imageUrl}',
-                                          height: 45,
-                                          width: 45,
-                                          placeholder: (context, url) =>
-                                              const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  ClipOval(
-                                            child: Image(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
+                                        lsReview[index].user!.imageUrl ==
+                                                "/storage/user/Null"
+                                            ? Container(
+                                                height: 45,
+                                                width: 45,
+                                                decoration: const BoxDecoration(
+                                                  color: violet,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Lottie.network(
+                                                    'https://assets10.lottiefiles.com/packages/lf20_1mvhccet.json'),
+                                              )
+                                            : CachedNetworkImage(
+                                                imageUrl:
+                                                    '${ConnectDb.url}${lsReview[index].user!.imageUrl}',
+                                                height: 45,
+                                                width: 45,
+                                                placeholder: (context, url) =>
+                                                    const CircularProgressIndicator(),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        ClipOval(
+                                                  child: Image(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
                                         const SizedBox(
                                           width: 8,
                                         ),
