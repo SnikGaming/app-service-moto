@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app/components/style/text_style.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -86,7 +88,7 @@ class _ServicesPageState extends State<ServicesPage> {
               SizedBox(
                 height: size.height * .8,
                 width: size.width,
-                child: APIFavorites.data.length == 0
+                child: APIFavorites.data.isEmpty
                     ? Center(
                         child: Lottie.network(imageNoData, height: 200),
                       )
@@ -108,10 +110,9 @@ class _ServicesPageState extends State<ServicesPage> {
                                   child: Container(
                                     constraints:
                                         const BoxConstraints(minHeight: 120),
-                                    decoration: BoxDecoration(
-                                      // color: randomColor(),
-                                      color: const Color.fromARGB(
-                                          255, 206, 205, 205),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xcc7153e9),
+                                      // color: Color.fromARGB(255, 206, 205, 205),
                                     ),
                                     child: Row(
                                       children: [
@@ -155,11 +156,13 @@ class _ServicesPageState extends State<ServicesPage> {
                                                         data.price.toString(),
                                                   ),
                                                   style: title2.copyWith(
-                                                      color: Colors.purple),
+                                                    color: const Color.fromARGB(
+                                                        255, 254, 254, 1),
+                                                  ),
                                                 ),
                                                 Row(
                                                   children: [
-                                                    Spacer(),
+                                                    const Spacer(),
                                                     GestureDetector(
                                                         onTap: () async {
                                                           final value =
@@ -169,8 +172,10 @@ class _ServicesPageState extends State<ServicesPage> {
                                                                           .productId!);
                                                           loadData();
                                                         },
-                                                        child: Icon(
-                                                            Icons.favorite)),
+                                                        child: const Icon(
+                                                          Icons.favorite,
+                                                          color: Colors.red,
+                                                        )),
                                                   ],
                                                 ),
                                               ],

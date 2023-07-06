@@ -1,5 +1,7 @@
 // ignore_for_file: library_prefixes, unused_element
 
+import 'dart:math';
+
 import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,21 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  Color randomColor() {
+    Random random = Random();
+    int red = random.nextInt(256);
+    int green = random.nextInt(256);
+    int blue = random.nextInt(256);
+
+    // Kiểm tra nếu màu là màu trắng, thì random lại
+    if (red == 255 && green == 255 && blue == 255) {
+      return randomColor();
+    }
+    print('Mã màu ${Color.fromRGBO(red, green, blue, .8)}');
+
+    return Color.fromRGBO(red, green, blue, .8);
+  }
+
   List<bool> lsClick = [];
   bool isLoad = false;
   bool isButton = true;
@@ -165,7 +182,7 @@ class _CartScreenState extends State<CartScreen> {
           padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
           width: size.width,
           decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 231, 226, 226),
+            color: Color.fromARGB(204, 233, 138, 83),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16),
               bottomLeft: Radius.circular(16),
@@ -174,6 +191,8 @@ class _CartScreenState extends State<CartScreen> {
           child: Row(
             children: [
               Checkbox(
+                side: const BorderSide(color: Colors.white),
+                activeColor: Colors.red,
                 shape: const CircleBorder(),
                 value: lsClick[i],
                 onChanged: (value) {
@@ -200,34 +219,46 @@ class _CartScreenState extends State<CartScreen> {
                           arguments: data[i].productId),
                       child: Row(
                         children: [
-                          CachedNetworkImage(
-                            imageUrl: '${ConnectDb.url}${data[i].image}',
-                            height: 80,
-                            placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: CachedNetworkImage(
+                              imageUrl: '${ConnectDb.url}${data[i].image}',
+                              height: 100,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(data[i].productName!,
-                                    style: title1.copyWith(color: Colors.blue)),
+                                Text(
+                                  data[i].productName!,
+                                  style: title1.copyWith(
+                                      color: Colors.white, fontSize: 16),
+                                ),
                                 const SizedBox(
                                   height: 8,
                                 ),
                                 Text(
                                   'Giá : ${data[i].price.toString()}',
-                                  style: title1.copyWith(color: Colors.red),
+                                  style: title1.copyWith(
+                                      color: const Color.fromARGB(
+                                          255, 254, 254, 1),
+                                      fontSize: 15),
                                 ),
                                 const SizedBox(
                                   height: 8,
                                 ),
                                 Text(
                                   'Tổng tiền: ${formatCurrency(amount: '${int.parse(data[i].price!) * data[i].quantity!}')}',
-                                  style: title1.copyWith(color: Colors.black),
+                                  style: title1.copyWith(
+                                      color: const Color.fromARGB(
+                                          255, 54, 212, 244),
+                                      fontSize: 14),
                                 ),
                               ],
                             ),
@@ -259,13 +290,13 @@ class _CartScreenState extends State<CartScreen> {
                               height: 30,
                               width: 30,
                               decoration: BoxDecoration(
-                                border: Border.all(),
+                                border: Border.all(color: Colors.white),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 Icons.remove,
                                 size: 10,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -326,7 +357,7 @@ class _CartScreenState extends State<CartScreen> {
                               width: 30,
                               child: Text(
                                 '${data[i].quantity}', // Số lượng hiển thị
-                                style: const TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -341,13 +372,13 @@ class _CartScreenState extends State<CartScreen> {
                               height: 30,
                               width: 30,
                               decoration: BoxDecoration(
-                                border: Border.all(),
+                                border: Border.all(color: Colors.white),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 Icons.add,
                                 size: 10,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -414,6 +445,8 @@ class _CartScreenState extends State<CartScreen> {
                                   Row(
                                     children: [
                                       Checkbox(
+                                        checkColor: Colors.white,
+                                        activeColor: Colors.red,
                                         value: selectAll,
                                         onChanged: (value) {
                                           selectAllItems(value!);
@@ -428,15 +461,20 @@ class _CartScreenState extends State<CartScreen> {
                                           ? Container()
                                           : Expanded(
                                               flex: 2,
-                                              child: Text(
-                                                'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
-                                                style: title.copyWith(
-                                                    color: Colors.black),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10),
+                                                child: Text(
+                                                  'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
+                                                  style: title.copyWith(
+                                                      color: Colors.red),
+                                                ),
                                               ),
                                             ),
                                       const SizedBox(width: 10),
                                       Expanded(
                                         child: MyButton(
+                                          backgroundColor: Colors.red,
                                           disable: isButton,
                                           onPressed: () async {
                                             List<Map<String, dynamic>> json =

@@ -56,6 +56,7 @@ class Data {
   String? updatedAt;
   String? image;
   String? productName;
+  int? number;
 
   Data(
       {this.id,
@@ -70,7 +71,8 @@ class Data {
       this.createdAt,
       this.updatedAt,
       this.image,
-      this.productName});
+      this.productName,
+      this.number});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -86,6 +88,7 @@ class Data {
     updatedAt = json['updated_at'];
     image = json['image'];
     productName = json['product_name'];
+    number = json['number'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +106,7 @@ class Data {
     data['updated_at'] = updatedAt;
     data['image'] = image;
     data['product_name'] = productName;
+    data['number'] = number;
     return data;
   }
 }
