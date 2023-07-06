@@ -30,12 +30,12 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  int quantity = 1;
   address.Data? _address;
   loadData() async {
     await APIAddress.fetchAddress();
     if (mounted) {
       setState(() {
+        _number.text = enteredValue.toString();
         if (APIAddress.lsData.isNotEmpty) {
           _address = APIAddress.lsData[0];
         } else {
@@ -45,14 +45,16 @@ class _CartState extends State<Cart> {
     }
   }
 
+  final _number = TextEditingController();
+  int enteredValue = 1;
+
   List<Map<String, dynamic>> createOrder() {
     List<Map<String, dynamic>> orderDetails = [];
-
     Map<String, dynamic> order = {
       "product_id": widget.data!.id,
-      "quantity": quantity,
+      "quantity": _number.text,
       "price": widget.data!.price,
-      'total': quantity * widget.data!.price!,
+      'total': int.parse('${_number.text}') * widget.data!.price!,
     };
     orderDetails.add(order);
     return orderDetails;
@@ -68,6 +70,8 @@ class _CartState extends State<Cart> {
   @override
   void dispose() {
     // TODO: implement dispose
+    _number.dispose();
+
     super.dispose();
   }
 
@@ -104,41 +108,84 @@ class _CartState extends State<Cart> {
                           Row(
                             children: [
                               IconButton(
-                                onPressed: quantity > 1
-                                    ? () => setState(() => quantity--)
-                                    : null,
+                                // onPressed: quantity > 1
+                                //     ? () => setState(() => quantity--)
+                                //     : null,
+                                onPressed: () {
+                                  setState(() {
+                                    int temp = int.parse(_number.text);
+                                    if (temp > 1) {
+                                      temp--;
+                                    }
+                                    _number.text = temp.toString();
+                                  });
+                                },
                                 icon: const Icon(Icons.remove),
                               ),
+                              // Container(
+                              //   width: 120,
+                              //   child: TextFormField(
+                              //     controller: _number,
+                              //     onSaved: (String? value) {
+                              //       debugPrint(
+                              //           'Value for field  saved as "$value"');
+                              //     },
+                              //   ),
+                              // ),
                               const SizedBox(width: 16),
                               SizedBox(
                                 height: 45,
-                                width: 50,
+                                width: 100,
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
                                   textAlign: TextAlign.center,
+                                  controller: _number,
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
                                   ),
                                   onChanged: (value) {
-                                    setState(() {
-                                      if (int.tryParse(value)! >
-                                              widget.data!.number! ||
-                                          value.length < 3) {
-                                        quantity = int.tryParse(value) ?? 1;
+                                    try {
+                                      final parsedValue = int.tryParse(value);
+                                      final maxSize =
+                                          int.parse('${widget.data!.number!}');
+
+                                      if (parsedValue != null) {
+                                        if (parsedValue < 1) {
+                                          enteredValue = 1;
+                                        } else if (parsedValue > maxSize) {
+                                          enteredValue = maxSize;
+                                        } else {
+                                          enteredValue = parsedValue;
+                                        }
+                                      } else {
+                                        enteredValue = 1;
                                       }
-                                    });
+                                    } catch (e) {
+                                      enteredValue = 1;
+                                    }
+                                    _number.text = enteredValue.toString();
+                                    setState(() {});
                                   },
-                                  controller:
-                                      TextEditingController(text: '$quantity'),
                                 ),
                               ),
                               const SizedBox(width: 16),
                               IconButton(
-                                onPressed: () => setState(() {
-                                  if (quantity < 99) {
-                                    quantity++;
-                                  }
-                                }),
+                                // onPressed: () => setState(() {
+                                //   if (quantity < 99) {
+                                //     quantity++;
+                                //   }
+                                // }),
+                                onPressed: () {
+                                  setState(() {
+                                    int temp = int.parse(_number.text);
+                                    final maxSize =
+                                        int.parse('${widget.data!.number!}');
+                                    if (temp < maxSize) {
+                                      temp++;
+                                    }
+                                    _number.text = temp.toString();
+                                  });
+                                },
                                 icon: const Icon(Icons.add),
                               ),
                             ],
@@ -148,7 +195,7 @@ class _CartState extends State<Cart> {
                             height: 20,
                             width: widget.size.width,
                             child: Text(
-                              'Tổng tiền : ${formatCurrency(amount: '${widget.data!.price! * quantity}')}',
+                              'Tổng tiền : ${formatCurrency(amount: '${widget.data!.price! * int.parse(_number.text)}')}',
                               style: styleH3,
                             ),
                           ),
@@ -189,7 +236,9 @@ class _CartState extends State<Cart> {
                                             isBuy: true,
                                             json: json,
                                           ),
-                                        )).then((value) => loadData());
+                                        )).then((value) {
+                                      loadData();
+                                    });
                                   },
                                   child: const Text(
                                     'Mua',
@@ -254,7 +303,7 @@ class _CartState extends State<Cart> {
       Message.error(
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
-      if (quantity < widget.data!.number!) {
+      if (int.parse('${_number.text}') < widget.data!.number!) {
         if (isBuy) {
           Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);
@@ -262,7 +311,7 @@ class _CartState extends State<Cart> {
         } else {
           var value = await ApiCart.apiCart(
             id: widget.data!.id!,
-            quantity: quantity,
+            quantity: int.parse('${_number.text}'),
           );
           if (value == 200) {
             Message.success(

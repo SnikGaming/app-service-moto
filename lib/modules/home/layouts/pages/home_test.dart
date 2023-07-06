@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -51,8 +53,8 @@ class CusThemeSkeletonProducts extends StatelessWidget {
 
 class CusSkeletonProduct extends StatelessWidget {
   const CusSkeletonProduct({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,71 +62,77 @@ class CusSkeletonProduct extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: const BoxDecoration(
-          // color: const Color.fromARGB(57, 120, 52, 239),
           color: Colors.white,
         ),
         child: SkeletonItem(
-            child: Column(
-          children: [
-            SkeletonAvatar(
-              style: SkeletonAvatarStyle(
-                width: 150,
-                height: 200,
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Expanded(
-                child: SkeletonParagraph(
-                  style: SkeletonParagraphStyle(
-                    lines: 3,
-                    spacing: 6,
-                    lineStyle: SkeletonLineStyle(
-                      randomLength: true,
-                      height: 10,
-                      borderRadius: BorderRadius.circular(8),
-                      minLength: MediaQuery.of(context).size.width / 6,
-                      maxLength: MediaQuery.of(context).size.width / 3,
-                    ),
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SkeletonAvatar(
+                style: SkeletonAvatarStyle(
+                  width: 150,
+                  height: 200,
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+              const SizedBox(
+                height: 10,
+              ),
+              SkeletonAvatar(
+                style: SkeletonAvatarStyle(
+                  width: 40 + Random().nextDouble() * 80,
+                  height: 10,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SkeletonAvatar(
+                style: SkeletonAvatarStyle(
+                  width: 40 + Random().nextDouble() * 80,
+                  height: 10,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SkeletonAvatar(
+                style: SkeletonAvatarStyle(
+                  width: 40 + Random().nextDouble() * 70,
+                  height: 10,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              // const Spacer(),
+              Row(
                 children: [
-                  Expanded(
-                    child: SkeletonParagraph(
-                      style: SkeletonParagraphStyle(
-                        lines: 1,
-                        spacing: 6,
-                        lineStyle: SkeletonLineStyle(
-                          randomLength: true,
-                          height: 10,
-                          borderRadius: BorderRadius.circular(8),
-                          minLength: MediaQuery.of(context).size.width / 5,
-                          maxLength: MediaQuery.of(context).size.width / 3,
-                        ),
-                      ),
+                  SkeletonAvatar(
+                    style: SkeletonAvatarStyle(
+                      width: 40 + Random().nextDouble() * 60,
+                      height: 10,
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  const SkeletonAvatar(
+                  Spacer(),
+                  SkeletonAvatar(
                     style: SkeletonAvatarStyle(
                       width: 30,
                       height: 30,
                     ),
                   ),
+                  SizedBox(
+                    width: 10,
+                  )
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            )
-          ],
-        )),
+              // const SizedBox(
+              //   height: 10,
+              // )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -186,42 +194,33 @@ class CusSkeletonCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90,
-      height: 70,
+      width: 80,
+      height: 60,
       decoration: BoxDecoration(
         color: const Color.fromARGB(57, 120, 52, 239),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: SkeletonItem(
+      child: const SkeletonItem(
           child: Column(
         children: [
-          const SizedBox(
+          SizedBox(
             height: 10,
           ),
-          const SkeletonAvatar(
+          SkeletonAvatar(
             style: SkeletonAvatarStyle(
               width: 40,
               height: 30,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Expanded(
-              child: SkeletonParagraph(
-                style: SkeletonParagraphStyle(
-                  lines: 1,
-                  spacing: 6,
-                  lineStyle: SkeletonLineStyle(
-                    randomLength: true,
-                    height: 10,
-                    borderRadius: BorderRadius.circular(8),
-                    minLength: MediaQuery.of(context).size.width / 5,
-                    maxLength: MediaQuery.of(context).size.width / 3,
-                  ),
-                ),
-              ),
+          SizedBox(
+            height: 10,
+          ),
+          SkeletonAvatar(
+            style: SkeletonAvatarStyle(
+              width: 40,
+              height: 10,
             ),
-          )
+          ),
         ],
       )),
     );

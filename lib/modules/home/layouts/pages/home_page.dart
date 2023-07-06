@@ -202,7 +202,7 @@ class _HomePageState extends State<HomePage>
     );
 
     var sliverSkeletonProducs = SliverGrid.builder(
-      itemCount: 20,
+      itemCount: 4,
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 250,
         mainAxisSpacing: 10,

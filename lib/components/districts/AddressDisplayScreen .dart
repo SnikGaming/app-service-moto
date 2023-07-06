@@ -77,6 +77,9 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
         (value) async {
           var res = await addOrder(jsonString);
           if (res == 200) {
+            if (!widget.isBuy) {
+              ApiCart.apiDeleteCarts(cartIds: cartId);
+            }
             Message.success(
               message: 'Thành Công',
               context: context,
@@ -507,20 +510,25 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                       }
                                     }
                                   } else {
-                                    var res = await addOrder(jsonString);
-                                    if (res == 200) {
-                                      ApiCart.apiDeleteCarts(cartIds: cartId);
-                                      Message.success(
-                                        message: 'Thành Công',
-                                        context: context,
-                                      );
-                                      Navigator.of(context)
-                                          .popUntil((route) => route.isFirst);
+                                    if (_selectPayment!.name != null &&
+                                        _selectPayment!.id == 2) {
+                                      makePayment();
                                     } else {
-                                      Message.error(
-                                        message: 'Thất bại $res',
-                                        context: context,
-                                      );
+                                      var res = await addOrder(jsonString);
+                                      if (res == 200) {
+                                        ApiCart.apiDeleteCarts(cartIds: cartId);
+                                        Message.success(
+                                          message: 'Thành Công',
+                                          context: context,
+                                        );
+                                        Navigator.of(context)
+                                            .popUntil((route) => route.isFirst);
+                                      } else {
+                                        Message.error(
+                                          message: 'Thất bại $res',
+                                          context: context,
+                                        );
+                                      }
                                     }
                                   }
                                 } else {
