@@ -84,6 +84,9 @@ dependencies:
   like_button: ^2.0.5
   mailer: ^6.0.1
   skeletons: ^0.0.3
+  input_quantity: ^1.2.1
+
+  # input_quantity: ^1.2.1
   # flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:

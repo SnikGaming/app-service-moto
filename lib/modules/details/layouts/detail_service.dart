@@ -71,6 +71,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
     var a = await APIReview.getData(id: widget.id);
     print('review data send $a');
     lsReview = APIReview.apiData;
+    print('abc------->>>>>>>>>>>>>>>> ');
     setState(() {});
   }
 
@@ -149,6 +150,9 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
   }
 
   int i = 0;
+  void updateCartData() {
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +177,11 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                 UserPrefer.getToken() == null || UserPrefer.getToken() == 'null'
                     ? null
                     : data!.number! > 0
-                        ? Cart(data: data!, size: size)
+                        ? Cart(
+                            data: data!,
+                            size: size,
+                            updateCartData: updateCartData,
+                          )
                         : null,
             body: Container(
               color: const Color(0xffF0F0F0),

@@ -4,6 +4,7 @@ import 'package:app/components/message/message.dart';
 import 'package:app/constants/style.dart';
 import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:flutter/material.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../../components/districts/AddressDisplayScreen .dart';
 import '../../../components/value_app.dart';
@@ -17,10 +18,12 @@ import '../../../preferences/user/user_preferences.dart';
 import '../../home/api/cart/api_cart.dart';
 
 class Cart extends StatefulWidget {
+  final VoidCallback updateCartData;
   const Cart({
     Key? key,
     required this.data,
     required this.size,
+    required this.updateCartData,
   }) : super(key: key);
 
   final products.Data? data;
@@ -33,10 +36,11 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   address.Data? _address;
   loadData() async {
+    enteredValue = 1;
+
     await APIAddress.fetchAddress();
     if (mounted) {
       setState(() {
-        _number.text = enteredValue.toString();
         if (APIAddress.lsData.isNotEmpty) {
           _address = APIAddress.lsData[0];
         } else {
@@ -46,16 +50,15 @@ class _CartState extends State<Cart> {
     }
   }
 
-  final _number = TextEditingController();
   int enteredValue = 1;
 
   List<Map<String, dynamic>> createOrder() {
     List<Map<String, dynamic>> orderDetails = [];
     Map<String, dynamic> order = {
       "product_id": widget.data!.id,
-      "quantity": _number.text,
+      "quantity": enteredValue,
       "price": widget.data!.price,
-      'total': int.parse('${_number.text}') * widget.data!.price!,
+      'total': enteredValue * widget.data!.price!,
     };
     orderDetails.add(order);
     return orderDetails;
@@ -71,7 +74,6 @@ class _CartState extends State<Cart> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _number.dispose();
 
     super.dispose();
   }
@@ -104,99 +106,42 @@ class _CartState extends State<Cart> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 16),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              IconButton(
-                                // onPressed: quantity > 1
-                                //     ? () => setState(() => quantity--)
-                                //     : null,
-                                onPressed: () {
+                          InputQty(
+                              maxVal: widget.data!.number!,
+                              initVal: 1,
+                              minVal: 1,
+                              steps: 1,
+                              showMessageLimit: false,
+                              borderShape: BorderShapeBtn.none,
+                              plusBtn: const Icon(Icons.add_box),
+                              minusBtn:
+                                  const Icon(Icons.indeterminate_check_box),
+                              btnColor1: Colors.teal,
+                              btnColor2: Colors.red,
+                              onQtyChanged: (val) {
+                                try {
+                                  int value = int.parse(val.toString());
+                                  if (value != enteredValue) {
+                                    setState(() {
+                                      enteredValue = value;
+                                    });
+                                  }
+                                } catch (error) {
                                   setState(() {
-                                    int temp = int.parse(_number.text);
-                                    if (temp > 1) {
-                                      temp--;
-                                    }
-                                    _number.text = temp.toString();
+                                    enteredValue = 1;
+                                    val = 1;
                                   });
-                                },
-                                icon: const Icon(Icons.remove),
-                              ),
-                              // Container(
-                              //   width: 120,
-                              //   child: TextFormField(
-                              //     controller: _number,
-                              //     onSaved: (String? value) {
-                              //       debugPrint(
-                              //           'Value for field  saved as "$value"');
-                              //     },
-                              //   ),
-                              // ),
-                              const SizedBox(width: 16),
-                              SizedBox(
-                                height: 45,
-                                width: 100,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  textAlign: TextAlign.center,
-                                  controller: _number,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onChanged: (value) {
-                                    try {
-                                      final parsedValue = int.tryParse(value);
-                                      final maxSize =
-                                          int.parse('${widget.data!.number!}');
-
-                                      if (parsedValue != null) {
-                                        if (parsedValue < 1) {
-                                          enteredValue = 1;
-                                        } else if (parsedValue > maxSize) {
-                                          enteredValue = maxSize;
-                                        } else {
-                                          enteredValue = parsedValue;
-                                        }
-                                      } else {
-                                        enteredValue = 1;
-                                      }
-                                    } catch (e) {
-                                      enteredValue = 1;
-                                    }
-                                    _number.text = enteredValue.toString();
-                                    setState(() {});
-                                  },
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              IconButton(
-                                // onPressed: () => setState(() {
-                                //   if (quantity < 99) {
-                                //     quantity++;
-                                //   }
-                                // }),
-                                onPressed: () {
-                                  setState(() {
-                                    int temp = int.parse(_number.text);
-                                    final maxSize =
-                                        int.parse('${widget.data!.number!}');
-                                    if (temp < maxSize) {
-                                      temp++;
-                                    }
-                                    _number.text = temp.toString();
-                                  });
-                                },
-                                icon: const Icon(Icons.add),
-                              ),
-                            ],
-                          ),
+                                }
+                              }),
                           const SizedBox(height: 10),
                           SizedBox(
                             height: 20,
                             width: widget.size.width,
                             child: Text(
-                              'Tổng tiền : ${formatCurrency(amount: '${widget.data!.price! * int.parse(_number.text)}')}',
+                              'Tổng tiền : ${formatCurrency(amount: '${widget.data!.price! * enteredValue}')}',
                               style: styleH3,
                             ),
                           ),
@@ -304,7 +249,7 @@ class _CartState extends State<Cart> {
       Message.error(
           message: 'Vui lòng đăng nhập vào hệ thống.', context: context);
     } else {
-      if (int.parse('${_number.text}') <= widget.data!.number!) {
+      if (enteredValue <= widget.data!.number!) {
         if (isBuy) {
           Message.success(message: 'Mua thành công.', context: context);
           Navigator.pop(context);
@@ -312,19 +257,24 @@ class _CartState extends State<Cart> {
         } else {
           var value = await ApiCart.apiCart(
             id: widget.data!.id!,
-            quantity: int.parse('${_number.text}'),
+            quantity: enteredValue,
           );
           if (value == 200) {
             Message.success(
                 message: 'Thêm giỏ hàng thành công.', context: context);
+            loadData();
+            widget.updateCartData();
+            setState(() {});
           } else {
             Message.error(message: 'Thêm giỏ hàng thất bại.', context: context);
+            loadData();
           }
           Navigator.pop(context);
         }
       } else {
         Message.error(
             message: 'Vui lòng kiểm tra lại số lượng', context: context);
+        loadData();
       }
     }
   }

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../components/button/mybutton.dart';
 import '../../../../components/calendar/res/colors.dart';
@@ -106,6 +107,11 @@ class _CartScreenState extends State<CartScreen> {
   List<CartModel.Data> data = [];
 
   List<CartModel.Data> dataWithZeroNumber = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   loadData() async {
     await APIAddress.fetchAddress();
@@ -261,7 +267,7 @@ class _CartScreenState extends State<CartScreen> {
                                   height: 8,
                                 ),
                                 Text(
-                                  'Giá : ${data[i].price.toString()}',
+                                  'Giá : ${formatCurrency(amount: data[i].price.toString())}',
                                   style: title1.copyWith(
                                       color: const Color.fromARGB(
                                           255, 254, 254, 1),
@@ -286,168 +292,36 @@ class _CartScreenState extends State<CartScreen> {
                     const SizedBox(
                       height: 8,
                     ),
+
                     //!: Số lượng
                     data[i].number == 0
                         ? Container()
-                        : SizedBox(
-                            // color: Colors.red,
-                            width: 90,
-                            height: 30,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                //!: Số lượng -
-                                GestureDetector(
-                                  onTap: () {
-                                    if (data[i].quantity! > 1) {
-                                      setState(() {
-                                        data[i].quantity =
-                                            data[i].quantity! - 1;
-                                      });
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Xác nhận xóa'),
-                                            content: const Text(
-                                                'Bạn có chắc chắn muốn xóa?'),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text('Hủy'),
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Đóng hộp thoại
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text('Xóa'),
-                                                onPressed: () {
-                                                  deleteData(i);
-                                                  // Gọi hàm xử lý khi xác nhận xóa
-                                                  Navigator.of(context)
-                                                      .pop(); // Đóng hộp thoại
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                  child: Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.remove,
-                                      size: 10,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                //!: Hiển thị
-                                GestureDetector(
-                                  onTap: () {
-                                    var quantityController =
-                                        TextEditingController(
-                                      text: '${data[i].quantity}',
-                                    );
-                                    var focusNode = FocusNode();
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Nhập số lượng'),
-                                          content: TextField(
-                                            controller: quantityController,
-                                            keyboardType: TextInputType.number,
-                                            focusNode: focusNode,
-                                            autofocus: true,
-                                            onChanged: (value) {
-                                              quantityController.text = value;
-                                            },
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Hủy'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                if (quantityController
-                                                    .text.isNotEmpty) {
-                                                  if (int.parse(
-                                                          quantityController
-                                                              .text) >
-                                                      1) {
-                                                    data[i].quantity =
-                                                        int.parse(
-                                                            quantityController
-                                                                .text);
-                                                  }
-                                                }
-
-                                                setState(() {});
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Xác nhận'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                    FocusScope.of(context)
-                                        .requestFocus(focusNode);
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 30,
-                                    width: 30,
-                                    child: Text(
-                                      '${data[i].quantity}', // Số lượng hiển thị
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                                //!: Số lượng -
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (data[i].quantity! >=
-                                          data[i].number!) {
-                                        Message.warning(
-                                            message: txtIsQuantity,
-                                            context: context);
-                                      } else {
-                                        data[i].quantity =
-                                            data[i].quantity! + 1;
-                                      }
-                                    });
-                                  },
-                                  child: Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.add,
-                                      size: 10,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        : InputQty(
+                            maxVal: data[i].number!,
+                            initVal: data[i].quantity!,
+                            minVal: 1,
+                            steps: 1,
+                            showMessageLimit: false,
+                            borderShape: BorderShapeBtn.none,
+                            plusBtn: const Icon(Icons.add_box),
+                            minusBtn: const Icon(Icons.indeterminate_check_box),
+                            btnColor1: Colors.teal,
+                            btnColor2: Colors.red,
+                            onQtyChanged: (val) {
+                              try {
+                                int value = int.parse(val.toString());
+                                if (value != data[i].quantity) {
+                                  setState(() {
+                                    data[i].quantity = value;
+                                  });
+                                }
+                              } catch (error) {
+                                setState(() {
+                                  data[i].quantity = 1;
+                                  val = 1;
+                                });
+                              }
+                            }),
                   ],
                 ),
               ),
@@ -478,119 +352,106 @@ class _CartScreenState extends State<CartScreen> {
                     )
                   // build2(context)
                   //!: Hiển thị sản phẩm
-                  : Stack(
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.64,
-                          child: ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (context, i) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: data.isEmpty
-                                    ? const CircularProgressIndicator()
-                                    : slidable(i, context),
-                              );
-                            },
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          child: SizedBox(
-                            // color: Colors.red,
-                            width: size.width,
-                            height: size.height * 0.16,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Checkbox(
-                                        checkColor: Colors.white,
-                                        activeColor: Colors.red,
-                                        value: selectAll,
-                                        onChanged: (value) {
-                                          selectAllItems(value!);
-                                        },
-                                      ),
-                                      const Text(txtSelectAll),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      isButton
-                                          ? Container()
-                                          : Expanded(
-                                              flex: 2,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10),
-                                                child: Text(
-                                                  'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
-                                                  style: title.copyWith(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: MyButton(
-                                          backgroundColor: Colors.red,
-                                          disable: isButton,
-                                          onPressed: () async {
-                                            List<Map<String, dynamic>> json =
-                                                createOrder();
-
-                                            // Chuyển danh sách selectedIds qua màn hình Order
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      AddressDisplayScreen(
-                                                    selectedAddress: _address,
-                                                    isBuy: false,
-                                                    json: json,
-                                                  ),
-                                                )).then((value) {
-                                              selectAll = false;
-                                              loadData();
-                                            });
-                                            // showModalBottomSheet(
-                                            //   isScrollControlled: true,
-                                            //   context: context,
-                                            //   builder: (context) =>
-                                            //       AddressDisplayScreen(
-                                            //     selectedAddress: _address,
-                                            //     isBuy: false,
-                                            //     json: json,
-                                            //   ),
-                                            // ).then((value) {
-                                            //   selectAll = false;
-                                            //   loadData();
-                                            // });
-                                            // await APIOrder.addOrder(json: json);
-                                            // Modular.to
-                                            //     .pushNamed(Routes.order,
-                                            //         arguments: json)
-                                            //     .then((value) => loadData());
-                                          },
-                                          child: Text(
-                                            txtThanhToan,
-                                            style: title2.copyWith(
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                  : SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: size.height,
+                        width: size.width,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.64,
+                              child: ListView.builder(
+                                itemCount: data.length,
+                                itemBuilder: (context, i) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: data.isEmpty
+                                        ? const CircularProgressIndicator()
+                                        : slidable(i, context),
+                                  );
+                                },
                               ),
                             ),
-                          ),
+                            SizedBox(
+                              // color: Colors.red,
+                              width: size.width,
+                              height: size.height * 0.16,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          checkColor: Colors.white,
+                                          activeColor: Colors.red,
+                                          value: selectAll,
+                                          onChanged: (value) {
+                                            selectAllItems(value!);
+                                          },
+                                        ),
+                                        const Text(txtSelectAll),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        isButton
+                                            ? Container()
+                                            : Expanded(
+                                                flex: 2,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10),
+                                                  child: Text(
+                                                    'Tổng: ${formatCurrency(amount: calculateTotalPrice().toString())}',
+                                                    style: title.copyWith(
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: MyButton(
+                                            backgroundColor: Colors.red,
+                                            disable: isButton,
+                                            onPressed: () async {
+                                              List<Map<String, dynamic>> json =
+                                                  createOrder();
+
+                                              // Chuyển danh sách selectedIds qua màn hình Order
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        AddressDisplayScreen(
+                                                      selectedAddress: _address,
+                                                      isBuy: false,
+                                                      json: json,
+                                                    ),
+                                                  )).then((value) {
+                                                selectAll = false;
+                                                loadData();
+                                              });
+                                            },
+                                            child: Text(
+                                              txtThanhToan,
+                                              style: title2.copyWith(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
         ),
       ),
