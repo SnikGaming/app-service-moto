@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages, no_logic_in_create_state
 
+import 'package:animated_floating_buttons/widgets/animated_floating_action_button.dart';
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:app/components/animation/text.dart';
 import 'package:app/components/button/mybutton.dart';
@@ -49,6 +50,8 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   final _scrollController = ScrollController();
+  final GlobalKey<AnimatedFloatingActionButtonState> key =
+      GlobalKey<AnimatedFloatingActionButtonState>();
   bool isLogin = false;
   bool isProfileOpen = false;
   String search = '';
@@ -123,6 +126,7 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     _animationController.dispose();
+
     // ignore: todo
     _scrollController.dispose();
 
@@ -155,22 +159,56 @@ class _HomePageState extends State<HomePage>
   }
 
   late bool isCheck;
+  Widget authAction() {
+    return Container(
+      child: FloatingActionButton(
+        onPressed: null,
+        heroTag: "btn1",
+        tooltip: 'First button',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget callZalo() {
+    return Container(
+      child: FloatingActionButton(
+        onPressed: () async {
+          final Uri url = Uri(scheme: 'tel', path: '0334666651');
+          if (!await launchUrl(url)) {
+            throw Exception('Could not launch $url');
+          }
+        },
+        heroTag: "btn2",
+        tooltip: 'Second button',
+        child: const Icon(Icons.phone),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     username = UserPrefer.getsetUserName() ?? 'Khách';
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          //!: Contact
-          final Uri url = Uri(scheme: 'tel', path: '0334666651');
-          if (!await launchUrl(url)) {
-            throw Exception('Could not launch $url');
-          }
-        },
-        child: const Icon(Icons.phone),
-      ),
+      floatingActionButton: AnimatedFloatingActionButton(
+          //Fab list
+          fabButtons: <Widget>[authAction(), callZalo()],
+          key: key,
+          colorStartAnimation: Colors.blue,
+          colorEndAnimation: Colors.red,
+          animatedIconData: AnimatedIcons.menu_close //To principal button
+          ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     //!: Contact
+      //     final Uri url = Uri(scheme: 'tel', path: '0334666651');
+      //     if (!await launchUrl(url)) {
+      //       throw Exception('Could not launch $url');
+      //     }
+      //   },
+      //   child: const Icon(Icons.phone),
+      // ),
       backgroundColor:
           SettingPrefer.getLightDark() == null || SettingPrefer.getLightDark()
               ? white

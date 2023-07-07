@@ -29,11 +29,9 @@ class _MyTestProfileState extends State<MyTestProfile> {
   Widget float2() {
     return Container(
       child: FloatingActionButton(
-        onPressed: () {
-          
-        },
+        onPressed: () {},
         heroTag: "btn2",
-        tooltip: 'Second button',
+        tooltip: 'Secondd button',
         child: Icon(Icons.add),
       ),
     );
