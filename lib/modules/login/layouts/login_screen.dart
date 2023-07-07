@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:app/components/button/mybutton.dart';
 import 'package:app/components/from/login/frm_login.dart';
 import 'package:app/components/from/register/frm_register.dart';
 import 'package:app/components/textfield/login/text_field_email.dart';
@@ -132,8 +135,6 @@ class _LoginScreenState extends State<LoginScreen>
                           // ignore: prefer_const_constructors
                           GestureDetector(
                             onTap: () {
-                              Message.success(
-                                  message: forgotPassword, context: context);
                               showModalBottomSheet<void>(
                                   transitionAnimationController: _animation,
                                   context: context,
@@ -185,10 +186,16 @@ class _LoginScreenState extends State<LoginScreen>
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              ElevatedButton(
+                                              MyButton(
+                                                  width: 80,
+                                                  backgroundColor: Colors.red,
                                                   onPressed:
                                                       _sendEmailForgotPassword,
-                                                  child: const Text('SEND')),
+                                                  child: const Text(
+                                                    'Gửi',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )),
                                             ],
                                           ),
                                         ),
@@ -277,8 +284,7 @@ class _LoginScreenState extends State<LoginScreen>
     } else {
       Navigator.pop(context);
 
-      Message.error(
-          message: "Mail không tồn tại. $checkMail", context: context);
+      Message.error(message: "Tài khoảng không tồn tại.", context: context);
     }
   }
 }
