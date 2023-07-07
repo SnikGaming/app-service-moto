@@ -8,7 +8,7 @@ import 'package:app/constants/colors.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/modules/home/api/category/api_category.dart';
-import 'package:app/modules/home/layouts/pages/home_test.dart';
+import 'package:app/modules/home/layouts/pages/skeleton.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';

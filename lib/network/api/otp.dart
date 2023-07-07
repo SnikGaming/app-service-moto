@@ -1,4 +1,5 @@
 import 'package:app/components/value_app.dart';
+import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'dart:math';
@@ -12,6 +13,15 @@ int generateRandomNumber() {
 
 enum eOtp { register, forgotpassword }
 
+dangGuiMail(context) => showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Text('Đang gửi email...'),
+        );
+      },
+    );
 Future<bool> sendOTP(
     {required String email,
     required String otp,

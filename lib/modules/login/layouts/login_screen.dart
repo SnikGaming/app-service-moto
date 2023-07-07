@@ -245,21 +245,12 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   _sendEmailForgotPassword() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const AlertDialog(
-          title: Text('Vui lòng đợi'),
-          content: Text('Đang gửi email...'),
-        );
-      },
-    );
-
     var value = generateRandomNumber();
     int checkMail = await APICheckValue.checkMail(email: email.text);
 
     if (checkMail == 200) {
+      dangGuiMail(context);
+
       sendOTP(email: email.text, otp: value.toString()).then((sendEmailResult) {
         if (sendEmailResult) {
           return APIOtp.createOtp(email: email.text, otp: value.toString());
@@ -283,8 +274,8 @@ class _LoginScreenState extends State<LoginScreen>
       });
     } else {
       Navigator.pop(context);
-
       Message.error(message: "Tài khoảng không tồn tại.", context: context);
+      email.clear();
     }
   }
 }

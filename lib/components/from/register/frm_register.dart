@@ -131,16 +131,7 @@ class _FrmRegisterState extends State<FrmRegister> {
           backgroundColor: Colors.red,
         ));
       } else {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return const AlertDialog(
-              title: Text('Vui lòng đợi'),
-              content: Text('Đang gửi email...'),
-            );
-          },
-        );
+        dangGuiMail(context);
         var value = generateRandomNumber();
         sendOTP(email: _email.text, otp: value.toString(), type: eOtp.register)
             .then((sendEmailResult) {
