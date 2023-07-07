@@ -104,50 +104,53 @@ class _AddressListScreenState extends State<AddressListScreen> {
                     children: [
                       Expanded(
                         flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                text: 'Người nhận : ',
-                                style: title2.copyWith(fontSize: 18),
-                                children: [
-                                  TextSpan(
-                                      text: address.name!,
-                                      style: title2.copyWith(fontSize: 16)),
-                                ],
+                        child: GestureDetector(
+                          onTap: () => Navigator.pop(context, address),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: 'Người nhận : ',
+                                  style: title2.copyWith(fontSize: 18),
+                                  children: [
+                                    TextSpan(
+                                        text: address.name!,
+                                        style: title2.copyWith(fontSize: 16)),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Số điện thoại : ',
-                                style: title2.copyWith(fontSize: 18),
-                                children: [
-                                  TextSpan(
-                                      text: address.phoneNumber!,
-                                      style: title2.copyWith(fontSize: 16)),
-                                ],
+                              const SizedBox(
+                                height: 2,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                text: 'Địa chỉ nhận : ',
-                                style: title2.copyWith(fontSize: 18),
-                                children: [
-                                  TextSpan(
-                                      text:
-                                          '${address.address}, ${address.ward}, ${address.district}, ${address.province}',
-                                      style: title2.copyWith(fontSize: 16)),
-                                ],
+                              RichText(
+                                text: TextSpan(
+                                  text: 'Số điện thoại : ',
+                                  style: title2.copyWith(fontSize: 18),
+                                  children: [
+                                    TextSpan(
+                                        text: address.phoneNumber!,
+                                        style: title2.copyWith(fontSize: 16)),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  text: 'Địa chỉ nhận : ',
+                                  style: title2.copyWith(fontSize: 18),
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            '${address.address}, ${address.ward}, ${address.district}, ${address.province}',
+                                        style: title2.copyWith(fontSize: 16)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Expanded(

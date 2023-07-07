@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage>
       GlobalKey<AnimatedFloatingActionButtonState>();
   bool isLogin = false;
   bool isProfileOpen = false;
+
   String search = '';
   var indexData = 0;
   var totalPage = 0;
@@ -160,29 +161,80 @@ class _HomePageState extends State<HomePage>
 
   late bool isCheck;
   Widget authAction() {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: null,
-        heroTag: "btn1",
-        tooltip: 'First button',
-        child: Icon(Icons.add),
-      ),
+    return FloatingActionButton(
+      onPressed: UserPrefer.getToken() == null ? _login : _logout,
+      heroTag: "btn1",
+      tooltip: UserPrefer.getToken() == null ? 'Đăng nhập' : 'Đăng xuất',
+      child: UserPrefer.getToken() == null
+          ? Icon(Icons.login)
+          : Icon(Icons.logout_outlined),
     );
   }
 
   Widget callZalo() {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: () async {
-          final Uri url = Uri(scheme: 'tel', path: '0334666651');
-          if (!await launchUrl(url)) {
-            throw Exception('Could not launch $url');
-          }
-        },
-        heroTag: "btn2",
-        tooltip: 'Second button',
-        child: const Icon(Icons.phone),
+    return FloatingActionButton(
+      onPressed: () async {
+        final Uri url = Uri(scheme: 'tel', path: '0334666651');
+        if (!await launchUrl(url)) {
+          throw Exception('Could not launch $url');
+        }
+      },
+      heroTag: "btn2",
+      tooltip: 'Liên hệ',
+      child: const Icon(Icons.phone),
+    );
+  }
+
+  Widget teamsOfService() {
+    return FloatingActionButton(
+      onPressed: () => showDialog(
+        context: context,
+        builder: (context) => FluidDialog(
+          defaultDecoration: BoxDecoration(
+            color: SettingPrefer.getLightDark() == null ||
+                    SettingPrefer.getLightDark()
+                ? white
+                : black,
+          ),
+          rootPage: FluidDialogPage(
+            alignment: Alignment.bottomLeft,
+            builder: (context) => const TestDialog(),
+          ),
+        ),
       ),
+      heroTag: "btn3",
+      tooltip: 'First button',
+      child: const Icon(
+        Icons.info_outline_rounded,
+        color: Colors.blue,
+      ),
+    );
+  }
+
+  Widget userAction() {
+    return FloatingActionButton(
+      onPressed: () async {
+        final Uri url = Uri(scheme: 'tel', path: '0334666651');
+        if (!await launchUrl(url)) {
+          throw Exception('Could not launch $url');
+        }
+      },
+      heroTag: "btn4",
+      tooltip: 'Liên hệ',
+      child: UserPrefer.getImageUser() != null && isLogin
+          ? CachedNetworkImage(
+              imageBuilder: (context, imageProvider) => CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      '${ConnectDb.url}${UserPrefer.getImageUser()}')),
+              fit: BoxFit.cover,
+              placeholder: (context, url) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageUrl: '${ConnectDb.url}${UserPrefer.getImageUser()}',
+            )
+          : const CircleAvatar(
+              child: Icon(Ionicons.person),
+            ),
     );
   }
 
@@ -193,22 +245,19 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       floatingActionButton: AnimatedFloatingActionButton(
           //Fab list
-          fabButtons: <Widget>[authAction(), callZalo()],
+          fabButtons: UserPrefer.getToken() == null
+              ? <Widget>[authAction(), callZalo(), teamsOfService()]
+              : <Widget>[
+                  userAction(),
+                  authAction(),
+                  callZalo(),
+                  teamsOfService()
+                ],
           key: key,
           colorStartAnimation: Colors.blue,
           colorEndAnimation: Colors.red,
           animatedIconData: AnimatedIcons.menu_close //To principal button
           ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     //!: Contact
-      //     final Uri url = Uri(scheme: 'tel', path: '0334666651');
-      //     if (!await launchUrl(url)) {
-      //       throw Exception('Could not launch $url');
-      //     }
-      //   },
-      //   child: const Icon(Icons.phone),
-      // ),
       backgroundColor:
           SettingPrefer.getLightDark() == null || SettingPrefer.getLightDark()
               ? white
