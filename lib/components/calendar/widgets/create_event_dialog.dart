@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, use_build_context_synchronously
 
 import 'package:app/api/booking/api_booking.dart';
+import 'package:app/components/message/message.dart';
 import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,15 +17,31 @@ import 'date_picker_title_widget.dart';
 
 /// Pop up dialog for event creation.
 class CreateEventDialog extends StatefulWidget {
-  const CreateEventDialog({super.key});
+  String? note;
+  DateTime? beginDate;
+  int? id;
+  CreateEventDialog({super.key, this.note, this.beginDate, this.id});
 
   @override
   _CreateEventDialogState createState() => _CreateEventDialogState();
 }
 
 class _CreateEventDialogState extends State<CreateEventDialog> {
-  int _selectedColorIndex = 0;
+  int _selectedColorIndex = 3;
   final _eventNameController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  loadData() {
+    if (mounted) {
+      setState(() {
+        _eventNameController.text = widget.note ?? '';
+      });
+    }
+  }
 
   String _rangeButtonText = 'Chọn ngày';
 
@@ -55,7 +72,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
               children: [
                 /// Dialog title.
                 const Text(
-                  'Event creating',
+                  'Nội dung sự kiện',
                   style: TextStyle(
                     color: violet,
                     fontWeight: FontWeight.bold,
@@ -71,7 +88,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: violet.withOpacity(1)),
                     ),
-                    hintText: 'Enter the event name',
+                    hintText: 'Vui lòng nhập nội dung',
                     hintStyle:
                         TextStyle(color: violet.withOpacity(0.6), fontSize: 16),
                   ),
@@ -80,49 +97,49 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                 const SizedBox(height: 24),
 
                 /// Color selection section.
-                const Text(
-                  'Select event color',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: violet,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 14),
+                // const Text(
+                //   'Select event color',
+                //   style: TextStyle(
+                //     fontSize: 16,
+                //     color: violet,
+                //     fontWeight: FontWeight.w500,
+                //   ),
+                // ),
+                // const SizedBox(height: 14),
 
                 /// Color selection raw.
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ...List.generate(
-                        eventColors.length,
-                        (index) => GestureDetector(
-                          onTap: () {
-                            _selectColor(index);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Container(
-                              foregroundDecoration: BoxDecoration(
-                                border: index == _selectedColorIndex
-                                    ? Border.all(
-                                        color: Colors.black.withOpacity(0.3),
-                                        width: 2)
-                                    : null,
-                                shape: BoxShape.circle,
-                                color: eventColors[index],
-                              ),
-                              width: 32,
-                              height: 32,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       ...List.generate(
+                //         eventColors.length,
+                //         (index) => GestureDetector(
+                //           onTap: () {
+                //             _selectColor(index);
+                //           },
+                //           child: Padding(
+                //             padding: const EdgeInsets.only(left: 8),
+                //             child: Container(
+                //               foregroundDecoration: BoxDecoration(
+                //                 border: index == _selectedColorIndex
+                //                     ? Border.all(
+                //                         color: Colors.black.withOpacity(0.3),
+                //                         width: 2)
+                //                     : null,
+                //                 shape: BoxShape.circle,
+                //                 color: eventColors[index],
+                //               ),
+                //               width: 32,
+                //               height: 32,
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
 
                 const SizedBox(height: 16),
 
@@ -157,7 +174,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text('CANCEL'),
+                        child: const Text('Hủy'),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -165,9 +182,15 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                     /// OK button.
                     Expanded(
                       child: ElevatedButton(
-                        onPressed:
-                            _validateEventData() ? _onEventCreation : null,
-                        child: const Text('OK'),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white),
+                        onPressed: _validateEventData()
+                            ? widget.id != null
+                                ? _updateData
+                                : _onEventCreation
+                            : null,
+                        child: const Text('Lưu'),
                       ),
                     ),
                   ],
@@ -183,6 +206,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   /// Select color on tap.
   void _selectColor(int index) {
     setState(() {
+      // _selectedColorIndex = index;
       _selectedColorIndex = index;
     });
   }
@@ -213,6 +237,30 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     return _eventNameController.text.isNotEmpty &&
         _beginDate != null &&
         _endDate != null;
+  }
+
+  void _updateData() async {
+    final beginDate = _beginDate;
+    final endDate = _endDate;
+
+    if (beginDate == null || endDate == null) {
+      return;
+    }
+    String date = dateTimeToString(beginDate);
+    Map<String, String> data = {
+      "note": _eventNameController.text,
+      "booking_time": date,
+      "address": "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM",
+      "service": "abc",
+      "mechanic_id": '3'
+    };
+    int res = await APIBooking.updateBooking(data: data, id: widget.id!);
+    if (res == 200) {
+      Message.success(message: 'Chỉnh sửa thành công.', context: context);
+      Navigator.pop(context);
+    } else {
+      Message.error(message: 'Chỉnh sửa thất bại.', context: context);
+    }
   }
 
   /// Close dialog and pass [CalendarEventModel] as arguments.
@@ -277,12 +325,14 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
           ),
         ),
         okButtonBuilder: (onPress) => ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red, foregroundColor: Colors.white),
           onPressed: () => onPress?.call(),
-          child: const Text('OK'),
+          child: const Text('Chọn'),
         ),
         cancelButtonBuilder: (onPress) => OutlinedButton(
           onPressed: () => onPress?.call(),
-          child: const Text('CANCEL'),
+          child: const Text('Hủy'),
         ),
       ),
     );

@@ -51,6 +51,7 @@ class _CalendarPageState extends State<CalendarPage> {
         for (var e in data) {
           _calendarController.addEvent(
             CalendarEventModel(
+              id: e.id!,
               eventColor: int.parse(e.color!) == 0
                   ? eventColors[4]
                   : int.parse(e.color!) == 1
@@ -90,7 +91,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         actions: [
           IconButton(
-            tooltip: 'Go to current date',
+            tooltip: 'Quay về ngày hiện tại',
             icon: const Icon(Icons.calendar_today),
             onPressed: _showCurrentMonth,
           ),
@@ -163,7 +164,8 @@ class _CalendarPageState extends State<CalendarPage> {
                   weekDaysBuilder: (day) => WeekDaysWidget(day: day),
                   eventBuilder: (drawer) => EventWidget(drawer: drawer),
                   onDayClicked: _showDayEventsInModalSheet,
-                  minDate: DateTime.now().subtract(const Duration(days: 1000)),
+                  minDate:
+                      DateTime.now(), //.subtract(const Duration(days: 1000))
                   maxDate: DateTime.now().add(const Duration(days: 180)),
                 ),
               ),
@@ -196,9 +198,11 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   /// Show [CreateEventDialog] with settings for new event.
-  Future<void> _addEvent() async {
+  Future<void> _addEvent({String? note, DateTime? beginDate, int? id}) async {
     final event = await showDialog(
-        context: context, builder: (context) => const CreateEventDialog());
+        context: context,
+        builder: (context) =>
+            CreateEventDialog(note: note, beginDate: beginDate, id: id));
 
     if (event != null) {
       _calendarController.addEvent(event);
@@ -254,6 +258,15 @@ class _CalendarPageState extends State<CalendarPage> {
               events: events,
               day: day,
               screenHeight: MediaQuery.of(context).size.height,
-            ));
+              addEventCallback: (
+                      {String? note, DateTime? beginDate, int? id}) =>
+                  _addEvent(note: note, beginDate: beginDate, id: id),
+            )).then((value) {
+      // _calendarController = CrCalendarController(
+      //   onSwipe: _onCalendarPageChanged,
+      //   events: events,
+      // );
+      // loadData();
+    });
   }
 }

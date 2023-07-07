@@ -33,4 +33,28 @@ class APIBooking {
       return 400;
     }
   }
+
+  static updateBooking(
+      {required Map<String, String> data, required int id}) async {
+    try {
+      final response =
+          await ApiBase.post(path: '/api/bookings/${id}', data: data);
+      if (response.statusCode == 200) {
+        return 200;
+      }
+    } catch (e) {
+      return 400;
+    }
+  }
+
+  static delBooking({required int id}) async {
+    try {
+      final response = await ApiBase.post(path: '/api/bookings/$id/status');
+      if (response.statusCode == 200) {
+        return 200;
+      }
+    } catch (e) {
+      return 400;
+    }
+  }
 }
