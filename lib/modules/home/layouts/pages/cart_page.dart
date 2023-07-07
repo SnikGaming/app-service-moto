@@ -2,7 +2,6 @@
 
 import 'dart:math';
 
-import 'package:app/components/message/message.dart';
 import 'package:app/api/address/model.dart' as address;
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';

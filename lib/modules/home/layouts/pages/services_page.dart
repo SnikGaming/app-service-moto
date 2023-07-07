@@ -25,7 +25,6 @@ class ServicesPage extends StatefulWidget {
 class _ServicesPageState extends State<ServicesPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(() {});
     loadData();
@@ -52,7 +51,6 @@ class _ServicesPageState extends State<ServicesPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
   }
@@ -74,17 +72,17 @@ class _ServicesPageState extends State<ServicesPage> {
           width: size.width,
           child: Stack(
             children: [
-              SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Container(
-                  height: size.height,
-                  width: size.width,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(imageBooking), fit: BoxFit.cover),
-                  ),
-                ),
-              ),
+              // SingleChildScrollView(
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   child: Container(
+              //     height: size.height,
+              //     width: size.width,
+              //     decoration: const BoxDecoration(
+              //       image: DecorationImage(
+              //           image: AssetImage(imageBooking), fit: BoxFit.cover),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: size.height * .8,
                 width: size.width,

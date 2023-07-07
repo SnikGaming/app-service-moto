@@ -115,14 +115,14 @@ class CusSkeletonProduct extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  Spacer(),
-                  SkeletonAvatar(
+                  const Spacer(),
+                  const SkeletonAvatar(
                     style: SkeletonAvatarStyle(
                       width: 30,
                       height: 30,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   )
                 ],

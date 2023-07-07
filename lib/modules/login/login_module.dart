@@ -7,6 +7,9 @@ class LoginModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ChildRoute("/", child: (_, args) => const LoginScreen()),
+        ChildRoute(
+          "/",
+          child: (_, args) => const LoginScreen(),
+        ),
       ];
 }

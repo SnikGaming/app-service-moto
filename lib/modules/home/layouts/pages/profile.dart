@@ -16,24 +16,20 @@ class _MyTestProfileState extends State<MyTestProfile> {
 
   /// and then assign it to the our widget library
   Widget float1() {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: null,
-        heroTag: "btn1",
-        tooltip: 'First button',
-        child: Icon(Icons.add),
-      ),
+    return const FloatingActionButton(
+      onPressed: null,
+      heroTag: "btn1",
+      tooltip: 'First button',
+      child: Icon(Icons.add),
     );
   }
 
   Widget float2() {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: () {},
-        heroTag: "btn2",
-        tooltip: 'Secondd button',
-        child: Icon(Icons.add),
-      ),
+    return FloatingActionButton(
+      onPressed: () {},
+      heroTag: "btn2",
+      tooltip: 'Secondd button',
+      child: const Icon(Icons.add),
     );
   }
 
@@ -49,16 +45,14 @@ class _MyTestProfileState extends State<MyTestProfile> {
           colorEndAnimation: Colors.red,
           animatedIconData: AnimatedIcons.menu_close //To principal button
           ),
-      body: Container(
-        child: Column(
-          children: [
-            Container(
-              height: 80,
-              width: size.width,
-              color: randomColor(),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          Container(
+            height: 80,
+            width: size.width,
+            color: randomColor(),
+          )
+        ],
       ),
     );
   }
