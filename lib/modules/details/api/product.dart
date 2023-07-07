@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import '../../home/api/APIBASE.dart';
-import '../../home/api/products/models/products.dart' as products;
+import '../../../api/APIBASE.dart';
+import '../../../api/products/models/products.dart' as products;
 
 Future<products.Data> getProductDetail({required int id}) async {
   // print('this is user ');

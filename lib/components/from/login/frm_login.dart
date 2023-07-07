@@ -7,7 +7,7 @@ import 'package:app/modules/app_constants.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../modules/home/api/login/api_login.dart';
+import '../../../api/login/api_login.dart';
 import '../../../network/api/google/google.dart';
 import '../../button/button.dart';
 import '../../functions/logout.dart';

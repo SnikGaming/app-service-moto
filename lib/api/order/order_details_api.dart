@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:app/modules/home/api/order/order_details.dart';
+import 'package:app/api/order/order_details.dart';
 
 import '../APIBASE.dart';
 

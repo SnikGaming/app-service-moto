@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/modules/home/api/payment/payment_model.dart';
+import 'package:app/api/payment/payment_model.dart';
 
 import '../APIBASE.dart';
 

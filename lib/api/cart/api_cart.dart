@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:app/modules/home/api/cart/model.dart';
+import 'package:app/api/cart/model.dart';
 
 import '../APIBASE.dart';
 

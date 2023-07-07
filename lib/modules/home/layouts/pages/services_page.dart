@@ -12,8 +12,8 @@ import '../../../../components/convert/format_money.dart';
 import '../../../../components/value_app.dart';
 import '../../../../network/connect.dart';
 import '../../../app_constants.dart';
-import '../../api/favorites/api.dart';
-import '../../api/products/api_product.dart';
+import '../../../../api/favorites/api.dart';
+import '../../../../api/products/api_product.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});

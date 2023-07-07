@@ -14,8 +14,8 @@ import '../../../components/message/message.dart';
 import '../../../components/style/text_style.dart';
 import '../../../constants/colors.dart';
 import '../../../network/api/otp.dart';
-import '../../home/api/checkMail/checkMain.dart';
-import '../../home/api/otp/otp_api.dart';
+import '../../../api/checkMail/checkMain.dart';
+import '../../../api/otp/otp_api.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

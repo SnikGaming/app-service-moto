@@ -8,7 +8,7 @@ import 'package:app/components/message/message.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/modules/app_constants.dart';
-import 'package:app/modules/home/api/category/api_category.dart';
+import 'package:app/api/category/api_category.dart';
 import 'package:app/modules/home/layouts/pages/skeleton.dart';
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
@@ -17,6 +17,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pagination_flutter/pagination.dart';
 import '../../../../components/calendar/res/colors.dart';
 import '../../../../components/convert/format_money.dart';
@@ -31,11 +32,11 @@ import '../../../../preferences/product/product.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../TermsOfService/content.dart';
 import 'package:badges/badges.dart' as badges;
-import '../../api/category/models/category.dart' as categories;
-import '../../api/login/api_login.dart';
-import '../../api/products/api_product.dart';
-import '../../api/products/models/products.dart' as products;
-import '../../api/login/model.dart' as users;
+import '../../../../api/category/models/category.dart' as categories;
+import '../../../../api/login/api_login.dart';
+import '../../../../api/products/api_product.dart';
+import '../../../../api/products/models/products.dart' as products;
+import '../../../../api/login/model.dart' as users;
 
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -228,8 +229,15 @@ class _HomePageState extends State<HomePage>
               errorWidget: (context, url, error) => const Icon(Icons.error),
               imageUrl: '${ConnectDb.url}${UserPrefer.getImageUser()}',
             )
-          : const CircleAvatar(
-              child: Icon(Ionicons.person),
+          : Container(
+              height: 45,
+              width: 45,
+              decoration: const BoxDecoration(
+                color: violet,
+                shape: BoxShape.circle,
+              ),
+              child: Lottie.network(
+                  'https://assets10.lottiefiles.com/packages/lf20_1mvhccet.json'),
             ),
     );
   }

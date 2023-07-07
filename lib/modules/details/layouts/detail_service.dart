@@ -18,11 +18,11 @@ import '../../../components/value_app.dart';
 import '../../../constants/style.dart';
 import '../../../network/connect.dart';
 import '../../../preferences/user/user_preferences.dart';
-import '../../home/api/products/models/products.dart' as products;
+import '../../../api/products/models/products.dart' as products;
 import 'package:in_app_review/in_app_review.dart';
 
-import '../../home/api/review/api_review.dart';
-import '../../home/api/review/models/review.dart' as review;
+import '../../../api/review/api_review.dart';
+import '../../../api/review/models/review.dart' as review;
 import '../api/product.dart';
 import '../module/cart.dart';
 

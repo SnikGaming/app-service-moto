@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import '../../api/products/models/products.dart' as products;
 import '../../../network/connect.dart';
-import '../api/products/models/products.dart';
+import '../../../api/products/models/products.dart';
 
 class MySearchDelegate extends SearchDelegate {
   final List<Data> items;

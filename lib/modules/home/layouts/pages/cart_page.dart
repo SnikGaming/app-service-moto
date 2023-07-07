@@ -3,7 +3,7 @@
 import 'dart:math';
 
 import 'package:app/components/message/message.dart';
-import 'package:app/modules/home/api/address/model.dart' as address;
+import 'package:app/api/address/model.dart' as address;
 import 'package:app/modules/home/layouts/pages/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -20,9 +20,9 @@ import '../../../../components/value_app.dart';
 import '../../../../functions/check_true_false_list.dart';
 import '../../../../network/connect.dart';
 import '../../../app_constants.dart';
-import '../../api/address/api_address.dart';
-import '../../api/cart/api_cart.dart';
-import '../../api/cart/model.dart' as CartModel;
+import '../../../../api/address/api_address.dart';
+import '../../../../api/cart/api_cart.dart';
+import '../../../../api/cart/model.dart' as CartModel;
 import '../../../../components/convert/format_money.dart';
 
 class CartScreen extends StatefulWidget {

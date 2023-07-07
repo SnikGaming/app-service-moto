@@ -4,13 +4,13 @@ import 'package:app/components/from/forgotpassword/frm_forgotpassword.dart';
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/constants.dart';
 
-import 'package:app/modules/home/api/otp/otp_api.dart';
+import 'package:app/api/otp/otp_api.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:timer_count_down/timer_controller.dart';
 
-import '../../../modules/home/api/user/register.dart';
+import '../../../api/user/register.dart';
 import '../../countdown/count_down.dart';
 import '../../value_app.dart';
 

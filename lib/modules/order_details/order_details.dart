@@ -1,7 +1,7 @@
 import 'package:app/components/style/text_style.dart';
 import 'package:app/functions/random_color.dart';
-import 'package:app/modules/home/api/order/order_details.dart' as or;
-import 'package:app/modules/home/api/order/order_details_api.dart';
+import 'package:app/api/order/order_details.dart' as or;
+import 'package:app/api/order/order_details_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';

@@ -3,13 +3,13 @@
 import 'dart:core';
 
 import 'package:app/components/calendar/utills/extensions.dart';
-import 'package:app/modules/home/api/booking/api_booking.dart';
+import 'package:app/api/booking/api_booking.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:cr_calendar/cr_calendar.dart';
 
 import 'package:flutter/material.dart';
 
-import '../../../modules/home/api/booking/model.dart' as booking;
+import '../../../api/booking/model.dart' as booking;
 import '../res/colors.dart';
 import '../utills/constants.dart';
 import '../widgets/create_event_dialog.dart';

@@ -2,11 +2,11 @@
 
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:app/components/value_app.dart';
-import 'package:app/modules/home/api/checkMail/checkMain.dart';
+import 'package:app/api/checkMail/checkMain.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
-import '../../../modules/home/api/otp/otp_api.dart';
-import '../../../modules/home/api/user/register.dart';
+import '../../../api/otp/otp_api.dart';
+import '../../../api/user/register.dart';
 import '../../../network/api/otp.dart';
 import '../../button/button.dart';
 import '../../message/message.dart';

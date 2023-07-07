@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:app/modules/home/api/booking/model.dart';
+import 'package:app/api/booking/model.dart';
 
 import '../APIBASE.dart';
 

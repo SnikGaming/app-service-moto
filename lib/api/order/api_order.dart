@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/modules/home/api/order/order.dart' as order;
+import 'package:app/api/order/order.dart' as order;
 
 import '../APIBASE.dart';
 

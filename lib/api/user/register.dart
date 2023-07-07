@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-import '../../../../components/convert/rd_name.dart';
+import '../../components/convert/rd_name.dart';
 import '../APIBASE.dart';
 
 class APIAuthUser {

@@ -1,21 +1,22 @@
-import 'package:app/modules/home/api/APIBASE.dart';
-import 'package:app/modules/home/api/banner/model.dart';
+import 'package:app/api/APIBASE.dart';
+import 'models/category.dart';
 
-class APIBanner {
-  static List<Data> apiBanner = [];
+class APICategory {
+  static List<Data> apiCategory = [];
+
   static Future<List<Data>> getData() async {
     try {
-      final response = await ApiBase.get(path: '/api/banners/');
+      final response = await ApiBase.get(path: '/api/categories/');
       final jsonData = response.data;
       final List<dynamic> projectListJson = jsonData['data'];
       final List<Data> data = projectListJson
           .map((projectJson) => Data.fromJson(projectJson))
           .toList();
-      apiBanner = data;
+      apiCategory = data;
 
       return data;
     } catch (e) {
-      // print('data $e');
+      apiCategory = [];
       return [];
     }
   }

@@ -2,20 +2,20 @@
 
 import 'package:app/components/message/message.dart';
 import 'package:app/constants/style.dart';
-import 'package:app/modules/home/api/address/model.dart' as address;
+import 'package:app/api/address/model.dart' as address;
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../order/order_screen.dart';
 import '../../../components/value_app.dart';
-import '../../home/api/address/api_address.dart';
-import '../../home/api/products/models/products.dart' as products;
+import '../../../api/address/api_address.dart';
+import '../../../api/products/models/products.dart' as products;
 
 import '../../../components/button/mybutton.dart';
 import '../../../components/convert/format_money.dart';
 import '../../../components/style/text_style.dart';
 import '../../../preferences/user/user_preferences.dart';
-import '../../home/api/cart/api_cart.dart';
+import '../../../api/cart/api_cart.dart';
 
 class Cart extends StatefulWidget {
   final VoidCallback updateCartData;

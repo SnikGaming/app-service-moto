@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/constants.dart';
-import '../../../modules/home/api/forgotpassword/api_forgot.dart';
+import '../../../api/forgotpassword/api_forgot.dart';
 import '../../textfield/login/text_field_password.dart';
 import '../../value_app.dart';
 

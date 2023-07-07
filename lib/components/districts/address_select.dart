@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import '../../modules/home/api/address/model.dart' as Address;
+import '../../api/address/model.dart' as Address;
 
 import '../CusRichText/CusRichText.dart';
 

@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:app/modules/home/api/login/model.dart' as value;
+import 'package:app/api/login/model.dart' as value;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../components/button/button.dart';
 import '../../../network/connect.dart';
 import '../../../preferences/user/user_preferences.dart';
-import '../../home/api/user/register.dart';
+import '../../../api/user/register.dart';
 
 class ProfileScreen extends StatefulWidget {
   var data = [];

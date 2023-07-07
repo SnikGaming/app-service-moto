@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/modules/home/api/location/model.dart';
+import 'package:app/api/location/model.dart';
 
 import '../APIBASE.dart';
 

@@ -7,10 +7,10 @@ import 'package:app/components/calendar/res/colors.dart';
 import 'package:app/components/message/message.dart';
 import 'package:app/components/style/text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:app/modules/home/api/location/model.dart';
+import 'package:app/api/location/model.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../modules/home/api/address/api_address.dart';
+import '../../api/address/api_address.dart';
 import '../textformfield/customTextFormField.dart';
 import '../validator/phone.dart';
 

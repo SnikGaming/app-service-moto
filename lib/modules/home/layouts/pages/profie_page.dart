@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:app/components/CusRichText/CusRichText.dart';
 
 import 'package:app/components/mybage/mybage.dart';
-import 'package:app/modules/home/api/order/order.dart' as order;
+import 'package:app/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -16,8 +16,8 @@ import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
 import '../../../order_details/order_details.dart';
-import '../../api/login/api_login.dart';
-import '../../api/order/api_order.dart';
+import '../../../../api/login/api_login.dart';
+import '../../../../api/order/api_order.dart';
 
 import 'package:http/http.dart' as http;
 

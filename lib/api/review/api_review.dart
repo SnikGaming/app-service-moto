@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:app/modules/home/api/APIBASE.dart';
+import 'package:app/api/APIBASE.dart';
 
 import 'models/review.dart';
 

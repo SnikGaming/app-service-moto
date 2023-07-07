@@ -1,6 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, use_build_context_synchronously
 
-import 'package:app/modules/home/api/booking/api_booking.dart';
+import 'package:app/api/booking/api_booking.dart';
 import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

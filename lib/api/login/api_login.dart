@@ -1,6 +1,6 @@
-import 'package:app/modules/home/api/login/model.dart';
+import 'package:app/api/login/model.dart';
 import 'package:dio/dio.dart';
-import '../../../../preferences/user/user_preferences.dart';
+import '../../preferences/user/user_preferences.dart';
 import '../APIBASE.dart';
 
 class APIAuth {
