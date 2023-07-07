@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/components/from/forgotpassword/frm_forgotpassword.dart';
+import 'package:app/components/message/message.dart';
 import 'package:app/constants/constants.dart';
 
 import 'package:app/modules/home/api/otp/otp_api.dart';
@@ -9,9 +10,17 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:timer_count_down/timer_controller.dart';
 
+import '../../../modules/home/api/user/register.dart';
 import '../../countdown/count_down.dart';
+import '../../value_app.dart';
 
-Future<void> displayTextInputDialog(BuildContext context, otp, email) async {
+Future<void> displayTextInputDialog(
+    {required BuildContext context,
+    required OtpFieldController otp,
+    required email,
+    bool isRegister = false,
+    String? password,
+    String? repassword}) async {
   final controller_ = CountdownController(autoStart: true);
 
   showDialog(
@@ -61,17 +70,32 @@ Future<void> displayTextInputDialog(BuildContext context, otp, email) async {
                     fieldStyle: FieldStyle.box,
                     outlineBorderRadius: 15,
                     style: const TextStyle(fontSize: 17),
-                    onChanged: (pin) {
-                    },
+                    onChanged: (pin) {},
                     onCompleted: (pin) async {
                       var res = await APIOtp.checkOtp(email: email, otp: pin);
                       if (res == 200) {
-                        Navigator.pop(dialogContext);
-                        Navigator.push(
+                        if (isRegister) {
+                          var response = await APIAuthUser.register(
+                              email: email,
+                              password: password!,
+                              c_password: repassword!);
+                          if (response == 200) {
+                            Message.success(
+                                message: registerSuc, context: context);
+                            Navigator.pop(context);
+                          } else {
+                            Message.error(
+                                message: registerFail, context: context);
+                          }
+                        } else {
+                          Navigator.pop(dialogContext);
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) =>
-                                    PasswordInputDialog(email: email)));
+                              builder: (_) => PasswordInputDialog(email: email),
+                            ),
+                          );
+                        }
                       } else {
                         otp.clear();
                       }

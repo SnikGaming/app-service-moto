@@ -2,10 +2,16 @@
 
 import 'package:app/components/textfield/login/text_field_email.dart';
 import 'package:app/components/value_app.dart';
+import 'package:app/modules/home/api/checkMail/checkMain.dart';
 import 'package:flutter/material.dart';
+import 'package:otp_text_field/otp_field.dart';
+import '../../../modules/home/api/otp/otp_api.dart';
 import '../../../modules/home/api/user/register.dart';
+import '../../../network/api/otp.dart';
 import '../../button/button.dart';
+import '../../message/message.dart';
 import '../../textfield/login/text_field_password.dart';
+import '../otp/frm_otp.dart';
 
 class FrmRegister extends StatefulWidget {
   const FrmRegister({super.key});
@@ -16,6 +22,7 @@ class FrmRegister extends StatefulWidget {
 
 class _FrmRegisterState extends State<FrmRegister> {
   var formkey = GlobalKey<FormState>();
+  final OtpFieldController _otp = OtpFieldController();
 
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -70,8 +77,6 @@ class _FrmRegisterState extends State<FrmRegister> {
         ],
       ),
     );
-  
-  
   }
 
   String? validateConfirmPassword(String? value) {
@@ -119,21 +124,51 @@ class _FrmRegisterState extends State<FrmRegister> {
   _butRegister() async {
     // if (true) Message.error(message: "Login faild", context: context);
     if (formkey.currentState!.validate()) {
-      var response = await APIAuthUser.register(
-          email: _email.text,
-          password: _password.text,
-          c_password: _repassword.text);
-      if (response == 200) {
+      int res = await APICheckValue.checkMail(email: _email.text);
+      if (res == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(registerSuc),
-          backgroundColor: Colors.green,
-        ));
-        Navigator.pop(context);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(registerFail),
+          content: Text('Email tồn tại.'),
           backgroundColor: Colors.red,
         ));
+      } else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const AlertDialog(
+              title: Text('Vui lòng đợi'),
+              content: Text('Đang gửi email...'),
+            );
+          },
+        );
+        var value = generateRandomNumber();
+        sendOTP(email: _email.text, otp: value.toString(), type: eOtp.register)
+            .then((sendEmailResult) {
+          if (sendEmailResult) {
+            return APIOtp.createOtp(email: _email.text, otp: value.toString());
+          } else {
+            throw Exception('Failed to send email');
+          }
+        }).then((createOtpResult) {
+          Navigator.pop(context);
+          if (createOtpResult) {
+            Message.success(message: sucSend, context: context);
+            // Navigator.pop(context);
+            displayTextInputDialog(
+                context: context,
+                otp: _otp,
+                email: _email.text,
+                isRegister: true,
+                password: _password.text,
+                repassword: _repassword.text);
+            // _email.clear();
+          } else {
+            Message.error(message: failSend, context: context);
+          }
+        }).catchError((error) {
+          Navigator.pop(context);
+          Message.error(message: failSend, context: context);
+        });
       }
     }
   }
