@@ -85,7 +85,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.add,
                               color: Colors.white,
                             ),
@@ -166,48 +166,44 @@ class _AddressListScreenState extends State<AddressListScreen> {
                       ),
                       Expanded(
                           flex: 1,
-                          child: Container(
-                            child: Row(
-                              children: [
-                                GestureDetector(
-                                  child: const Icon(Icons.edit,
-                                      color: Colors.yellowAccent),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => FormInputLocation(
-                                          data: APILocation.dataLocation,
-                                          defaultProvinceId:
-                                              address.idProvince!,
-                                          defaultDistrictId:
-                                              address.idDistrict!,
-                                          defaultWardId: address.idWard!,
-                                          defaultName: address.name!,
-                                          defaultAddress: address.address!,
-                                          defaultPhone: address.phoneNumber!,
-                                          id: address.id,
-                                        ),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                child: const Icon(Icons.edit,
+                                    color: Colors.yellowAccent),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FormInputLocation(
+                                        data: APILocation.dataLocation,
+                                        defaultProvinceId: address.idProvince!,
+                                        defaultDistrictId: address.idDistrict!,
+                                        defaultWardId: address.idWard!,
+                                        defaultName: address.name!,
+                                        defaultAddress: address.address!,
+                                        defaultPhone: address.phoneNumber!,
+                                        id: address.id,
                                       ),
-                                    ).then((value) => loadData());
-                                  },
+                                    ),
+                                  ).then((value) => loadData());
+                                },
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              GestureDetector(
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
                                 ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                GestureDetector(
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                  onTap: () {
-                                    APIAddress.deleteAddress(address.id!);
-                                    loadData();
-                                    // Implement delete address functionality
-                                  },
-                                ),
-                              ],
-                            ),
+                                onTap: () {
+                                  APIAddress.deleteAddress(address.id!);
+                                  loadData();
+                                  // Implement delete address functionality
+                                },
+                              ),
+                            ],
                           ))
                     ],
                   ),
