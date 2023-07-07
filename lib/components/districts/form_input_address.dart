@@ -3,10 +3,12 @@
 import 'dart:convert';
 
 import 'package:app/components/button/mybutton.dart';
+import 'package:app/components/calendar/res/colors.dart';
 import 'package:app/components/message/message.dart';
 import 'package:app/components/style/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:app/modules/home/api/location/model.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../modules/home/api/address/api_address.dart';
 import '../textformfield/customTextFormField.dart';
@@ -93,129 +95,162 @@ class _FormInputLocationState extends State<FormInputLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: violet,
+        // title: ,
+      ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 100,
+        child: Stack(
+          // alignment: Alignment.center,
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Lottie.network(
+                  'https://assets10.lottiefiles.com/packages/lf20_nwfrjcrb.json',
+                  fit: BoxFit.cover),
+            ),
+            Positioned(
+              bottom: -90,
+              left: -100,
+              child: Container(
+                height: 400,
+                width: 400,
+                child: Lottie.network(
+                  'https://assets10.lottiefiles.com/packages/lf20_aospavob.json',
+                  height: 400,
+                  width: 400,
+                ),
               ),
-              Form(
-                key: _formKey,
+            ),
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextField(
-                      controller: phoneController,
-                      textInputAction: TextInputAction.next,
-                      hintText: 'Nhập số điện thoại',
-                      keyboardType: TextInputType.phone,
-                      validator: validatePhoneNumber,
+                    const SizedBox(
+                      height: 70,
+                    ),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTextField(
+                            controller: phoneController,
+                            textInputAction: TextInputAction.next,
+                            hintText: 'Nhập số điện thoại',
+                            keyboardType: TextInputType.phone,
+                            validator: validatePhoneNumber,
+                          ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            controller: nameController,
+                            textInputAction: TextInputAction.next,
+                            hintText: 'Tên người nhận hàng',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Tên người dùng không được để trống.';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          DropdownButton<Data>(
+                            value: selectedData,
+                            hint: const Text('Tỉnh/ Thành phố'),
+                            onChanged: (Data? newValue) {
+                              setState(() {
+                                selectedData = newValue;
+                                selectedDistrict = null;
+                                selectedWard = null;
+                              });
+                            },
+                            items: widget.data
+                                .map<DropdownMenuItem<Data>>((Data data) {
+                              return DropdownMenuItem<Data>(
+                                value: data,
+                                child: Text(data.name!),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 16),
+                          DropdownButton<Districts>(
+                            value: selectedDistrict,
+                            hint: const Text('Quận/ Huyện'),
+                            onChanged: (Districts? newValue) {
+                              setState(() {
+                                selectedDistrict = newValue;
+                                selectedWard = null;
+                              });
+                            },
+                            items: selectedData?.districts
+                                    ?.map<DropdownMenuItem<Districts>>(
+                                        (Districts district) {
+                                  return DropdownMenuItem<Districts>(
+                                    value: district,
+                                    child: Text(district.name!),
+                                  );
+                                }).toList() ??
+                                [],
+                          ),
+                          const SizedBox(height: 16),
+                          DropdownButton<Wards>(
+                            value: selectedWard,
+                            hint: const Text('Phường/ Xã'),
+                            onChanged: (Wards? newValue) {
+                              setState(() {
+                                selectedWard = newValue;
+                              });
+                            },
+                            items: selectedDistrict?.wards
+                                    ?.map<DropdownMenuItem<Wards>>(
+                                        (Wards ward) {
+                                  return DropdownMenuItem<Wards>(
+                                    value: ward,
+                                    child: Text(ward.name!),
+                                  );
+                                }).toList() ??
+                                [],
+                          ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            controller: addressController,
+                            textInputAction: TextInputAction.next,
+                            hintText: 'Số nhà/Tên đường',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Số nhà/tên đường không được để trống.';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                    MyButton(
+                      onPressed: _handleSubmit,
+                      backgroundColor: Colors.red,
+                      child: Text(
+                        'Lưu',
+                        style: h2.copyWith(fontSize: 16),
+                      ),
                     ),
                     const SizedBox(height: 16),
-                    CustomTextField(
-                      controller: nameController,
-                      textInputAction: TextInputAction.next,
-                      hintText: 'Tên người nhận hàng',
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Tên người dùng không được để trống.';
-                        }
-                        return null;
-                      },
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom * .6,
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    DropdownButton<Data>(
-                      value: selectedData,
-                      hint: const Text('Tỉnh/ Thành phố'),
-                      onChanged: (Data? newValue) {
-                        setState(() {
-                          selectedData = newValue;
-                          selectedDistrict = null;
-                          selectedWard = null;
-                        });
-                      },
-                      items:
-                          widget.data.map<DropdownMenuItem<Data>>((Data data) {
-                        return DropdownMenuItem<Data>(
-                          value: data,
-                          child: Text(data.name!),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 16),
-                    DropdownButton<Districts>(
-                      value: selectedDistrict,
-                      hint: const Text('Quận/ Huyện'),
-                      onChanged: (Districts? newValue) {
-                        setState(() {
-                          selectedDistrict = newValue;
-                          selectedWard = null;
-                        });
-                      },
-                      items: selectedData?.districts
-                              ?.map<DropdownMenuItem<Districts>>(
-                                  (Districts district) {
-                            return DropdownMenuItem<Districts>(
-                              value: district,
-                              child: Text(district.name!),
-                            );
-                          }).toList() ??
-                          [],
-                    ),
-                    const SizedBox(height: 16),
-                    DropdownButton<Wards>(
-                      value: selectedWard,
-                      hint: const Text('Phường/ Xã'),
-                      onChanged: (Wards? newValue) {
-                        setState(() {
-                          selectedWard = newValue;
-                        });
-                      },
-                      items: selectedDistrict?.wards
-                              ?.map<DropdownMenuItem<Wards>>((Wards ward) {
-                            return DropdownMenuItem<Wards>(
-                              value: ward,
-                              child: Text(ward.name!),
-                            );
-                          }).toList() ??
-                          [],
-                    ),
-                    const SizedBox(height: 16),
-                    CustomTextField(
-                      controller: addressController,
-                      textInputAction: TextInputAction.next,
-                      hintText: 'Số nhà/Tên đường',
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Số nhà/tên đường không được để trống.';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
                   ],
                 ),
               ),
-              MyButton(
-                onPressed: _handleSubmit,
-                backgroundColor: Colors.red,
-                child: Text(
-                  'Lưu',
-                  style: h2.copyWith(fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom * .6,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
