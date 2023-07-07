@@ -18,6 +18,7 @@ import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pagination_flutter/pagination.dart';
+import '../../../../components/calendar/res/colors.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/search/search.dart';
@@ -213,14 +214,9 @@ class _HomePageState extends State<HomePage>
 
   Widget userAction() {
     return FloatingActionButton(
-      onPressed: () async {
-        final Uri url = Uri(scheme: 'tel', path: '0334666651');
-        if (!await launchUrl(url)) {
-          throw Exception('Could not launch $url');
-        }
-      },
+      onPressed: _opentProfile,
       heroTag: "btn4",
-      tooltip: 'Liên hệ',
+      tooltip: 'Thông tin user',
       child: UserPrefer.getImageUser() != null && isLogin
           ? CachedNetworkImage(
               imageBuilder: (context, imageProvider) => CircleAvatar(
@@ -254,7 +250,7 @@ class _HomePageState extends State<HomePage>
                   teamsOfService()
                 ],
           key: key,
-          colorStartAnimation: Colors.blue,
+          colorStartAnimation: violet,
           colorEndAnimation: Colors.red,
           animatedIconData: AnimatedIcons.menu_close //To principal button
           ),
@@ -262,7 +258,7 @@ class _HomePageState extends State<HomePage>
           SettingPrefer.getLightDark() == null || SettingPrefer.getLightDark()
               ? white
               : black,
-      drawer: _drawer(context),
+      // drawer: _drawer(context),
       body: _customScrollview(context, size),
     );
   }
@@ -648,121 +644,121 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _drawer(BuildContext context) {
-    return Drawer(
-      backgroundColor: MyColors.lightGreen,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 176, 135, 236),
-            ),
-            child: GestureDetector(
-              onTap: _opentProfile,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 90,
-                    width: 90,
-                    child: UserPrefer.getImageUser() != null && isLogin
-                        ? CachedNetworkImage(
-                            imageBuilder: (context, imageProvider) => CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    '${ConnectDb.url}${UserPrefer.getImageUser()}')),
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                            imageUrl:
-                                '${ConnectDb.url}${UserPrefer.getImageUser()}',
-                          )
-                        : const CircleAvatar(
-                            child: Icon(Ionicons.person),
-                          ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Text(
-                    username,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        overflow: TextOverflow.ellipsis,
-                        letterSpacing: 2),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.attach_money,
-              color: Colors.green,
-            ),
-            title: const Text('Bill history'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.calendar_month_outlined,
-              color: Colors.blue,
-            ),
-            title: const Text('Booking history'),
-            onTap: () {},
-          ),
-          UserPrefer.getToken() == null
-              ? ListTile(
-                  leading: const Icon(
-                    Icons.login,
-                    color: Colors.purple,
-                  ),
-                  title: const Text('Login'),
-                  onTap: _login,
-                )
-              : ListTile(
-                  leading: const Icon(
-                    Icons.logout_outlined,
-                    color: Colors.red,
-                  ),
-                  title: const Text('Logout'),
-                  onTap: _logout,
-                ),
-          ListTile(
-            title: const Text('Terms of service'),
-            leading: const Icon(
-              Icons.info_outline_rounded,
-              color: Colors.blue,
-            ),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => FluidDialog(
-                  defaultDecoration: BoxDecoration(
-                    color: SettingPrefer.getLightDark() == null ||
-                            SettingPrefer.getLightDark()
-                        ? white
-                        : black,
-                  ),
-                  rootPage: FluidDialogPage(
-                    alignment: Alignment.bottomLeft,
-                    builder: (context) => const TestDialog(),
-                  ),
-                ),
-              );
-            },
-          ),
-          const SizedBox(
-            height: 210,
-          ),
-          _darkLight(),
-        ],
-      ),
-    );
-  }
+  // Widget _drawer(BuildContext context) {
+  //   return Drawer(
+  //     backgroundColor: MyColors.lightGreen,
+  //     child: ListView(
+  //       padding: EdgeInsets.zero,
+  //       children: [
+  //         DrawerHeader(
+  //           decoration: const BoxDecoration(
+  //             color: Color.fromARGB(255, 176, 135, 236),
+  //           ),
+  //           child: GestureDetector(
+  //             onTap: _opentProfile,
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 SizedBox(
+  //                   height: 90,
+  //                   width: 90,
+  //                   child: UserPrefer.getImageUser() != null && isLogin
+  //                       ? CachedNetworkImage(
+  //                           imageBuilder: (context, imageProvider) => CircleAvatar(
+  //                               backgroundImage: NetworkImage(
+  //                                   '${ConnectDb.url}${UserPrefer.getImageUser()}')),
+  //                           fit: BoxFit.cover,
+  //                           placeholder: (context, url) => const Center(
+  //                               child: CircularProgressIndicator()),
+  //                           errorWidget: (context, url, error) =>
+  //                               const Icon(Icons.error),
+  //                           imageUrl:
+  //                               '${ConnectDb.url}${UserPrefer.getImageUser()}',
+  //                         )
+  //                       : const CircleAvatar(
+  //                           child: Icon(Ionicons.person),
+  //                         ),
+  //                 ),
+  //                 const SizedBox(
+  //                   height: 16,
+  //                 ),
+  //                 Text(
+  //                   username,
+  //                   style: const TextStyle(
+  //                       fontWeight: FontWeight.w600,
+  //                       fontSize: 18,
+  //                       overflow: TextOverflow.ellipsis,
+  //                       letterSpacing: 2),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //         ListTile(
+  //           leading: const Icon(
+  //             Icons.attach_money,
+  //             color: Colors.green,
+  //           ),
+  //           title: const Text('Bill history'),
+  //           onTap: () {},
+  //         ),
+  //         ListTile(
+  //           leading: const Icon(
+  //             Icons.calendar_month_outlined,
+  //             color: Colors.blue,
+  //           ),
+  //           title: const Text('Booking history'),
+  //           onTap: () {},
+  //         ),
+  //         UserPrefer.getToken() == null
+  //             ? ListTile(
+  //                 leading: const Icon(
+  //                   Icons.login,
+  //                   color: Colors.purple,
+  //                 ),
+  //                 title: const Text('Login'),
+  //                 onTap: _login,
+  //               )
+  //             : ListTile(
+  //                 leading: const Icon(
+  //                   Icons.logout_outlined,
+  //                   color: Colors.red,
+  //                 ),
+  //                 title: const Text('Logout'),
+  //                 onTap: _logout,
+  //               ),
+  //         ListTile(
+  //           title: const Text('Terms of service'),
+  //           leading: const Icon(
+  //             Icons.info_outline_rounded,
+  //             color: Colors.blue,
+  //           ),
+  //           onTap: () {
+  //             showDialog(
+  //               context: context,
+  //               builder: (context) => FluidDialog(
+  //                 defaultDecoration: BoxDecoration(
+  //                   color: SettingPrefer.getLightDark() == null ||
+  //                           SettingPrefer.getLightDark()
+  //                       ? white
+  //                       : black,
+  //                 ),
+  //                 rootPage: FluidDialogPage(
+  //                   alignment: Alignment.bottomLeft,
+  //                   builder: (context) => const TestDialog(),
+  //                 ),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //         const SizedBox(
+  //           height: 210,
+  //         ),
+  //         _darkLight(),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Padding _darkLight() {
     return Padding(
