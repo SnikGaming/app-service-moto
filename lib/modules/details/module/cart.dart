@@ -6,7 +6,7 @@ import 'package:app/modules/home/api/address/model.dart' as address;
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:ionicons/ionicons.dart';
-import '../../../components/districts/AddressDisplayScreen .dart';
+import '../../order/order_screen.dart';
 import '../../../components/value_app.dart';
 import '../../home/api/address/api_address.dart';
 import '../../home/api/products/models/products.dart' as products;

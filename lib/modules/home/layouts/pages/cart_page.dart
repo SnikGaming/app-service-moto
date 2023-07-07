@@ -13,7 +13,7 @@ import 'package:input_quantity/input_quantity.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../components/button/mybutton.dart';
 import '../../../../components/calendar/res/colors.dart';
-import '../../../../components/districts/AddressDisplayScreen .dart';
+import '../../../order/order_screen.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../components/value_app.dart';

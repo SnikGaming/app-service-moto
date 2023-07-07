@@ -8,19 +8,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import '../../models/shipcode_model.dart';
-import '../../modules/home/api/address/api_address.dart';
-import '../../modules/home/api/address/model.dart' as Address;
-import '../../modules/home/api/cart/api_cart.dart';
-import '../../modules/home/api/order/api_order.dart';
-import '../../modules/home/api/payment/payment_model.dart' as payment;
+import '../home/api/address/api_address.dart';
+import '../home/api/address/model.dart' as Address;
+import '../home/api/cart/api_cart.dart';
+import '../home/api/order/api_order.dart';
+import '../home/api/payment/payment_model.dart' as payment;
 import '../../network/connect.dart';
-import '../CusRichText/CusRichText.dart';
-import '../convert/format_money.dart';
-import '../message/message.dart';
-import 'AddressListScreen .dart';
+import '../../components/CusRichText/CusRichText.dart';
+import '../../components/convert/format_money.dart';
+import '../../components/message/message.dart';
+import '../../components/districts/addressList.dart';
 import 'package:http/http.dart' as http;
 
-import 'address_select.dart';
+import '../../components/districts/address_select.dart';
 
 class AddressDisplayScreen extends StatefulWidget {
   final Address.Data? selectedAddress;
