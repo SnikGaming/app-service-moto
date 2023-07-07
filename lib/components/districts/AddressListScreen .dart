@@ -54,7 +54,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                     MaterialPageRoute(
                         builder: (context) => FormInputLocation(
                               data: APILocation.dataLocation,
-                            )));
+                            ))).then((value) => loadData());
                 // dangGuiMail(context);
                 // Implement add address functionality
               },
@@ -92,17 +92,21 @@ class _AddressListScreenState extends State<AddressListScreen> {
                   IconButton(
                     icon: const Icon(Icons.edit, color: Colors.yellowAccent),
                     onPressed: () {
-                      addressLocation(
-                          context: context,
-                          defaultProvinceId: address.idProvince,
-                          defaultDistrictId: address.idDistrict,
-                          name: address.name,
-                          phone: address.phoneNumber,
-                          address: address.address,
-                          id: address.id,
-                          defaultWardId: address.idWard);
-                      loadData();
-                      // Implement edit address functionality
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FormInputLocation(
+                            data: APILocation.dataLocation,
+                            defaultProvinceId: address.idProvince!,
+                            defaultDistrictId: address.idDistrict!,
+                            defaultWardId: address.idWard!,
+                            defaultName: address.name!,
+                            defaultAddress: address.address!,
+                            defaultPhone: address.phoneNumber!,
+                            id: address.id,
+                          ),
+                        ),
+                      ).then((value) => loadData());
                     },
                   ),
                   IconButton(
@@ -126,61 +130,5 @@ class _AddressListScreenState extends State<AddressListScreen> {
         },
       ),
     );
-  }
-
-  Future<dynamic> addressLocation(
-      {required BuildContext context,
-      String? phone,
-      String? address,
-      String? name,
-      int? defaultProvinceId,
-      int? defaultDistrictId,
-      int? defaultWardId,
-      int? id}) {
-    return showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          child: Expanded(
-            child: defaultProvinceId != null &&
-                    defaultDistrictId != null &&
-                    defaultWardId != null &&
-                    phone != null &&
-                    name != null &&
-                    address != null &&
-                    id != null
-                ? FormInputLocation(
-                    data: APILocation.dataLocation,
-                    defaultProvinceId: defaultProvinceId,
-                    defaultDistrictId: defaultDistrictId,
-                    defaultWardId: defaultWardId,
-                    defaultName: name,
-                    defaultAddress: address,
-                    defaultPhone: phone,
-                    id: id,
-                  )
-                : FormInputLocation(
-                    data: APILocation.dataLocation,
-                  ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
-
-  @override
-  State<MyWidget> createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<MyWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
