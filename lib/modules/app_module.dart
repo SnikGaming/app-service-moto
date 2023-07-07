@@ -42,22 +42,9 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         Locale('en', 'US'), // English
         Locale('de', 'DE'), // German
-        // ... other locales the app supports
       ],
       debugShowCheckedModeBanner: false,
-      // title: 'My Smart App',
-      // theme: ThemeData(
-      //   brightness: Brightness.light,
-      //   // brightness: Brightness.light,
-      //   useMaterial3: true,
-      //   // primaryColor: Colors.lightBlue[800],
-      //   // primarySwatch: Colors.blue,
-      //   textTheme: const TextTheme(
-      //     displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-      //     titleLarge: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-      //     bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Sono'),
-      //   ),
-      // ),
+
       theme: ThemeData(
         floatingActionButtonTheme:
             const FloatingActionButtonThemeData(backgroundColor: violet),

@@ -72,6 +72,7 @@ class _CalendarPageState extends State<CalendarPage> {
   void dispose() {
     _calendarController.dispose();
     _appbarTitleNotifier.dispose();
+
     _monthNameNotifier.dispose();
     super.dispose();
   }
@@ -200,9 +201,10 @@ class _CalendarPageState extends State<CalendarPage> {
   /// Show [CreateEventDialog] with settings for new event.
   Future<void> _addEvent({String? note, DateTime? beginDate, int? id}) async {
     final event = await showDialog(
-        context: context,
-        builder: (context) =>
-            CreateEventDialog(note: note, beginDate: beginDate, id: id));
+            context: context,
+            builder: (context) =>
+                CreateEventDialog(note: note, beginDate: beginDate, id: id))
+        .then((value) => loadData());
 
     if (event != null) {
       _calendarController.addEvent(event);
@@ -262,11 +264,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       {String? note, DateTime? beginDate, int? id}) =>
                   _addEvent(note: note, beginDate: beginDate, id: id),
             )).then((value) {
-      // _calendarController = CrCalendarController(
-      //   onSwipe: _onCalendarPageChanged,
-      //   events: events,
-      // );
-      // loadData();
+      loadData();
     });
   }
 }
