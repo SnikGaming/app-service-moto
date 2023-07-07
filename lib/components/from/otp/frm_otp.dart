@@ -82,7 +82,8 @@ Future<void> displayTextInputDialog(
                           if (response == 200) {
                             Message.success(
                                 message: registerSuc, context: context);
-                            Navigator.pop(context);
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
                           } else {
                             Message.error(
                                 message: registerFail, context: context);
