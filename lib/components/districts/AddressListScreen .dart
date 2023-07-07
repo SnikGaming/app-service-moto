@@ -5,6 +5,7 @@ import '../../modules/home/api/address/api_address.dart';
 import '../../modules/home/api/address/model.dart' as Address;
 import '../../modules/home/api/location/api_location.dart';
 import '../../modules/home/layouts/pages/services_page.dart';
+import '../../network/api/otp.dart';
 import '../value_app.dart';
 import 'form_input_address.dart';
 
@@ -47,7 +48,14 @@ class _AddressListScreenState extends State<AddressListScreen> {
               title: const Text(txtAddAddress),
               leading: const Icon(Icons.add),
               onTap: () {
-                addressLocation(context: context).then((value) => loadData());
+                // addressLocation(context: context).then((value) => loadData());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FormInputLocation(
+                              data: APILocation.dataLocation,
+                            )));
+                // dangGuiMail(context);
                 // Implement add address functionality
               },
             );
@@ -160,5 +168,19 @@ class _AddressListScreenState extends State<AddressListScreen> {
         );
       },
     );
+  }
+}
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
