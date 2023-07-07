@@ -77,6 +77,15 @@ class _FlashScreenState extends State<FlashScreen>
           width: size.width,
           child: Stack(
             children: [
+              Container(
+                height: size.height,
+                width: size.width,
+                child: Lottie.network(
+                  'https://assets10.lottiefiles.com/private_files/lf30_juxwmsbz.json',
+                  repeat: true,
+                  fit: BoxFit.cover,
+                ),
+              ),
               // Lottie.asset('assets/flashscreen/routine.json',
               //     repeat: false, height: size.height),
               Lottie.network(
