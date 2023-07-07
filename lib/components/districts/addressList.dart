@@ -46,20 +46,6 @@ class _AddressListScreenState extends State<AddressListScreen> {
         itemCount: addresses.length + 1, // +1 for the "Add Address" button
         itemBuilder: (context, index) {
           if (index == addresses.length) {
-            // Last item, display the "Add Address" button
-            // return ListTile(
-            //   title: const Text(txtAddAddress),
-            //   leading: const Icon(Icons.add),
-            //   onTap: () {
-            //     // addressLocation(context: context).then((value) => loadData());
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) => FormInputLocation(
-            //                   data: APILocation.dataLocation,
-            //                 ))).then((value) => loadData());
-            //   },
-            // );
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
