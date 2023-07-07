@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen>
                                               SizedBox(
                                                 width: size.width,
                                                 child: const Text(
-                                                  'Please enter your email below.',
+                                                  'Vui lòng nhập email của bạn vào bên dưới.',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w400,
@@ -213,13 +213,11 @@ class _LoginScreenState extends State<LoginScreen>
                           // ignore: prefer_const_constructors
                           GestureDetector(
                             onTap: () {
-                              Message.success(
-                                  message: register, context: context);
                               isRegister = !isRegister;
                               setState(() {});
                             },
                             child: Text(
-                              isRegister ? '$register ?' : login,
+                              isRegister ? register : login,
                               style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w400,
