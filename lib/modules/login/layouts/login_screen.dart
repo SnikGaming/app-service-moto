@@ -11,6 +11,7 @@ import '../../../components/message/message.dart';
 import '../../../components/style/text_style.dart';
 import '../../../constants/colors.dart';
 import '../../../network/api/otp.dart';
+import '../../home/api/checkMail/checkMain.dart';
 import '../../home/api/otp/otp_api.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -238,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  _sendEmailForgotPassword() {
+  _sendEmailForgotPassword() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -251,25 +252,34 @@ class _LoginScreenState extends State<LoginScreen>
     );
 
     var value = generateRandomNumber();
-    sendOTP(email: email.text, otp: value.toString()).then((sendEmailResult) {
-      if (sendEmailResult) {
-        return APIOtp.createOtp(email: email.text, otp: value.toString());
-      } else {
-        throw Exception('Failed to send email');
-      }
-    }).then((createOtpResult) {
-      Navigator.pop(context);
-      if (createOtpResult) {
-        Message.success(message: sucSend, context: context);
+    int checkMail = await APICheckValue.checkMail(email: email.text);
+
+    if (checkMail == 200) {
+      sendOTP(email: email.text, otp: value.toString()).then((sendEmailResult) {
+        if (sendEmailResult) {
+          return APIOtp.createOtp(email: email.text, otp: value.toString());
+        } else {
+          throw Exception('Failed to send email');
+        }
+      }).then((createOtpResult) {
         Navigator.pop(context);
-        displayTextInputDialog(context, _otp, email.text);
-        email.clear();
-      } else {
+        if (createOtpResult) {
+          Message.success(message: sucSend, context: context);
+          Navigator.pop(context);
+          displayTextInputDialog(context, _otp, email.text);
+          email.clear();
+        } else {
+          Message.error(message: failSend, context: context);
+        }
+      }).catchError((error) {
+        Navigator.pop(context);
         Message.error(message: failSend, context: context);
-      }
-    }).catchError((error) {
+      });
+    } else {
       Navigator.pop(context);
-      Message.error(message: failSend, context: context);
-    });
+
+      Message.error(
+          message: "Mail không tồn tại. $checkMail", context: context);
+    }
   }
 }
