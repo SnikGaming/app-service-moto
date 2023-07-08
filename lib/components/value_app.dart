@@ -60,12 +60,12 @@ const keyService = 'xxclnxkoxawaxwau'; //'wnuxgczhxvegtvoz';
 const subjectService = 'OTP Verification';
 
 //!: Login
-const textLogin_Title = "Hey, xin chào✌️";
+const textLogin_Title = "Snik, xin chào✌️";
 const textLogin_subTitle = "Được phục vụ bạn là niềm vinh hạnh của chúng tôi.";
 
 //!: Register
-const registerSuc = 'Thành công.💕';
-const registerFail = 'Thất bại.💕';
+const registerSuc = 'Đăng ký thành công.💕';
+const registerFail = 'Đăng ký thất bại.💕';
 
 //!: Validator
 const textEmailFormat = "Định dạng email không hợp lệ.";

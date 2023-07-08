@@ -126,10 +126,11 @@ class _FrmRegisterState extends State<FrmRegister> {
     if (formkey.currentState!.validate()) {
       int res = await APICheckValue.checkMail(email: _email.text);
       if (res == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Email tồn tại.'),
-          backgroundColor: Colors.red,
-        ));
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   content: Text('Email tồn tại.'),
+        //   backgroundColor: Colors.red,
+        // ));
+        Message.error(message: "Email đã được đăng ký.", context: context);
       } else {
         dangGuiMail(context);
         var value = generateRandomNumber();
