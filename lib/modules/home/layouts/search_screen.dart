@@ -42,37 +42,38 @@ class MySearchDelegate extends SearchDelegate {
     return ListView.builder(
       itemCount: result.length,
       itemBuilder: (BuildContext context, int index) {
+        var listTile = ListTile(
+          leading: CachedNetworkImage(
+            imageUrl: '${ConnectDb.url}${result[index].image}',
+            // height: 30,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                result[index].name!,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                formatCurrency(amount: result[index].price.toString()),
+                style: h1.copyWith(
+                  color: Colors.red,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          onTap: () {
+            close(context, result[index]);
+          },
+        );
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            leading: CachedNetworkImage(
-              imageUrl: '${ConnectDb.url}${result[index].image}',
-              // height: 30,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  result[index].name!,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  formatCurrency(amount: result[index].price.toString()),
-                  style: h1.copyWith(
-                    color: Colors.red,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-            onTap: () {
-              close(context, result[index]);
-            },
-          ),
+          child: listTile,
         );
       },
     );
@@ -98,10 +99,20 @@ class MySearchDelegate extends SearchDelegate {
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
           title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 suggestionList[index].name!,
-                style: h1.copyWith(color: Colors.red),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                formatCurrency(amount: suggestionList[index].price.toString()),
+                style: h1.copyWith(
+                  color: Colors.red,
+                  fontSize: 14,
+                ),
               ),
             ],
           ),

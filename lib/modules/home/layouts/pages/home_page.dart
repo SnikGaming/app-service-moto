@@ -893,7 +893,7 @@ class _ItemProductState extends State<ItemProduct> {
                             width: MediaQuery.of(context).size.width,
                             child: Text(
                               productData[index].name!.length > 45
-                                  ? '${productData[index].name!.substring(0, 45)}...'
+                                  ? '${productData[index].name!.substring(0, 40)}...'
                                   : productData[index].name!,
                               textAlign: TextAlign.left, // căn lề trái
                               style: MyTextStyle.title.copyWith(
