@@ -318,8 +318,8 @@ class _ProFilePageState extends State<ProFilePage> {
                                 width: 80,
                                 decoration: BoxDecoration(
                                   color: indexSelect == i
-                                      ? Colors.red
-                                      : Colors.purple.shade400,
+                                      ? const Color.fromARGB(255, 54, 54, 244)
+                                      : const Color.fromARGB(255, 40, 40, 42),
                                   borderRadius: BorderRadius.circular(18),
                                 ),
                                 child: Padding(
