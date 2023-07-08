@@ -51,6 +51,9 @@ const login = 'Đăng nhập';
 const sucSend = 'Gửi thành công';
 const failSend = 'Gửi thất bại';
 
+const txtAddressCty = "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM";
+const txtBookingService = "Dịch vụ";
+
 //!: Mail service
 const mailService = 'tranthoilong.test@gmail.com'; //'tranthoilong@gmail.com';
 const keyService = 'xxclnxkoxawaxwau'; //'wnuxgczhxvegtvoz';

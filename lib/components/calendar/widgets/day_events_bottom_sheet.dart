@@ -119,9 +119,11 @@ class _DayEventsBottomSheetState extends State<DayEventsBottomSheet> {
                                 },
                                 child: Container(
                                   height: 140,
-                                  color: Colors.yellow,
                                   width: 50,
-                                  child: const Icon(Icons.edit),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.yellow,
+                                  ),
                                 ),
                               ),
                               GestureDetector(
@@ -142,10 +144,12 @@ class _DayEventsBottomSheetState extends State<DayEventsBottomSheet> {
                                   }
                                 },
                                 child: Container(
-                                  color: Colors.red,
                                   width: 50,
                                   height: 140,
-                                  child: const Icon(Icons.delete),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
                             ],

@@ -204,7 +204,7 @@ class _CalendarPageState extends State<CalendarPage> {
             context: context,
             builder: (context) =>
                 CreateEventDialog(note: note, beginDate: beginDate, id: id))
-        .then((value) => loadData());
+        .then((value) {});
 
     if (event != null) {
       _calendarController.addEvent(event);
@@ -263,8 +263,6 @@ class _CalendarPageState extends State<CalendarPage> {
               addEventCallback: (
                       {String? note, DateTime? beginDate, int? id}) =>
                   _addEvent(note: note, beginDate: beginDate, id: id),
-            )).then((value) {
-      loadData();
-    });
+            )).then((value) {});
   }
 }

@@ -381,8 +381,9 @@ class _HomePageState extends State<HomePage>
             IconButton(
               //!:Xử lý search
               onPressed: () async {
-                var data = await APIProduct.getData(
-                    category_id: 1, search: '', page: page);
+                // var data = await APIProduct.getData(
+                //     category_id: 1, search: '', page: page);
+                var data = await APIProduct.search(search: '');
                 showSearch(
                   context: context,
                   delegate: MySearchDelegate(items: data),

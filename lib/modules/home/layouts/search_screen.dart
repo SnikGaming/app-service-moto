@@ -1,6 +1,8 @@
+import 'package:app/components/style/text_style.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import '../../api/products/models/products.dart' as products;
+import '../../../components/convert/format_money.dart';
 import '../../../network/connect.dart';
 import '../../../api/products/models/products.dart';
 
@@ -49,7 +51,24 @@ class MySearchDelegate extends SearchDelegate {
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            title: Text(result[index].name!),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  result[index].name!,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  formatCurrency(amount: result[index].price.toString()),
+                  style: h1.copyWith(
+                    color: Colors.red,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
             onTap: () {
               close(context, result[index]);
             },
@@ -78,7 +97,14 @@ class MySearchDelegate extends SearchDelegate {
             placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
-          title: Text(suggestionList[index].name!),
+          title: Column(
+            children: [
+              Text(
+                suggestionList[index].name!,
+                style: h1.copyWith(color: Colors.red),
+              ),
+            ],
+          ),
           onTap: () {
             query = suggestionList[index].name!;
             showResults(context);

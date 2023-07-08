@@ -11,6 +11,7 @@ import 'package:app/components/calendar/widgets/picker_day_item_widget.dart';
 import 'package:app/components/calendar/widgets/week_days_widget.dart';
 
 import '../../convert/str_and_datetime.dart';
+import '../../value_app.dart';
 import '../res/colors.dart';
 import '../utills/constants.dart';
 import 'date_picker_title_widget.dart';
@@ -250,7 +251,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     Map<String, String> data = {
       "note": _eventNameController.text,
       "booking_time": date,
-      "address": "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM",
+      "address": txtAddressCty,
       "service": "abc",
       "mechanic_id": '3'
     };
@@ -275,8 +276,8 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     Map<String, String> data = {
       "note": _eventNameController.text,
       "booking_time": date,
-      "address": "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM",
-      "service": "abc",
+      "address": txtAddressCty,
+      "service": txtBookingService,
       "mechanic_id": '3'
     };
     await APIBooking.createBooking(data: data);
@@ -285,7 +286,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         name: _eventNameController.text,
         begin: beginDate,
         end: endDate,
-        addressCal: "1227 Huỳnh Tấn Phát, Quận 7, TP.HCM",
+        addressCal: txtAddressCty,
         eventColor: eventColors[_selectedColorIndex],
       ),
     );
