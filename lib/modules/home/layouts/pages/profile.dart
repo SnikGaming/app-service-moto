@@ -15,12 +15,12 @@ class _MyTestProfileState extends State<MyTestProfile> {
       GlobalKey<AnimatedFloatingActionButtonState>();
 
   /// and then assign it to the our widget library
-  Widget float1() {
+  Widget vi() {
     return const FloatingActionButton(
       onPressed: null,
       heroTag: "btn1",
-      tooltip: 'First button',
-      child: Icon(Icons.add),
+      tooltip: 'Ví',
+      child: Icon(Icons.wallet),
     );
   }
 
@@ -39,7 +39,7 @@ class _MyTestProfileState extends State<MyTestProfile> {
     return Scaffold(
       floatingActionButton: AnimatedFloatingActionButton(
           //Fab list
-          fabButtons: <Widget>[float1(), float2()],
+          fabButtons: <Widget>[vi(), float2()],
           key: key,
           colorStartAnimation: Colors.blue,
           colorEndAnimation: Colors.red,

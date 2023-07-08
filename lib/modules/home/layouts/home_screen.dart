@@ -29,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
     const ServicesPage(),
     const CalendarPage(),
     const CartScreen(),
-    const MyTestProfile(),
     const ProFilePage(),
+    const MyTestProfile(),
   ];
 
   checkLogin() {

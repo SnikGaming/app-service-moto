@@ -82,8 +82,6 @@ class _ProFilePageState extends State<ProFilePage> {
     }
   }
 
-  String ad = '100000';
-  String score = "";
   createPaymentIntern() async {
     try {
       Map<String, dynamic> body = {
@@ -108,6 +106,8 @@ class _ProFilePageState extends State<ProFilePage> {
     }
   }
 
+  String ad = '100000';
+  String score = "";
   loadUser() async {
     await APIAuth.getUser();
     setState(() {});
