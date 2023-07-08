@@ -61,7 +61,7 @@ const subjectService = 'OTP Verification';
 
 //!: Login
 const textLogin_Title = "Hey, xin chào✌️";
-const textLogin_subTitle = "Enter the information you entered while register.";
+const textLogin_subTitle = "Được phục vụ bạn là niềm vinh hạnh của chúng tôi.";
 
 //!: Register
 const registerSuc = 'Thành công.💕';
