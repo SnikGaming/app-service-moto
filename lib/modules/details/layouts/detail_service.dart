@@ -136,8 +136,9 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
         }
         // TODO: add your own logic
         if (response.rating < 3.0) {
-          // send their comments to your email or anywhere you wish
-          // ask the user to contact you instead of leaving a bad review
+          Message.success(
+              message: 'Có vẻ sản phẩm không làm hài lòng bạn lắm.',
+              context: context);
         } else {
           _rateAndReviewApp();
         }
@@ -359,12 +360,19 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: _showRatingDialog,
+                                onTap: UserPrefer.getToken() == null && false
+                                    ? () {
+                                        Message.warning(
+                                            message:
+                                                'Vui lòng đăng nhập vào hệ thống để sử dụng chức năng này.',
+                                            context: context);
+                                      }
+                                    : _showRatingDialog,
                                 child: Text(
-                                  '(Đánh giá sản phẩm này)',
+                                  '(Bấm vào đây để đánh giá)',
                                   style: styleNormal.copyWith(
                                     color: Colors.blue,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontStyle: FontStyle.italic,
                                     fontWeight: FontWeight.bold,
                                   ),

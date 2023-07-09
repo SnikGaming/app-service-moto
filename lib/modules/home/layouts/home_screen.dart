@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const CalendarPage(),
     const CartScreen(),
     const ProFilePage(),
-    const MyTestProfile(),
+    // const MyTestProfile(),
   ];
 
   checkLogin() {
@@ -71,9 +71,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedIndex: _selectedIndex,
                   showElevation: true,
                   onItemSelected: (index) {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
+                    print('check---> ${TestScreen.length}');
+
+                    if (index == TestScreen.length - 1 &&
+                        UserPrefer.getToken() == null) {
+                      print('check---> a $index');
+                      Modular.to
+                          .pushNamed(Routes.login)
+                          .then((value) => setState(() {
+                                Navigator.pop(context);
+                              }));
+                    } else {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    }
                   },
                   items: [
                     FlashyTabBarItem(
