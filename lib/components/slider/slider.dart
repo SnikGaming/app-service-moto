@@ -2,6 +2,7 @@ import 'package:app/api/banner/api_banner.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../network/connect.dart';
 
@@ -41,17 +42,36 @@ class _MySliderState extends State<MySlider> {
               ),
               items: List.generate(
                 APIBanner.apiBanner.length,
-                (index) => ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: SizedBox(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          '${ConnectDb.url}${APIBanner.apiBanner[index].image}',
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                (index) => GestureDetector(
+                  onTap: () async {
+                    // final Uri url = Uri(
+                    //   scheme: 'https',
+                    //   host: 'www.facebook.com',
+                    //   path: '/messages/t/100025852802716',
+                    // );
+
+                    final Uri url = Uri(
+                      scheme: 'https',
+                      host: '123website.com.vn',
+                      path:
+                          '/danh-muc-san-pham/mau-website-dich-vu/mau-website-dich-vu-sua-xe/',
+                    );
+                    if (!await launchUrl(url)) {
+                      throw Exception('Could not launch $url');
+                    }
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: SizedBox(
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            '${ConnectDb.url}${APIBanner.apiBanner[index].image}',
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
                     ),
                   ),
                 ),

@@ -88,9 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     FlashyTabBarItem(
                       inactiveColor: Colors.white,
                       activeColor: Colors.green,
-                      icon: const Icon(Icons.supervised_user_circle),
+                      icon: const Icon(
+                        Icons.favorite,
+                      ),
                       title: const Text(
-                        'Services',
+                        'Yêu thích',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

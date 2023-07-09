@@ -72,3 +72,5 @@ const textEmailFormat = "Định dạng email không hợp lệ.";
 const textIsRequired = "Trường này là bắt buộc.";
 
 const textByDev = 'By development';
+
+const imageNoDataJson = '';
