@@ -632,10 +632,10 @@ class _HomePageState extends State<HomePage>
           children: [
             MyTextAnimated.Colorize(animatedTexts: [
               MyTextAnimated.itemColorize('SNIK'),
-              MyTextAnimated.itemColorize('REPAIR'),
-              MyTextAnimated.itemColorize('BOOKING'),
-              MyTextAnimated.itemColorize('ADVISE'),
-              MyTextAnimated.itemColorize('QUICK RESISTANCE'),
+              MyTextAnimated.itemColorize('Sửa chữa'),
+              MyTextAnimated.itemColorize('Đặt lịch'),
+              MyTextAnimated.itemColorize('Tư vấn'),
+              MyTextAnimated.itemColorize('Nhanh chóng'),
             ]),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -644,9 +644,9 @@ class _HomePageState extends State<HomePage>
                 width: size.width,
                 child: const Text(
                     textAlign: TextAlign.center,
-                    'Above is the reference price from SNIK, please book an appointment for consultation.'),
+                    'Trên đây là giá tham khảo từ cửa hàng SNIK, vui lòng đặt lịch hẹn để được tư vấn.'),
               ),
-            )
+            ),
           ],
         ),
       ),
