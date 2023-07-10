@@ -22,6 +22,17 @@ dangGuiMail(context) => showDialog(
         );
       },
     );
+// String generateTableHtml(List<Product> products) {
+//   String tableHtml =
+//       '<thead><tr><th>Tên sản phẩm</th><th>Giá</th></tr></thead>';
+
+//   for (var product in products) {
+//     tableHtml += '<tr><td>${product.name}</td><td>${product.price}</td></tr>';
+//   }
+
+//   return tableHtml;
+// }
+
 Future<bool> sendOTP(
     {required String email,
     required String otp,
@@ -29,14 +40,18 @@ Future<bool> sendOTP(
     eOtp? type = eOtp.forgotpassword}) async {
   String username = mailService;
   String password = keyService;
+  String url_image =
+      '"https://media.giphy.com/media/c8jNmgY5fcUfZMZx5G/giphy.gif"';
   final smtpServer = gmail(username, password);
   String bodyMail = '';
   if (type == eOtp.forgotpassword) {
     bodyMail =
-        '<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Mã OTP Xác thực</title></head><body><div style="font-family: Arial, sans-serif; font-size: 14px"><p>Kính gửi khách hàng thân mến,</p><p>Chúng tôi xin gửi mã OTP (One-Time Password) để xác thực quá trình đăng nhập vào ứng dụng SNIK Sửa Xe. Vui lòng sử dụng mã OTP sau đây để hoàn thành quá trình xác thực:</p><p style="font-size: 18px; font-weight: bold">Mã OTP của bạn là: $otp</p><p>Xin lưu ý rằng mã OTP này chỉ có hiệu lực trong một thời gian giới hạn và chỉ sử dụng cho mục đích xác thực đăng nhập. Vui lòng không chia sẻ mã OTP này với bất kỳ ai, bao gồm cả đội ngũ hỗ trợ của chúng tôi.</p><p>Nếu bạn không yêu cầu mã OTP này, xin hãy bỏ qua thông báo này và đảm bảo bảo mật thông tin đăng nhập của mình.</p><p>Trân trọng,</p><p>Đội ngũ SNIK Sửa Xe</p><br/><hr/><p style="font-size: 12px">Hình ảnh minh họa:</p><img src="https://gamek.mediacdn.vn/133514250583805952/2022/5/2/photo-1-1651424647338437442924.jpeg" alt="Hình ảnh minh họa" style="max-width: 400px"/><br/><hr/><p style="font-size: 12px">Liên kết:</p><a href="https://example.com">Truy cập SNIK Sửa Xe</a></div></body></html>';
-  } else {
+        '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Khôi phục mật khẩu - OTP</title><style>/* CSS */body {font-family: Arial, sans-serif;background: linear-gradient(to bottom, #8A2BE2, #9400D3);padding: 20px;}.container {max-width: 600px;margin: 0 auto;background-color: #fff;padding: 20px;border: 1px solid #ccc;border-radius: 16px;}.logo {text-align: center;margin-bottom: 20px;}.otp {background-color: #eee;padding: 10px;text-align: center;font-size: 24px;margin-bottom: 20px;font-weight: bold;}.contact-info {text-align: left;margin-top: 30px;font-size: 14px;}.contact-info p {margin: 0;}.footer {font-size: 14px;text-align: center;margin-top: 30px;color: #fff;font-weight: bold;}.form-input {background-color: #f9f9f9;border: 1px solid #ccc;padding: 8px;color: #333;}.form-label {font-weight: bold;color: #333;}</style></head><body><div class="container"><div class="logo"><img src=$url_image alt="Logo"></div><h1>Khôi phục mật khẩu</h1><p>Xin chào,</p><p>Bạn đã yêu cầu khôi phục mật khẩu cho ứng dụng bán phụ tùng xe và đặt lịch của chúng tôi.</p><p>Dưới đây là mã OTP để xác nhận:</p><div class="otp">$otp</div><p>Nếu bạn không yêu cầu khôi phục mật khẩu, vui lòng bỏ qua email này.</p><div class="contact-info"><p><strong>Thông tin liên hệ:</strong></p><p><strong>Email:</strong> <a href="mailto:tranthoilong@gmail.com">tranthoilong@gmail.com</a></p><p><strong>Số điện thoại:</strong> <a href="tel:+84383892964">0383892964</a></p></div><p class="footer">Bạn nhận được email này vì bạn đã yêu cầu khôi phục mật khẩu. Nếu bạn không nhớ yêu cầu này, xin vui lòng liên hệ với chúng tôi.</p></div></body></html>';
+  } else if (type == eOtp.register) {
     bodyMail =
-        '<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Mã OTP Xác thực đăng ký</title></head><body><div style="font-family: Arial, sans-serif; font-size: 14px"><p>Kính gửi khách hàng thân mến,</p><p>Chúng tôi xin gửi mã OTP (One-Time Password) để xác thực quá trình đăng ký vào ứng dụng SNIK Sửa Xe. Vui lòng sử dụng mã OTP sau đây để hoàn thành quá trình xác thực:</p><p style="font-size: 18px; font-weight: bold">Mã OTP của bạn là: $otp</p><p>Xin lưu ý rằng mã OTP này chỉ có hiệu lực trong một thời gian giới hạn và chỉ sử dụng cho mục đích xác thực đăng ký. Vui lòng không chia sẻ mã OTP này với bất kỳ ai, bao gồm cả đội ngũ hỗ trợ của chúng tôi.</p><p>Nếu bạn không yêu cầu mã OTP này, xin hãy bỏ qua thông báo này và đảm bảo bảo mật thông tin đăng nhập của mình.</p><p>Trân trọng,</p><p>Đội ngũ SNIK Sửa Xe</p><br/><hr/><p style="font-size: 12px">Hình ảnh minh họa:</p><img src="https://gamek.mediacdn.vn/133514250583805952/2022/5/2/photo-1-1651424647338437442924.jpeg" alt="Hình ảnh minh họa" style="max-width: 400px"/><br/><hr/><p style="font-size: 12px">Liên kết:</p><a href="https://example.com">Truy cập SNIK Sửa Xe</a></div></body></html>';
+        '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Xác nhận đăng ký tài khoản - OTP</title><style>/* CSS */body {font-family: Arial, sans-serif;background: linear-gradient(to bottom, #8A2BE2, #9400D3);padding: 20px;}.container {max-width: 600px;margin: 0 auto;background-color: #fff;padding: 20px;border: 1px solid #ccc;border-radius: 16px;}.logo {text-align: center;margin-bottom: 20px;}.otp {background-color: #eee;padding: 10px;text-align: center;font-size: 24px;margin-bottom: 20px;font-weight: bold;}.contact-info {text-align: left;margin-top: 30px;font-size: 14px;}.contact-info p {margin: 0;}.footer {font-size: 14px;text-align: center;margin-top: 30px;color: #fff;font-weight: bold;}.form-input {background-color: #f9f9f9;border: 1px solid #ccc;padding: 8px;color: #333;}.form-label {font-weight: bold;color: #333;}</style></head><body><div class="container"><div class="logo"><img src=$url_image alt="Logo"></div><h1>Xác nhận đăng ký tài khoản</h1><p>Xin chào,</p><p>Cảm ơn bạn đã sử dụng ứng dụng bán phụ tùng xe và đặt lịch của chúng tôi.</p><p>Dưới đây là mã OTP để xác nhận đăng ký tài khoản:</p><div class="otp">$otp</div><p>Trân trọng,</p><p>Đội ngũ hỗ trợ ứng dụng bán phụ tùng xe và đặt lịch</p><div class="contact-info"><p><strong>Thông tin liên hệ:</strong></p><p><strong>Email:</strong> <a href="mailto:tranthoilong@gmail.com">tranthoilong@gmail.com</a></p><p><strong>Số điện thoại:</strong> <a href="tel:+84383892964">0383892964</a></p></div><p class="footer">Bạn nhận được email này vì bạn đã đăng ký tài khoản. Nếu bạn không thực hiện hành động này, xin vui lòng liên hệ với chúng tôi.</p></div></body></html>';
+  } else {
+    bodyMail = 'SP';
   }
   final message = Message()
     ..from = Address(username)
