@@ -51,7 +51,7 @@ Future<void> displayTextInputDialog(
               ),
             ],
             title: Text(
-              'Please input OTP code',
+              'Vui lòng nhập mã OTP',
               style: SettingApp.fontSignNegative.copyWith(
                 fontSize: 18,
                 letterSpacing: 1.2,

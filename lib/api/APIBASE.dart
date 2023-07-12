@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 class ApiBase {
   static final dio = Dio(
     BaseOptions(
-      connectTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 60),
       sendTimeout: const Duration(seconds: 20),
       receiveTimeout: const Duration(seconds: 20),
       contentType: 'application/json',
@@ -15,6 +15,7 @@ class ApiBase {
   );
   static Future<Response> get(
       {required String path, Map<String, dynamic>? queryParameters}) async {
+    print(path);
     return await dio.get("${ConnectDb.url}$path",
         options: Options(headers: {
           'Content-type': 'application/json',
