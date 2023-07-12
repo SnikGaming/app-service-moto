@@ -11,6 +11,7 @@ import 'package:otp_text_field/style.dart';
 import 'package:timer_count_down/timer_controller.dart';
 
 import '../../../api/user/register.dart';
+import '../../../network/api/otp.dart';
 import '../../countdown/count_down.dart';
 import '../../value_app.dart';
 
@@ -23,6 +24,7 @@ Future<void> displayTextInputDialog(
     String? repassword}) async {
   final controller_ = CountdownController(autoStart: true);
 
+  bool isReSentOtp = true;
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -32,8 +34,28 @@ Future<void> displayTextInputDialog(
           return AlertDialog(
             actions: [
               IconButton(
-                onPressed: () {
-                  controller_.restart();
+                onPressed: () async {
+                  if (isReSentOtp) {
+                    var value = generateRandomNumber();
+
+                    await APIOtp.createOtp(
+                            email: email.toString(), otp: value.toString())
+                        .then((value) {
+                      controller_.restart();
+
+                      isReSentOtp = false;
+                      if (!isReSentOtp) {
+                        Message.success(
+                            message: 'Đã gửi lại OTP mới', context: context);
+                        Future.delayed(const Duration(seconds: 30))
+                            .then((value) => isReSentOtp = true);
+                      }
+                    });
+                  } else {
+                    Message.warning(
+                        message: 'Vui lòng kiểm tra lại email của bạn.',
+                        context: context);
+                  }
                 },
                 icon: const Icon(
                   Icons.refresh,
