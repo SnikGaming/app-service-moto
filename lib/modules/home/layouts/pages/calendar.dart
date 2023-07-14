@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../api/booking/api_booking.dart';
 import '../../../../api/booking/model.dart' as booking;
+import '../../../../components/calendar/pages/calendar_page.dart';
 import '../../../../components/convert/str_and_datetime.dart';
 import '../../../../components/message/message.dart';
 import '../../../../components/value_app.dart';
+import '../../../../preferences/user/user_preferences.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -21,10 +23,19 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   int type = 1;
   bool isBackground = false;
+  bool isLoadScreen = false;
   @override
   void initState() {
     super.initState();
     loadData();
+  }
+
+  changeScreen() {
+    if (mounted) {
+      setState(() {
+        isLoadScreen = !isLoadScreen;
+      });
+    }
   }
 
   loadData() async {
@@ -44,21 +55,28 @@ class _CalendarScreenState extends State<CalendarScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.change_circle),
-            onPressed: () {},
+            onPressed: () {
+              changeScreen();
+            },
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => NoteDialog(),
-          ).then(
-            (value) => loadData(),
-          );
-        },
-        label: const Icon(Icons.add),
-      ),
+      floatingActionButton:
+          UserPrefer.getToken() == null || UserPrefer.getToken() == 'null'
+              ? null
+              : !isLoadScreen
+                  ? FloatingActionButton.extended(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => NoteDialog(),
+                        ).then(
+                          (value) => loadData(),
+                        );
+                      },
+                      label: const Icon(Icons.add),
+                    )
+                  : null,
       body: SizedBox(
         height: size.height,
         width: size.width,
@@ -68,168 +86,178 @@ class _CalendarScreenState extends State<CalendarScreen> {
             SizedBox(
               height: size.height,
               width: size.width,
-              child: isBackground
-                  ? const SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                  : ListView.separated(
-                      separatorBuilder: (_, __) => const SizedBox(height: 10),
-                      itemCount: APIBooking.lsData.length + 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (index == 0) {
-                          List<String> lsType = [
-                            'Theo ngày tạo',
-                            'Theo ngày đặt'
-                          ];
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: List.generate(
-                                lsType.length,
-                                (index) => Padding(
-                                      padding: EdgeInsets.only(
-                                        left: 5,
-                                        right:
-                                            lsType.length - 1 == index ? 20 : 5,
-                                        top: 20,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          if (mounted) {
-                                            setState(() {
-                                              isBackground = true;
-                                              type = index + 1;
-                                            });
-                                          }
-                                          loadData();
-                                        },
-                                        child: Container(
-                                          height: 30,
-                                          width: 120,
-                                          decoration: BoxDecoration(
-                                              color: type - 1 == index
-                                                  ? Colors.black
-                                                  : Colors.white,
-                                              border: Border.all(),
-                                              borderRadius:
-                                                  BorderRadius.circular(16)),
-                                          child: Center(
-                                              child: Text(
-                                            lsType[index],
-                                            style: title1.copyWith(
-                                              fontSize: 14,
-                                              color: type - 1 == index
-                                                  ? Colors.white
-                                                  : Colors.black,
+              child: isLoadScreen
+                  ? CalendarPage()
+                  : isBackground
+                      ? const SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : ListView.separated(
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 10),
+                          itemCount: APIBooking.lsData.length + 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index == 0) {
+                              List<String> lsType = [
+                                'Theo ngày tạo',
+                                'Theo ngày đặt'
+                              ];
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: List.generate(
+                                    lsType.length,
+                                    (index) => Padding(
+                                          padding: EdgeInsets.only(
+                                            left: 5,
+                                            right: lsType.length - 1 == index
+                                                ? 20
+                                                : 5,
+                                            top: 20,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              if (mounted) {
+                                                setState(() {
+                                                  isBackground = true;
+                                                  type = index + 1;
+                                                });
+                                              }
+                                              loadData();
+                                            },
+                                            child: Container(
+                                              height: 30,
+                                              width: 120,
+                                              decoration: BoxDecoration(
+                                                  color: type - 1 == index
+                                                      ? Colors.black
+                                                      : Colors.white,
+                                                  border: Border.all(),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          16)),
+                                              child: Center(
+                                                  child: Text(
+                                                lsType[index],
+                                                style: title1.copyWith(
+                                                  fontSize: 14,
+                                                  color: type - 1 == index
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                ),
+                                              )),
                                             ),
-                                          )),
+                                          ),
+                                        )),
+                              );
+                            } else {
+                              // Dữ liệu từ danh sách APIBooking.lsData
+                              booking.Data dataBooking =
+                                  APIBooking.lsData[index - 1];
+                              String formattedDate = DateFormat('dd-MM-yyyy')
+                                  .format(DateTime.parse(
+                                      '${dataBooking.bookingTime}'));
+                              String formattedTime = DateFormat('HH:mm:ss')
+                                  .format(DateTime.parse(
+                                      '${dataBooking.bookingTime}'));
+                              String createAt = DateFormat('dd-MM-yyyy').format(
+                                  DateTime.parse('${dataBooking.createdAt}'));
+                              Future.delayed(const Duration(seconds: 3))
+                                  .then((value) {
+                                if (mounted) {
+                                  setState(() {
+                                    isBackground = false;
+                                  });
+                                }
+                              });
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  top: index == 1 ? 20 : 10,
+                                  left: 20,
+                                  right: 20,
+                                  bottom: index == APIBooking.lsData.length
+                                      ? 20
+                                      : 0,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Container(
+                                    constraints:
+                                        const BoxConstraints(minHeight: 120),
+                                    width: size.width,
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 20,
+                                      ),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          style: title1.copyWith(fontSize: 14),
+                                          children: [
+                                            const TextSpan(
+                                              text: 'Ngày: ',
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                            TextSpan(
+                                              text: formattedDate,
+                                              style: const TextStyle(
+                                                  color: Colors.blue),
+                                            ),
+                                            const TextSpan(
+                                              text: '\nThời gian: ',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                            TextSpan(
+                                              text: formattedTime,
+                                              style: const TextStyle(
+                                                  color: Colors.red),
+                                            ),
+                                            const TextSpan(
+                                              text: '\n\nNội dung:',
+                                              style: TextStyle(
+                                                  color: Colors.green),
+                                            ),
+                                            TextSpan(
+                                              text: ' ${dataBooking.note!}',
+                                              style: const TextStyle(
+                                                  color: Colors.green),
+                                            ),
+                                            const TextSpan(
+                                              text: '\nĐịa chỉ:',
+                                              style: TextStyle(
+                                                  color: Colors.orange),
+                                            ),
+                                            TextSpan(
+                                              text: ' ${dataBooking.address!}',
+                                              style: const TextStyle(
+                                                  color: Colors.orange),
+                                            ),
+                                            const TextSpan(
+                                              text: '\nThời gian tạo:',
+                                              style: TextStyle(
+                                                  color: Colors.purple),
+                                            ),
+                                            TextSpan(
+                                              text: ' $createAt',
+                                              style: const TextStyle(
+                                                  color: Colors.purple),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    )),
-                          );
-                        } else {
-                          // Dữ liệu từ danh sách APIBooking.lsData
-                          booking.Data dataBooking =
-                              APIBooking.lsData[index - 1];
-                          String formattedDate = DateFormat('dd-MM-yyyy')
-                              .format(
-                                  DateTime.parse('${dataBooking.bookingTime}'));
-                          String formattedTime = DateFormat('HH:mm:ss').format(
-                              DateTime.parse('${dataBooking.bookingTime}'));
-                          String createAt = DateFormat('dd-MM-yyyy').format(
-                              DateTime.parse('${dataBooking.createdAt}'));
-                          Future.delayed(const Duration(seconds: 3))
-                              .then((value) {
-                            if (mounted) {
-                              setState(() {
-                                isBackground = false;
-                              });
-                            }
-                          });
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              top: index == 1 ? 20 : 10,
-                              left: 20,
-                              right: 20,
-                              bottom:
-                                  index == APIBooking.lsData.length ? 20 : 0,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(minHeight: 120),
-                                width: size.width,
-                                color: const Color.fromARGB(255, 0, 0, 0),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 20,
-                                  ),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: title1.copyWith(fontSize: 14),
-                                      children: [
-                                        const TextSpan(
-                                          text: 'Ngày: ',
-                                          style: TextStyle(color: Colors.blue),
-                                        ),
-                                        TextSpan(
-                                          text: formattedDate,
-                                          style: const TextStyle(
-                                              color: Colors.blue),
-                                        ),
-                                        const TextSpan(
-                                          text: '\nThời gian: ',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                        TextSpan(
-                                          text: formattedTime,
-                                          style: const TextStyle(
-                                              color: Colors.red),
-                                        ),
-                                        const TextSpan(
-                                          text: '\n\nNội dung:',
-                                          style: TextStyle(color: Colors.green),
-                                        ),
-                                        TextSpan(
-                                          text: ' ${dataBooking.note!}',
-                                          style: const TextStyle(
-                                              color: Colors.green),
-                                        ),
-                                        const TextSpan(
-                                          text: '\nĐịa chỉ:',
-                                          style:
-                                              TextStyle(color: Colors.orange),
-                                        ),
-                                        TextSpan(
-                                          text: ' ${dataBooking.address!}',
-                                          style: const TextStyle(
-                                              color: Colors.orange),
-                                        ),
-                                        const TextSpan(
-                                          text: '\nThời gian tạo:',
-                                          style:
-                                              TextStyle(color: Colors.purple),
-                                        ),
-                                        TextSpan(
-                                          text: ' $createAt',
-                                          style: const TextStyle(
-                                              color: Colors.purple),
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                              );
+                            }
+                          },
+                        ),
             ),
           ],
         ),
