@@ -18,7 +18,7 @@ import 'api/location/api_location.dart';
 import 'api/payment/api_payment.dart';
 
 Future<void> main(List<String> args) async {
-  // initializeDateFormatting('vi_VN', );
+  // initializeDateFormatting('vi_VN', '');
   Stripe.publishableKey =
       'pk_test_51NGFj9Kl8H5lkAhSTO7jGUiuz6bp4LETENvHSBEqRwm5zGNPKxDsunHj7v0CiUleIY8Fa4vg4fefV0ZfQqbqNktf00DLp5lLTX';
   WidgetsFlutterBinding.ensureInitialized();

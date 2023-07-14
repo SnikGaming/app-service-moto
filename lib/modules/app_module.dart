@@ -34,23 +34,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      //    localizationsDelegates: [
-      //   // ... app-specific localization delegate[s] here
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      //   DefaultCupertinoLocalizations.delegate,
-      // ],
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [
         const Locale('vi', 'VN'),
         Locale('en', 'US'), // English
         Locale('de', 'DE'), // German
       ],
       debugShowCheckedModeBanner: false,
-
       theme: ThemeData(
         floatingActionButtonTheme:
             const FloatingActionButtonThemeData(backgroundColor: violet),
@@ -87,7 +77,6 @@ class MyApp extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(12))),
         ),
       ),
-
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
     );
