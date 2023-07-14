@@ -40,7 +40,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   loadData() async {
     await APIBooking.fetchBookings(type: type);
-    List<booking.Data> data = APIBooking.lsData;
+
     if (mounted) {
       setState(() {});
     }
