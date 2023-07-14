@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../modules/home/layouts/pages/services_page.dart';
+import '../../modules/home/layouts/pages/like_page.dart';
 
 enum PaymentMethod { cash, card, mobile }
 

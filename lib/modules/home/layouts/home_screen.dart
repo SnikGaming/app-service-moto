@@ -4,7 +4,7 @@ import 'package:app/modules/home/layouts/pages/cart_page.dart';
 import 'package:app/modules/home/layouts/pages/home_page.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
 import 'package:app/modules/home/layouts/pages/profile.dart';
-import 'package:app/modules/home/layouts/pages/services_page.dart';
+import 'package:app/modules/home/layouts/pages/like_page.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';

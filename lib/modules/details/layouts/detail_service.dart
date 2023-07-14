@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:app/components/message/message.dart';
 import 'package:app/components/zoom/image.dart';
 import 'package:app/functions/random_color.dart';
-import 'package:app/modules/home/layouts/pages/services_page.dart';
+import 'package:app/modules/home/layouts/pages/like_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';

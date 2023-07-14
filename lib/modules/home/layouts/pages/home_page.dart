@@ -10,7 +10,7 @@ import 'package:app/functions/random_color.dart';
 import 'package:app/modules/app_constants.dart';
 import 'package:app/api/category/api_category.dart';
 import 'package:app/modules/home/layouts/pages/skeleton.dart';
-import 'package:app/modules/home/layouts/pages/services_page.dart';
+import 'package:app/modules/home/layouts/pages/like_page.dart';
 import 'package:app/modules/home/layouts/search_screen.dart';
 import 'package:app/preferences/settings/setting_prefer.dart';
 import 'package:cached_network_image/cached_network_image.dart';

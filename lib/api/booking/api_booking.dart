@@ -7,9 +7,9 @@ class APIBooking {
   static int toTal = 0;
   static List<Data> lsData = [];
 
-  static Future<List<Data>> fetchBookings() async {
+  static Future<List<Data>> fetchBookings({int? type = 1}) async {
     try {
-      final response = await ApiBase.get(path: '/api/bookings/');
+      final response = await ApiBase.get(path: '/api/bookings?order_by=$type');
       final jsonData = json.decode(response.toString());
       final List<dynamic> bookingListJson = jsonData['data'];
       toTal = jsonData['total_items'];

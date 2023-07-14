@@ -3,7 +3,7 @@
 import 'dart:math';
 
 import 'package:app/api/address/model.dart' as address;
-import 'package:app/modules/home/layouts/pages/services_page.dart';
+import 'package:app/modules/home/layouts/pages/like_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

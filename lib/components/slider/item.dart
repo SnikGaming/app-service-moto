@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:app/models/slider/slider_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../modules/home/layouts/pages/services_page.dart';
+import '../../modules/home/layouts/pages/like_page.dart';
 
 iteamSlider({void Function()? onTap, SliderModel? data}) => GestureDetector(
       onTap: onTap,

@@ -19,6 +19,8 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  int type = 1;
+  bool isBackground = false;
   @override
   void initState() {
     super.initState();
@@ -26,28 +28,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   loadData() async {
-    await APIBooking.fetchBookings();
+    await APIBooking.fetchBookings(type: type);
     List<booking.Data> data = APIBooking.lsData;
-
     if (mounted) {
-      setState(() {
-        // for (var e in data) {
-        //   _calendarController.addEvent(
-        //     CalendarEventModel(
-        //       id: e.id!,
-        //       eventColor: int.parse(e.color!) == 0
-        //           ? eventColors[4]
-        //           : int.parse(e.color!) == 1
-        //               ? eventColors[0]
-        //               : eventColors[3],
-        //       name: e.note!,
-        //       addressCal: e.address!,
-        //       begin: DateTime.parse(e.bookingTime!),
-        //       end: DateTime.parse(e.bookingTime!),
-        //     ),
-        //   );
-        // }
-      });
+      setState(() {});
     }
   }
 
@@ -84,93 +68,168 @@ class _CalendarScreenState extends State<CalendarScreen> {
             SizedBox(
               height: size.height,
               width: size.width,
-              child: ListView.builder(
-                itemCount: APIBooking.lsData.length,
-                itemBuilder: (_, i) {
-                  booking.Data dataBooking = APIBooking.lsData[i];
-                  String formattedDate = DateFormat('dd-MM-yyyy')
-                      .format(DateTime.parse('${dataBooking.bookingTime}'));
-
-                  String formattedTime = DateFormat('HH:mm:ss')
-                      .format(DateTime.parse('${dataBooking.bookingTime}'));
-
-                  String createAt = DateFormat('dd-MM-yyyy')
-                      .format(DateTime.parse('${dataBooking.createdAt}'));
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      top: i == 0 ? 20 : 10,
-                      left: 20,
-                      right: 20,
-                      bottom: i == APIBooking.lsData.length - 1 ? 20 : 0,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                        16,
+              child: isBackground
+                  ? const SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
-                      child: Container(
-                        constraints: const BoxConstraints(
-                          minHeight: 120,
-                        ),
-                        width: size.width,
-                        color: const Color.fromARGB(255, 0, 0, 0),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
-                          ),
-                          child: RichText(
-                            text: TextSpan(
-                              style: title1.copyWith(fontSize: 14),
-                              children: [
-                                const TextSpan(
-                                  text: 'Ngày: ',
-                                  style: TextStyle(color: Colors.blue),
-                                ),
-                                TextSpan(
-                                  text: formattedDate,
-                                  style: const TextStyle(color: Colors.blue),
-                                ),
-                                const TextSpan(
-                                  text: '\nThời gian: ',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                                TextSpan(
-                                  text: formattedTime,
-                                  style: const TextStyle(color: Colors.red),
-                                ),
-                                const TextSpan(
-                                  text: '\n\nNội dung:',
-                                  style: TextStyle(color: Colors.green),
-                                ),
-                                TextSpan(
-                                  text: ' ${dataBooking.note!}',
-                                  style: const TextStyle(color: Colors.green),
-                                ),
-                                const TextSpan(
-                                  text: '\nĐịa chỉ:',
-                                  style: TextStyle(color: Colors.orange),
-                                ),
-                                TextSpan(
-                                  text: ' ${dataBooking.address!}',
-                                  style: const TextStyle(color: Colors.orange),
-                                ),
-                                const TextSpan(
-                                  text: '\nThời gian tạo:',
-                                  style: TextStyle(color: Colors.purple),
-                                ),
-                                TextSpan(
-                                  text: ' $createAt',
-                                  style: const TextStyle(color: Colors.purple),
-                                ),
-                              ],
+                    )
+                  : ListView.separated(
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemCount: APIBooking.lsData.length + 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == 0) {
+                          List<String> lsType = [
+                            'Theo ngày tạo',
+                            'Theo ngày đặt'
+                          ];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: List.generate(
+                                lsType.length,
+                                (index) => Padding(
+                                      padding: EdgeInsets.only(
+                                        left: 5,
+                                        right:
+                                            lsType.length - 1 == index ? 20 : 5,
+                                        top: 20,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (mounted) {
+                                            setState(() {
+                                              isBackground = true;
+                                              type = index + 1;
+                                            });
+                                          }
+                                          loadData();
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 120,
+                                          decoration: BoxDecoration(
+                                              color: type - 1 == index
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                              border: Border.all(),
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          child: Center(
+                                              child: Text(
+                                            lsType[index],
+                                            style: title1.copyWith(
+                                              fontSize: 14,
+                                              color: type - 1 == index
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
+                                          )),
+                                        ),
+                                      ),
+                                    )),
+                          );
+                        } else {
+                          // Dữ liệu từ danh sách APIBooking.lsData
+                          booking.Data dataBooking =
+                              APIBooking.lsData[index - 1];
+                          String formattedDate = DateFormat('dd-MM-yyyy')
+                              .format(
+                                  DateTime.parse('${dataBooking.bookingTime}'));
+                          String formattedTime = DateFormat('HH:mm:ss').format(
+                              DateTime.parse('${dataBooking.bookingTime}'));
+                          String createAt = DateFormat('dd-MM-yyyy').format(
+                              DateTime.parse('${dataBooking.createdAt}'));
+                          Future.delayed(const Duration(seconds: 3))
+                              .then((value) {
+                            if (mounted) {
+                              setState(() {
+                                isBackground = false;
+                              });
+                            }
+                          });
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              top: index == 1 ? 20 : 10,
+                              left: 20,
+                              right: 20,
+                              bottom:
+                                  index == APIBooking.lsData.length ? 20 : 0,
                             ),
-                          ),
-                        ),
-                      ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Container(
+                                constraints:
+                                    const BoxConstraints(minHeight: 120),
+                                width: size.width,
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 20,
+                                  ),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: title1.copyWith(fontSize: 14),
+                                      children: [
+                                        const TextSpan(
+                                          text: 'Ngày: ',
+                                          style: TextStyle(color: Colors.blue),
+                                        ),
+                                        TextSpan(
+                                          text: formattedDate,
+                                          style: const TextStyle(
+                                              color: Colors.blue),
+                                        ),
+                                        const TextSpan(
+                                          text: '\nThời gian: ',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        TextSpan(
+                                          text: formattedTime,
+                                          style: const TextStyle(
+                                              color: Colors.red),
+                                        ),
+                                        const TextSpan(
+                                          text: '\n\nNội dung:',
+                                          style: TextStyle(color: Colors.green),
+                                        ),
+                                        TextSpan(
+                                          text: ' ${dataBooking.note!}',
+                                          style: const TextStyle(
+                                              color: Colors.green),
+                                        ),
+                                        const TextSpan(
+                                          text: '\nĐịa chỉ:',
+                                          style:
+                                              TextStyle(color: Colors.orange),
+                                        ),
+                                        TextSpan(
+                                          text: ' ${dataBooking.address!}',
+                                          style: const TextStyle(
+                                              color: Colors.orange),
+                                        ),
+                                        const TextSpan(
+                                          text: '\nThời gian tạo:',
+                                          style:
+                                              TextStyle(color: Colors.purple),
+                                        ),
+                                        TextSpan(
+                                          text: ' $createAt',
+                                          style: const TextStyle(
+                                              color: Colors.purple),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
@@ -289,8 +348,6 @@ class _NoteDialogState extends State<NoteDialog> {
           Message.error(message: 'Thêm ghi chú thất bại.', context: context);
         }
       }
-
-      Navigator.pop(context); // Đóng hộp thoại
     } else {
       showDialog(
         context: context,
