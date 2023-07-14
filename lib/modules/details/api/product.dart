@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../api/APIBASE.dart';
 import '../../../api/products/models/products.dart' as products;
 
-Future<products.Data> getProductDetail({required int id}) async {
+Future<products.Data> getProductDetail({required String id}) async {
   // print('this is user ');
   Response response;
 

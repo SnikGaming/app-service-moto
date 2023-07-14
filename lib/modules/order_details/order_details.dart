@@ -12,7 +12,7 @@ import '../app_constants.dart';
 
 class OrderDetails extends StatefulWidget {
   // List<Product> value;
-  int value;
+  String value;
   OrderDetails({super.key, required this.value});
 
   @override

@@ -87,6 +87,9 @@ dependencies:
   input_quantity: ^1.2.1
   animated_floating_buttons: ^0.0.2
   flutter_localization: ^0.1.12
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.0
 
   # input_quantity: ^1.2.1
   # flutter_facebook_auth: ^5.0.8

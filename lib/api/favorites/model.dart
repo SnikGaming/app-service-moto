@@ -30,7 +30,7 @@ class Favorite {
 class Data {
   int? id;
   int? userId;
-  int? productId;
+  String? productId;
   String? name;
   int? price;
   String? image;

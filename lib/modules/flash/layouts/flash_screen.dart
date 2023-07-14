@@ -80,11 +80,15 @@ class _FlashScreenState extends State<FlashScreen>
               Container(
                 height: size.height,
                 width: size.width,
-                child: Lottie.network(
-                  'https://assets10.lottiefiles.com/private_files/lf30_juxwmsbz.json',
-                  repeat: true,
-                  fit: BoxFit.cover,
-                ),
+                decoration:
+                    // BoxDecoration(color: Color.fromARGB(255, 23, 46, 29)),
+                    const BoxDecoration(color: Color.fromARGB(255, 44, 22, 80)),
+
+                // child: Lottie.network(
+                //   'https://assets10.lottiefiles.com/private_files/lf30_juxwmsbz.json',
+                //   repeat: true,
+                //   fit: BoxFit.cover,
+                // ),
               ),
               // Lottie.asset('assets/flashscreen/routine.json',
               //     repeat: false, height: size.height),

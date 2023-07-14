@@ -8,7 +8,7 @@ import '../APIBASE.dart';
 
 class ApiCart {
   static List<Data> lsCart = [];
-  static Future<int> apiCart({required int id, required int quantity}) async {
+  static Future<int> apiCart({required String id, required int quantity}) async {
     try {
       final response = await ApiBase.post(
           path: '/api/carts', data: {"product_id": id, "quantity": quantity});

@@ -1,4 +1,5 @@
 // ignore_for_file: unused_element, non_constant_identifier_names
+import 'package:app/modules/home/layouts/pages/calendar.dart';
 import 'package:app/modules/home/layouts/pages/cart_page.dart';
 import 'package:app/modules/home/layouts/pages/home_page.dart';
 import 'package:app/modules/home/layouts/pages/profie_page.dart';
@@ -27,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> TestScreen = [
     const HomePage(),
     const ServicesPage(),
-    const CalendarPage(),
+    const CalendarScreen(),
+    // const CalendarPage(),
     const CartScreen(),
     const ProFilePage(),
     // const MyTestProfile(),

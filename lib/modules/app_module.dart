@@ -4,6 +4,7 @@ import 'package:app/modules/home/home_module.dart';
 import 'package:app/modules/profile/profile_module.dart';
 import 'package:app/modules/register/register_module.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../components/calendar/res/colors.dart';
 import 'app_constants.dart';
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       //    localizationsDelegates: [
       //   // ... app-specific localization delegate[s] here
       //   GlobalMaterialLocalizations.delegate,
@@ -40,6 +45,7 @@ class MyApp extends StatelessWidget {
       //   DefaultCupertinoLocalizations.delegate,
       // ],
       supportedLocales: const [
+        const Locale('vi', 'VN'),
         Locale('en', 'US'), // English
         Locale('de', 'DE'), // German
       ],

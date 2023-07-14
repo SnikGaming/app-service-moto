@@ -45,7 +45,7 @@ class CartModel {
 class Data {
   int? id;
   int? userId;
-  int? productId;
+  String? productId;
   int? status;
   int? quantity;
   String? price;

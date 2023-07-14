@@ -35,7 +35,7 @@ class review {
 class Data {
   int? id;
   int? userId;
-  int? productId;
+  String? productId;
   String? time;
   String? comment;
   int? rating;

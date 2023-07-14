@@ -250,6 +250,9 @@ class _CartState extends State<Cart> {
         Navigator.pop(context);
         _showProductDialog(context); // Show product information dialog
       } else {
+        print('ABC-------------------------->${widget.data!.id!}');
+        print('ABC-------------------------->${enteredValue}');
+
         var value = await ApiCart.apiCart(
           id: widget.data!.id!,
           quantity: enteredValue,

@@ -1,3 +1,5 @@
+import '../products/models/products.dart';
+
 class Order {
   int? status;
   List<Data>? data;
@@ -43,7 +45,7 @@ class Order {
 }
 
 class Data {
-  int? id;
+  String? id;
   int? userId;
   int? status;
   int? totalPrice;
@@ -116,22 +118,6 @@ class Data {
     if (product != null) {
       data['product'] = product!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Product {
-  int? id;
-
-  Product({this.id});
-
-  Product.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
     return data;
   }
 }

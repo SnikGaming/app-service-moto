@@ -17,7 +17,7 @@ class APIReview {
   }
 
   static Future<List<Data>> getData({
-    int? id,
+    String? id,
     int page = 1,
   }) async {
     try {

@@ -9,8 +9,10 @@ import 'package:app/api/order/order.dart' as order;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../components/button/mybutton.dart';
+import '../../../../components/calendar/res/colors.dart';
 import '../../../../components/convert/format_money.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
@@ -29,85 +31,7 @@ class ProFilePage extends StatefulWidget {
 
 class _ProFilePageState extends State<ProFilePage> {
   Map<String, dynamic>? paymentIntern;
-  displayPaymentSheet() async {
-    //   score = value!;
-    try {
-      // String jsonString = returnJson();
-      await Stripe.instance.presentPaymentSheet().then(
-        (value) async {
-          // var res = await addOrder(jsonString);
-          // if (res == 200) {
-          //   Message.success(
-          //     message: 'Thành Công',
-          //     context: context,
-          //   );
-          //   Navigator.of(context).popUntil((route) => route.isFirst);
-          // } else {
-          //   Message.error(
-          //     message: 'Thất bại',
-          //     context: context,
-          //   );
-          // }
-        },
-      );
-      print('done --> ');
-    } catch (e) {
-      print('abc--> faild $e');
-      // throw Exception(e);
-    }
-  }
 
-  void makePayment() async {
-    ad = score;
-
-    try {
-      paymentIntern = await createPaymentIntern();
-
-      var gpay = const PaymentSheetGooglePay(
-        merchantCountryCode: "US",
-        currencyCode: "VND",
-        testEnv: true,
-      );
-
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: paymentIntern!["client_secret"],
-        style: ThemeMode.dark,
-        merchantDisplayName: "Sabir",
-        googlePay: gpay,
-      ));
-      displayPaymentSheet();
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  createPaymentIntern() async {
-    try {
-      Map<String, dynamic> body = {
-        "amount": ad,
-        "currency": "VND",
-      };
-
-      http.Response response = await http.post(
-          Uri.parse("https://api.stripe.com/v1/payment_intents"),
-          body: body,
-          headers: {
-            "Authorization":
-                "Bearer sk_test_51NGFj9Kl8H5lkAhSt9tOnFlXKvDnv3Jz2nFviGxq67oY9GeaVoVXiebA76nDAyj2gdKVSaYPyhgNHfHEZGI0SmbK00FBuWKQUf",
-            "Content-Type": "application/x-www-form-urlencoded",
-          });
-
-      await APIAuth.updateScore(value: int.parse(ad));
-      loadUser();
-      return json.decode(response.body);
-    } catch (e) {
-      throw Exception(e.toString());
-    }
-  }
-
-  String ad = '100000';
-  String score = "";
   loadUser() async {
     await APIAuth.getUser();
     setState(() {});
@@ -124,22 +48,20 @@ class _ProFilePageState extends State<ProFilePage> {
     lsData = APIOrder.lsData;
 
     var dataStatus = await APIOrder.fetchOrderStatus();
-
+    // print('------------------->DATA ${lsData}');
     if (mounted) {
       setState(() {
         if (dataStatus != []) {
           try {
-            MyOrder.lsMyOrder[0].bage =
+            MyOrder.lsMyOrder[3].bage =
                 dataStatus['status_2'].toString(); //!: Huy doi tra
-            MyOrder.lsMyOrder[1].bage =
+            MyOrder.lsMyOrder[0].bage =
                 dataStatus['status_1'].toString(); //!: Chờ vận chuyển
-            MyOrder.lsMyOrder[2].bage =
+            MyOrder.lsMyOrder[1].bage =
                 dataStatus['status_3'].toString(); //!: Chờ giao hàng
 
-            MyOrder.lsMyOrder[3].bage =
+            MyOrder.lsMyOrder[2].bage =
                 dataStatus['status_4'].toString(); //!: Chưa đánh giá
-            // MyOrder.lsMyOrder[4].bage =
-            //     dataStatus['status_2'].toString(); //!: Đổi trả
           } catch (e) {
             print(e);
           }
@@ -187,7 +109,16 @@ class _ProFilePageState extends State<ProFilePage> {
                       width: 80,
                       child: UserPrefer.getImageUser() == 'null' ||
                               UserPrefer.getImageUser() == null
-                          ? Container()
+                          ? Container(
+                              height: 45,
+                              width: 45,
+                              decoration: const BoxDecoration(
+                                // color: violet,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Lottie.network(
+                                  'https://assets10.lottiefiles.com/packages/lf20_1mvhccet.json'),
+                            )
                           : CachedNetworkImage(
                               imageBuilder: (context, imageProvider) =>
                                   CircleAvatar(
@@ -209,7 +140,7 @@ class _ProFilePageState extends State<ProFilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        UserPrefer.getsetUserName() ?? "GUES",
+                        UserPrefer.getsetUserName(),
                         style: title2.copyWith(
                           color: Colors.black,
                         ),
@@ -227,47 +158,6 @@ class _ProFilePageState extends State<ProFilePage> {
                               color: Colors.grey,
                               fontSize: 14,
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
-                                ),
-                                builder: (BuildContext context) =>
-                                    StatefulBuilder(
-                                  builder: (BuildContext context, setState) {
-                                    return SizedBox(
-                                      height: 200,
-                                      child: Column(
-                                        children: [
-                                          TextFormField(
-                                            controller: TextEditingController(
-                                                text: score),
-                                            onChanged: (a) {
-                                              score = a;
-                                            },
-                                            decoration: const InputDecoration(),
-                                          ),
-                                          MyButton(
-                                            onPressed: () async {
-                                              makePayment();
-                                            },
-                                            child: const Text('Nạp'),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.add),
                           ),
                         ],
                       ),
@@ -356,86 +246,6 @@ class _ProFilePageState extends State<ProFilePage> {
                 ),
               ),
               //!: Slider Sp đang được giao
-              // GestureDetector(
-              //   onTap: () {
-              //     Navigator.of(context).push(MaterialPageRoute(
-              //       builder: (_) => UsePaypal(
-              //         sandboxMode: true,
-              //         clientId:
-              //             "AQ-z5DPK42W8qrx7VSC2g2aF0PxY_Ko_KUYrNyxi4rlD_q9JY5c1muG1q9fSgRgHyjmc_eqPuGG0wX8S",
-              //         secretKey:
-              //             "EKOZxrCebxy9EYW6SzJM6TYBss8rJ1DaaikVSU6F39PKiNxAI9eLdAg0znnm3ku-Swqi3YcUEO8LnyBD",
-              //         returnURL: "https://samplesite.com/return",
-              //         cancelURL: "https://samplesite.com/cancel",
-              //         transactions: const [
-              //           {
-              //             "amount": {
-              //               "total": '0.01',
-              //               "currency": "USD",
-              //               "details": {
-              //                 "subtotal": '0.01',
-              //                 "shipping": '0',
-              //                 "shipping_discount": 0
-              //               }
-              //             },
-              //             "description": "The payment transaction description.",
-              //             // "payment_options": {
-              //             //   "allowed_payment_method":
-              //             //       "INSTANT_FUNDING_SOURCE"
-              //             // },
-
-              //             //!:
-              //             // "item_list": {
-              //             //   "items": [
-              //             //     {
-              //             //       "name": "A demo product",
-              //             //       "quantity": 1,
-              //             //       "price": '0.01',
-              //             //       "currency": "USD"
-              //             //     }
-              //             //   ],
-
-              //             //   // shipping address is not required though
-              //             //   // "shipping_address": {
-              //             //   //   "recipient_name": "Jane Foster",
-              //             //   //   "line1": "Travis County",
-              //             //   //   "line2": "",
-              //             //   //   "city": "Austin",
-              //             //   //   "country_code": "US",
-              //             //   //   "postal_code": "73301",
-              //             //   //   "phone": "+00000000",
-              //             //   //   "state": "Texas"
-              //             //   // },
-              //             // }
-              //           }
-              //         ],
-              //         note: "Contact us for any questions on your order.",
-              //         onSuccess: (Map params) async {},
-              //         onError: (error) {},
-              //         onCancel: (params) {},
-              //       ),
-              //     ));
-              //   },
-              //   child: Container(
-              //     height: 60,
-              //     width: size.width,
-              //     color: Colors.blue,
-              //     child: Text('Ví'),
-              //     // child: Row(
-              //     //   children: [
-              //     //     Expanded(
-              //     //       flex: 9,
-              //     //       child: Container(),
-              //     //     ),
-              //     //     const Expanded(
-              //     //       flex: 1,
-              //     //       child: Icon(Ionicons.chevron_forward_outline),
-              //     //     ),
-              //     //   ],
-
-              //     // ),
-              //   ),
-              // ),
 
               const SizedBox(
                 height: 16,
@@ -626,11 +436,6 @@ class MyOrder {
       {required this.image, required this.name, this.bage, required this.id});
   static List<MyOrder> lsMyOrder = [
     MyOrder(
-        image: 'assets/icons/cart/wallet.png',
-        name: 'Hủy, đổi trả',
-        bage: '',
-        id: 2),
-    MyOrder(
         image: 'assets/icons/cart/parcel.png',
         name: 'Chờ vận chuyển',
         bage: '',
@@ -645,10 +450,10 @@ class MyOrder {
         name: 'Đã hoàn thành',
         bage: '',
         id: 4),
-    // MyOrder(
-    //     image: 'assets/icons/cart/briefcase.png',
-    //     name: 'Đổi trả',
-    //     bage: '',
-    //     id: 2),
+    MyOrder(
+        image: 'assets/icons/cart/wallet.png',
+        name: 'Hủy, đổi trả',
+        bage: '',
+        id: 2),
   ];
 }

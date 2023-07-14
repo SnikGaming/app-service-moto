@@ -27,7 +27,7 @@ import '../api/product.dart';
 import '../module/cart.dart';
 
 class DetailsServiceScreen extends StatefulWidget {
-  final int id;
+  final String id;
   const DetailsServiceScreen({super.key, required this.id});
 
   @override
@@ -71,10 +71,10 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
 
   Future<void> loadData() async {
     data = await getProductDetail(id: widget.id);
-    var a = await APIReview.getData(id: widget.id);
-    print('review data send $a');
+    await APIReview.getData(id: widget.id);
+    // print('review data send $a');
     lsReview = APIReview.apiData;
-    print('abc------->>>>>>>>>>>>>>>> ');
+    // print('abc------->>>>>>>>>>>>>>>> ');
     setState(() {});
   }
 

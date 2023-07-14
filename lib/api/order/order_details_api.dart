@@ -8,7 +8,7 @@ import '../APIBASE.dart';
 
 class APIOrderDetails {
   static List<Data> data = [];
-  static Future<List<Data>> fetchOrder({required int id}) async {
+  static Future<List<Data>> fetchOrder({required  id}) async {
     try {
       final response = await ApiBase.get(path: '/api/orderDetails/$id');
       final jsonData = json.decode(response.toString());

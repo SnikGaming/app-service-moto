@@ -28,7 +28,7 @@ class Product {
 }
 
 class Data {
-  int? id;
+  String? id;
   int? categoryId;
   String? name;
   String? image;

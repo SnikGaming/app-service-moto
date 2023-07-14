@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'api/banner/api_banner.dart';
 import 'api/booking/api_booking.dart';
 import 'api/favorites/api.dart';
@@ -17,6 +18,7 @@ import 'api/location/api_location.dart';
 import 'api/payment/api_payment.dart';
 
 Future<void> main(List<String> args) async {
+  // initializeDateFormatting('vi_VN', );
   Stripe.publishableKey =
       'pk_test_51NGFj9Kl8H5lkAhSTO7jGUiuz6bp4LETENvHSBEqRwm5zGNPKxDsunHj7v0CiUleIY8Fa4vg4fefV0ZfQqbqNktf00DLp5lLTX';
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +40,7 @@ Future<void> main(List<String> args) async {
     await APIAuth.getUser();
     await APIFavorites.getData();
     // await APIOrder.fetchOrder();
-  } 
+  }
   await APIPaymentMethod.fetchPayment();
   await APILocation.fetchLocation();
   runApp(ModularApp(module: AppModule(), child: const MyApp()));

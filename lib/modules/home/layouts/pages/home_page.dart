@@ -168,8 +168,8 @@ class _HomePageState extends State<HomePage>
       heroTag: "btn1",
       tooltip: UserPrefer.getToken() == null ? 'Đăng nhập' : 'Đăng xuất',
       child: UserPrefer.getToken() == null
-          ? Icon(Icons.login)
-          : Icon(Icons.logout_outlined),
+          ? const Icon(Icons.login)
+          : const Icon(Icons.logout_outlined),
     );
   }
 
@@ -306,6 +306,7 @@ class _HomePageState extends State<HomePage>
         child: const CusThemeSkeletonProducts(),
       ),
     );
+
     var sliverCategories = SliverPadding(
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
       sliver: SliverToBoxAdapter(
@@ -434,6 +435,45 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ),
+        //? SP Mới nhất
+        false
+            ? SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: size.width,
+                        child: const Text(
+                          'Sản phẩm mới',
+                          style: h1,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.only(left: index == 0 ? 20 : 0),
+                              child: Container(
+                                width: 230,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : SliverToBoxAdapter(),
         //? Category
         APICategory.apiCategory.isEmpty
             ? sliverSkeletonCategories

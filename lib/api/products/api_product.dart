@@ -12,7 +12,7 @@ class APIProduct {
 
   static List<Data> dataOrder = [];
 
-  static create({required int id}) async {
+  static create({required String id}) async {
     final value = {'product_id': id};
     try {
       final response = await ApiBase.post(path: '/api/favorites/', data: value);
