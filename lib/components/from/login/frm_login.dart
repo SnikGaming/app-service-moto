@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, duplicate_ignore
 
 import 'package:app/components/message/message.dart';
+import 'package:app/components/style/text_style.dart';
 import 'package:app/components/textfield/login/text_field_password.dart';
 
 import 'package:app/modules/app_constants.dart';
+import 'package:app/modules/home/layouts/pages/like_page.dart';
 import 'package:app/preferences/user/user_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -74,15 +76,12 @@ class _FromLoginState extends State<FromLogin> {
               ]),
               child: ButtonCustom(
                 ontap: _btnLogin,
-                width: 160,
+                width: 140,
                 height: 40,
                 child: const Center(
                     child: Text(
                   login,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1,
-                      fontSize: 18),
+                  style: title1,
                 )),
               ),
             ),
@@ -102,8 +101,8 @@ class _FromLoginState extends State<FromLogin> {
                         AuthWithGoogle()
                             .googleSignInMethod(context)
                             .then((value) {
-                          Modular.to.navigate(Routes.home);
-                          setState(() {});
+                          // Modular.to.navigate(Routes.home);
+                          Navigator.pop(context);
                         });
                         if (UserPrefer.getEmail() != null) {
                           Message.success(

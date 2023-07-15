@@ -41,6 +41,8 @@ import '../../../../api/login/model.dart' as users;
 import 'package:ionicons/ionicons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../login/layouts/login_screen.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -83,10 +85,9 @@ class _HomePageState extends State<HomePage>
   }
 
   void _login() {
-    Modular.to.pushNamed(Routes.login).then((value) => setState(() {
-          isLogin = true;
-          Navigator.pop(context);
-        }));
+    // Modular.to.pushNamed(Routes.login);
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen()))
+        .then((value) => setState(() {}));
   }
 
   void _opentProfile() async {
@@ -473,7 +474,7 @@ class _HomePageState extends State<HomePage>
                   ),
                 ),
               )
-            : SliverToBoxAdapter(),
+            : const SliverToBoxAdapter(),
         //? Category
         APICategory.apiCategory.isEmpty
             ? sliverSkeletonCategories
@@ -966,33 +967,40 @@ class _ItemProductState extends State<ItemProduct> {
                                     )),
                               ),
                               GestureDetector(
-                                onTap: () async {
-                                  final value = await APIProduct.create(
-                                      id: productData[index].id!);
+                                onTap: UserPrefer.getToken() == null
+                                    ? () {
+                                        Message.warning(
+                                            message:
+                                                'Vui lòng đăng nhập vào hệ thống để sử dụng chức năng này.',
+                                            context: context);
+                                      }
+                                    : () async {
+                                        final value = await APIProduct.create(
+                                            id: productData[index].id!);
 
-                                  if (value == 200) {
-                                    if (productData[index].love == 1) {
-                                      productData[index].love = 0;
-                                    } else {
-                                      productData[index].love = 1;
-                                    }
-                                    Message.success(
-                                        message:
-                                            'Đã thêm vào danh sách yêu thích.',
-                                        context: context);
-                                  } else {
-                                    if (productData[index].love == 1) {
-                                      productData[index].love = 0;
-                                    } else {
-                                      productData[index].love = 1;
-                                    }
-                                    Message.success(
-                                        message:
-                                            'Đã bỏ khỏi danh sách yêu thích.',
-                                        context: context);
-                                  }
-                                  setState(() {});
-                                },
+                                        if (value == 200) {
+                                          if (productData[index].love == 1) {
+                                            productData[index].love = 0;
+                                          } else {
+                                            productData[index].love = 1;
+                                          }
+                                          Message.success(
+                                              message:
+                                                  'Đã thêm vào danh sách yêu thích.',
+                                              context: context);
+                                        } else {
+                                          if (productData[index].love == 1) {
+                                            productData[index].love = 0;
+                                          } else {
+                                            productData[index].love = 1;
+                                          }
+                                          Message.success(
+                                              message:
+                                                  'Đã bỏ khỏi danh sách yêu thích.',
+                                              context: context);
+                                        }
+                                        setState(() {});
+                                      },
                                 child: Icon(
                                     productData[index].love == 1
                                         ? Ionicons.heart

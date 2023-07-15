@@ -10,6 +10,7 @@ import '../../../api/user/register.dart';
 import '../../../network/api/otp.dart';
 import '../../button/button.dart';
 import '../../message/message.dart';
+import '../../style/text_style.dart';
 import '../../textfield/login/text_field_password.dart';
 import '../otp/frm_otp.dart';
 
@@ -62,15 +63,12 @@ class _FrmRegisterState extends State<FrmRegister> {
             ]),
             child: ButtonCustom(
               ontap: _butRegister,
-              width: 160,
+              width: 140,
               height: 40,
               child: const Center(
                   child: Text(
                 register,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1,
-                    fontSize: 18),
+                style: title1,
               )),
             ),
           ),
@@ -90,7 +88,6 @@ class _FrmRegisterState extends State<FrmRegister> {
   }
 
   String? validatePassword(String? value) {
-    // Ít nhất 8 ký tự
     if (value!.isEmpty) {
       return textIsRequired;
     }
@@ -98,27 +95,23 @@ class _FrmRegisterState extends State<FrmRegister> {
       return 'Mật khẩu cần ít nhất 8 ký tự';
     }
 
-    // Ít nhất một chữ cái thường
     if (!value.contains(RegExp(r'[a-z]'))) {
       return 'Mật khẩu cần ít nhất một chữ cái thường';
     }
 
-    // Ít nhất một chữ cái in hoa
     if (!value.contains(RegExp(r'[A-Z]'))) {
       return 'Mật khẩu cần ít nhất một chữ cái in hoa';
     }
 
-    // Ít nhất một chữ số
     if (!value.contains(RegExp(r'[0-9]'))) {
       return 'Mật khẩu cần ít nhất một chữ số';
     }
 
-    // Ít nhất một ký tự đặc biệt (trong danh sách @$!%*#?&)
     if (!value.contains(RegExp(r'[@\$!%*#?&]'))) {
       return 'Mật khẩu cần ít nhất một ký tự đặc biệt';
     }
 
-    return null; // Mật khẩu hợp lệ
+    return null;
   }
 
   _butRegister() async {

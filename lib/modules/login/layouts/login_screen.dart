@@ -203,19 +203,17 @@ class _LoginScreenState extends State<LoginScreen>
                                     );
                                   });
                             },
-                            child: const Text(
+                            child: Text(
                               forgotPassword,
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18),
+                              style: title1.copyWith(
+                                  color: Colors.red, fontSize: 16),
                             ),
                           ),
                           // ignore: prefer_const_constructors
                           Text(
                             ' $or ',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
+                            style: title1.copyWith(
+                                color: Colors.black, fontSize: 16),
                           ),
                           // ignore: prefer_const_constructors
                           GestureDetector(
@@ -225,10 +223,8 @@ class _LoginScreenState extends State<LoginScreen>
                             },
                             child: Text(
                               isRegister ? register : login,
-                              style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18),
+                              style: title1.copyWith(
+                                  color: Colors.green, fontSize: 16),
                             ),
                           )
                         ],

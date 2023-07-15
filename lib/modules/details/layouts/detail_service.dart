@@ -98,6 +98,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
     }
 
     final dialog = RatingDialog(
+      starSize: 30,
       initialRating: 1.0,
       // your app's name?
       title: const Text(
@@ -360,7 +361,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: UserPrefer.getToken() == null && false
+                                onTap: UserPrefer.getToken() == null
                                     ? () {
                                         Message.warning(
                                             message:
