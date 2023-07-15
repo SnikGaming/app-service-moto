@@ -1,11 +1,11 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-
-
 import 'package:app/components/CusRichText/CusRichText.dart';
+import 'package:app/components/button/button.dart';
 
 import 'package:app/components/mybage/mybage.dart';
 import 'package:app/api/order/order.dart' as order;
+import 'package:app/modules/login/layouts/login_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -19,6 +19,7 @@ import '../../../app_constants.dart';
 import '../../../order_details/order_details.dart';
 import '../../../../api/login/api_login.dart';
 import '../../../../api/order/api_order.dart';
+
 class ProFilePage extends StatefulWidget {
   const ProFilePage({super.key});
   @override
@@ -93,21 +94,20 @@ class _ProFilePageState extends State<ProFilePage> {
         width: size.width,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: UserPrefer.getImageUser() == 'null' ||
-                  UserPrefer.getImageUser() == null
-              ? Container(
-                  child: Center(
-                    child: MyButton(
-                      onPressed: () {
-                        Modular.to
-                            .pushNamed(Routes.login)
-                            .then((value) => setState(() {
-                                  Navigator.pop(context);
-                                }));
-                      },
+          child: UserPrefer.getToken() == null
+              ? Center(
+                  child: ButtonCustom(
+                    width: 120,
+                    ontap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const LoginScreen()));
+                    },
+                    child: const Center(
                       child: Text(
                         'Đăng nhập',
-                        style: title1.copyWith(fontSize: 14),
+                        style: title1,
                       ),
                     ),
                   ),
