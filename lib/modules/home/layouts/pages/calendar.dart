@@ -6,6 +6,7 @@ import 'package:app/functions/random_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import '../../../../api/booking/api_booking.dart';
 import '../../../../api/booking/model.dart' as booking;
 import '../../../../components/calendar/pages/calendar_page.dart';
@@ -69,6 +70,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: violet,
+        title: Text('ĐẶT LỊCH'),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.change_circle),
@@ -113,204 +116,213 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             child: CircularProgressIndicator(),
                           ),
                         )
-                      : ListView.separated(
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 10),
-                          itemCount: APIBooking.lsData.length + 1,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (index == 0) {
-                              List<String> lsType = [
-                                'Theo ngày tạo',
-                                'Theo ngày đặt'
-                              ];
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: List.generate(
-                                    lsType.length,
-                                    (index) => Padding(
-                                          padding: EdgeInsets.only(
-                                            left: 5,
-                                            right: lsType.length - 1 == index
-                                                ? 20
-                                                : 5,
-                                            top: 20,
-                                          ),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              if (mounted) {
-                                                setState(() {
-                                                  isBackground = true;
-                                                  type = index + 1;
-                                                });
-                                              }
-                                              loadData();
-                                            },
-                                            child: Container(
-                                              height: 30,
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                  color: type - 1 == index
-                                                      ? Colors.black
-                                                      : Colors.white,
-                                                  border: Border.all(),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          16)),
-                                              child: Center(
-                                                  child: Text(
-                                                lsType[index],
-                                                style: title1.copyWith(
-                                                  fontSize: 14,
-                                                  color: type - 1 == index
-                                                      ? Colors.white
-                                                      : Colors.black,
+                      : APIBooking.lsData.isEmpty
+                          ? Center(
+                              child: Lottie.network(imageNoData, height: 200),
+                            )
+                          : ListView.separated(
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 10),
+                              itemCount: APIBooking.lsData.length + 1,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (index == 0) {
+                                  List<String> lsType = [
+                                    'Theo ngày tạo',
+                                    'Theo ngày đặt'
+                                  ];
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: List.generate(
+                                        lsType.length,
+                                        (index) => Padding(
+                                              padding: EdgeInsets.only(
+                                                left: 5,
+                                                right:
+                                                    lsType.length - 1 == index
+                                                        ? 20
+                                                        : 5,
+                                                top: 20,
+                                              ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  if (mounted) {
+                                                    setState(() {
+                                                      isBackground = true;
+                                                      type = index + 1;
+                                                    });
+                                                  }
+                                                  loadData();
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 120,
+                                                  decoration: BoxDecoration(
+                                                      color: type - 1 == index
+                                                          ? Colors.black
+                                                          : Colors.white,
+                                                      border: Border.all(),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16)),
+                                                  child: Center(
+                                                      child: Text(
+                                                    lsType[index],
+                                                    style: title1.copyWith(
+                                                      fontSize: 14,
+                                                      color: type - 1 == index
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                    ),
+                                                  )),
                                                 ),
-                                              )),
-                                            ),
-                                          ),
-                                        )),
-                              );
-                            } else {
-                              // Dữ liệu từ danh sách APIBooking.lsData
-                              booking.Data dataBooking =
-                                  APIBooking.lsData[index - 1];
-                              String formattedDate = DateFormat('dd-MM-yyyy')
-                                  .format(DateTime.parse(
-                                      '${dataBooking.bookingTime}'));
-                              String formattedTime = DateFormat('HH:mm:ss')
-                                  .format(DateTime.parse(
-                                      '${dataBooking.bookingTime}'));
-                              String createAt = DateFormat('dd-MM-yyyy').format(
-                                  DateTime.parse('${dataBooking.createdAt}'));
-                              Future.delayed(const Duration(seconds: 3))
-                                  .then((value) {
-                                if (mounted) {
-                                  setState(() {
-                                    isBackground = false;
+                                              ),
+                                            )),
+                                  );
+                                } else {
+                                  // Dữ liệu từ danh sách APIBooking.lsData
+                                  booking.Data dataBooking =
+                                      APIBooking.lsData[index - 1];
+                                  String formattedDate =
+                                      DateFormat('dd-MM-yyyy').format(
+                                          DateTime.parse(
+                                              '${dataBooking.bookingTime}'));
+                                  String formattedTime = DateFormat('HH:mm:ss')
+                                      .format(DateTime.parse(
+                                          '${dataBooking.bookingTime}'));
+                                  String createAt = DateFormat('dd-MM-yyyy')
+                                      .format(DateTime.parse(
+                                          '${dataBooking.createdAt}'));
+                                  Future.delayed(const Duration(seconds: 3))
+                                      .then((value) {
+                                    if (mounted) {
+                                      setState(() {
+                                        isBackground = false;
+                                      });
+                                    }
                                   });
-                                }
-                              });
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  top: index == 1 ? 20 : 10,
-                                  left: 20,
-                                  right: 20,
-                                  bottom: index == APIBooking.lsData.length
-                                      ? 20
-                                      : 0,
-                                ),
-                                child: Slidable(
-                                  key: const ValueKey(0),
-                                  endActionPane: ActionPane(
-                                    // motion: const ScrollMotion(),
-                                    motion: const BehindMotion(),
-                                    // dismissible:
-                                    //     DismissiblePane(onDismissed: () {
-                                    //   deleteData(index);
-                                    //   dismissThreshold:
-                                    //   0.8;
-                                    //   motion:
-                                    //   // For coverage:
-                                    //   // ignore: prefer_const_constructors
-                                    //   InversedDrawerMotion();
-                                    // }),
-                                    children: [
-                                      SlidableAction(
-                                        onPressed: (context) =>
-                                            deleteData(dataBooking.id),
-                                        backgroundColor: Color(0xFFFE4A49),
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.delete,
-                                        label: 'Xóa',
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                      top: index == 1 ? 20 : 10,
+                                      left: 20,
+                                      right: 20,
+                                      bottom: index == APIBooking.lsData.length
+                                          ? 20
+                                          : 0,
+                                    ),
+                                    child: Slidable(
+                                      key: const ValueKey(0),
+                                      endActionPane: ActionPane(
+                                        // motion: const ScrollMotion(),
+                                        motion: const BehindMotion(),
+                                        // dismissible:
+                                        //     DismissiblePane(onDismissed: () {
+                                        //   deleteData(index);
+                                        //   dismissThreshold:
+                                        //   0.8;
+                                        //   motion:
+                                        //   // For coverage:
+                                        //   // ignore: prefer_const_constructors
+                                        //   InversedDrawerMotion();
+                                        // }),
+                                        children: [
+                                          SlidableAction(
+                                            onPressed: (context) =>
+                                                deleteData(dataBooking.id),
+                                            backgroundColor: Color(0xFFFE4A49),
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.delete,
+                                            label: 'Xóa',
+                                          ),
+                                          SlidableAction(
+                                            onPressed: (context) {},
+                                            backgroundColor: Color(0xFF21B7CA),
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.upgrade,
+                                            label: 'Sửa',
+                                          ),
+                                        ],
                                       ),
-                                      SlidableAction(
-                                        onPressed: (context) {},
-                                        backgroundColor: Color(0xFF21B7CA),
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.upgrade,
-                                        label: 'Sửa',
-                                      ),
-                                    ],
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: Container(
-                                      constraints:
-                                          const BoxConstraints(minHeight: 120),
-                                      width: size.width,
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 20,
-                                        ),
-                                        child: RichText(
-                                          text: TextSpan(
-                                            style:
-                                                title1.copyWith(fontSize: 14),
-                                            children: [
-                                              const TextSpan(
-                                                text: 'Ngày: ',
-                                                style: TextStyle(
-                                                    color: Colors.blue),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Container(
+                                          constraints: const BoxConstraints(
+                                              minHeight: 120),
+                                          width: size.width,
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 20,
+                                            ),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                style: title1.copyWith(
+                                                    fontSize: 14),
+                                                children: [
+                                                  const TextSpan(
+                                                    text: 'Ngày: ',
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  ),
+                                                  TextSpan(
+                                                    text: formattedDate,
+                                                    style: const TextStyle(
+                                                        color: Colors.blue),
+                                                  ),
+                                                  const TextSpan(
+                                                    text: '\nThời gian: ',
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                  TextSpan(
+                                                    text: formattedTime,
+                                                    style: const TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                  const TextSpan(
+                                                    text: '\n\nNội dung:',
+                                                    style: TextStyle(
+                                                        color: Colors.green),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        ' ${dataBooking.note!}',
+                                                    style: const TextStyle(
+                                                        color: Colors.green),
+                                                  ),
+                                                  const TextSpan(
+                                                    text: '\nĐịa chỉ:',
+                                                    style: TextStyle(
+                                                        color: Colors.orange),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        ' ${dataBooking.address!}',
+                                                    style: const TextStyle(
+                                                        color: Colors.orange),
+                                                  ),
+                                                  const TextSpan(
+                                                    text: '\nThời gian tạo:',
+                                                    style: TextStyle(
+                                                        color: Colors.purple),
+                                                  ),
+                                                  TextSpan(
+                                                    text: ' $createAt',
+                                                    style: const TextStyle(
+                                                        color: Colors.purple),
+                                                  ),
+                                                ],
                                               ),
-                                              TextSpan(
-                                                text: formattedDate,
-                                                style: const TextStyle(
-                                                    color: Colors.blue),
-                                              ),
-                                              const TextSpan(
-                                                text: '\nThời gian: ',
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                              TextSpan(
-                                                text: formattedTime,
-                                                style: const TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                              const TextSpan(
-                                                text: '\n\nNội dung:',
-                                                style: TextStyle(
-                                                    color: Colors.green),
-                                              ),
-                                              TextSpan(
-                                                text: ' ${dataBooking.note!}',
-                                                style: const TextStyle(
-                                                    color: Colors.green),
-                                              ),
-                                              const TextSpan(
-                                                text: '\nĐịa chỉ:',
-                                                style: TextStyle(
-                                                    color: Colors.orange),
-                                              ),
-                                              TextSpan(
-                                                text:
-                                                    ' ${dataBooking.address!}',
-                                                style: const TextStyle(
-                                                    color: Colors.orange),
-                                              ),
-                                              const TextSpan(
-                                                text: '\nThời gian tạo:',
-                                                style: TextStyle(
-                                                    color: Colors.purple),
-                                              ),
-                                              TextSpan(
-                                                text: ' $createAt',
-                                                style: const TextStyle(
-                                                    color: Colors.purple),
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                                  );
+                                }
+                              },
+                            ),
             ),
           ],
         ),

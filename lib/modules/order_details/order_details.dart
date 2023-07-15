@@ -95,7 +95,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 children: [
                                   Text(
                                     '${data.name}',
-                                    style: title2.copyWith(
+                                    style: title1.copyWith(
                                         fontSize: 15, color: Colors.black),
                                   ),
                                   const SizedBox(

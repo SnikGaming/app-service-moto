@@ -437,7 +437,7 @@ class _CartScreenState extends State<CartScreen> {
                                             },
                                             child: Text(
                                               txtThanhToan,
-                                              style: title2.copyWith(
+                                              style: title1.copyWith(
                                                   color: Colors.white),
                                             ),
                                           ),

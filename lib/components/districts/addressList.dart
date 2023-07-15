@@ -1,14 +1,10 @@
 // ignore_for_file: file_names, library_prefixes, use_key_in_widget_constructors, library_private_types_in_public_api
 
-import 'package:app/components/button/mybutton.dart';
-import 'package:app/components/calendar/res/colors.dart';
 import 'package:app/components/style/text_style.dart';
-import 'package:app/functions/random_color.dart';
 import 'package:flutter/material.dart';
 import '../../api/address/api_address.dart';
 import '../../api/address/model.dart' as Address;
 import '../../api/location/api_location.dart';
-import '../../modules/home/layouts/pages/like_page.dart';
 import '../value_app.dart';
 import 'form_input_address.dart';
 
@@ -77,7 +73,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                             ),
                             Text(
                               'Thêm địa chỉ',
-                              style: title2.copyWith(fontSize: 14),
+                              style: title1.copyWith(fontSize: 14),
                             ),
                           ],
                         ),
@@ -112,11 +108,11 @@ class _AddressListScreenState extends State<AddressListScreen> {
                               RichText(
                                 text: TextSpan(
                                   text: 'Người nhận : ',
-                                  style: title2.copyWith(fontSize: 18),
+                                  style: title1.copyWith(fontSize: 18),
                                   children: [
                                     TextSpan(
                                         text: address.name!,
-                                        style: title2.copyWith(fontSize: 16)),
+                                        style: title1.copyWith(fontSize: 16)),
                                   ],
                                 ),
                               ),
@@ -126,11 +122,11 @@ class _AddressListScreenState extends State<AddressListScreen> {
                               RichText(
                                 text: TextSpan(
                                   text: 'Số điện thoại : ',
-                                  style: title2.copyWith(fontSize: 18),
+                                  style: title1.copyWith(fontSize: 18),
                                   children: [
                                     TextSpan(
                                         text: address.phoneNumber!,
-                                        style: title2.copyWith(fontSize: 16)),
+                                        style: title1.copyWith(fontSize: 16)),
                                   ],
                                 ),
                               ),
@@ -140,12 +136,12 @@ class _AddressListScreenState extends State<AddressListScreen> {
                               RichText(
                                 text: TextSpan(
                                   text: 'Địa chỉ nhận : ',
-                                  style: title2.copyWith(fontSize: 18),
+                                  style: title1.copyWith(fontSize: 18),
                                   children: [
                                     TextSpan(
                                         text:
                                             '${address.address}, ${address.ward}, ${address.district}, ${address.province}',
-                                        style: title2.copyWith(fontSize: 16)),
+                                        style: title1.copyWith(fontSize: 16)),
                                   ],
                                 ),
                               ),

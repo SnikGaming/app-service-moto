@@ -33,23 +33,23 @@ const title1 = TextStyle(
   color: Color.fromARGB(255, 255, 255, 255),
   // fontFamily: 'SVN-Century Gothic',
   fontFamily: "fontmain",
-  fontSize: 18,
+  fontSize: 14,
   fontWeight: FontWeight.w700,
   letterSpacing: .5,
 );
 
-/// font-size 18
-/// font-weight w600
-/// line-height 26
-/// letter pacing 0.5
-const title2 = TextStyle(
-  color: Color.fromARGB(255, 255, 255, 255),
-  // fontFamily: 'SVN-Century Gothic',
-  fontFamily: "fontmain",
-  fontSize: 18,
-  fontWeight: FontWeight.w600,
-  letterSpacing: .5,
-);
+// /// font-size 18
+// /// font-weight w600
+// /// line-height 26
+// /// letter pacing 0.5
+// const title2 = TextStyle(
+//   color: Color.fromARGB(255, 255, 255, 255),
+//   // fontFamily: 'SVN-Century Gothic',
+//   fontFamily: "fontmain",
+//   fontSize: 18,
+//   fontWeight: FontWeight.w600,
+//   letterSpacing: .5,
+// );
 
 /// font-size 16
 /// font-weight w600

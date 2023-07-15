@@ -143,7 +143,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                               children: [
                                                 Text(
                                                   data.name!,
-                                                  style: title2,
+                                                  style: title1,
                                                 ),
                                                 const SizedBox(
                                                   height: 10,
@@ -153,7 +153,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                                     amount:
                                                         data.price.toString(),
                                                   ),
-                                                  style: title2.copyWith(
+                                                  style: title.copyWith(
                                                     color: const Color.fromARGB(
                                                         255, 254, 254, 1),
                                                   ),

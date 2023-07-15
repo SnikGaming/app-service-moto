@@ -35,13 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // const MyTestProfile(),
   ];
 
-  checkLogin() {
-    if (UserPrefer.getToken() == null || UserPrefer.getToken() == 'null') {
-      return false;
-    }
-    return true;
-  }
-
   Future<void> refreshData() async {
     await Future.delayed(const Duration(seconds: 3));
   }
@@ -73,21 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   selectedIndex: _selectedIndex,
                   showElevation: true,
                   onItemSelected: (index) {
-                    print('check---> ${TestScreen.length}');
-
-                    if (index == TestScreen.length - 1 &&
-                        UserPrefer.getToken() == null) {
-                      print('check---> a $index');
-                      Modular.to
-                          .pushNamed(Routes.login)
-                          .then((value) => setState(() {
-                                Navigator.pop(context);
-                              }));
-                    } else {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    }
+                    setState(() {
+                      _selectedIndex = index;
+                    });
                   },
                   items: [
                     FlashyTabBarItem(

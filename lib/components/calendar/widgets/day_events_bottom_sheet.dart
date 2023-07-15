@@ -127,7 +127,7 @@ class _DayEventsBottomSheetState extends State<DayEventsBottomSheet> {
                                       style: TextStyle(color: Colors.orange),
                                     ),
                                     TextSpan(
-                                      text: ' ${event.addressCal!}',
+                                      text: ' ${event.addressCal}',
                                       style:
                                           const TextStyle(color: Colors.orange),
                                     ),

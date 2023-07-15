@@ -23,7 +23,7 @@ class MyBage extends StatelessWidget {
       showBadge: true,
       ignorePointer: false,
       onTap: () {},
-      badgeContent: Text(_value, style: title2),
+      badgeContent: Text(_value, style: title1),
       badgeAnimation: const badges.BadgeAnimation.rotation(
         animationDuration: Duration(seconds: 1),
         colorChangeAnimationDuration: Duration(seconds: 1),
