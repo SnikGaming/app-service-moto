@@ -4,7 +4,7 @@ import 'dart:core';
 
 import 'package:app/components/calendar/utills/extensions.dart';
 import 'package:app/api/booking/api_booking.dart';
-import 'package:app/preferences/user/user_preferences.dart';
+
 import 'package:cr_calendar/cr_calendar.dart';
 
 import 'package:flutter/material.dart';
@@ -49,14 +49,17 @@ class _CalendarPageState extends State<CalendarPage> {
     if (mounted) {
       setState(() {
         for (var e in data) {
+          print(e.color);
+          var _color = int.parse(e.color.toString()) == 0
+              ? Colors.red
+              : int.parse(e.color.toString()) == 1
+                  ? Colors.purple
+                  : Colors.green;
+          print(_color);
           _calendarController.addEvent(
             CalendarEventModel(
               id: e.id!,
-              eventColor: int.parse(e.color!) == 0
-                  ? eventColors[4]
-                  : int.parse(e.color!) == 1
-                      ? eventColors[0]
-                      : eventColors[3],
+              eventColor: _color,
               name: e.note!,
               addressCal: e.address!,
               begin: DateTime.parse(e.bookingTime!),
@@ -174,10 +177,8 @@ class _CalendarPageState extends State<CalendarPage> {
   /// Show [CreateEventDialog] with settings for new event.
   Future<void> _addEvent({String? note, DateTime? beginDate, int? id}) async {
     final event = await showDialog(
-            context: context,
-            builder: (context) =>
-                CreateEventDialog(note: note, beginDate: beginDate, id: id))
-        .then((value) {});
+        context: context,
+        builder: (context) => CreateEventDialog()).then((value) {});
 
     if (event != null) {
       _calendarController.addEvent(event);
@@ -187,38 +188,7 @@ class _CalendarPageState extends State<CalendarPage> {
   void _createExampleEvents() {
     _calendarController = CrCalendarController(
       onSwipe: _onCalendarPageChanged,
-      events: [
-        // CalendarEventModel(
-        //   name: '1 event',
-        //   begin: DateTime(now.year, now.month, (now.day).clamp(1, 28)),
-        //   end: DateTime(now.year, now.month, (now.day).clamp(1, 28)),
-        //   eventColor: eventColors[0],
-        // ),
-        // CalendarEventModel(
-        //   name: '2 event',
-        //   begin: DateTime(now.year, now.month - 1, (now.day - 2).clamp(1, 28)),
-        //   end: DateTime(now.year, now.month, (now.day + 2).clamp(1, 28)),
-        //   eventColor: eventColors[1],
-        // ),
-        // CalendarEventModel(
-        //   name: '3 event',
-        //   begin: DateTime(now.year, now.month, (now.day - 3).clamp(1, 28)),
-        //   end: DateTime(now.year, now.month + 1, (now.day + 4).clamp(1, 28)),
-        //   eventColor: eventColors[2],
-        // ),
-        // CalendarEventModel(
-        //   name: '4 event',
-        //   begin: DateTime(now.year, now.month - 1, (now.day).clamp(1, 28)),
-        //   end: DateTime(now.year, now.month + 1, (now.day + 5).clamp(1, 28)),
-        //   eventColor: eventColors[3],
-        // ),
-        // CalendarEventModel(
-        //   name: '5 event',
-        //   begin: DateTime(now.year, now.month + 1, (now.day + 1).clamp(1, 28)),
-        //   end: DateTime(now.year, now.month + 2, (now.day + 7).clamp(1, 28)),
-        //   eventColor: eventColors[4],
-        // ),
-      ],
+      events: [],
     );
   }
 
@@ -233,9 +203,6 @@ class _CalendarPageState extends State<CalendarPage> {
               events: events,
               day: day,
               screenHeight: MediaQuery.of(context).size.height,
-              addEventCallback: (
-                      {String? note, DateTime? beginDate, int? id}) =>
-                  _addEvent(note: note, beginDate: beginDate, id: id),
             )).then((value) {});
   }
 }

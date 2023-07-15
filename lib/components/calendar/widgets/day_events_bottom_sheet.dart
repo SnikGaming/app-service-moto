@@ -1,23 +1,22 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:app/api/booking/api_booking.dart';
 import 'package:app/components/calendar/utills/extensions.dart';
-import 'package:app/components/message/message.dart';
+
 import 'package:cr_calendar/cr_calendar.dart';
 import 'package:flutter/material.dart';
 
+import '../../style/text_style.dart';
 import '../utills/constants.dart';
 
 /// Draggable bottom sheet with events for the day.
 class DayEventsBottomSheet extends StatefulWidget {
   const DayEventsBottomSheet({
-    required this.addEventCallback,
     required this.screenHeight,
     required this.events,
     required this.day,
     Key? key,
   }) : super(key: key);
-  final Function({String? note, DateTime? beginDate, int? id}) addEventCallback;
+
   final List<CalendarEventModel> events;
   final DateTime day;
   final double screenHeight;
@@ -33,12 +32,6 @@ class _DayEventsBottomSheetState extends State<DayEventsBottomSheet> {
   void initState() {
     super.initState();
     events = widget.events;
-  }
-
-  void _deleteEvent(int eventId) {
-    setState(() {
-      events.removeWhere((event) => event.id == eventId);
-    });
   }
 
   @override
@@ -80,78 +73,67 @@ class _DayEventsBottomSheetState extends State<DayEventsBottomSheet> {
                               Container(
                                 color: event.eventColor,
                                 width: 6,
+                                constraints:
+                                    const BoxConstraints(minHeight: 100),
+                              ),
+                              // Expanded(
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.only(left: 16),
+                              //     child: Align(
+                              //       alignment: Alignment.centerLeft,
+                              //       child: Column(
+                              //         mainAxisAlignment:
+                              //             MainAxisAlignment.center,
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.start,
+                              //         children: [
+                              //           Text(
+                              //             event.addressCal,
+                              //             style: const TextStyle(fontSize: 16),
+                              //           ),
+                              //           Text(
+                              //             event.name,
+                              //             style: const TextStyle(fontSize: 16),
+                              //           ),
+                              //           const SizedBox(height: 8),
+                              //           Text(
+                              //             '${event.begin.format(kDateRangeFormat)} - ${event.end.format(kDateRangeFormat)}',
+                              //             style: const TextStyle(fontSize: 14),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              const SizedBox(
+                                width: 10,
                               ),
                               Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          event.addressCal,
-                                          style: const TextStyle(fontSize: 16),
-                                        ),
-                                        Text(
-                                          event.name,
-                                          style: const TextStyle(fontSize: 16),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          '${event.begin.format(kDateRangeFormat)} - ${event.end.format(kDateRangeFormat)}',
-                                          style: const TextStyle(fontSize: 14),
-                                        ),
-                                      ],
+                                  child: RichText(
+                                text: TextSpan(
+                                  style: title1.copyWith(fontSize: 14),
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Nội dung:',
+                                      style: TextStyle(color: Colors.green),
                                     ),
-                                  ),
+                                    TextSpan(
+                                      text: ' ${event.name!}',
+                                      style:
+                                          const TextStyle(color: Colors.green),
+                                    ),
+                                    const TextSpan(
+                                      text: '\n\nĐịa chỉ:',
+                                      style: TextStyle(color: Colors.orange),
+                                    ),
+                                    TextSpan(
+                                      text: ' ${event.addressCal!}',
+                                      style:
+                                          const TextStyle(color: Colors.orange),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  widget.addEventCallback(
-                                      note: event.name,
-                                      beginDate: event.begin,
-                                      id: event.id);
-                                },
-                                child: Container(
-                                  height: 140,
-                                  width: 50,
-                                  child: const Icon(
-                                    Icons.edit,
-                                    color: Colors.yellow,
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  int res = await APIBooking.delBooking(
-                                      id: event.id!);
-                                  if (res == 200) {
-                                    _deleteEvent(event.id!);
-                                    Message.success(
-                                      message: 'Đã xóa',
-                                      context: context,
-                                    );
-                                  } else {
-                                    Message.error(
-                                      message: 'Xóa thất bại',
-                                      context: context,
-                                    );
-                                  }
-                                },
-                                child: Container(
-                                  width: 50,
-                                  height: 140,
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
+                              )),
                             ],
                           ),
                         ),

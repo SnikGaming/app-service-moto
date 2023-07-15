@@ -18,10 +18,9 @@ import 'date_picker_title_widget.dart';
 
 /// Pop up dialog for event creation.
 class CreateEventDialog extends StatefulWidget {
-  String? note;
-  DateTime? beginDate;
-  int? id;
-  CreateEventDialog({super.key, this.note, this.beginDate, this.id});
+
+
+  CreateEventDialog({super.key,});
 
   @override
   _CreateEventDialogState createState() => _CreateEventDialogState();
@@ -39,7 +38,7 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
   loadData() {
     if (mounted) {
       setState(() {
-        _eventNameController.text = widget.note ?? '';
+      
       });
     }
   }
@@ -187,10 +186,9 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
                             backgroundColor: Colors.red,
                             foregroundColor: Colors.white),
                         onPressed: _validateEventData()
-                            ? widget.id != null
-                                ? _updateData
+                            ? null
                                 : _onEventCreation
-                            : null,
+                           ,
                         child: const Text('Lưu'),
                       ),
                     ),
@@ -240,30 +238,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
         _endDate != null;
   }
 
-  void _updateData() async {
-    final beginDate = _beginDate;
-    final endDate = _endDate;
-
-    if (beginDate == null || endDate == null) {
-      return;
-    }
-    String date = dateTimeToString(beginDate);
-    Map<String, String> data = {
-      "note": _eventNameController.text,
-      "booking_time": date,
-      "address": txtAddressCty,
-      "service": "abc",
-      "mechanic_id": '3'
-    };
-    int res = await APIBooking.updateBooking(data: data, id: widget.id!);
-    if (res == 200) {
-      Message.success(message: 'Chỉnh sửa thành công.', context: context);
-      Navigator.pop(context);
-    } else {
-      Message.error(message: 'Chỉnh sửa thất bại.', context: context);
-    }
-  }
-
   /// Close dialog and pass [CalendarEventModel] as arguments.
   void _onEventCreation() async {
     final beginDate = _beginDate;
@@ -272,24 +246,6 @@ class _CreateEventDialogState extends State<CreateEventDialog> {
     if (beginDate == null || endDate == null) {
       return;
     }
-    String date = dateTimeToString(beginDate);
-    Map<String, String> data = {
-      "note": _eventNameController.text,
-      "booking_time": date,
-      "address": txtAddressCty,
-      "service": txtBookingService,
-      "mechanic_id": '3'
-    };
-    await APIBooking.createBooking(data: data);
-    Navigator.of(context).pop(
-      CalendarEventModel(
-        name: _eventNameController.text,
-        begin: beginDate,
-        end: endDate,
-        addressCal: txtAddressCty,
-        eventColor: eventColors[_selectedColorIndex],
-      ),
-    );
   }
 
   /// Show calendar in pop up dialog for selecting date range for calendar event.

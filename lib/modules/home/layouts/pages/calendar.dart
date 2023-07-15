@@ -4,6 +4,7 @@ import 'package:app/components/calendar/res/colors.dart';
 import 'package:app/components/style/text_style.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import '../../../../api/booking/api_booking.dart';
 import '../../../../api/booking/model.dart' as booking;
@@ -24,6 +25,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
   int type = 1;
   bool isBackground = false;
   bool isLoadScreen = false;
+  deleteData(i) async {
+    int res = await APIBooking.delBooking(id: i);
+    if (res == 200) {
+      Message.success(
+        message: 'Đã xóa',
+        context: context,
+      );
+    } else {
+      Message.error(
+        message: 'Xóa thất bại',
+        context: context,
+      );
+    }
+    loadData();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -87,7 +104,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               height: size.height,
               width: size.width,
               child: isLoadScreen
-                  ? CalendarPage()
+                  ? const CalendarPage()
                   : isBackground
                       ? const SizedBox(
                           height: 30,
@@ -182,73 +199,109 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       ? 20
                                       : 0,
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Container(
-                                    constraints:
-                                        const BoxConstraints(minHeight: 120),
-                                    width: size.width,
-                                    color: const Color.fromARGB(255, 0, 0, 0),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 20,
+                                child: Slidable(
+                                  key: const ValueKey(0),
+                                  endActionPane: ActionPane(
+                                    // motion: const ScrollMotion(),
+                                    motion: const BehindMotion(),
+                                    // dismissible:
+                                    //     DismissiblePane(onDismissed: () {
+                                    //   deleteData(index);
+                                    //   dismissThreshold:
+                                    //   0.8;
+                                    //   motion:
+                                    //   // For coverage:
+                                    //   // ignore: prefer_const_constructors
+                                    //   InversedDrawerMotion();
+                                    // }),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (context) =>
+                                            deleteData(dataBooking.id),
+                                        backgroundColor: Color(0xFFFE4A49),
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.delete,
+                                        label: 'Xóa',
                                       ),
-                                      child: RichText(
-                                        text: TextSpan(
-                                          style: title1.copyWith(fontSize: 14),
-                                          children: [
-                                            const TextSpan(
-                                              text: 'Ngày: ',
-                                              style:
-                                                  TextStyle(color: Colors.blue),
-                                            ),
-                                            TextSpan(
-                                              text: formattedDate,
-                                              style: const TextStyle(
-                                                  color: Colors.blue),
-                                            ),
-                                            const TextSpan(
-                                              text: '\nThời gian: ',
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
-                                            TextSpan(
-                                              text: formattedTime,
-                                              style: const TextStyle(
-                                                  color: Colors.red),
-                                            ),
-                                            const TextSpan(
-                                              text: '\n\nNội dung:',
-                                              style: TextStyle(
-                                                  color: Colors.green),
-                                            ),
-                                            TextSpan(
-                                              text: ' ${dataBooking.note!}',
-                                              style: const TextStyle(
-                                                  color: Colors.green),
-                                            ),
-                                            const TextSpan(
-                                              text: '\nĐịa chỉ:',
-                                              style: TextStyle(
-                                                  color: Colors.orange),
-                                            ),
-                                            TextSpan(
-                                              text: ' ${dataBooking.address!}',
-                                              style: const TextStyle(
-                                                  color: Colors.orange),
-                                            ),
-                                            const TextSpan(
-                                              text: '\nThời gian tạo:',
-                                              style: TextStyle(
-                                                  color: Colors.purple),
-                                            ),
-                                            TextSpan(
-                                              text: ' $createAt',
-                                              style: const TextStyle(
-                                                  color: Colors.purple),
-                                            ),
-                                          ],
+                                      SlidableAction(
+                                        onPressed: (context) {},
+                                        backgroundColor: Color(0xFF21B7CA),
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.upgrade,
+                                        label: 'Sửa',
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Container(
+                                      constraints:
+                                          const BoxConstraints(minHeight: 120),
+                                      width: size.width,
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 20,
+                                          vertical: 20,
+                                        ),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            style:
+                                                title1.copyWith(fontSize: 14),
+                                            children: [
+                                              const TextSpan(
+                                                text: 'Ngày: ',
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                              TextSpan(
+                                                text: formattedDate,
+                                                style: const TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                              const TextSpan(
+                                                text: '\nThời gian: ',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                              TextSpan(
+                                                text: formattedTime,
+                                                style: const TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                              const TextSpan(
+                                                text: '\n\nNội dung:',
+                                                style: TextStyle(
+                                                    color: Colors.green),
+                                              ),
+                                              TextSpan(
+                                                text: ' ${dataBooking.note!}',
+                                                style: const TextStyle(
+                                                    color: Colors.green),
+                                              ),
+                                              const TextSpan(
+                                                text: '\nĐịa chỉ:',
+                                                style: TextStyle(
+                                                    color: Colors.orange),
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    ' ${dataBooking.address!}',
+                                                style: const TextStyle(
+                                                    color: Colors.orange),
+                                              ),
+                                              const TextSpan(
+                                                text: '\nThời gian tạo:',
+                                                style: TextStyle(
+                                                    color: Colors.purple),
+                                              ),
+                                              TextSpan(
+                                                text: ' $createAt',
+                                                style: const TextStyle(
+                                                    color: Colors.purple),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -297,7 +350,8 @@ class NoteDialog extends StatefulWidget {
   final String? initialNote;
   final DateTime? initialDateTime;
 
-  NoteDialog({
+  const NoteDialog({
+    super.key,
     this.isEditMode = false,
     this.initialNote,
     this.initialDateTime,
