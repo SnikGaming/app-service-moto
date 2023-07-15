@@ -25,7 +25,7 @@ class OrderDetails {
 }
 
 class Data {
-  int? id;
+  String? id;
   String? name;
   String? image;
   int? number;

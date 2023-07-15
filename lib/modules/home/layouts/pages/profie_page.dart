@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors
+// ignore_for_file: use_key_in_widget_constructors, use_build_context_synchronously
 
 import 'package:app/components/CusRichText/CusRichText.dart';
 import 'package:app/components/button/button.dart';
@@ -52,7 +52,7 @@ class _ProFilePageState extends State<ProFilePage> {
         setState(() {
           if (dataStatus != []) {
             try {
-              MyOrder.lsMyOrder[3].bage =
+              MyOrder.lsMyOrder[4].bage =
                   dataStatus['status_2'].toString(); //!: Huy doi tra
               MyOrder.lsMyOrder[0].bage =
                   dataStatus['status_1'].toString(); //!: Chờ vận chuyển
@@ -61,6 +61,8 @@ class _ProFilePageState extends State<ProFilePage> {
 
               MyOrder.lsMyOrder[2].bage =
                   dataStatus['status_4'].toString(); //!: Chưa đánh giá
+
+              MyOrder.lsMyOrder[3].bage = dataStatus['status_5'].toString();
             } catch (e) {
               print(e);
             }
@@ -361,6 +363,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                             color: Colors.blue,
                                           ),
                                           const Spacer(),
+                                  
                                           data.status == 1
                                               ? SizedBox(
                                                   width: size.width,
@@ -483,6 +486,11 @@ class MyOrder {
         name: 'Đã hoàn thành',
         bage: '',
         id: 4),
+    MyOrder(
+        image: 'assets/icons/cart/wallet.png',
+        name: 'Chờ duyệt hủy',
+        bage: '',
+        id: 5),
     MyOrder(
         image: 'assets/icons/cart/wallet.png',
         name: 'Hủy, đổi trả',
