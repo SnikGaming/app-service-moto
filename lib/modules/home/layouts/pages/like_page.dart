@@ -253,17 +253,16 @@ class _ServicesPageState extends State<ServicesPage> {
                                         }),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: randomColor(),
+                                            color: Colors.black,
                                             borderRadius:
                                                 BorderRadius.circular(16),
                                           ),
                                           height: 30,
                                           width: 100,
-                                          child: Center(
+                                          child: const Center(
                                               child: Text(
                                             'Đầu trang',
-                                            style: h1.copyWith(
-                                                color: Colors.white),
+                                            style: title1,
                                           )),
                                         ),
                                       ),
@@ -280,17 +279,16 @@ class _ServicesPageState extends State<ServicesPage> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: randomColor(),
+                                            color: Colors.black,
                                             borderRadius:
                                                 BorderRadius.circular(16),
                                           ),
                                           height: 30,
                                           width: 100,
-                                          child: Center(
+                                          child: const Center(
                                               child: Text(
                                             'Cuối trang',
-                                            style: h1.copyWith(
-                                                color: Colors.white),
+                                            style: title1,
                                           )),
                                         ),
                                       ),

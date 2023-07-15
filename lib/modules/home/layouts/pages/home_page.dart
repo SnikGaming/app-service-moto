@@ -24,6 +24,7 @@ import '../../../../components/convert/format_money.dart';
 import '../../../../components/functions/logout.dart';
 import '../../../../components/search/search.dart';
 import '../../../../components/slider/slider.dart';
+import '../../../../components/style/text_style.dart';
 import '../../../../components/style/textstyle.dart';
 import '../../../../components/value_app.dart';
 import '../../../../network/api/google/google.dart';
@@ -86,7 +87,8 @@ class _HomePageState extends State<HomePage>
 
   void _login() {
     // Modular.to.pushNamed(Routes.login);
-    Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen()))
+    Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const LoginScreen()))
         .then((value) => setState(() {}));
   }
 
@@ -447,7 +449,7 @@ class _HomePageState extends State<HomePage>
                         width: size.width,
                         child: const Text(
                           'Sản phẩm mới',
-                          style: h1,
+                          style: title1,
                         ),
                       ),
                       const SizedBox(
@@ -551,15 +553,15 @@ class _HomePageState extends State<HomePage>
                           }),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: randomColor(),
+                              color: Colors.black,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             height: 30,
                             width: 100,
-                            child: Center(
+                            child: const Center(
                                 child: Text(
                               'Đầu trang',
-                              style: h1.copyWith(color: Colors.white),
+                              style: title1,
                             )),
                           ),
                         ),
@@ -576,15 +578,15 @@ class _HomePageState extends State<HomePage>
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: randomColor(),
+                              color: Colors.black,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             height: 30,
                             width: 100,
-                            child: Center(
+                            child: const Center(
                                 child: Text(
                               'Cuối trang',
-                              style: h1.copyWith(color: Colors.white),
+                              style: title1,
                             )),
                           ),
                         ),

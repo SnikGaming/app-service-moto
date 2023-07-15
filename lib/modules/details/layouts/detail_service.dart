@@ -204,7 +204,7 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                         alignment: Alignment.center,
                         children: [
                           Positioned(
-                            top: 150,
+                            top: 130,
                             child: Container(
                               height: size.height * .4,
                               width: size.width * .7,
