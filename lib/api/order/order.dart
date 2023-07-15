@@ -52,6 +52,7 @@ class Data {
   String? address;
   String? name;
   int? payment;
+  String? phone;
 
   String? note;
   int? ship;
@@ -68,6 +69,7 @@ class Data {
       this.totalPrice,
       this.address,
       this.name,
+      this.phone,
       this.note,
       this.ship,
       this.payment,
@@ -83,6 +85,7 @@ class Data {
     status = json['status'];
     totalPrice = json['total_price'];
     payment = json['payment'];
+    phone = json['phone'];
 
     address = json['address'];
     name = json['name'];
@@ -109,6 +112,8 @@ class Data {
     data['address'] = address;
     data['name'] = name;
     data['note'] = note;
+    data['phone'] = phone;
+
     data['ship'] = ship;
     data['payment'] = payment;
     data['booking_date'] = bookingDate;

@@ -28,7 +28,7 @@ class ProFilePage extends StatefulWidget {
 
 class _ProFilePageState extends State<ProFilePage> {
   Map<String, dynamic>? paymentIntern;
-
+  bool loadDataValue = false;
   // loadUser() async {
 
   //   setState(() {});
@@ -219,7 +219,13 @@ class _ProFilePageState extends State<ProFilePage> {
                                   child: GestureDetector(
                                     onTap: () {
                                       indexSelect = i;
+                                      loadDataValue = true;
+
                                       setState(() {});
+                                      Future.delayed(const Duration(seconds: 1))
+                                          .then((value) => setState(() {
+                                                loadDataValue = false;
+                                              }));
                                       loadData(status: data.id);
                                     },
                                     child: Container(
@@ -272,189 +278,211 @@ class _ProFilePageState extends State<ProFilePage> {
                     const SizedBox(
                       height: 16,
                     ),
-                    Expanded(
-                        child: ListView.builder(
-                            itemCount: lsData.length,
-                            itemBuilder: (context, i) {
-                              var data = lsData[i];
+                    loadDataValue
+                        ? const CircularProgressIndicator()
+                        : Expanded(
+                            child: ListView.builder(
+                                itemCount: lsData.length,
+                                itemBuilder: (context, i) {
+                                  var data = lsData[i];
 
-                              return GestureDetector(
-                                onTap: () async {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            OrderDetails(value: data.id!),
-                                      ));
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 5),
-                                  child: Container(
-                                    height: data.status == 1 ? 200 : 170,
-                                    width: size.width,
-                                    decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Color.fromARGB(
-                                                255, 213, 205, 205),
-                                            offset: Offset(5, 9),
-                                            blurRadius: 5,
-                                          )
-                                        ],
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                OrderDetails(value: data.id!),
+                                          ));
+                                    },
                                     child: Padding(
-                                      padding: const EdgeInsets.all(14),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CusRichText(
-                                              selectedAddress:
-                                                  data.name.toString(),
-                                              text: 'Tên người nhận : '),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          CusRichText(
-                                              selectedAddress: formatCurrency(
-                                                amount:
-                                                    data.totalPrice.toString(),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 5),
+                                      child: Container(
+                                        height: data.status == 1 ? 240 : 220,
+                                        width: size.width,
+                                        decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                255, 255, 255, 255),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Color.fromARGB(
+                                                    255, 213, 205, 205),
+                                                offset: Offset(5, 9),
+                                                blurRadius: 5,
+                                              )
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(14),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                height: 5,
                                               ),
-                                              color: Colors.red,
-                                              text: 'Giá : '),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          CusRichText(
-                                              selectedAddress:
-                                                  data.address.toString(),
-                                              text: 'Địa chỉ : '),
-                                          data.payment == 1 || data.status == 2
-                                              ? Container()
-                                              : const Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    CusRichText(
-                                                      selectedAddress:
-                                                          "Đã thanh toán",
-                                                      text: 'Đơn hàng : ',
-                                                      color: Colors.green,
-                                                    ),
-                                                  ],
-                                                ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          CusRichText(
-                                            selectedAddress: data.status == 3
-                                                ? "Đang giao, bạn vui lòng chuẩn bị tiền."
-                                                : data.status == 4
-                                                    ? "Giao thành công"
-                                                    : data.status == 2
-                                                        ? "Đơn hàng đã hủy, hoặc giao không thành công"
-                                                        : "Đang đóng gói",
-                                            text: 'Trạng thái : ',
-                                            color: Colors.blue,
-                                          ),
-                                          const Spacer(),
-                                  
-                                          data.status == 1
-                                              ? SizedBox(
-                                                  width: size.width,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Container(),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (context) =>
-                                                                    AlertDialog(
-                                                              title: const Text(
-                                                                  'Thông báo'),
-                                                              content: const Text(
-                                                                  'Bạn có chắc muốn hủy đơn hàng này ?'),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed: () =>
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop(
-                                                                              false),
-                                                                  child: const Text(
-                                                                      'Không'),
-                                                                ),
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () async {
-                                                                    await APIOrder
-                                                                        .huy(
-                                                                            id: '${data.id}');
-                                                                    if (data.payment !=
-                                                                        1) {
-                                                                      await APIAuth
-                                                                          .getUser();
-
-                                                                      print(
-                                                                          'score user ${UserPrefer.getScore()}');
-                                                                    }
-                                                                    loadData();
-
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop(
-                                                                            true);
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                          'Có'),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          height: 30,
-                                                          width: 100,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: const Color
-                                                                    .fromARGB(
-                                                                255,
-                                                                195,
-                                                                183,
-                                                                183),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        30),
-                                                          ),
-                                                          child: const Center(
-                                                            child: Text('Hủy'),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
+                                              Text(
+                                                '#${data.id}',
+                                                style: title1.copyWith(
+                                                    color: Colors.grey),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              CusRichText(
+                                                  selectedAddress:
+                                                      data.name.toString(),
+                                                  text: 'Tên người nhận : '),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              CusRichText(
+                                                  selectedAddress:
+                                                      data.phone.toString(),
+                                                  text: 'Số điện thoại : '),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              CusRichText(
+                                                  selectedAddress:
+                                                      formatCurrency(
+                                                    amount: data.totalPrice
+                                                        .toString(),
                                                   ),
-                                                )
-                                              : Container()
-                                        ],
+                                                  color: Colors.red,
+                                                  text: 'Giá : '),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              CusRichText(
+                                                  selectedAddress:
+                                                      data.address.toString(),
+                                                  text: 'Địa chỉ : '),
+                                              data.payment == 1 ||
+                                                      data.status == 2
+                                                  ? Container()
+                                                  : const Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        CusRichText(
+                                                          selectedAddress:
+                                                              "Đã thanh toán",
+                                                          text: 'Đơn hàng : ',
+                                                          color: Colors.green,
+                                                        ),
+                                                      ],
+                                                    ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              CusRichText(
+                                                selectedAddress: data.status ==
+                                                        3
+                                                    ? "Đang giao, bạn vui lòng chuẩn bị tiền."
+                                                    : data.status == 4
+                                                        ? "Giao thành công"
+                                                        : data.status == 2
+                                                            ? "Đơn hàng bị đã hủy"
+                                                            : "Đang đóng gói",
+                                                text: 'Trạng thái : ',
+                                                color: data.status == 2
+                                                    ? Colors.red
+                                                    : Colors.blue,
+                                              ),
+                                              const Spacer(),
+                                              data.status == 1
+                                                  ? SizedBox(
+                                                      width: size.width,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Container(),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) =>
+                                                                        AlertDialog(
+                                                                  title: const Text(
+                                                                      'Thông báo'),
+                                                                  content:
+                                                                      const Text(
+                                                                          'Bạn có chắc muốn hủy đơn hàng này ?'),
+                                                                  actions: <Widget>[
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () =>
+                                                                              Navigator.of(context).pop(false),
+                                                                      child: const Text(
+                                                                          'Không'),
+                                                                    ),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        await APIOrder.huy(
+                                                                            id: '${data.id}');
+                                                                        if (data.payment !=
+                                                                            1) {
+                                                                          await APIAuth
+                                                                              .getUser();
+
+                                                                          print(
+                                                                              'score user ${UserPrefer.getScore()}');
+                                                                        }
+                                                                        loadData();
+
+                                                                        Navigator.of(context)
+                                                                            .pop(true);
+                                                                      },
+                                                                      child: const Text(
+                                                                          'Có'),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              height: 30,
+                                                              width: 100,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: const Color
+                                                                        .fromARGB(
+                                                                    255,
+                                                                    195,
+                                                                    183,
+                                                                    183),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            30),
+                                                              ),
+                                                              child:
+                                                                  const Center(
+                                                                child:
+                                                                    Text('Hủy'),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }))
+                                  );
+                                }))
                   ],
                 ),
         ),
