@@ -11,7 +11,7 @@ int generateRandomNumber() {
   return min + random.nextInt(max - min);
 }
 
-enum eOtp { register, forgotpassword }
+enum eOtp { register, forgotpassword, sp }
 
 dangGuiMail(context) => showDialog(
       context: context,
@@ -36,6 +36,8 @@ dangGuiMail(context) => showDialog(
 Future<bool> sendOTP(
     {required String email,
     required String otp,
+    String? listSP,
+    String? toTal,
     String? subject = 'OTP Verification',
     eOtp? type = eOtp.forgotpassword}) async {
   String username = mailService;
@@ -51,7 +53,8 @@ Future<bool> sendOTP(
     bodyMail =
         '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Xác nhận đăng ký tài khoản - OTP</title><style>/* CSS */body {font-family: Arial, sans-serif;background: linear-gradient(to bottom, #8A2BE2, #9400D3);padding: 20px;}.container {max-width: 600px;margin: 0 auto;background-color: #fff;padding: 20px;border: 1px solid #ccc;border-radius: 16px;}.logo {text-align: center;margin-bottom: 20px;}.otp {background-color: #eee;padding: 10px;text-align: center;font-size: 24px;margin-bottom: 20px;font-weight: bold;}.contact-info {text-align: left;margin-top: 30px;font-size: 14px;}.contact-info p {margin: 0;}.footer {font-size: 14px;text-align: center;margin-top: 30px;color: #fff;font-weight: bold;}.form-input {background-color: #f9f9f9;border: 1px solid #ccc;padding: 8px;color: #333;}.form-label {font-weight: bold;color: #333;}</style></head><body><div class="container"><div class="logo"><img src=$url_image alt="Logo"></div><h1>Xác nhận đăng ký tài khoản</h1><p>Xin chào,</p><p>Cảm ơn bạn đã sử dụng ứng dụng bán phụ tùng xe và đặt lịch của chúng tôi.</p><p>Dưới đây là mã OTP để xác nhận đăng ký tài khoản:</p><div class="otp">$otp</div><p>Trân trọng,</p><p>Đội ngũ hỗ trợ ứng dụng bán phụ tùng xe và đặt lịch</p><div class="contact-info"><p><strong>Thông tin liên hệ:</strong></p><p><strong>Email:</strong> <a href="mailto:tranthoilong@gmail.com">tranthoilong@gmail.com</a></p><p><strong>Số điện thoại:</strong> <a href="tel:+84383892964">0383892964</a></p></div><p class="footer">Bạn nhận được email này vì bạn đã đăng ký tài khoản. Nếu bạn không thực hiện hành động này, xin vui lòng liên hệ với chúng tôi.</p></div></body></html>';
   } else {
-    bodyMail = 'SP';
+    bodyMail =
+        '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Xác nhận mua hàng thành công</title><style>/* CSS */body {font-family: Arial, sans-serif;background: linear-gradient(to bottom, #8A2BE2, #9400D3);padding: 20px;}.container {max-width: 600px;margin: 0 auto;background-color: #fff;padding: 20px;border: 1px solid #ccc;border-radius: 10px;}h1 {color: #333;text-align: center;}p {color: #555;line-height: 1.5;}.order-details {margin-bottom: 20px;}.order-details table {width: 100%;border-collapse: collapse;}.order-details th,.order-details td {border: 1px solid #ccc;padding: 8px;}.order-details th {background-color: #eee;text-align: left;font-weight: bold;}.total {font-weight: bold;text-align: right;}.cta-button {display: inline-block;background-color: #4CAF50;color: #fff;text-decoration: none;padding: 10px 20px;border-radius: 5px;}</style></head><body><div class="container"><h1>Xác nhận mua hàng thành công</h1><p>Xin chào,</p><p>Cảm ơn bạn đã mua hàng từ chúng tôi. Đơn hàng của bạn đã được xác nhận thành công. Dưới đây là chi tiết đơn hàng:</p><div class="order-details"><table>${listSP}</table></div><p>Tổng tiền: <span class="total">${toTal}</span></p><p>Chúng tôi xin cam kết đảm bảo chất lượng sản phẩm và dịch vụ. Đơn hàng của bạn sẽ được xử lý và giao đến bạn trong thời gian sớm nhất.</p><p>Nếu bạn có bất kỳ câu hỏi hoặc yêu cầu hỗ trợ, đừng ngần ngại liên hệ với chúng tôi qua thông tin dưới đây:</p><p>Địa chỉ: 123 Đường ABC, Thành phố XYZ</p><p>Email: <a href="mailto:tranthoilong@gmail.com">tranthoilong@gmail.com</a></p><p>Số điện thoại: <a href="tel:+84383892964">0383892964</a></p><p>Xin chân thành cảm ơn bạn đã tin tưởng và mua hàng từ chúng tôi. Chúng tôi hy vọng rằng bạn sẽ hài lòng với sản phẩm và dịch vụ của chúng tôi.</p><p>Trân trọng,</p><p>Đội ngũ hỗ trợ mua hàng</p><p style="text-align: center;"><a href="https://example.com" class="cta-button">Trang chủ</a></p></div></body></html>';
   }
   final message = Message()
     ..from = Address(username)

@@ -58,6 +58,7 @@ class _CartState extends State<Cart> {
       "quantity": enteredValue,
       "price": widget.data!.price,
       'total': enteredValue * widget.data!.price!,
+      'name': widget.data!.name,
     };
     orderDetails.add(order);
     return orderDetails;

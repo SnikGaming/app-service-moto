@@ -49,7 +49,6 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
       'idProvince': _selectedAddress!.idProvince,
       'idDistrict': _selectedAddress!.idDistrict,
       'idWard': _selectedAddress!.idWard,
-      'ship': 20000.0,
       'date_order': DateTime.now().toIso8601String(),
       'delivery_date':
           DateTime.now().add(const Duration(days: 3)).toIso8601String(),
@@ -80,6 +79,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
             if (!widget.isBuy) {
               ApiCart.apiDeleteCarts(cartIds: cartId);
             }
+            print('test logs --> ${widget.json}');
             Message.success(
               message: 'Thành Công',
               context: context,
@@ -517,6 +517,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                       var res = await addOrder(jsonString);
                                       if (res == 200) {
                                         ApiCart.apiDeleteCarts(cartIds: cartId);
+
                                         Message.success(
                                           message: 'Thành Công',
                                           context: context,
@@ -557,3 +558,19 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
     );
   }
 }
+
+// class ProductOTP {
+//   String? productId;
+//   int? quantity;
+//   int? price;
+//   int? cartId;
+//   ProductOTP({this.productId, this.quantity, this.price, this.cartId});
+//   factory ProductOTP.fromJson(Map<String, dynamic> json) {
+//     return ProductOTP(
+//       productId: json['product_id'],
+//       quantity: json['quantity'],
+//       price: json['price'],
+//       cartId: json['cartId'],
+//     );
+//   }
+// }

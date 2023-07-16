@@ -66,6 +66,7 @@ class _CartScreenState extends State<CartScreen> {
           "quantity": data[i].quantity,
           "price": data[i].price,
           'cartId': data[i].id,
+          'name': data[i].productName
         };
         orderDetails.add(order);
       }

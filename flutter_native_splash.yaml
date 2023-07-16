@@ -1,10 +1,8 @@
 flutter_native_splash:
   # background_image: "assets/icons/background.png"
-  color: '#303030'
+  color: "#303030"
 android_12:
   android: true
+  navigation_bar_mode: "hide"
   # ios: true
   # web: true
-
-
-  
