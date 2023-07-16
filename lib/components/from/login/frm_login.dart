@@ -117,11 +117,10 @@ class _FromLoginState extends State<FromLogin> {
                   IconButton(
                       // onPressed: () {},
                       onPressed: () {
-                        AuthWithGoogle.googleSignOutMethod(context)
-                            .then((value) => Modular.to.navigate(Routes.home));
-                        setState(() {
-                          LogoutApp.logout();
-                        });
+                        Message.warning(
+                            message:
+                                'Tạm thời chưa thể đăng nhập bằng Facebook, vui lòng thử lại sau.',
+                            context: context);
                       },
                       icon: Image.asset('assets/icons/login/facebook.png')),
                 ],
