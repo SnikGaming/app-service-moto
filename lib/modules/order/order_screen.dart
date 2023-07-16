@@ -533,7 +533,7 @@ class _AddressDisplayScreenState extends State<AddressDisplayScreen> {
                                   }
                                 } else {
                                   Message.warning(
-                                      message: 'Thieu thong tin',
+                                      message: 'Thiếu thông tin gì đó.',
                                       context: context);
                                 }
                                 // Perform further actions with the JSON string (e.g., send it to an API)

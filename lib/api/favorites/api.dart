@@ -8,6 +8,7 @@ class APIFavorites {
     int page = 1,
   }) async {
     try {
+      data = [];
       final response =
           await ApiBase.get(path: '/api/favorites/', queryParameters: {
         "page": page,

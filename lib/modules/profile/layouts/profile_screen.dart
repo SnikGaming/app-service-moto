@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:app/api/login/model.dart' as value;
+import 'package:app/components/message/message.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +52,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         gender: value,
         imageFile: _image);
     if (response == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Chỉnh sửa thành công.💕'),
-        backgroundColor: Colors.green,
-      ));
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //   content: Text('Chỉnh sửa thành công.💕'),
+      //   backgroundColor: Colors.green,
+      // ));
+      Message.success(message: 'Chỉnh sửa thành công.', context: context);
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Chỉnh sửa thất bại.💕'),
+        content: Text('Chỉnh sửa thất bại.'),
         backgroundColor: Colors.red,
       ));
     }

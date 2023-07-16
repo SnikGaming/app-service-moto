@@ -299,7 +299,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8, horizontal: 5),
                                       child: Container(
-                                        height: data.status == 1 ? 240 : 220,
+                                        height: data.status == 1 ? 260 : 230,
                                         width: size.width,
                                         decoration: BoxDecoration(
                                             color: const Color.fromARGB(
@@ -353,6 +353,14 @@ class _ProFilePageState extends State<ProFilePage> {
                                                   ),
                                                   color: Colors.red,
                                                   text: 'Giá : '),
+                                              CusRichText(
+                                                  selectedAddress:
+                                                      formatCurrency(
+                                                    amount:
+                                                        data.ship.toString(),
+                                                  ),
+                                                  color: Colors.red,
+                                                  text: 'Phí ship : '),
                                               const SizedBox(
                                                 height: 10,
                                               ),
