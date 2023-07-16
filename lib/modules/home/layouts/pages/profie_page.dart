@@ -127,49 +127,51 @@ class _ProFilePageState extends State<ProFilePage> {
                         SizedBox(
                             height: 80,
                             width: 80,
-                            child: UserPrefer.getImageUser() == 'null' ||
-                                    UserPrefer.getImageUser() == null
-                                ? GestureDetector(
-                                    onTap: () async {
-                                      try {
-                                        var user = (await APIAuth.getUser())!;
+                            child: GestureDetector(
+                                onTap: () async {
+                                  try {
+                                    var user = (await APIAuth.getUser())!;
 
-                                        Modular.to.pushNamed(Routes.profile,
-                                            arguments: [user]);
-                                      } catch (e) {
-                                        Message.warning(
-                                          message: 'Bạn chưa đăng nhập',
-                                          context: context,
-                                        );
-                                      }
+                                    Modular.to.pushNamed(Routes.profile,
+                                        arguments: [user]);
+                                  } catch (e) {
+                                    Message.warning(
+                                      message: 'Bạn chưa đăng nhập',
+                                      context: context,
+                                    );
+                                  }
 
-                                      await Future.delayed(
-                                          const Duration(seconds: 5));
-                                    },
-                                    child: Container(
-                                      height: 45,
-                                      width: 45,
-                                      decoration: const BoxDecoration(
-                                        // color: violet,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Lottie.network(
-                                          'https://assets10.lottiefiles.com/packages/lf20_1mvhccet.json'),
-                                    ),
-                                  )
-                                : CachedNetworkImage(
-                                    imageBuilder: (context, imageProvider) =>
-                                        CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                '${ConnectDb.url}${UserPrefer.getImageUser()}')),
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => const Center(
-                                        child: CircularProgressIndicator()),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                    imageUrl:
-                                        '${ConnectDb.url}${UserPrefer.getImageUser()}',
-                                  )),
+                                  await Future.delayed(
+                                      const Duration(seconds: 5));
+                                },
+                                child: UserPrefer.getImageUser() == 'null' ||
+                                        UserPrefer.getImageUser() == null
+                                    ? Container(
+                                        height: 45,
+                                        width: 45,
+                                        decoration: const BoxDecoration(
+                                          // color: violet,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Lottie.network(
+                                            'https://assets10.lottiefiles.com/packages/lf20_1mvhccet.json'),
+                                      )
+                                    : CachedNetworkImage(
+                                        imageBuilder: (context,
+                                                imageProvider) =>
+                                            CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    '${ConnectDb.url}${UserPrefer.getImageUser()}')),
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                        imageUrl:
+                                            '${ConnectDb.url}${UserPrefer.getImageUser()}',
+                                      ))),
                         const SizedBox(
                           width: 8,
                         ),
