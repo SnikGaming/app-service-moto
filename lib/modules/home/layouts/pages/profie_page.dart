@@ -299,7 +299,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8, horizontal: 5),
                                       child: Container(
-                                        height: data.status == 1 ? 260 : 230,
+                                        height: data.status == 1 ? 270 : 240,
                                         width: size.width,
                                         decoration: BoxDecoration(
                                             color: const Color.fromARGB(
@@ -353,6 +353,9 @@ class _ProFilePageState extends State<ProFilePage> {
                                                   ),
                                                   color: Colors.red,
                                                   text: 'Giá : '),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
                                               CusRichText(
                                                   selectedAddress:
                                                       formatCurrency(

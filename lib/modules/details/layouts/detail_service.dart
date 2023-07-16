@@ -282,7 +282,8 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                             Container(
                                               padding: const EdgeInsets.all(12),
                                               decoration: BoxDecoration(
-                                                color: Colors.black,
+                                                color: const Color.fromARGB(
+                                                    255, 69, 67, 67),
                                                 borderRadius:
                                                     BorderRadius.circular(18),
                                               ),
@@ -293,7 +294,8 @@ class _DetailsServiceScreenState extends State<DetailsServiceScreen> {
                                                             '${data!.price}')
                                                     : outOfStock,
                                                 style: styleH3.copyWith(
-                                                  color: Colors.red,
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255),
                                                 ),
                                               ),
                                             ),

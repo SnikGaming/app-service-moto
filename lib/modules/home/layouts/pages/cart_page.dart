@@ -200,7 +200,7 @@ class _CartScreenState extends State<CartScreen> {
           padding: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
           width: size.width,
           decoration: const BoxDecoration(
-            color: Color.fromARGB(204, 233, 138, 83),
+            color: Color.fromARGB(204, 102, 100, 99),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16),
               bottomLeft: Radius.circular(16),
@@ -278,8 +278,7 @@ class _CartScreenState extends State<CartScreen> {
                                 Text(
                                   'Tổng tiền: ${formatCurrency(amount: '${int.parse(data[i].price!) * data[i].quantity!}')}',
                                   style: title1.copyWith(
-                                      color: const Color.fromARGB(
-                                          255, 54, 212, 244),
+                                      color: Color.fromARGB(255, 235, 220, 8),
                                       fontSize: 14),
                                 ),
                               ],
@@ -304,7 +303,7 @@ class _CartScreenState extends State<CartScreen> {
                             borderShape: BorderShapeBtn.none,
                             plusBtn: const Icon(Icons.add_box),
                             minusBtn: const Icon(Icons.indeterminate_check_box),
-                            btnColor1: Colors.teal,
+                            btnColor1: Color.fromARGB(255, 55, 0, 255),
                             btnColor2: Colors.red,
                             onQtyChanged: (val) {
                               try {

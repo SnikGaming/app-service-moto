@@ -23,6 +23,7 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  var _textEditingController = TextEditingController();
   int type = 1;
   bool isBackground = false;
   bool isLoadScreen = false;
@@ -70,7 +71,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: violet,
-        title: Text('ĐẶT LỊCH'),
+        title: const Text('ĐẶT LỊCH'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -228,13 +229,77 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           SlidableAction(
                                             onPressed: (context) =>
                                                 deleteData(dataBooking.id),
-                                            backgroundColor: Color(0xFFFE4A49),
+                                            backgroundColor:
+                                                Color.fromARGB(255, 6, 3, 3),
                                             foregroundColor: Colors.white,
                                             icon: Icons.delete,
                                             label: 'Xóa',
                                           ),
                                           SlidableAction(
-                                            onPressed: (context) {},
+                                            onPressed: (context) {
+                                              _textEditingController.text =
+                                                  dataBooking.note!;
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text('Enter Text'),
+                                                    content: TextField(
+                                                      controller:
+                                                          _textEditingController,
+                                                    ),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: Text('Cancel'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child: Text('Submit'),
+                                                        onPressed: () async {
+                                                          Map<String, String>
+                                                              data = {
+                                                            'note':
+                                                                _textEditingController
+                                                                    .text,
+                                                            'booking_time':
+                                                                dataBooking
+                                                                    .bookingTime!,
+                                                            "address":
+                                                                txtAddressCty,
+                                                            "service": "abc",
+                                                            "mechanic_id": '3'
+                                                          };
+                                                          int res = await APIBooking
+                                                              .updateBooking(
+                                                                  data: data,
+                                                                  id: dataBooking
+                                                                      .id!);
+                                                          if (res == 200) {
+                                                            Message.success(
+                                                                message:
+                                                                    'Chỉnh sửa thành công.',
+                                                                context:
+                                                                    context);
+                                                            Navigator.pop(
+                                                                context);
+                                                          } else {
+                                                            Message.error(
+                                                                message:
+                                                                    'Chỉnh sửa thất bại.',
+                                                                context:
+                                                                    context);
+                                                          }
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ).then((value) => loadData());
+                                            },
                                             backgroundColor: Color(0xFF21B7CA),
                                             foregroundColor: Colors.white,
                                             icon: Icons.upgrade,
@@ -248,8 +313,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           constraints: const BoxConstraints(
                                               minHeight: 120),
                                           width: size.width,
-                                          color: const Color.fromARGB(
-                                              255, 0, 0, 0),
+                                          color: Color.fromARGB(
+                                              255, 246, 242, 242),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 20,
@@ -305,12 +370,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                   const TextSpan(
                                                     text: '\nThời gian tạo:',
                                                     style: TextStyle(
-                                                        color: Colors.purple),
+                                                      color: Color.fromARGB(
+                                                          255, 0, 0, 0),
+                                                    ),
                                                   ),
                                                   TextSpan(
                                                     text: ' $createAt',
                                                     style: const TextStyle(
-                                                        color: Colors.purple),
+                                                      color: Color.fromARGB(
+                                                          255, 0, 0, 0),
+                                                    ),
                                                   ),
                                                 ],
                                               ),

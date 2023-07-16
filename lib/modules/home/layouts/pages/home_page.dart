@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage>
                 Modular.to.pushNamed(Routes.notifications);
               },
               icon: const badges.Badge(
-                badgeContent: Text('3'),
+                badgeContent: Text('0'),
                 child: Icon(Icons.notifications),
               ),
             ),
