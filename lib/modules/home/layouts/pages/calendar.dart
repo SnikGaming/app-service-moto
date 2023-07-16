@@ -90,7 +90,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) => NoteDialog(),
+                          builder: (BuildContext context) => const NoteDialog(),
                         ).then(
                           (value) => loadData(),
                         );
@@ -230,7 +230,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             onPressed: (context) =>
                                                 deleteData(dataBooking.id),
                                             backgroundColor:
-                                                Color.fromARGB(255, 6, 3, 3),
+                                                const Color.fromARGB(
+                                                    255, 6, 3, 3),
                                             foregroundColor: Colors.white,
                                             icon: Icons.delete,
                                             label: 'Xóa',
@@ -244,7 +245,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return AlertDialog(
-                                                    title: Text(
+                                                    title: const Text(
                                                         'Nhập nội dung cần chỉnh sửa'),
                                                     content: TextField(
                                                       controller:
@@ -252,14 +253,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                     ),
                                                     actions: <Widget>[
                                                       TextButton(
-                                                        child: Text('Hủy'),
+                                                        child:
+                                                            const Text('Hủy'),
                                                         onPressed: () {
                                                           Navigator.of(context)
                                                               .pop();
                                                         },
                                                       ),
                                                       TextButton(
-                                                        child: Text('Lưu'),
+                                                        child:
+                                                            const Text('Lưu'),
                                                         onPressed: () async {
                                                           Map<String, String>
                                                               data = {
@@ -301,7 +304,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 },
                                               ).then((value) => loadData());
                                             },
-                                            backgroundColor: Color(0xFF21B7CA),
+                                            backgroundColor:
+                                                const Color(0xFF21B7CA),
                                             foregroundColor: Colors.white,
                                             icon: Icons.upgrade,
                                             label: 'Sửa',
@@ -314,7 +318,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           constraints: const BoxConstraints(
                                               minHeight: 120),
                                           width: size.width,
-                                          color: Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 246, 242, 242),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
