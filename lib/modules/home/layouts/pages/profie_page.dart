@@ -12,6 +12,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../components/button/mybutton.dart';
 import '../../../../components/convert/format_money.dart';
+import '../../../../components/message/message.dart';
 import '../../../../components/style/text_style.dart';
 import '../../../../network/connect.dart';
 import '../../../../preferences/user/user_preferences.dart';
@@ -128,15 +129,33 @@ class _ProFilePageState extends State<ProFilePage> {
                             width: 80,
                             child: UserPrefer.getImageUser() == 'null' ||
                                     UserPrefer.getImageUser() == null
-                                ? Container(
-                                    height: 45,
-                                    width: 45,
-                                    decoration: const BoxDecoration(
-                                      // color: violet,
-                                      shape: BoxShape.circle,
+                                ? GestureDetector(
+                                    onTap: () async {
+                                      try {
+                                        var user = (await APIAuth.getUser())!;
+
+                                        Modular.to.pushNamed(Routes.profile,
+                                            arguments: [user]);
+                                      } catch (e) {
+                                        Message.warning(
+                                          message: 'Bạn chưa đăng nhập',
+                                          context: context,
+                                        );
+                                      }
+
+                                      await Future.delayed(
+                                          const Duration(seconds: 5));
+                                    },
+                                    child: Container(
+                                      height: 45,
+                                      width: 45,
+                                      decoration: const BoxDecoration(
+                                        // color: violet,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Lottie.network(
+                                          'https://assets10.lottiefiles.com/packages/lf20_1mvhccet.json'),
                                     ),
-                                    child: Lottie.network(
-                                        'https://assets10.lottiefiles.com/packages/lf20_1mvhccet.json'),
                                   )
                                 : CachedNetworkImage(
                                     imageBuilder: (context, imageProvider) =>

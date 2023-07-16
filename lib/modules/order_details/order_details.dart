@@ -1,3 +1,4 @@
+import 'package:app/components/calendar/res/colors.dart';
 import 'package:app/components/style/text_style.dart';
 import 'package:app/functions/random_color.dart';
 import 'package:app/api/order/order_details.dart' as or;
@@ -40,6 +41,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Thông tin đơn hàng'),
+        backgroundColor: violet,
       ),
       body: SizedBox(
         height: size.height,
