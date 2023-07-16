@@ -9,7 +9,7 @@ class APIOrder {
 
   static Future<List<order.Data>> fetchOrder({int? status}) async {
     try {
-      String path = '/api/orders/';
+      String path = '/api/orders';
       if (status != null) {
         path += '?status=$status';
       }
@@ -30,7 +30,7 @@ class APIOrder {
 
   static Future<dynamic> fetchOrderStatus() async {
     try {
-      final response = await ApiBase.get(path: '/api/orders_status/');
+      final response = await ApiBase.get(path: '/api/orders_status');
       final jsonData = json.decode(response.toString());
 
       return jsonData['data'];

@@ -8,7 +8,8 @@ import '../APIBASE.dart';
 
 class ApiCart {
   static List<Data> lsCart = [];
-  static Future<int> apiCart({required String id, required int quantity}) async {
+  static Future<int> apiCart(
+      {required String id, required int quantity}) async {
     try {
       final response = await ApiBase.post(
           path: '/api/carts', data: {"product_id": id, "quantity": quantity});
@@ -47,7 +48,7 @@ class ApiCart {
 
   static Future<List<Data>> getData() async {
     try {
-      final response = await ApiBase.get(path: '/api/carts/');
+      final response = await ApiBase.get(path: '/api/carts');
       final jsonData = response.data;
       final List<dynamic> dataCartJson = jsonData['data'];
       final total = jsonData['total_pages'];

@@ -5,7 +5,7 @@ class APIBanner {
   static List<Data> apiBanner = [];
   static Future<List<Data>> getData() async {
     try {
-      final response = await ApiBase.get(path: '/api/banners/');
+      final response = await ApiBase.get(path: '/api/banners');
       final jsonData = response.data;
       final List<dynamic> projectListJson = jsonData['data'];
       final List<Data> data = projectListJson

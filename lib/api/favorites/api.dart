@@ -10,7 +10,7 @@ class APIFavorites {
     try {
       data = [];
       final response =
-          await ApiBase.get(path: '/api/favorites/', queryParameters: {
+          await ApiBase.get(path: '/api/favorites', queryParameters: {
         "page": page,
       });
       final jsonData = response.data;

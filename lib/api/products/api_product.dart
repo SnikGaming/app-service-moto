@@ -15,7 +15,7 @@ class APIProduct {
   static create({required String id}) async {
     final value = {'product_id': id};
     try {
-      final response = await ApiBase.post(path: '/api/favorites/', data: value);
+      final response = await ApiBase.post(path: '/api/favorites', data: value);
       if (response.statusCode == 200) {
         return 200;
       } else {
@@ -33,10 +33,10 @@ class APIProduct {
       int min_price = 0,
       int max_price = 999999999,
       int tag = 2}) async {
-    String link = '/api/products/';
+    String link = '/api/products';
     try {
       if (UserPrefer.getToken() != null) {
-        link = '/api/sp/';
+        link = '/api/sp';
       }
       final response = await ApiBase.get(path: link, queryParameters: {
         "category_id": category_id,

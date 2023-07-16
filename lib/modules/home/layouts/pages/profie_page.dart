@@ -299,7 +299,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 8, horizontal: 5),
                                       child: Container(
-                                        height: data.status == 1 ? 270 : 240,
+                                        height: data.status == 1 ? 290 : 250,
                                         width: size.width,
                                         decoration: BoxDecoration(
                                             color: const Color.fromARGB(

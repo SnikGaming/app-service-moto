@@ -25,7 +25,7 @@ class APIBooking {
 
   static createBooking({required Map<String, String> data}) async {
     try {
-      final response = await ApiBase.post(path: '/api/bookings/', data: data);
+      final response = await ApiBase.post(path: '/api/bookings', data: data);
       if (response.statusCode == 200) {
         return 200;
       }

@@ -34,7 +34,7 @@ class APIAddress {
 
   static Future<List<Data>> fetchAddress() async {
     try {
-      final response = await ApiBase.get(path: '/api/address/');
+      final response = await ApiBase.get(path: '/api/address');
       final jsonData = json.decode(response.toString());
       final List<dynamic> dataListJson = jsonData['data'];
       final List<Data> data =

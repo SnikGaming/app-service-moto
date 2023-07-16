@@ -25,11 +25,12 @@ class APIAuthUser {
       return 401;
     }
     try {
-      final response = await ApiBase.post(path: '/api/register/', data: data);
+      final response = await ApiBase.post(path: '/api/register', data: data);
       if (response.statusCode == 200) {
         return 200;
+      } else {
+        return 400;
       }
-      return 400;
     } catch (e) {
       return 400;
     }
@@ -62,7 +63,7 @@ class APIAuthUser {
     }
     try {
       final response =
-          await ApiBase.post(path: '/api/dangky-up/', data: formData);
+          await ApiBase.post(path: '/api/dangky-up', data: formData);
       if (response.statusCode == 200) {
         return 200;
       }

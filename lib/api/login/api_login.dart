@@ -65,7 +65,7 @@ class APIAuth {
     // print('this is user ');
     Response response;
     try {
-      response = await ApiBase.get(path: '/api/dangky/');
+      response = await ApiBase.get(path: '/api/dangky');
     } catch (e) {
       return null;
     }

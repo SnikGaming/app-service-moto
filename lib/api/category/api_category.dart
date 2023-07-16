@@ -6,7 +6,7 @@ class APICategory {
 
   static Future<List<Data>> getData() async {
     try {
-      final response = await ApiBase.get(path: '/api/categories/');
+      final response = await ApiBase.get(path: '/api/categories');
       final jsonData = response.data;
       final List<dynamic> projectListJson = jsonData['data'];
       final List<Data> data = projectListJson
