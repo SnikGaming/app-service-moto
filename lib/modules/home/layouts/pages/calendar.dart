@@ -244,21 +244,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return AlertDialog(
-                                                    title: Text('Enter Text'),
+                                                    title: Text(
+                                                        'Nhập nội dung cần chỉnh sửa'),
                                                     content: TextField(
                                                       controller:
                                                           _textEditingController,
                                                     ),
                                                     actions: <Widget>[
                                                       TextButton(
-                                                        child: Text('Cancel'),
+                                                        child: Text('Hủy'),
                                                         onPressed: () {
                                                           Navigator.of(context)
                                                               .pop();
                                                         },
                                                       ),
                                                       TextButton(
-                                                        child: Text('Submit'),
+                                                        child: Text('Lưu'),
                                                         onPressed: () async {
                                                           Map<String, String>
                                                               data = {
@@ -473,7 +474,7 @@ class _NoteDialogState extends State<NoteDialog> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('OK'),
+                  child: const Text('Vâng'),
                 ),
               ],
             );
@@ -521,7 +522,7 @@ class _NoteDialogState extends State<NoteDialog> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+                child: const Text('Vâng'),
               ),
             ],
           );
@@ -600,7 +601,10 @@ class _NoteDialogState extends State<NoteDialog> {
         ElevatedButton(
           onPressed:
               _isNoteValid && _selectedDateTime != null ? _saveNote : null,
-          child: Text(widget.isEditMode ? 'Lưu' : 'Thêm'),
+          child: Text(
+            widget.isEditMode ? 'Lưu' : 'Thêm',
+            style: title1,
+          ),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),

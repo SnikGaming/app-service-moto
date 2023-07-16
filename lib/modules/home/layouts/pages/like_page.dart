@@ -72,17 +72,6 @@ class _ServicesPageState extends State<ServicesPage> {
           width: size.width,
           child: Stack(
             children: [
-              // SingleChildScrollView(
-              //   physics: const NeverScrollableScrollPhysics(),
-              //   child: Container(
-              //     height: size.height,
-              //     width: size.width,
-              //     decoration: const BoxDecoration(
-              //       image: DecorationImage(
-              //           image: AssetImage(imageBooking), fit: BoxFit.cover),
-              //     ),
-              //   ),
-              // ),
               SizedBox(
                 height: size.height * .8,
                 width: size.width,
@@ -109,7 +98,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                     constraints:
                                         const BoxConstraints(minHeight: 120),
                                     decoration: const BoxDecoration(
-                                      color: Color(0xcc7153e9),
+                                      color: Color.fromARGB(255, 205, 200, 200),
                                       // color: Color.fromARGB(255, 206, 205, 205),
                                     ),
                                     child: Row(
@@ -155,7 +144,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                                   ),
                                                   style: title.copyWith(
                                                     color: const Color.fromARGB(
-                                                        255, 254, 254, 1),
+                                                        255, 0, 0, 0),
                                                   ),
                                                 ),
                                                 Row(
@@ -172,6 +161,7 @@ class _ServicesPageState extends State<ServicesPage> {
                                                         },
                                                         child: const Icon(
                                                           Icons.favorite,
+                                                          size: 36,
                                                           color: Colors.red,
                                                         )),
                                                   ],
